@@ -1,5 +1,8 @@
 export default {
 	clubName: "ClubKit",
+	icon: {
+		svg: "/img/logos/acm.svg"
+	},
 	schoolUniversityIdName: "ABC123",
 	eventTypes: {
 		ACM: {
