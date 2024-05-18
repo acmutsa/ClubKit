@@ -14,6 +14,12 @@ export default {
     "Rowdy Creators": {
       color: "#FFD51E",
     },
+    "Coding in Color": {
+      color: "#d07cff",
+    },
+    "ICPC":{
+      color: "#16a34a",
+    }
   },
   dashPaths: {
     admin: {
@@ -155,3 +161,23 @@ export const majors = [
   "Webpage Design",
   "Other",
 ] as const;
+
+interface orgsType {
+  id: string;
+  name: string;
+  color:string;
+}
+
+export interface EventType {
+  id:string;
+  name: string;
+  description: string;
+  start: Date;
+  end: Date;
+  checkinStart: Date;
+  checkinEnd: Date;
+  location: string;
+  isUserCheckinable: boolean; 
+  isHidden: boolean;
+  orgs:Array<orgsType>;
+}
