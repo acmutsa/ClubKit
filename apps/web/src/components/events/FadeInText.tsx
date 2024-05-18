@@ -12,8 +12,8 @@ export default function FadeInText(){
 
     return (
       <h1
-        className={`font-bold text-4xl text-center transition-opacity ease-in duration-600 ${loaded ? "opacity-100" : "opacity-0"} pt-7`}>
-        Check Out What ACM Has Planned!
+        className={`font-bold text-4xl md:text-5xl text-center transition ease-in duration-700 ${loaded ? "opacity-100 -translate-y-4" : "opacity-0"} pt-10 w-full`}>
+       Upcoming Events
       </h1>
     );
 }

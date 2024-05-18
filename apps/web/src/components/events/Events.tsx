@@ -42,7 +42,7 @@ export default function Events(){
       },
       {
         id: randomUUID(),
-        name: "Event 2",
+        name: "Chicken n Pickle Social w/Mitre",
         description: "This is the second event",
         start: new Date("2022-01-02T00:00:00Z"),
         end: new Date("2022-01-02T01:00:00Z"),
@@ -55,7 +55,7 @@ export default function Events(){
       },
       {
         id: randomUUID(),
-        name: "Event 3",
+        name: "Chicken n Pickle Social w/Mitre",
         description: "This is the third event",
         start: new Date("2022-01-03T00:00:00Z"),
         end: new Date("2022-01-03T01:00:00Z"),
@@ -161,7 +161,7 @@ export default function Events(){
       },
     ];
     return (
-      <div className="w-full flex flex-col items-center">
+      <div className="w-full h-full flex flex-col items-center">
        <FadeInText />
         <EventsCardView Events={dummyData} />
       </div>
