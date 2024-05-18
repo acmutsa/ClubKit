@@ -16,12 +16,16 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<ClerkProvider>
-			<html lang="en">
-				<body className={inter.className}>
-					{children}
-					</body>
-			</html>
-		</ClerkProvider>
-	);
+    <ClerkProvider>
+      <html lang="en">
+        <body className={inter.className}>
+			{/* Remove after testing */}
+          <div className="flex w-full flex-row items-center justify-center bg-gray-300 py-5">
+            <h1 className="text-3xl">This is just a dummy navbar</h1>
+          </div>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
+  );
 }
