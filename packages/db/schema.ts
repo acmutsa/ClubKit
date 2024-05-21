@@ -50,8 +50,8 @@ export const data = pgTable("data", {
 });
 
 /* EVENTS */
-
 export const eventCategories = pgTable("event_categories", {
+	// category can be a sub org or other things depending on the event
 	id: text("id").primaryKey(),
 	name: text("name").notNull().unique(),
 	color: text("color").notNull(),
@@ -61,6 +61,8 @@ export const eventCategoriesRelations = relations(eventCategories, ({ many }) =>
 	eventsToCategories: many(eventsToCategories),
 }));
 
+
+// Add Thumbnail url for events
 export const events = pgTable("events", {
 	id: text("id").primaryKey(),
 	name: text("name").notNull(),

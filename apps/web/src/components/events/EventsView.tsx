@@ -24,7 +24,7 @@ export default function EventsView({ allEvents }: { allEvents: Array<EventType> 
   } 
   const [filters,setFilters] = useState<Filters>(defaultFilters);
   useEffect(()=>{
-    console.log("Filters have changed",filters);
+    console.log("Filters have changed");
     
     // This is basically just to save a bit of computation as we do not need to filter on the first render
     if (loaded.current){
