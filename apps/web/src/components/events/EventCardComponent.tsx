@@ -37,12 +37,13 @@ export default function EventCardComponent({ event }: { event: EventType }) {
       </CardHeader>
       <CardContent className="flex flex-col w-full space-y-5 p-0 pb-4">
         {/* This will eventually change to the source passed in */}
-          <Image
-            src={defaultImg}
-            alt="Event Image"
-            className="rounded-md"
-          />
-       
+        <Image
+          src={defaultImg}
+          alt="Event Image"
+          priority
+          className="rounded-md"
+        />
+
         <div className="w-full flex justify-start text-gray-600 px-6">
           <p>
             {event.start.toLocaleString("en-GB", {
@@ -62,7 +63,7 @@ export default function EventCardComponent({ event }: { event: EventType }) {
         <Link
           href={`/events/${event.id}/checkin`}
           className=" w-1/2 h-full flex flex-row items-center justify-center border-l border-gray-400">
-          <h1 className="text-primary text-blue-400">Check-In</h1>
+          <h1 className=" text-blue-400">Check-In</h1>
         </Link>
       </CardFooter>
     </Card>
