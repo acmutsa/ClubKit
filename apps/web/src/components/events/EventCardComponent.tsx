@@ -12,11 +12,8 @@ import Link from "next/link";
 import defaultImg from "../../../public/img/test_image.webp";
 
 
-
+// Add skeleton to this for data loading purposes
 export default function EventCardComponent({ event }: { event: EventType }) {
-
-
-
   return (
     <Card className="flex flex-col w-full transition ease-in-out duration-300 md:hover:scale-105">
       <CardHeader className="w-full flex flex-col justify-center items-center space-y-5">
@@ -49,6 +46,8 @@ export default function EventCardComponent({ event }: { event: EventType }) {
             {event.start.toLocaleString("en-GB", {
               timeZone: "CST",
               hourCycle: "h12",
+              dateStyle:'short',
+              timeStyle:'short'
             })}
           </p>
         </div>
