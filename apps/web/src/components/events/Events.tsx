@@ -1,27 +1,12 @@
 // Should have a sticky top bar that allows for filtering by most to least recent, by org, can render either a calendar or a card view, search feature (?) and render either card or calendar view of events
 import type { EventType } from "config";
 import { randomUUID } from "crypto";
-import EventsCardView from "./EventsCardView";
-import FadeInText from "./FadeInText";
+import EventsView from "./EventsView";
+
+
+// Add cache invalidation for the fetching
 export default function Events(){
-    // Remove after testing
-    const eventTypes = {
-    ACM: {
-      color: "#179BD5",
-    },
-    "ACM-W": {
-      color: "#7BE9E8",
-    },
-    "Rowdy Creators": {
-      color: "#FFD51E",
-    },
-    "Coding in Color": {
-      color: "#d07cff",
-    },
-    "ICPC":{
-      color: "#16a34a",
-    }
-}
+    
     // Note: when making our db call 
     const dummyData: Array<EventType> = [
       {
@@ -42,7 +27,7 @@ export default function Events(){
       },
       {
         id: randomUUID(),
-        name: "Chicken n Pickle Social w/Mitre",
+        name: "Fall Open House",
         description: "This is the second event",
         start: new Date("2022-01-02T00:00:00Z"),
         end: new Date("2022-01-02T01:00:00Z"),
@@ -84,7 +69,7 @@ export default function Events(){
       },
       {
         id: randomUUID(),
-        name: "Event 5",
+        name: "ICPC General Meeting",
         description: "This is the fifth event",
         start: new Date("2022-01-05T01:00:00Z"),
         end: new Date("2022-01-05T01:00:00Z"),
@@ -159,11 +144,64 @@ export default function Events(){
           { id: "id", name: "ACM-W", color: "#7BE9E8" },
         ],
       },
+      {
+        id: randomUUID(),
+        name: "Event 10",
+        description: "This is the tenth event",
+        start: new Date("2022-01-10T00:00:00Z"),
+        end: new Date("2022-01-10T01:00:00Z"),
+        checkinStart: new Date("2022-01-10T00:00:00Z"),
+        checkinEnd: new Date("2022-01-10T00:30:00Z"),
+        location: "Dummy Location",
+        isUserCheckinable: true,
+        isHidden: false,
+        orgs: [{ id: "id", name: "Coding in Color", color: "#d07cff" }],
+      },
+      {
+        id: randomUUID(),
+        name: "Event 11",
+        description: "This is the eleventh event",
+        start: new Date("2022-01-11T00:00:00Z"),
+        end: new Date("2022-01-11T01:00:00Z"),
+        checkinStart: new Date("2022-01-11T00:00:00Z"),
+        checkinEnd: new Date("2022-01-11T00:30:00Z"),
+        location: "Dummy Location",
+        isUserCheckinable: true,
+        isHidden: false,
+        orgs: [{ id: "id", name: "ACM", color: "#179BD5" }],
+      },
+      {
+        id: randomUUID(),
+        name: "Event 12",
+        description: "This is the twelfth event",
+        start: new Date("2022-01-12T00:00:00Z"),
+        end: new Date("2022-01-12T01:00:00Z"),
+        checkinStart: new Date("2022-01-12T00:00:00Z"),
+        checkinEnd: new Date("2022-01-12T00:30:00Z"),
+        location: "Dummy Location",
+        isUserCheckinable: true,
+        isHidden: false,
+        orgs: [{ id: "id", name: "Rowdy Creators", color: "#FFD51E" }],
+      },
+      {
+        id: randomUUID(),
+        name: "Event 13",
+        description: "This is the thirteenth event",
+        start: new Date("2022-01-13T00:00:00Z"),
+        end: new Date("2022-01-13T01:00:00Z"),
+        checkinStart: new Date("2022-01-13T00:00:00Z"),
+        checkinEnd: new Date("2022-01-13T00:30:00Z"),
+        location: "Dummy Location",
+        isUserCheckinable: true,
+        isHidden: false,
+        orgs: [
+          { id: "id", name: "Coding in Color", color: "#d07cff" },
+          { id: "id", name: "ACM", color: "#179BD5"},],
+      }
     ];
     return (
-      <div className="w-full h-full flex flex-col items-center">
-       <FadeInText />
-        <EventsCardView Events={dummyData} />
+      <div className="w-full h-full flex flex-col items-center pt-4">
+        <EventsView allEvents={dummyData} />
       </div>
     );
 }
