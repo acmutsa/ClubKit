@@ -18,7 +18,7 @@ export default function EventCardComponent({ event }: { event: EventType }) {
     <Card className="flex flex-col w-full transition ease-in-out duration-300 md:hover:scale-105">
       <CardHeader className="w-full flex flex-col justify-center items-center space-y-5">
         <CardTitle className="text-center">{event.name}</CardTitle>
-        <div className="flex flex-row space-x-4">
+        <div className="flex flex-row space-x-3 md:space-x-4">
           {event.orgs.map((org) => {
             // Style is like this for now because of the way tailwind ships, it prevents you from using arbitrary colors that are not known ahead of time
             return (
