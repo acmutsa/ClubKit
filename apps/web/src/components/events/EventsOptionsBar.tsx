@@ -57,32 +57,40 @@ return (
       </Select>
     )}
     {/* Mobile Search bar */}
-    <div className="flex sm:hidden items-center">
-      <Popover>
-        <PopoverTrigger asChild>
-          <Search />
-        </PopoverTrigger>
-        <PopoverContent>
+    {cardViewSelected && (
+      <>
+        <div className="flex sm:hidden items-center">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Search />
+            </PopoverTrigger>
+            <PopoverContent>
+              <Input
+                type="text"
+                placeholder="Search for events"
+                defaultValue={filters.searchQuery}
+                onChange={(e) =>
+                  handleFilterChange("searchQuery", e.target.value)
+                }
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        {/* Desktop Search bar */}
+        <div className="hidden sm:flex items-center w-1/3 justify-start  ">
           <Input
             type="text"
             placeholder="Search for events"
             defaultValue={filters.searchQuery}
             onChange={(e) => handleFilterChange("searchQuery", e.target.value)}
+            className="py-0 my-0"
           />
-        </PopoverContent>
-      </Popover>
-    </div>
-    {/* Desktop Search bar */}
-    <div className="hidden sm:flex items-center w-1/3 justify-start  ">
-      <Input
-        type="text"
-        placeholder="Search for events"
-        defaultValue={filters.searchQuery}
-        onChange={(e) => handleFilterChange("searchQuery", e.target.value)}
-        className="py-0 my-0"
-      />
-    </div>
-    <div className="flex justify-end">
+        </div>
+      </>
+    )}
+    <div className={clsx('flex justify-end',{
+        'w-full justify-between':!cardViewSelected
+    })}>
       {/* border border-input */}
       <div className="flex items-center justify-center hover:cursor-pointer  bg-transparent rounded-md px-2 mr-2">
         <Popover>
