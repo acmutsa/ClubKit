@@ -24,23 +24,32 @@ export default async function Page() {
 
 	return (
 		<main className="w-screen">
-			<div className="max-w-5xl mx-auto min-h-screen pt-40">
+			<div className="mx-auto min-h-screen max-w-5xl pt-40">
 				<div className="grid grid-cols-2">
 					<div>
-						<h1 className="font-black text-5xl">Registration</h1>
+						<h1 className="text-5xl font-black">Registration</h1>
 						<p className="mt-5 font-medium">
-							<span className="font-bold">Welcome!</span> Please fill out the form
-							below to complete your registration.
+							<span className="font-bold">Welcome!</span> Please
+							fill out the form below to complete your
+							registration.
 						</p>
 					</div>
-					<div className="bg-primary rounded-lg text-white flex flex-col items-center justify-center gap-y-3">
-						<p className="text-sm font-bold">Had a portal (abc123 & email) account?</p>
+					<div className="flex flex-col items-center justify-center gap-y-3 rounded-lg bg-primary text-white">
+						<p className="text-sm font-bold">
+							Had a portal (abc123 & email) account?
+						</p>
 						<Link href="/onboarding/migrate">
-							<Button className="w-full dark">Migrate from Portal</Button>
+							<Button className="dark w-full">
+								Migrate from Portal
+							</Button>
 						</Link>
 					</div>
 				</div>
-				<RegisterForm defaultEmail={clerkUser.emailAddresses[0]?.emailAddress || ""} />
+				<RegisterForm
+					defaultEmail={
+						clerkUser.emailAddresses[0]?.emailAddress || ""
+					}
+				/>
 			</div>
 		</main>
 	);
