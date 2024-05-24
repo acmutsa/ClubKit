@@ -2,7 +2,7 @@
 import c, { majors } from "config";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { insertUserWithDataSchema } from "db/zod";
+import { insertUserWithDataSchemaFormified } from "db/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -25,6 +25,17 @@ import {
 	CommandList,
 } from "@/components/ui/command";
 import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
 	Select,
 	SelectContent,
 	SelectItem,
@@ -32,546 +43,823 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
+import { CalendarWithYears } from "@/components/ui/calendarWithYearSelect";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Check, ChevronsUpDown, CalendarIcon } from "lucide-react";
+import {
+	MultiSelector,
+	MultiSelectorContent,
+	MultiSelectorInput,
+	MultiSelectorItem,
+	MultiSelectorList,
+	MultiSelectorTrigger,
+} from "@/components/ui/MultiSelect";
+import { Check, ChevronsUpDown, CalendarIcon, TriangleAlert } from "lucide-react";
 import { cn, range } from "@/lib/utils";
 import { format } from "date-fns";
+import { useEffect, useState } from "react";
+import { useAction } from "next-safe-action/hooks";
+import { createRegistration } from "@/actions/register/new";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { upload } from "@vercel/blob/client";
 
-const formSchema = insertUserWithDataSchema.omit({
-	clerkID: true,
-});
+const formSchema = insertUserWithDataSchemaFormified;
 
-export default function RegisterForm() {
+// const genderOptions = [
+// 	"Male",
+// 	"Female",
+// 	"Non-Binary",
+// 	"Transgender",
+// 	"Intersex",
+// 	"Other",
+// 	"I prefer not to say",
+// ];
+
+// const ethnicityOptions: Option[] = [
+// 	{ label: "African American or Black", value: "African American or Black" },
+// 	{ label: "Asian", value: "Asian" },
+// 	{ label: "Native American/Alaskan Native", value: "Native American/Alaskan Native" },
+// 	{ label: "Native Hawaiian or Pacific Islander", value: "Native Hawaiian or Pacific Islander" },
+// 	{ label: "Hispanic / Latinx", value: "Hispanic / Latinx" },
+// 	{ label: "White", value: "White" },
+// ];
+
+interface RegisterFormProps {
+	defaultEmail: string;
+}
+
+export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
+	const [error, setError] = useState<{ title: string; description: string } | null>(null);
+	const [resume, setResume] = useState<File | null>(null);
+	const router = useRouter();
+
+	const {
+		execute: runCreateRegistration,
+		status: actionStatus,
+		result: actionResult,
+		reset: resetAction,
+	} = useAction(createRegistration, {
+		onSuccess: async ({ success, code }) => {
+			toast.dismiss();
+			if (!success) {
+				switch (code) {
+					case "user_already_exists":
+						setError({
+							title: "User Already Exists",
+							description: `It would seem you have already registered. If you believe this is an error, please contact ${c.contactEmail}.`,
+						});
+						break;
+					case "email_already_exists":
+						setError({
+							title: "Email Already Exists",
+							description: `There is already an account with that email address. This could mean you have already registered, or that you have a unmigrated portal account. If you belive this is an error, please contact ${c.contactEmail}.`,
+						});
+						break;
+					case "university_id_already_exists":
+						setError({
+							title: `${c.universityID.name} Already Exists`,
+							description: `There is already an account with that ${c.universityID.name}. This could mean you have already registered, or that you have a unmigrated portal account. If you belive this is an error, please contact ${c.contactEmail}.`,
+						});
+						break;
+					default:
+						toast.error(
+							`An unknown error occurred. Please try again or contact ${c.contactEmail}.`
+						);
+						break;
+				}
+				resetAction();
+				return;
+			}
+			toast.success("Registration successful!", {
+				description: "You'll be redirected shortly.",
+			});
+			setTimeout(() => {
+				router.push("/me");
+			}, 1500);
+		},
+		onError: async (error) => {
+			toast.dismiss();
+			toast.error(
+				`An unknown error occurred. Please try again or contact ${c.contactEmail}.`
+			);
+			console.log("error: ", error);
+			resetAction();
+		},
+	});
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
+			email: defaultEmail,
+			firstName: "",
+			lastName: "",
 			data: {
 				major: "",
+				classification: "",
+
+				gender: [],
+				ethnicity: [],
 			},
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
+	useEffect(() => {
+		if (Object.keys(form.formState.errors).length > 0) {
+			console.log("Errors: ", form.formState.errors);
+		}
+	}, [form.formState]);
+
+	async function onSubmit(values: z.infer<typeof formSchema>) {
+		toast.loading("Creating Registration...");
+		if (resume) {
+			const resumeBlob = await upload(resume.name, resume, {
+				access: "public",
+				handleUploadUrl: "/api/upload/resume",
+			});
+			values.data.resume = resumeBlob.url;
+		} else {
+			values.data.resume = undefined;
+		}
+		runCreateRegistration(values);
+	}
+
+	function validateAndSetResume(event: React.ChangeEvent<HTMLInputElement>) {
+		const file = event.target.files?.[0];
+		if (!file) {
+			setResume(null);
+			return false;
+		}
+		if (file.size > c.maxResumeSizeInBytes) {
+			form.setError("data.resume", { message: "Resume file is too large." });
+			setResume(null);
+			return false;
+		}
+		if (
+			![
+				"application/pdf",
+				"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+			].includes(file.type)
+		) {
+			form.setError("data.resume", { message: "Resume file must be a .pdf or .docx file." });
+			setResume(null);
+			return false;
+		}
+		setResume(file);
+		return true;
 	}
 
 	return (
-		<div className="mt-20">
-			<Form {...form}>
-				<form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
-					<FormGroupWrapper title="Basic Info">
-						<div className="grid grid-cols-3 gap-4">
-							<FormField
-								control={form.control}
-								name="firstName"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>First Name</FormLabel>
-										<FormControl>
-											<Input {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="lastName"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Last Name</FormLabel>
-										<FormControl>
-											<Input {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="email"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Email</FormLabel>
-										<FormControl>
-											<Input {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-					</FormGroupWrapper>
-					<FormGroupWrapper title="College Information">
-						<div className="grid grid-cols-6 gap-4">
-							<FormField
-								control={form.control}
-								name="data.universityID"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>{c.schoolUniversityIdName}</FormLabel>
-										<FormControl>
-											<Input {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="data.major"
-								render={({ field }) => (
-									<FormItem className="col-span-2">
-										<FormLabel>Major</FormLabel>
-										<Popover>
-											<PopoverTrigger asChild>
-												<FormControl>
-													<Button
-														variant="outline"
-														role="combobox"
-														className={cn(
-															"w-full justify-between",
-															!field.value && "text-muted-foreground"
-														)}
-													>
-														{field.value
-															? majors.find(
-																	(major) => major === field.value
-																)
-															: "Select a Major"}
-														<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-													</Button>
-												</FormControl>
-											</PopoverTrigger>
-											<PopoverContent className="no-scrollbar max-h-[400px] w-[250px] p-0">
-												<Command>
-													<CommandInput placeholder="Search major..." />
-													<CommandEmpty>No major found.</CommandEmpty>
-													<CommandList>
-														<CommandGroup>
-															{majors.map((major) => {
-																return (
-																	<CommandItem
-																		value={major}
-																		key={major}
-																		onSelect={(value) => {
-																			form.setValue(
-																				"data.major",
-																				value
-																			);
-																		}}
-																		className="cursor-pointer "
-																	>
-																		<Check
-																			className={`h-4 mr-2 overflow-hidden w-4 ${
-																				major.toLowerCase() ===
-																				field.value
-																					? "block"
-																					: "hidden"
-																			}
+		<>
+			<AlertDialog open={error != null}>
+				{/* <AlertDialogTrigger asChild>
+					<Button variant="outline">Show Dialog</Button>
+				</AlertDialogTrigger> */}
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>{error?.title}</AlertDialogTitle>
+						<AlertDialogDescription>{error?.description}</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel onClick={() => setError(null)}>Ok</AlertDialogCancel>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+			<div className="mt-20">
+				{/* <div className="bg-red-500 flex items-center py-3 rounded mb-5 text-white px-4 gap-x-2">
+				<TriangleAlert />
+				<p>Error Creating Registration: </p>
+			</div> */}
+				<Form {...form}>
+					<form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+						<FormGroupWrapper title="Basic Info">
+							<div className="grid grid-cols-3 gap-4">
+								<FormField
+									control={form.control}
+									name="firstName"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>First Name</FormLabel>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="lastName"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Last Name</FormLabel>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="email"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Email</FormLabel>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+						</FormGroupWrapper>
+						<FormGroupWrapper title="College Information">
+							<div className="grid grid-cols-6 gap-4">
+								<FormField
+									control={form.control}
+									name="data.universityID"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>{c.universityID.name}</FormLabel>
+											<FormControl>
+												<Input {...field} />
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="data.major"
+									render={({ field }) => (
+										<FormItem className="col-span-2">
+											<FormLabel>Major</FormLabel>
+											<Popover>
+												<PopoverTrigger asChild>
+													<FormControl>
+														<Button
+															variant="outline"
+															role="combobox"
+															className={cn(
+																"w-full justify-between",
+																!field.value &&
+																	"text-muted-foreground"
+															)}
+														>
+															{field.value
+																? majors.find(
+																		(major) =>
+																			major === field.value
+																	)
+																: "Select a Major"}
+															<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+														</Button>
+													</FormControl>
+												</PopoverTrigger>
+												<PopoverContent className="no-scrollbar max-h-[400px] w-[250px] p-0">
+													<Command>
+														<CommandInput placeholder="Search major..." />
+														<CommandEmpty>No major found.</CommandEmpty>
+														<CommandList>
+															<CommandGroup>
+																{majors.map((major) => {
+																	return (
+																		<CommandItem
+																			value={major}
+																			key={major}
+																			onSelect={(value) => {
+																				form.setValue(
+																					"data.major",
+																					value
+																				);
+																			}}
+																			className="cursor-pointer "
+																		>
+																			<Check
+																				className={`h-4 mr-2 overflow-hidden w-4 ${
+																					major.toLowerCase() ===
+																					field.value
+																						? "block"
+																						: "hidden"
+																				}
 																		`}
-																		/>
-																		{major}
-																	</CommandItem>
-																);
-															})}
-														</CommandGroup>
-													</CommandList>
-												</Command>
-											</PopoverContent>
-										</Popover>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="data.classification"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Classification</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value?.toString()}
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Classification" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												<SelectItem
-													className="cursor-pointer"
-													value="freshman"
-												>
-													Freshman
-												</SelectItem>
-												<SelectItem
-													className="cursor-pointer"
-													value="sophomore"
-												>
-													Sophomore
-												</SelectItem>
-												<SelectItem
-													className="cursor-pointer"
-													value="junior"
-												>
-													Junior
-												</SelectItem>
-												<SelectItem
-													className="cursor-pointer"
-													value="senior"
-												>
-													Senior
-												</SelectItem>
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="data.graduationMonth"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Graduation Month</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value?.toString()}
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Month" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												<SelectItem className="cursor-pointer" value="1">
-													January
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="2">
-													February
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="3">
-													March
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="4">
-													April
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="5">
-													May
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="6">
-													June
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="7">
-													July
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="8">
-													August
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="9">
-													September
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="10">
-													October
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="11">
-													November
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="12">
-													December
-												</SelectItem>
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="data.graduationYear"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel className="w-full">Graduation Year</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value?.toString()}
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Year" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												{range(
-													new Date().getFullYear(),
-													new Date().getFullYear() + 5
-												).map((year) => (
+																			/>
+																			{major}
+																		</CommandItem>
+																	);
+																})}
+															</CommandGroup>
+														</CommandList>
+													</Command>
+												</PopoverContent>
+											</Popover>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="data.classification"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Classification</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value?.toString()}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Classification" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
 													<SelectItem
 														className="cursor-pointer"
-														value={year.toString()}
-														key={year}
+														value="freshman"
 													>
-														{year}
+														Freshman
 													</SelectItem>
-												))}
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-					</FormGroupWrapper>
-					<FormGroupWrapper title="Personal Information">
-						<div className="grid grid-cols-2 gap-4">
-							<FormField
-								control={form.control}
-								name="data.birthday"
-								render={({ field }) => (
-									<FormItem className="flex flex-col justify-end gap-y-1">
-										<FormLabel>Date of birth</FormLabel>
-										<Popover>
-											<PopoverTrigger asChild>
-												<FormControl>
-													<Button
-														variant={"outline"}
-														className={cn(
-															"pl-3 text-left font-normal",
-															!field.value && "text-muted-foreground"
-														)}
+													<SelectItem
+														className="cursor-pointer"
+														value="sophomore"
 													>
-														{field.value ? (
-															format(field.value, "PPP")
-														) : (
-															<span>Pick a date</span>
-														)}
-														<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-													</Button>
+														Sophomore
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="junior"
+													>
+														Junior
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="senior"
+													>
+														Senior
+													</SelectItem>
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="data.graduationMonth"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Graduation Month</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value?.toString()}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Month" />
+													</SelectTrigger>
 												</FormControl>
-											</PopoverTrigger>
-											<PopoverContent className="w-auto p-0" align="start">
-												<Calendar
-													mode="single"
-													selected={
-														field.value == null
-															? undefined
-															: field.value
-													}
-													onSelect={field.onChange}
-													disabled={(date) =>
-														date > new Date() ||
-														date < new Date("1900-01-01")
-													}
-													initialFocus
+												<SelectContent>
+													<SelectItem
+														className="cursor-pointer"
+														value="1"
+													>
+														January
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="2"
+													>
+														February
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="3"
+													>
+														March
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="4"
+													>
+														April
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="5"
+													>
+														May
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="6"
+													>
+														June
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="7"
+													>
+														July
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="8"
+													>
+														August
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="9"
+													>
+														September
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="10"
+													>
+														October
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="11"
+													>
+														November
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="12"
+													>
+														December
+													</SelectItem>
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="data.graduationYear"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel className="w-full">
+												Graduation Year
+											</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value?.toString()}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Year" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													{range(
+														new Date().getFullYear(),
+														new Date().getFullYear() + 5
+													).map((year) => (
+														<SelectItem
+															className="cursor-pointer"
+															value={year.toString()}
+															key={year}
+														>
+															{year}
+														</SelectItem>
+													))}
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+						</FormGroupWrapper>
+						<FormGroupWrapper title="Personal Information">
+							<div className="grid grid-cols-3 gap-4">
+								<FormField
+									control={form.control}
+									name="data.birthday"
+									render={({ field }) => (
+										<FormItem className="flex flex-col justify-end gap-y-1">
+											<FormLabel>Birthday</FormLabel>
+											<Popover>
+												<PopoverTrigger asChild>
+													<FormControl>
+														<Button
+															variant={"outline"}
+															className={cn(
+																"pl-3 text-left font-normal",
+																!field.value &&
+																	"text-muted-foreground"
+															)}
+														>
+															{field.value ? (
+																format(field.value, "PPP")
+															) : (
+																<span>Pick a Date</span>
+															)}
+															<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+														</Button>
+													</FormControl>
+												</PopoverTrigger>
+												<PopoverContent
+													className="w-auto p-0"
+													align="start"
+												>
+													<CalendarWithYears
+														captionLayout="dropdown-buttons"
+														mode="single"
+														selected={
+															field.value == null
+																? undefined
+																: field.value
+														}
+														onSelect={field.onChange}
+														disabled={(date) =>
+															date > new Date() ||
+															date < new Date("1900-01-01")
+														}
+														fromYear={new Date().getFullYear() - 100}
+														toYear={new Date().getFullYear()}
+														initialFocus
+													/>
+												</PopoverContent>
+											</Popover>
+
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="data.gender"
+									render={({ field }) => {
+										return (
+											<FormItem className="flex flex-col justify-between gap-y-1">
+												<FormLabel>Gender</FormLabel>
+												<MultiSelector
+													onValuesChange={field.onChange}
+													values={field.value}
+													loop={true}
+												>
+													<MultiSelectorTrigger>
+														<MultiSelectorInput
+															className="text-sm"
+															placeholder="Click to Select"
+														/>
+													</MultiSelectorTrigger>
+													<MultiSelectorContent>
+														<MultiSelectorList>
+															<MultiSelectorItem
+																key="Male"
+																value="Male"
+															>
+																Male
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="Female"
+																value="Female"
+															>
+																Female
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="Non-Binary"
+																value="Non-Binary"
+															>
+																Non-Binary
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="Transgender"
+																value="Transgender"
+															>
+																Transgender
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="Intersex"
+																value="Intersex"
+															>
+																Intersex
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="Other"
+																value="Other"
+															>
+																Other
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="I prefer not to say"
+																value="I prefer not to say"
+															>
+																I prefer not to say
+															</MultiSelectorItem>
+														</MultiSelectorList>
+													</MultiSelectorContent>
+												</MultiSelector>
+											</FormItem>
+										);
+									}}
+								/>
+
+								<FormField
+									control={form.control}
+									name="data.ethnicity"
+									render={({ field }) => {
+										return (
+											<FormItem className="flex flex-col justify-between gap-y-1">
+												<FormLabel>Ethnicity</FormLabel>
+												<MultiSelector
+													onValuesChange={field.onChange}
+													values={field.value}
+													loop={true}
+												>
+													<MultiSelectorTrigger>
+														<MultiSelectorInput
+															className="text-sm"
+															placeholder="Click to Select"
+														/>
+													</MultiSelectorTrigger>
+													<MultiSelectorContent>
+														<MultiSelectorList>
+															<MultiSelectorItem
+																key="African American or Black"
+																value="African American or Black"
+															>
+																African American or Black
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="Asian"
+																value="Asian"
+															>
+																Asian
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="Native American/Alaskan Native"
+																value="Native American/Alaskan Native"
+															>
+																Native American/Alaskan Native
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="Native Hawaiian or Pacific Islander"
+																value="Native Hawaiian or Pacific Islander"
+															>
+																Native Hawaiian or Pacific Islander
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="Hispanic / Latinx"
+																value="Hispanic / Latinx"
+															>
+																Hispanic / Latinx
+															</MultiSelectorItem>
+															<MultiSelectorItem
+																key="White"
+																value="White"
+															>
+																White
+															</MultiSelectorItem>
+														</MultiSelectorList>
+													</MultiSelectorContent>
+												</MultiSelector>
+											</FormItem>
+										);
+									}}
+								/>
+							</div>
+						</FormGroupWrapper>
+						<FormGroupWrapper title="Other">
+							<div className="grid grid-cols-3 gap-4">
+								<FormField
+									control={form.control}
+									name="data.shirtSize"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Shirt Size</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value?.toString()}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Shirt Size" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													<SelectItem
+														className="cursor-pointer"
+														value="xs"
+													>
+														XS
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="s"
+													>
+														S
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="m"
+													>
+														M
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="l"
+													>
+														L
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="xl"
+													>
+														XL
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="xxl"
+													>
+														XXL
+													</SelectItem>
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="data.shirtType"
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Shirt Type</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value?.toString()}
+											>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Shirt Type" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													<SelectItem
+														className="cursor-pointer"
+														value="Unisex"
+													>
+														Unisex
+													</SelectItem>
+													<SelectItem
+														className="cursor-pointer"
+														value="Women's"
+													>
+														Women's
+													</SelectItem>
+												</SelectContent>
+											</Select>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								<FormField
+									control={form.control}
+									name="data.resume"
+									render={({ field: { value, onChange, ...fieldProps } }) => (
+										<FormItem>
+											<FormLabel>Resume</FormLabel>
+											<FormControl>
+												<Input
+													{...fieldProps}
+													type="file"
+													accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+													onChange={(event) => {
+														const success = validateAndSetResume(event);
+														if (!success) {
+															event.target.value = "";
+														}
+													}}
 												/>
-											</PopoverContent>
-										</Popover>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+						</FormGroupWrapper>
 
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="data.gender"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Gender</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value?.[0]?.toString()}
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Gender" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												<SelectItem className="cursor-pointer" value="male">
-													Male
-												</SelectItem>
-												<SelectItem
-													className="cursor-pointer"
-													value="female"
-												>
-													Female
-												</SelectItem>
-												<SelectItem
-													className="cursor-pointer"
-													value="other"
-												>
-													Other
-												</SelectItem>
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-						<div className="grid grid-cols-2 gap-4">
-							<FormField
-								control={form.control}
-								name="data.ethnicity"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Ethnicity</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value?.[0]?.toString()}
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Ethnicity" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												<SelectItem
-													className="cursor-pointer"
-													value="asian"
-												>
-													Asian
-												</SelectItem>
-												<SelectItem
-													className="cursor-pointer"
-													value="black"
-												>
-													Black/African American
-												</SelectItem>
-												<SelectItem
-													className="cursor-pointer"
-													value="hispanic"
-												>
-													Hispanic/Latino
-												</SelectItem>
-												<SelectItem
-													className="cursor-pointer"
-													value="white"
-												>
-													White/Caucasian
-												</SelectItem>
-												<SelectItem
-													className="cursor-pointer"
-													value="native"
-												>
-													Native American
-												</SelectItem>
-												<SelectItem
-													className="cursor-pointer"
-													value="other"
-												>
-													Other
-												</SelectItem>
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-						<div className="grid grid-cols-2 gap-4"></div>
-					</FormGroupWrapper>
-					<FormGroupWrapper title="Other">
-						<div className="grid grid-cols-3 gap-4">
-							<FormField
-								control={form.control}
-								name="data.shirtSize"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Shirt Size</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value?.toString()}
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Shirt Size" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												<SelectItem className="cursor-pointer" value="xs">
-													XS
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="s">
-													S
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="m">
-													M
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="l">
-													L
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="xl">
-													XL
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="xxl">
-													XXL
-												</SelectItem>
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="data.shirtType"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Shirt Type</FormLabel>
-										<Select
-											onValueChange={field.onChange}
-											defaultValue={field.value?.toString()}
-										>
-											<FormControl>
-												<SelectTrigger>
-													<SelectValue placeholder="Shirt Type" />
-												</SelectTrigger>
-											</FormControl>
-											<SelectContent>
-												<SelectItem
-													className="cursor-pointer"
-													value="tshirt"
-												>
-													Unix
-												</SelectItem>
-												<SelectItem className="cursor-pointer" value="polo">
-													Polo
-												</SelectItem>
-											</SelectContent>
-										</Select>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-							<FormField
-								control={form.control}
-								name="data.resume"
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Resume</FormLabel>
-										<FormControl>
-											<Input
-												type="file"
-												{...field}
-												value={field.value || undefined}
-											/>
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
-						</div>
-					</FormGroupWrapper>
-
-					<Button type="submit">Submit</Button>
-				</form>
-			</Form>
-		</div>
+						<Button
+							disabled={
+								actionStatus == "executing" ||
+								(actionStatus == "hasSucceeded" && actionResult.data?.success)
+							}
+							type="submit"
+						>
+							Submit
+						</Button>
+					</form>
+				</Form>
+			</div>
+		</>
 	);
 }
 

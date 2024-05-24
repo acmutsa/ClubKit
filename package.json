@@ -22,7 +22,6 @@
     "node": ">=20"
   },
   "dependencies": {
-    "next-safe-action": "^6.2.0",
     "web": "workspace:^"
   }
 }

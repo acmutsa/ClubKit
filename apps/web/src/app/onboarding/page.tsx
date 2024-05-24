@@ -1,8 +1,27 @@
 import RegisterForm from "@/components/onboarding/registerForm";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { db } from "db";
+import { users } from "db/schema";
+import { eq } from "db/drizzle";
+import { auth, currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function Page() {
+export default async function Page() {
+	const { userId } = auth();
+
+	if (!userId) return redirect("/sign-up");
+
+	const clerkUser = await currentUser();
+
+	if (!clerkUser) return redirect("/sign-up");
+
+	const dbUser = await db.query.users.findFirst({
+		where: eq(users.clerkID, userId),
+	});
+
+	if (dbUser) return redirect("/dash");
+
 	return (
 		<main className="w-screen">
 			<div className="max-w-5xl mx-auto min-h-screen pt-40">
@@ -21,7 +40,7 @@ export default function Page() {
 						</Link>
 					</div>
 				</div>
-				<RegisterForm />
+				<RegisterForm defaultEmail={clerkUser.emailAddresses[0]?.emailAddress || ""} />
 			</div>
 		</main>
 	);

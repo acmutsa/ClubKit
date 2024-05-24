@@ -1,6 +1,10 @@
 export default {
 	clubName: "ClubKit",
-	schoolUniversityIdName: "ABC123",
+	universityID: {
+		name: "ABC123",
+		maxLength: 6,
+	},
+	contactEmail: "tech@acmutsa.org",
 	eventTypes: {
 		ACM: {
 			color: "#179BD5",
@@ -12,6 +16,7 @@ export default {
 			color: "#FFD51E",
 		},
 	},
+	// TODO: Actually use this instead of hardcoded values in form
 	userIdentityOptions: {
 		ethnicity: [
 			"American Indian or Alaska Native",
@@ -23,6 +28,7 @@ export default {
 		],
 		gender: ["Male", "Female", "Non-binary", "Transgender", "Intersex", "Prefer not to say"],
 	},
+	maxResumeSizeInBytes: 3670016,
 } as const;
 
 export const majors = [
