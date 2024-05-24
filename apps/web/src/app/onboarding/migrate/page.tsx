@@ -1,9 +1,27 @@
-import Stage1 from "@/components/onboarding/migrate/stage1";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 
 export default function Page() {
 	return (
-		<main className="w-screen h-screen">
-			<Stage1 />
+		<main className="flex items-center justify-center">
+			<Card>
+				<CardHeader>
+					<CardTitle>Card Title</CardTitle>
+					<CardDescription>Card Description</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<p>Card Content</p>
+				</CardContent>
+				<CardFooter>
+					<p>Card Footer</p>
+				</CardFooter>
+			</Card>
 		</main>
 	);
 }
