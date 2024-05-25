@@ -7,22 +7,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-	Command,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
 } from "@/components/ui/command";
 import {
 	AlertDialog,
@@ -864,17 +864,17 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 }
 
 interface FormGroupWrapperProps {
-	title: string;
-	children: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
 }
 
 function FormGroupWrapper({ children, title }: FormGroupWrapperProps) {
-	return (
-		<div className="relative rounded-lg border p-5">
-			<p className="bg-background absolute top-0 z-10 -translate-y-[10px] px-2 text-sm font-bold">
-				{title}
-			</p>
-			<div className="relative top-0 space-y-6">{children}</div>
-		</div>
-	);
+  return (
+    <div className="relative rounded-lg border p-5">
+      <p className="bg-background absolute top-0 z-10 -translate-y-[10px] px-2 text-sm font-bold">
+        {title}
+      </p>
+      <div className="relative top-0 space-y-6">{children}</div>
+    </div>
+  );
 }

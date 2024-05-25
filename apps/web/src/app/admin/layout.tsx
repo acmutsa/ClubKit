@@ -6,7 +6,7 @@ import { db } from "db";
 import { users } from "db/schema";
 import { eq } from "db/drizzle";
 import FullScreenMessage from "@/components/shared/fullscreen-message";
-import DashNavItem from "@/components/dash/shared/dash-nav-item";
+import DashNavItem from "@/components/dash/shared/DashNavItem";
 import ClientToast from "@/components/shared/client-toast";
 import { Button } from "@/components/ui/button";
 import c from "config";

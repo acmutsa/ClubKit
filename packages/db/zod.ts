@@ -84,3 +84,10 @@ export const insertUserWithDataSchemaFormified = userFormified.merge(userDataFor
 const sometable = createInsertSchema(data);
 
 type iType = z.infer<typeof sometable>;
+
+export const insertEventSchema = createInsertSchema(events);
+export const insertEventToCategoriesSchema = createInsertSchema(
+  eventsToCategories
+).omit({
+  eventID: true,
+});
