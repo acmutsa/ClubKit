@@ -1,6 +1,6 @@
 "use client";
 
-import { doPortalLookupCheck } from "@/actions/onboarding/migrate";
+import { doPortalLookupCheck } from "@/actions/register/migrate";
 import { Button } from "@/components/ui/button";
 import { useAction } from "next-safe-action/hooks";
 

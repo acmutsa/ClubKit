@@ -1,20 +1,34 @@
 export default {
-  clubName: "ClubKit",
-  icon: {
-    svg: "/img/logos/acm.svg",
-  },
-  schoolUniversityIdName: "ABC123",
-  eventTypes: {
-    ACM: {
-      color: "#179BD5",
-    },
-    "ACM-W": {
-      color: "#7BE9E8",
-    },
-    "Rowdy Creators": {
-      color: "#FFD51E",
-    },
-  },
+	clubName: "ClubKit",
+	universityID: {
+		name: "ABC123",
+		maxLength: 6,
+	},
+	contactEmail: "tech@acmutsa.org",
+	eventTypes: {
+		ACM: {
+			color: "#179BD5",
+		},
+		"ACM-W": {
+			color: "#7BE9E8",
+		},
+		"Rowdy Creators": {
+			color: "#FFD51E",
+		},
+	},
+	// TODO: Actually use this instead of hardcoded values in form
+	userIdentityOptions: {
+		ethnicity: [
+			"American Indian or Alaska Native",
+			"Asian",
+			"Black or African American",
+			"Hispanic or Latino",
+			"Native Hawaiian or Other Pacific Islander",
+			"White",
+		],
+		gender: ["Male", "Female", "Non-binary", "Transgender", "Intersex", "Prefer not to say"],
+	},
+	maxResumeSizeInBytes: 3670016,
   dashPaths: {
     admin: {
       Overview: "/admin",
@@ -22,23 +36,8 @@ export default {
       Events: "/admin/events",
     },
   },
-  userIdentityOptions: {
-    ethnicity: [
-      "American Indian or Alaska Native",
-      "Asian",
-      "Black or African American",
-      "Hispanic or Latino",
-      "Native Hawaiian or Other Pacific Islander",
-      "White",
-    ],
-    gender: [
-      "Male",
-      "Female",
-      "Non-binary",
-      "Transgender",
-      "Intersex",
-      "Prefer not to say",
-    ],
+  icon: {
+    svg: "/img/logos/acm.svg",
   },
 } as const;
 

@@ -57,9 +57,12 @@ export const eventCategories = pgTable("event_categories", {
 	color: text("color").notNull(),
 });
 
-export const eventCategoriesRelations = relations(eventCategories, ({ many }) => ({
-	eventsToCategories: many(eventsToCategories),
-}));
+export const eventCategoriesRelations = relations(
+	eventCategories,
+	({ many }) => ({
+		eventsToCategories: many(eventsToCategories),
+	}),
+);
 
 export const events = pgTable("events", {
 	id: text("id").primaryKey(),
@@ -88,16 +91,19 @@ export const eventsToCategories = pgTable("events_to_categories", {
 		.references(() => eventCategories.id),
 });
 
-export const eventsToCategoriesRelations = relations(eventsToCategories, ({ one }) => ({
-	category: one(eventCategories, {
-		fields: [eventsToCategories.categoryID],
-		references: [eventCategories.id],
+export const eventsToCategoriesRelations = relations(
+	eventsToCategories,
+	({ one }) => ({
+		category: one(eventCategories, {
+			fields: [eventsToCategories.categoryID],
+			references: [eventCategories.id],
+		}),
+		event: one(events, {
+			fields: [eventsToCategories.eventID],
+			references: [events.id],
+		}),
 	}),
-	event: one(events, {
-		fields: [eventsToCategories.eventID],
-		references: [events.id],
-	}),
-}));
+);
 
 export const checkins = pgTable(
 	"checkins",
@@ -111,7 +117,7 @@ export const checkins = pgTable(
 		return {
 			id: primaryKey({ columns: [table.eventID, table.userID] }),
 		};
-	}
+	},
 );
 
 export const checkinRelations = relations(checkins, ({ one }) => ({
