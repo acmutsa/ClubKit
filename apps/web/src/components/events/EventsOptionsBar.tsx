@@ -20,14 +20,16 @@ import clsx from "clsx";
 import c from "config";
 import type { Filters,HandleFilterValue } from "./EventsView";
 import CategoryCheckBox from "./CategoryCheckBox";
+
 interface EventsOptionsBarProps {
     filters:Filters;
+    categories:Array<{id:string,name:string,color:string}>;
     handleFilterChange:(k:string,value:HandleFilterValue)=>void;
 }
 
 export default function EventsOptionsBar(props: EventsOptionsBarProps) {
 // Switch to show past events or not, selector for orgs, search for events
-const orgs = Object.keys(c.eventTypes);
+const categories = props.categories;
 
 const filters = props.filters;
 const handleFilterChange = props.handleFilterChange;
@@ -102,10 +104,10 @@ return (
           </PopoverTrigger>
           <PopoverContent className="flex flex-col w-full space-y-1">
             {/* Checkboxes for orgs */}
-            {orgs.map((org) => (
+            {categories.map((category) => (
               <CategoryCheckBox
-                key={org}
-                name={org}
+                key={category.id}
+                category={category}
                 handleFilterChange={handleFilterChange}
                 filters={filters}
               />

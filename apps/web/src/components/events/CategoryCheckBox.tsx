@@ -3,15 +3,16 @@
 import type { HandleFilterValue,Filters } from "./EventsView";
 import { Checkbox } from "../ui/checkbox";
 interface EventsOptionsBarProps {
-    name:string;
+    category:{id:string,name:string,color:string}
     handleFilterChange: (k: string, value: HandleFilterValue) => void;
     filters: Filters;
 }
-import c from "config"
+
 
 export default function CategoryCheckBox(props: EventsOptionsBarProps){
-    const name = props.name as keyof typeof c.eventTypes; 
-    const color = c.eventTypes[name].color;
+    const category = props.category;
+    const name = category.name
+    const color = category.color
     const filters = props.filters;
     const handleCheck = (name:string)=>{
         const newCheckedOrgs = props.filters.checkedOrgs;
@@ -25,15 +26,15 @@ export default function CategoryCheckBox(props: EventsOptionsBarProps){
     }
     return (
       <div className="flex items-center space-x-2">
-        <Checkbox id={props.name} onClick={()=>{handleCheck(props.name)}}
-        checked={filters.checkedOrgs.has(props.name)}
+        <Checkbox id={name} onClick={()=>{handleCheck(name)}}
+        checked={filters.checkedOrgs.has(name)}
          />
         <label
-          htmlFor={props.name}
+          htmlFor={name}
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         //   This is code debt. Don't do this!!
            style={{color:color}}>
-         {props.name}
+         {name}
         </label>
       </div>
     );

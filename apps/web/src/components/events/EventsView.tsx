@@ -3,7 +3,7 @@ import { useEffect, useState,useRef } from "react"
 import EventsOptionsBar from "./EventsOptionsBar"
 import EventsCardView from "./EventsCardView";
 import EventsCalendarView from "./EventsCalendarView";
-import type { EventType } from "config";
+import type { EventType } from "./Events";
 
 export interface Filters {
   view: 'calendar' | 'card';
@@ -11,9 +11,16 @@ export interface Filters {
   checkedOrgs: Set<string>;
   searchQuery: string;
 }
+
+interface categoriesType {
+  id:string
+  name: string;
+  color: string;
+};
+
 export type HandleFilterValue = string | boolean | Set<string>;
 // Original data fetching will be done by a server component and any further filtering will be handled client-side. Data is not super large or sensentive so this is fine
-export default function EventsView({ allEvents }: { allEvents: Array<EventType> }) {
+export default function EventsView({ allEvents,categories }: { allEvents: Array<EventType>,categories:Array<categoriesType> }) {
   const [events,setEvents] = useState<Array<EventType>>(allEvents);
   const loaded = useRef(false);
    const defaultFilters:Filters = {
@@ -65,7 +72,8 @@ export default function EventsView({ allEvents }: { allEvents: Array<EventType> 
 
   const eventOptionsProps = {
     filters,
-    handleFilterChange
+    handleFilterChange,
+    categories
   }
 
   return (
