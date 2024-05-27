@@ -37,20 +37,20 @@ const cardViewSelected = filters.view === "card";
 const showPastEvents = filters.showPastEvents;
 
 return (
-  <div className="flex flex-row justify-between w-[95%] rounded-lg bg-slate-300  opacity-80 ">
+  <div className="flex flex-row justify-between w-[90%] rounded-lg border-2   ">
     {/* Selector for soonest and latest date */}
     {cardViewSelected && (
       <Select
         onValueChange={(value) =>
           handleFilterChange("showPastEvents", value === "past")
         }>
-        <SelectTrigger className="h-auto w-1/3 sm:w-[120px] md:w-[180px] bg-transparent border-transparent pl-3 sm:pl-2 md:pl-3 py-0 md:py-2 opacity-100 justify-normal space-x-1 ">
+        <SelectTrigger className="h-auto  sm:w-[120px] md:w-[180px] bg-transparent border-transparent pl-2 pr-0 sm:pl-2 md:pl-3 py-0 md:py-2 opacity-100 justify-normal space-x-1 focus:ring-offset-0 focus:ring-0 text-sm">
           <SelectValue
             placeholder={showPastEvents ? "Past" : "Upcoming"}
             className="[color:black]"
           />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="">
           <SelectGroup>
             <SelectItem value="present">Upcoming</SelectItem>
             <SelectItem value="past">Past</SelectItem>
@@ -61,16 +61,20 @@ return (
     {/* Mobile Search bar */}
     {cardViewSelected && (
       <>
-        <div className="flex sm:hidden items-center">
+        <div className="flex sm:hidden items-center justify-center mr-1">
           <Popover>
             <PopoverTrigger asChild>
-              <Search />
+              <div className="flex items-center">
+                <Search />
+                <ChevronDown size={15} />
+              </div>
             </PopoverTrigger>
             <PopoverContent>
               <Input
                 type="text"
                 placeholder="Search for events"
                 defaultValue={filters.searchQuery}
+                className="bg-transparent focus-visible:ring-offset-0 focus-visible:ring-0"
                 onChange={(e) =>
                   handleFilterChange("searchQuery", e.target.value)
                 }
@@ -79,26 +83,30 @@ return (
           </Popover>
         </div>
         {/* Desktop Search bar */}
-        <div className="hidden sm:flex items-center w-1/3 justify-start  ">
+        {/* border-b-2 border-black */}
+        <div className="hidden sm:flex items-center w-1/3 justify-start ring-black rounded-md focus-within:ring-1  ">
+          <Search className="" />
+
           <Input
             type="text"
             placeholder="Search for events"
             defaultValue={filters.searchQuery}
             onChange={(e) => handleFilterChange("searchQuery", e.target.value)}
-            className="py-0 my-0"
+            className="py-0 my-0 bg-transparent border-transparent focus-visible:ring-offset-0 focus-visible:ring-0  "
           />
         </div>
       </>
     )}
-    <div className={clsx('flex justify-end',{
-        'w-full justify-between':!cardViewSelected
-    })}>
+    <div
+      className={clsx("flex justify-end", {
+        "w-full justify-between": !cardViewSelected,
+      })}>
       {/* border border-input */}
       <div className="flex items-center justify-center hover:cursor-pointer  bg-transparent rounded-md px-2 mr-2">
         <Popover>
           <PopoverTrigger asChild>
             <div className="flex items-center justify-center space-x-1">
-              <p>Organizations</p>
+              <p className="text-sm">Organizations</p>
               <ChevronDown size={15} />
             </div>
           </PopoverTrigger>
