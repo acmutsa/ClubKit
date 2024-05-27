@@ -79,7 +79,31 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    // @ts-ignore it was mad at the type of addUtilities, but this is from the Tailwind docs https://tailwindcss.com/docs/plugins#adding-utilities
+    function({addUtilities}){
+      const newUtilities = {
+        // Classes to have no scrollbar 
+  //  Chrome, Safari and Opera 
+  ".no-scrollbar::-webkit-scrollbar": {
+    display: "none"
+  },
+".no-scrollbar": {
+  "-ms-overflow-style": "none",
+  "scrollbar-width": "none"
+}
+      }
+    addUtilities(newUtilities);
+    }
+      
+        
+
+
+
+
+
+  ],
 } satisfies Config;
 
 export default config;

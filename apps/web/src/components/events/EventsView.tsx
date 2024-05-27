@@ -31,7 +31,7 @@ export default function EventsView({ allEvents,categories }: { allEvents: Array<
   } 
   const [filters,setFilters] = useState<Filters>(defaultFilters);
   useEffect(()=>{
-    console.log("Filters have changed");
+    // console.log("Filters have changed");
     
     // This is basically just to save a bit of computation as we do not need to filter on the first render
     if (loaded.current){
@@ -43,15 +43,16 @@ export default function EventsView({ allEvents,categories }: { allEvents: Array<
     }
   } ,[filters]);
 
-
+  // NOTE: for filtering, we will have to ensure that we handle whether they have checked past events or not
   const filterEvents = ():Array<EventType>=>{
-    console.log("called with filters",filters)
+    // console.log("called with filters",filters)
     
     const data = allEvents.filter((event) => {
-        console.log("Checking event",event.name,filters.searchQuery);
+        // console.log("Checking event",event.name,filters.searchQuery);
+        // Clean up our data to ensure we properly compare the filters
        const containsSearch = event.name.toUpperCase().trim().includes(filters.searchQuery.toUpperCase().trim());
        const containsOrgs = filters.checkedOrgs.size > 0
-          ? event.orgs.some((org) => filters.checkedOrgs.has(org.name))
+          ? event.eventsToCategories.some((category) => filters.checkedOrgs.has(category.category.name))
           : true
       return (
         // Check if the search value is within the word
@@ -60,10 +61,8 @@ export default function EventsView({ allEvents,categories }: { allEvents: Array<
       );
     });
 
-    console.log("Data size:",data.length);
+    // console.log("Data size:",data.length);
     return data;
-    
-
   }
 
   const handleFilterChange = (k:string ,value:string | boolean | Set<string>)=>{
@@ -77,18 +76,18 @@ export default function EventsView({ allEvents,categories }: { allEvents: Array<
   }
 
   return (
-    <div className="flex flex-col w-full">
-      <div className="w-full flex items-center justify-center">
+    <div className="flex flex-col w-full h-screen overflow-hidden no-scrollbar">
+      <div className="w-full flex items-center justify-center pt-4">
         <EventsOptionsBar {...eventOptionsProps} />
       </div>
       {events.length > 0 ? (
-        <>
+        <div className=" overflow-y-scroll">
           {filters.view === "card" ? (
             <EventsCardView events={events} />
           ) : (
             <EventsCalendarView events={events} />
           )}
-        </>
+        </div>
       ) : (
         <div className="flex flex-col w-full justify-center pt-[6%] md:pt-[2%] space-y-6">
           <h1 className="w-full text-center text-3xl font-bold">
