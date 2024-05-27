@@ -1,5 +1,5 @@
 import { createInsertSchema } from "drizzle-zod";
-import { data, users } from "./schema";
+import { data, users, events, eventsToCategories } from "./schema";
 import { z } from "zod";
 import c from "config";
 
