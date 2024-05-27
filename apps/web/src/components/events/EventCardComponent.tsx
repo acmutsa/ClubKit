@@ -10,23 +10,27 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import defaultImg from "../../../public/img/test_image.webp";
-
+import clsx from "clsx";
 
 // Add skeleton to this for data loading purposes
 export default function EventCardComponent({ event }: { event: EventType }) {
+
   return (
     <Card className="flex flex-col w-full transition ease-in-out duration-300 md:hover:scale-105">
-      <CardHeader className="w-full flex flex-col justify-center items-center  my-auto">
-        <CardTitle className="text-center">{event.name}</CardTitle>
+      <CardHeader className="w-full flex flex-col items-center my-auto">
+        {/* Temp fix for now. Will come back later */}
+        <CardTitle className={clsx('text-center',{
+          'text-base':event.name.length > 40,
+        })}>{event.name}</CardTitle>
         <div className="flex flex-row space-x-3 md:space-x-4 my-auto">
-          {event.orgs.map((org) => {
+          {event.eventsToCategories.map((category) => {
             // Style is like this for now because of the way tailwind ships, it prevents you from using arbitrary colors that are not known ahead of time
             return (
               <div
                 className="rounded-md"
-                key={org.name}
-                style={{ backgroundColor: org.color }}>
-                <p className="my-1 mx-2 text-sm">{org.name}</p>
+                key={category.category.name}
+                style={{ backgroundColor: category.category.color }}>
+                <p className="my-1 mx-2 text-sm">{category.category.name}</p>
               </div>
             );
           })}
@@ -40,7 +44,7 @@ export default function EventCardComponent({ event }: { event: EventType }) {
           priority
           className="rounded-md"
         />
-        <div className="w-full flex justify-start text-gray-600 px-6">
+        <div className="w-full flex justify-start text-gray-600 px-2 md:px-6">
           {event.start.toLocaleString("en-US", {
             hourCycle: "h12",
             dateStyle: "short",
@@ -48,7 +52,7 @@ export default function EventCardComponent({ event }: { event: EventType }) {
           })}
         </div>
       </CardContent>
-      <CardFooter className="flex w-full my-auto justify-between items-end">
+      <CardFooter className="flex w-full items-end">
         <Link
           href={`/events/${event.id}`}
           className="w-1/2 h-full flex flex-row items-center justify-center border-r border-gray-400">

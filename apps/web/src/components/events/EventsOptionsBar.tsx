@@ -37,7 +37,7 @@ const cardViewSelected = filters.view === "card";
 const showPastEvents = filters.showPastEvents;
 
 return (
-  <div className="flex flex-row justify-between w-[95%] rounded-lg bg-slate-300  opacity-80">
+  <div className="flex flex-row justify-between w-[95%] rounded-lg bg-slate-300  opacity-80 ">
     {/* Selector for soonest and latest date */}
     {cardViewSelected && (
       <Select

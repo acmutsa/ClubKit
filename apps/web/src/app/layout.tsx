@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-
+import Navbar from "@/components/shared/Navbar";
 const inter = Inter({ subsets: ["latin"] });
 
 // export const metadata: Metadata = {
@@ -18,11 +18,9 @@ export default function RootLayout({
 	return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={`${inter.className}`}>
 			{/* Remove after testing */}
-          <div className="flex w-full flex-row items-center justify-center bg-gray-300 py-5">
-            <h1 className="text-3xl">This is just a dummy navbar</h1>
-          </div>
+         
           {children}
         </body>
       </html>
