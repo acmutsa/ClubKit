@@ -18,11 +18,10 @@ export default function RootLayout({
 	return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.className}`}>
-			{/* Remove after testing */}
-         
+        <body className={`${inter.className} dark`}>
           {children}
         </body>
+       
       </html>
     </ClerkProvider>
   );

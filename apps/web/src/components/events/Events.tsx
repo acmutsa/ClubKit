@@ -332,7 +332,7 @@ export default async function Events(){
     // console.log('All events:\n',events[0].eventsToCategories);
     // console.log('All categories:\n',categories);
     return (
-      <div className="h-screen w-screen flex flex-col items-center  ">
+      <div className="h-screen w-screen flex flex-col items-center no-scrollbar  ">
         <Navbar />
         <EventsView allEvents={events} categories={categories} />
       </div>

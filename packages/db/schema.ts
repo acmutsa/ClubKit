@@ -81,6 +81,7 @@ export const eventsRelations = relations(events, ({ one, many }) => ({
 	checkins: many(checkins),
 }));
 
+// Also, because the event to categories table does not have a primary key, we cannot update or delete rows so if you select or add the wrong 
 export const eventsToCategories = pgTable("events_to_categories", {
 	eventID: text("event_id")
 		.notNull()

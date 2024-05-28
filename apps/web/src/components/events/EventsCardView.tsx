@@ -1,6 +1,7 @@
 import type { EventType } from "./Events";
 import EventCardComponent from "./EventCardComponent";
-import { Calendar } from "lucide-react";
+
+import { ScrollArea } from "../ui/scroll-area";
 export default function  EventsCardView({
   events,
 }: {
@@ -8,13 +9,16 @@ export default function  EventsCardView({
 }) {
   // Come back later and add a skeleton to show users that something is loading
   return (
-    <div className="w-full flex flex-col items-center justify-center pb-6 ">
+    // border-2 border-red-400
+    <div className="w-full h-[80vh] flex flex-col items-center mt-5 border-b-4 ">
       {/* gap-6 */}
-      <div className="w-[90%] md:w-[95%] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-[5%] ">
-        {events.map((event) => (
-          <EventCardComponent key={event.id} event={event} />
-        ))}
-      </div>
+      <ScrollArea className="w-[95%] h-full no-scrollbar">
+        <div className="w-[90%] md:w-[95%] h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto mt-4 mb-20 no-scrollbar">
+          {events.map((event) => (
+            <EventCardComponent key={event.id} event={event} />
+          ))}
+        </div>
+      </ScrollArea>
     </div>
   );
 }

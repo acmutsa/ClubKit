@@ -12,9 +12,3 @@ export function range(start: number, end: number, step: number = 1): number[] {
 	}
 	return arr;
 }
-
-
-export function getShortDate(date: Date) {
-	return 
-
-}

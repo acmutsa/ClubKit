@@ -78,12 +78,12 @@ export default function EventsView({ allEvents,categories }: { allEvents: Array<
   }
 
   return (
-    <div className="flex flex-col w-full h-screen overflow-hidden no-scrollbar">
+    <div className="flex flex-col w-full overflow-x-hidden">
       <div className="w-full flex items-center justify-center pt-4">
         <EventsOptionsBar {...eventOptionsProps} />
       </div>
       {events.length > 0 ? (
-        <div className=" overflow-y-scroll">
+        <div className="h-3/4 no-scrollbar">
           {filters.view === "card" ? (
             <EventsCardView events={events} />
           ) : (

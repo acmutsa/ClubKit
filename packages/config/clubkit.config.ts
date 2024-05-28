@@ -162,22 +162,4 @@ export const majors = [
   "Other",
 ] as const;
 
-interface orgsType {
-  id: string;
-  name: string;
-  color:string;
-}
 
-export interface EventType {
-  id:string;
-  name: string;
-  description: string;
-  start: Date;
-  end: Date;
-  checkinStart: Date;
-  checkinEnd: Date;
-  location: string;
-  isUserCheckinable: boolean; 
-  isHidden: boolean;
-  orgs:Array<orgsType>;
-}
