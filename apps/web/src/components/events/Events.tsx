@@ -8,6 +8,9 @@ import Navbar from "../shared/Navbar";
 
 
 
+
+
+
 type EventsToCategories = {
   eventID: string;
   categoryID: string
@@ -31,6 +34,13 @@ export type EventType = {
   eventsToCategories: Array<EventsToCategories> ;
 }
 
+type EventsType = {
+  eventDate:string;
+  events:EventType[];
+}
+
+
+
 
 export async function getEventData(){
   
@@ -47,7 +57,7 @@ export async function getEventData(){
         }
       }
     },
-    // In practice, this will give us our most recent events first
+    // This will give us our most recent events first. This will be useful for how we sort
     orderBy:events.start
   });
 
@@ -62,8 +72,10 @@ export async function getEventData(){
     acc[key].push(event);
     return acc;
   }, {} as Record<string, EventType[]>);
-  // eventsResults.forEach((event)=>{
-
+  
+  const eventsAsArray = Object.entries(dateBuckets);
+  
+  
   // const eventsResults = await db
   //   .select({
   //     id: events.id,
@@ -320,7 +332,7 @@ export default async function Events(){
     // console.log('All events:\n',events[0].eventsToCategories);
     // console.log('All categories:\n',categories);
     return (
-      <div className="h-screen w-screen flex flex-col items-center ">
+      <div className="h-screen w-screen flex flex-col items-center  ">
         <Navbar />
         <EventsView allEvents={events} categories={categories} />
       </div>

@@ -50,7 +50,7 @@ return (
             className="[color:black]"
           />
         </SelectTrigger>
-        <SelectContent className="">
+        <SelectContent>
           <SelectGroup>
             <SelectItem value="present">Upcoming</SelectItem>
             <SelectItem value="past">Past</SelectItem>
@@ -128,14 +128,14 @@ return (
         <button
           onClick={() => handleFilterChange("view", "card")}
           className={clsx("p-2", {
-            "border rounded-md bg-purple-500 border-black": cardViewSelected,
+            "border rounded-md bg-stone-300 bg-opacity-80 ": cardViewSelected,
           })}>
           <Grid2X2 />
         </button>
         <button
           onClick={() => handleFilterChange("view", "calendar")}
           className={clsx("p-2", {
-            "border rounded-md bg-purple-500 border-black": !cardViewSelected,
+            "border rounded-md bg-stone-300 bg-opacity-80 ": !cardViewSelected,
           })}>
           <Calendar />
         </button>

@@ -51,12 +51,14 @@ export default function EventsView({ allEvents,categories }: { allEvents: Array<
         // console.log("Checking event",event.name,filters.searchQuery);
         // Clean up our data to ensure we properly compare the filters
        const containsSearch = event.name.toUpperCase().trim().includes(filters.searchQuery.toUpperCase().trim());
-       const containsOrgs = filters.checkedOrgs.size > 0
-          ? event.eventsToCategories.some((category) => filters.checkedOrgs.has(category.category.name))
-          : true
+      //  Check if an event has the selected orgs a part of it
+       const containsOrgs = filters.checkedOrgs.size > 0 ? event.eventsToCategories.some((category) => filters.checkedOrgs.has(category.category.name)): true;
+      //  Check if the event is past or not
+       const isPast = new Date(event.start) < new Date(); 
+       const validDate = filters.showPastEvents ? isPast : !isPast;
       return (
         // Check if the search value is within the word
-       containsSearch && containsOrgs
+       containsSearch && containsOrgs && validDate && !event.isHidden
           
       );
     });
