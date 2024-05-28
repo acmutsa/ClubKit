@@ -1,4 +1,4 @@
-import type { EventType } from "config";
+import type { EventType } from "./Events";
 
 
 export default function EventsCalendarView({events}:{events: Array<EventType>}) {
