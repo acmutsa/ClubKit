@@ -29,23 +29,54 @@ export const doPortalLookupCheck = authenticatedAction(
 				and(
 					eq(users.email, email),
 					isNull(users.clerkID),
-					eq(data.universityID, universityID)
-				)
+					eq(data.universityID, universityID),
+				),
 			)
 			.limit(1);
 
 		if (lookup[0]) {
-			console.log("Found user in without clerk", lookup);
 			return {
 				success: true,
-				data: lookup[0].users.firstName,
+				name:
+					lookup[0].users.firstName + " " + lookup[0].users.lastName,
 			};
 		} else {
-			console.log("No user found in without clerk");
 			return {
 				success: false,
-				data: null,
+				name: null,
 			};
 		}
-	}
+	},
+);
+
+export const doPortalLink = authenticatedAction(
+	z.object({ universityID: z.string().min(1), email: z.string().min(1) }),
+	async ({ universityID, email }, { clerkID }) => {
+		const lookup = await db
+			.select()
+			.from(users)
+			.innerJoin(data, eq(users.userID, data.userID))
+			.where(
+				and(
+					eq(users.email, email),
+					isNull(users.clerkID),
+					eq(data.universityID, universityID),
+				),
+			)
+			.limit(1);
+
+		if (lookup[0]) {
+			await db
+				.update(users)
+				.set({ clerkID: clerkID })
+				.where(eq(users.userID, lookup[0].users.userID));
+			return {
+				success: true,
+			};
+		} else {
+			return {
+				success: false,
+			};
+		}
+	},
 );

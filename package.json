@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.14",
     "turbo": "latest"
   },
   "packageManager": "pnpm@8.9.0",
@@ -22,7 +23,6 @@
     "node": ">=20"
   },
   "dependencies": {
-    "next-safe-action": "^6.2.0",
     "web": "workspace:^"
   }
 }
