@@ -1,10 +1,8 @@
-// Should have a sticky top bar that allows for filtering by most to least recent, by org, can render either a calendar or a card view, search feature (?) and render either card or calendar view of events
-
-
 import EventsView from "./EventsView";
 import { db,desc,eq, sql } from "db";
 import {eventCategories, events, eventsToCategories, } from "db/schema";
 import Navbar from "../shared/Navbar";
+import EventsTitle from "./EventsTitle";
 
 
 
@@ -334,6 +332,7 @@ export default async function Events(){
     return (
       <div className="h-screen w-screen flex flex-col items-center no-scrollbar  ">
         {/* <Navbar /> */}
+        <EventsTitle />
         <EventsView allEvents={events} categories={categories} />
       </div>
     );

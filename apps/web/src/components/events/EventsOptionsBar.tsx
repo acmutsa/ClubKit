@@ -44,10 +44,10 @@ return (
         onValueChange={(value) =>
           handleFilterChange("showPastEvents", value === "past")
         }>
-        <SelectTrigger className="h-auto  sm:w-[120px] md:w-[180px] bg-transparent border-transparent pl-2 pr-0 sm:pl-2 md:pl-3 py-0 md:py-2 opacity-100 justify-normal space-x-1 focus:ring-offset-0 focus:ring-0 text-sm">
+        <SelectTrigger className="h-auto sm:w-[100px] md:w-[180px] bg-transparent border-transparent pl-2 pr-0 sm:pl-2 md:pl-3 py-0 md:py-2 opacity-100 justify-normal space-x-1 focus:ring-offset-0 focus:ring-0 text-sm">
           <SelectValue
             placeholder={showPastEvents ? "Past" : "Upcoming"}
-            className="[color:black]"
+            className="[color:black] truncate text-ellipsis w-[50px]"
           />
         </SelectTrigger>
         <SelectContent>
@@ -106,7 +106,7 @@ return (
         <Popover>
           <PopoverTrigger asChild>
             <div className="flex items-center justify-center space-x-1">
-              <p className="text-sm">Organizations</p>
+              <p className="text-sm">Categories</p>
               <ChevronDown size={15} />
             </div>
           </PopoverTrigger>
