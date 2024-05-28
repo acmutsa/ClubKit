@@ -22,7 +22,7 @@ export type HandleFilterValue = string | boolean | Set<string>;
 // Original data fetching will be done by a server component and any further filtering will be handled client-side. Data is not super large or sensentive so this is fine
 export default function EventsView({ allEvents,categories }: { allEvents: Array<EventType>,categories:Array<categoriesType> }) {
   const [events,setEvents] = useState<Array<EventType>>(allEvents);
-  const loaded = useRef(false);
+  
    const defaultFilters:Filters = {
     view:'card',
     showPastEvents:false,
@@ -34,13 +34,8 @@ export default function EventsView({ allEvents,categories }: { allEvents: Array<
     // console.log("Filters have changed");
     
     // This is basically just to save a bit of computation as we do not need to filter on the first render
-    if (loaded.current){
       const filteredEvents = filterEvents();
       setEvents(filteredEvents);
-    }
-    else{
-      loaded.current = true;
-    }
   } ,[filters]);
 
   // NOTE: for filtering, we will have to ensure that we handle whether they have checked past events or not
