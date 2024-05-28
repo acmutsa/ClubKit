@@ -333,7 +333,7 @@ export default async function Events(){
     // console.log('All categories:\n',categories);
     return (
       <div className="h-screen w-screen flex flex-col items-center no-scrollbar  ">
-        <Navbar />
+        {/* <Navbar /> */}
         <EventsView allEvents={events} categories={categories} />
       </div>
     );
