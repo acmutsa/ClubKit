@@ -32,7 +32,8 @@ export default function CategoryCheckBox(props: EventsOptionsBarProps){
         <label
           htmlFor={name}
           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-           style={{color:color}}>
+          //  style={{color:color}}
+           >
          {name}
         </label>
       </div>
