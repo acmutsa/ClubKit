@@ -37,17 +37,17 @@ const cardViewSelected = filters.view === "card";
 const showPastEvents = filters.showPastEvents;
 
 return (
-  <div className="flex flex-row justify-between w-[90%] rounded-lg border-2   ">
+  <div className="flex flex-row justify-between w-full sm:w-[90%] rounded-lg border-2 ">
     {/* Selector for soonest and latest date */}
     {cardViewSelected && (
       <Select
         onValueChange={(value) =>
           handleFilterChange("showPastEvents", value === "past")
         }>
-        <SelectTrigger className="h-auto sm:w-[100px] md:w-[180px] bg-transparent border-transparent pl-2 pr-0 sm:pl-2 md:pl-3 py-0 md:py-2 opacity-100 justify-normal space-x-1 focus:ring-offset-0 focus:ring-0 text-sm">
+        <SelectTrigger className="flex w-[180px] justify-start bg-transparent border-transparent pl-2 pr-0 sm:pl-2 md:pl-3 py-0 md:py-2 opacity-100 focus:ring-offset-0 focus:ring-0 text-sm">
           <SelectValue
             placeholder={showPastEvents ? "Past" : "Upcoming"}
-            className="[color:black] truncate text-ellipsis w-[50px]"
+            className="[color:black] "
           />
         </SelectTrigger>
         <SelectContent>

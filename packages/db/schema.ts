@@ -16,7 +16,6 @@ import {
 import { relations } from "drizzle-orm";
 
 /* USERS */
-
 export const users = pgTable("users", {
 	userID: serial("user_id")
 		.primaryKey()

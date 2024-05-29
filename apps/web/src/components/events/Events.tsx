@@ -5,10 +5,6 @@ import Navbar from "../shared/Navbar";
 import EventsTitle from "./EventsTitle";
 
 
-
-
-
-
 type EventsToCategories = {
   eventID: string;
   categoryID: string
@@ -37,12 +33,13 @@ type EventsType = {
   events:EventType[];
 }
 
+type SearchParams = 
+  { [key: string]: string | undefined };
 
 
-
-export async function getEventData(){
-  
-  const eventsResults = await db.query.events.findMany({
+export async function getEventData(searchParams:SearchParams){
+  console.log(searchParams)
+  const eventsPromise = db.query.events.findMany({
     with:{
       eventsToCategories:{
         with:{
@@ -59,19 +56,23 @@ export async function getEventData(){
     orderBy:events.start
   });
 
+  const categoriesPromise = db.query.eventCategories.findMany();
+  // Resolve all the promises concurrently to speed up requests
+  const [eventResults,categories] = await Promise.all([eventsPromise,categoriesPromise]);
   
-  const dateBuckets = eventsResults.reduce((acc, event) => {
-    const key = event.start.toLocaleDateString();
-    console.log(event.start);
-    console.log('key:',key)
-    if (!acc[key]){
-      acc[key] = [];
-    }
-    acc[key].push(event);
-    return acc;
-  }, {} as Record<string, EventType[]>);
   
-  const eventsAsArray = Object.entries(dateBuckets);
+  // const dateBuckets = eventsResults.reduce((acc, event) => {
+  //   const key = event.start.toLocaleDateString();
+  //   console.log(event.start);
+  //   console.log('key:',key)
+  //   if (!acc[key]){
+  //     acc[key] = [];
+  //   }
+  //   acc[key].push(event);
+  //   return acc;
+  // }, {} as Record<string, EventType[]>);
+  
+  // const eventsAsArray = Object.entries(dateBuckets);
   
   
   // const eventsResults = await db
@@ -122,14 +123,14 @@ export async function getEventData(){
   //   }
   // }
 
-  const categories = await db.query.eventCategories.findMany();
+  
 
 
-  return { events: eventsResults, categories };
+  return { events: eventResults, categories:categories };
 }
 
 // Add cache invalidation for the fetching
-export default async function Events(){
+export default async function Events({searchParams}: {searchParams: SearchParams}){
     
     // Note: when making our db call 
     // const dummyData: Array<EventType> = [
@@ -324,11 +325,11 @@ export default async function Events(){
     //   }
     // ];
     console.time('getEventData');
-    const {events,categories} = await getEventData();
+    const {events,categories} = await getEventData(searchParams);
+    // console.log(events);
+    // console.log(categories)
     console.timeEnd('getEventData');
-    // Currently still needs to properly process the categories for quick lookup
-    // console.log('All events:\n',events[0].eventsToCategories);
-    // console.log('All categories:\n',categories);
+    
     return (
       <div className="h-screen w-screen flex flex-col items-center no-scrollbar  ">
         {/* <Navbar /> */}
