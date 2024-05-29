@@ -59,7 +59,43 @@ export default function NewEventForm({
 			categories: [],
 		},
 	});
+	const [thumbnail, setThumbnail] = useState<File | null>(null);
 	const [differentCheckinTime, setDifferentCheckinTime] = useState(false);
+
+	function validateAndSetThumbnail(
+		event: React.ChangeEvent<HTMLInputElement>,
+	) {
+		const file = event.target.files?.[0];
+		if (!file) {
+			setThumbnail(null);
+			return false;
+		}
+		if (file.size > c.maxThumbnailSizeInBytes) {
+			form.setError("image", {
+				message: "Resume file is too large.",
+			});
+			setThumbnail(null);
+			return false;
+		}
+		if (
+			![
+				"image/jpeg",
+				"image/png",
+				"image/gif",
+				"image/webp",
+				"image/svg+xml",
+				"image/bmp",
+			].includes(file.type)
+		) {
+			form.setError("image", {
+				message: "Resume file must be a .pdf or .docx file.",
+			});
+			setThumbnail(null);
+			return false;
+		}
+		setThumbnail(file);
+		return true;
+	}
 
 	const onSubmit = () => {};
 
@@ -76,7 +112,7 @@ export default function NewEventForm({
 							name="name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Title</FormLabel>
+									<FormLabel>Thumbnail</FormLabel>
 									<FormControl>
 										<Input {...field} />
 									</FormControl>
@@ -91,6 +127,34 @@ export default function NewEventForm({
 									<FormLabel>Description</FormLabel>
 									<FormControl>
 										<Textarea {...field}></Textarea>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="image"
+							render={({
+								field: { value, onChange, ...fieldProps },
+							}) => (
+								<FormItem>
+									<FormLabel>Image</FormLabel>
+									<FormControl>
+										<Input
+											{...fieldProps}
+											type="file"
+											accept="image"
+											onChange={(event) => {
+												const success =
+													validateAndSetThumbnail(
+														event,
+													);
+												if (!success) {
+													event.target.value = "";
+												}
+											}}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>

@@ -907,7 +907,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 												<Input
 													{...fieldProps}
 													type="file"
-													accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+													accept="image/jpeg,image/png,image/gif,image/webp,image/avif,image/svg+xml"
 													onChange={(event) => {
 														const success =
 															validateAndSetResume(

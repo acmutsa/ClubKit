@@ -29,6 +29,7 @@ export default {
 		gender: ["Male", "Female", "Non-binary", "Transgender", "Intersex", "Prefer not to say"],
 	},
 	maxResumeSizeInBytes: 3670016,
+  maxThumbnailSizeInBytes: 1048576,
   dashPaths: {
     admin: {
       Overview: "/admin",
