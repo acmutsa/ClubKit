@@ -36,6 +36,7 @@ import { insertEventSchema } from "db/zod";
 import { CalendarWithYears } from "@/components/ui/calendarWithYearSelect";
 import { FormGroupWrapper } from "@/components/shared/form-group-wrapper";
 import { DateTimePicker } from "@/components/ui/date-time-picker/date-time-picker";
+import c from "config";
 
 type NewEventFormProps = {
 	defaultDate: Date;
@@ -44,7 +45,7 @@ type NewEventFormProps = {
 
 const formSchema = insertEventSchema.merge(
 	// @ts-ignore
-	z.object({ categories: z.string().array() }),
+	z.object({ categories: z.string().array(), thumbnail: z.string().url() }),
 );
 
 export default function NewEventForm({
@@ -56,6 +57,7 @@ export default function NewEventForm({
 		defaultValues: {
 			start: defaultDate,
 			end: new Date(defaultDate.getTime() + 1000 * 60 * 60 * 24),
+			thumbnail: c.thumbnails.default,
 			categories: [],
 		},
 	});
@@ -70,9 +72,9 @@ export default function NewEventForm({
 			setThumbnail(null);
 			return false;
 		}
-		if (file.size > c.maxThumbnailSizeInBytes) {
-			form.setError("image", {
-				message: "Resume file is too large.",
+		if (file.size > c.thumbnails.maxSizeInBytes) {
+			form.setError("thumbnail", {
+				message: "thumbnail file is too large.",
 			});
 			setThumbnail(null);
 			return false;
@@ -87,7 +89,7 @@ export default function NewEventForm({
 				"image/bmp",
 			].includes(file.type)
 		) {
-			form.setError("image", {
+			form.setError("thumbnail", {
 				message: "Resume file must be a .pdf or .docx file.",
 			});
 			setThumbnail(null);
@@ -112,7 +114,7 @@ export default function NewEventForm({
 							name="name"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Thumbnail</FormLabel>
+									<FormLabel>Name</FormLabel>
 									<FormControl>
 										<Input {...field} />
 									</FormControl>
@@ -134,12 +136,12 @@ export default function NewEventForm({
 						/>
 						<FormField
 							control={form.control}
-							name="image"
+							name="thumbnail"
 							render={({
 								field: { value, onChange, ...fieldProps },
 							}) => (
 								<FormItem>
-									<FormLabel>Image</FormLabel>
+									<FormLabel>Thumbnail</FormLabel>
 									<FormControl>
 										<Input
 											{...fieldProps}
