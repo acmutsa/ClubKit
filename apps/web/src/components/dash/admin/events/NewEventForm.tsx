@@ -15,8 +15,19 @@ import {
 	MultiSelectorList,
 	MultiSelectorTrigger,
 } from "@/components/ui/MultiSelect";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CalendarIcon } from "lucide-react";
 import {
 	Popover,
@@ -40,23 +51,30 @@ import c from "config";
 
 type NewEventFormProps = {
 	defaultDate: Date;
-	categoryOptions: { id: string; name: string; color: string }[];
+	categoryOptions: { [key: string]: string };
 };
 
 const formSchema = insertEventSchema.merge(
 	// @ts-ignore
-	z.object({ categories: z.string().array(), thumbnail: z.string().url() }),
+	z.object({ categories: z.string().array(), thumbnail: z.string() }),
 );
 
 export default function NewEventForm({
 	defaultDate,
 	categoryOptions,
 }: NewEventFormProps) {
+	const [error, setError] = useState<{
+		title: string;
+		description: string;
+	} | null>(null);
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			start: defaultDate,
-			end: new Date(defaultDate.getTime() + 1000 * 60 * 60 * 24),
+			checkinStart: defaultDate,
+			end: new Date(defaultDate.getTime() + 1000 * 60 * 60),
+			checkinEnd: new Date(defaultDate.getTime() + 1000 * 60 * 60),
 			thumbnail: c.thumbnails.default,
 			categories: [],
 		},
@@ -99,157 +117,105 @@ export default function NewEventForm({
 		return true;
 	}
 
-	const onSubmit = () => {};
+	useEffect(() => {
+		if (Object.keys(form.formState.errors).length > 0) {
+			console.log("Errors: ", form.formState.errors);
+		}
+	}, [form.formState]);
+
+	const onSubmit = (values: z.infer<typeof formSchema>) => {
+		console.log("Submit: ", values);
+	};
 
 	return (
-		<div className="text-foreground">
-			<Form {...form}>
-				<form
-					className="space-y-8"
-					onSubmit={form.handleSubmit(onSubmit)}
-				>
-					<FormGroupWrapper title="Basic Info">
-						<FormField
-							control={form.control}
-							name="name"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Name</FormLabel>
-									<FormControl>
-										<Input {...field} />
-									</FormControl>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="description"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Description</FormLabel>
-									<FormControl>
-										<Textarea {...field}></Textarea>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="thumbnail"
-							render={({
-								field: { value, onChange, ...fieldProps },
-							}) => (
-								<FormItem>
-									<FormLabel>Thumbnail</FormLabel>
-									<FormControl>
-										<Input
-											{...fieldProps}
-											type="file"
-											accept="image"
-											onChange={(event) => {
-												const success =
-													validateAndSetThumbnail(
-														event,
-													);
-												if (!success) {
-													event.target.value = "";
-												}
-											}}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</FormGroupWrapper>
-					<FormGroupWrapper title="Time & Location">
-						<div className="grid grid-cols-2 gap-4">
+		<>
+			<AlertDialog open={error != null}>
+				{/* <AlertDialogTrigger asChild>
+					<Button variant="outline">Show Dialog</Button>
+				</AlertDialogTrigger> */}
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>{error?.title}</AlertDialogTitle>
+						<AlertDialogDescription>
+							{error?.description}
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel onClick={() => setError(null)}>
+							Ok
+						</AlertDialogCancel>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
+			<div className="text-foreground">
+				<Form {...form}>
+					<form
+						className="space-y-8"
+						onSubmit={form.handleSubmit(onSubmit)}
+					>
+						<FormGroupWrapper title="Basic Info">
 							<FormField
 								control={form.control}
-								name="start"
+								name="name"
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>Start</FormLabel>
-										<DateTimePicker
-											value={
-												!!field.value
-													? parseAbsolute(
-															field.value.toISOString(),
-															getLocalTimeZone(),
-														)
-													: null
-											}
-											onChange={(date) => {
-												field.onChange(
-													!!date
-														? date.toDate(
-																getLocalTimeZone(),
-															)
-														: null,
-												);
-											}}
-											shouldCloseOnSelect={false}
-											granularity={"minute"}
-											label="Event Start"
-										/>
+										<FormLabel>Name</FormLabel>
+										<FormControl>
+											<Input {...field} />
+										</FormControl>
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="description"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Description</FormLabel>
+										<FormControl>
+											<Textarea {...field}></Textarea>
+										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
 							<FormField
 								control={form.control}
-								name="end"
-								render={({ field }) => (
+								name="thumbnail"
+								render={({
+									field: { value, onChange, ...fieldProps },
+								}) => (
 									<FormItem>
-										<FormLabel>End</FormLabel>
-										<DateTimePicker
-											value={
-												!!field.value
-													? parseAbsolute(
-															field.value.toISOString(),
-															getLocalTimeZone(),
-														)
-													: null
-											}
-											onChange={(date) => {
-												field.onChange(
-													!!date
-														? date.toDate(
-																getLocalTimeZone(),
-															)
-														: null,
-												);
-											}}
-											shouldCloseOnSelect={false}
-											granularity={"minute"}
-											label="Event End"
-										/>
+										<FormLabel>Thumbnail</FormLabel>
+										<FormControl>
+											<Input
+												{...fieldProps}
+												type="file"
+												accept="image"
+												onChange={(event) => {
+													const success =
+														validateAndSetThumbnail(
+															event,
+														);
+													if (!success) {
+														event.target.value = "";
+													}
+												}}
+											/>
+										</FormControl>
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
-						</div>
-						<div className="flex items-center gap-x-2">
-							<FormLabel>Use Different Check-In Time?</FormLabel>
-							<Switch
-								checked={differentCheckinTime}
-								onCheckedChange={() => {
-									setDifferentCheckinTime((prev) => !prev);
-								}}
-								aria-readonly
-							/>
-						</div>
-						{differentCheckinTime && (
+						</FormGroupWrapper>
+						<FormGroupWrapper title="Time & Location">
 							<div className="grid grid-cols-2 gap-4">
 								<FormField
 									control={form.control}
-									name="checkinStart"
+									name="start"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>
-												Check-In Start
-											</FormLabel>
+											<FormLabel>Start</FormLabel>
 											<DateTimePicker
 												value={
 													!!field.value
@@ -270,7 +236,7 @@ export default function NewEventForm({
 												}}
 												shouldCloseOnSelect={false}
 												granularity={"minute"}
-												label="Check-In Start"
+												label="Event Start"
 											/>
 											<FormMessage />
 										</FormItem>
@@ -278,10 +244,10 @@ export default function NewEventForm({
 								/>
 								<FormField
 									control={form.control}
-									name="checkinEnd"
+									name="end"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Check-In End</FormLabel>
+											<FormLabel>End</FormLabel>
 											<DateTimePicker
 												value={
 													!!field.value
@@ -302,98 +268,194 @@ export default function NewEventForm({
 												}}
 												shouldCloseOnSelect={false}
 												granularity={"minute"}
-												label="Check-In End"
+												label="Event End"
 											/>
 											<FormMessage />
 										</FormItem>
 									)}
 								/>
 							</div>
-						)}
-						<FormField
-							control={form.control}
-							name="location"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Location</FormLabel>
-									<Input
-										{...field}
-										placeholder="Ex: ACM Room"
+							<div className="flex items-center gap-x-2">
+								<FormLabel>
+									Use Different Check-In Time?
+								</FormLabel>
+								<Switch
+									checked={differentCheckinTime}
+									onCheckedChange={() => {
+										setDifferentCheckinTime(
+											(prev) => !prev,
+										);
+									}}
+									aria-readonly
+								/>
+							</div>
+							{differentCheckinTime && (
+								<div className="grid grid-cols-2 gap-4">
+									<FormField
+										control={form.control}
+										name="checkinStart"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>
+													Check-In Start
+												</FormLabel>
+												<DateTimePicker
+													value={
+														!!field.value
+															? parseAbsolute(
+																	field.value.toISOString(),
+																	getLocalTimeZone(),
+																)
+															: null
+													}
+													onChange={(date) => {
+														field.onChange(
+															!!date
+																? date.toDate(
+																		getLocalTimeZone(),
+																	)
+																: null,
+														);
+													}}
+													shouldCloseOnSelect={false}
+													granularity={"minute"}
+													label="Check-In Start"
+												/>
+												<FormMessage />
+											</FormItem>
+										)}
 									/>
-									<FormMessage />
-								</FormItem>
+									<FormField
+										control={form.control}
+										name="checkinEnd"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>
+													Check-In End
+												</FormLabel>
+												<DateTimePicker
+													value={
+														!!field.value
+															? parseAbsolute(
+																	field.value.toISOString(),
+																	getLocalTimeZone(),
+																)
+															: null
+													}
+													onChange={(date) => {
+														field.onChange(
+															!!date
+																? date.toDate(
+																		getLocalTimeZone(),
+																	)
+																: null,
+														);
+													}}
+													shouldCloseOnSelect={false}
+													granularity={"minute"}
+													label="Check-In End"
+												/>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</div>
 							)}
-						/>
-					</FormGroupWrapper>
-					<FormGroupWrapper title="Additional">
-						<FormField
-							name="categories"
-							control={form.control}
-							render={({ field }) => (
-								<FormItem className="flex flex-col justify-between gap-y-1">
-									<FormLabel>Categories</FormLabel>
-									<MultiSelector
-										onValuesChange={field.onChange}
-										values={field.value}
-										loop={true}
-									>
-										<MultiSelectorTrigger>
-											<MultiSelectorInput
-												className="text-sm"
-												placeholder="Click to Select"
-											/>
-										</MultiSelectorTrigger>
-										<MultiSelectorContent>
-											<MultiSelectorList>
-												{categoryOptions.map(
-													({ id, name, color }) => (
+							<FormField
+								control={form.control}
+								name="location"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Location</FormLabel>
+										<Input
+											{...field}
+											placeholder="Ex: ACM Room"
+										/>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</FormGroupWrapper>
+						<FormGroupWrapper title="Additional">
+							<FormField
+								name="categories"
+								control={form.control}
+								render={({ field }) => (
+									<FormItem className="flex flex-col justify-between gap-y-1">
+										<FormLabel>Categories</FormLabel>
+										<MultiSelector
+											onValuesChange={field.onChange}
+											values={field.value}
+											loop={true}
+										>
+											<MultiSelectorTrigger>
+												<MultiSelectorInput
+													className="text-sm"
+													placeholder="Click to Select"
+												/>
+											</MultiSelectorTrigger>
+											<MultiSelectorContent>
+												<MultiSelectorList>
+													{Object.entries(
+														categoryOptions,
+													).map(([name, id]) => (
 														<MultiSelectorItem
 															key={id}
 															value={name}
 														>
 															{name}
 														</MultiSelectorItem>
-													),
-												)}
-											</MultiSelectorList>
-										</MultiSelectorContent>
-									</MultiSelector>
-								</FormItem>
-							)}
-						/>
-						<FormField
-							name="isUserCheckinable"
-							control={form.control}
-							render={({ field }) => (
-								<FormItem className="flex w-1/4 items-center justify-between">
-									<FormLabel>Check-In</FormLabel>
-									<Switch
-										checked={field.value}
-										onCheckedChange={field.onChange}
-										aria-readonly
-									/>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							name="isHidden"
-							control={form.control}
-							render={({ field }) => (
-								<FormItem className="flex w-1/4 items-center justify-between">
-									<FormLabel>Hidden</FormLabel>
-									<Switch
-										checked={field.value}
-										onCheckedChange={field.onChange}
-										aria-readonly
-									/>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</FormGroupWrapper>
-				</form>
-			</Form>
-		</div>
+													))}
+												</MultiSelectorList>
+											</MultiSelectorContent>
+										</MultiSelector>
+									</FormItem>
+								)}
+							/>
+							<FormField
+								name="isUserCheckinable"
+								control={form.control}
+								render={({ field }) => (
+									<FormItem className="flex w-1/4 items-center justify-between">
+										<FormLabel>Check-In</FormLabel>
+										<Switch
+											checked={field.value}
+											onCheckedChange={field.onChange}
+											aria-readonly
+										/>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								name="isHidden"
+								control={form.control}
+								render={({ field }) => (
+									<FormItem className="flex w-1/4 items-center justify-between">
+										<FormLabel>Hidden</FormLabel>
+										<Switch
+											checked={field.value}
+											onCheckedChange={field.onChange}
+											aria-readonly
+										/>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</FormGroupWrapper>
+						<Button
+							// disabled={
+							// 	actionStatus == "executing" ||
+							// 	(actionStatus == "hasSucceeded" &&
+							// 		actionResult.data?.success)
+							// }
+							type="submit"
+						>
+							Submit
+						</Button>
+					</form>
+				</Form>
+			</div>
+		</>
 	);
 }
