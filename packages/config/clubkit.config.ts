@@ -155,4 +155,5 @@ export const majors = [
   "Other",
 ] as const;
 
+export type SearchParams = { [key: string]: string | undefined };
 

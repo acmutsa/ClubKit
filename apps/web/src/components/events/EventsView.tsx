@@ -1,101 +1,93 @@
-'use client'
-import { useEffect, useState,useRef } from "react"
-import EventsOptionsBar from "./EventsOptionsBar"
 import EventsCardView from "./EventsCardView";
 import EventsCalendarView from "./EventsCalendarView";
-import type { EventType } from "./Events";
+import { db,eq,ilike,gte, and,lt,inArray, SQL } from "db";
+import { events,eventCategories, eventsToCategories, eventCategoriesRelations, eventsToCategoriesRelations } from "db/schema";
+import type { SearchParams } from "config";
+import { eventFilters } from "@/app/events/page";
+import { unstable_noStore as noStore } from "next/cache";
 
-export interface Filters {
-  view: 'calendar' | 'card';
-  showPastEvents: boolean;
-  checkedOrgs: Set<string>;
-  searchQuery: string;
-}
 
-interface categoriesType {
-  id:string
-  name: string;
-  color: string;
-};
-
-export type HandleFilterValue = string | boolean | Set<string>;
 // Original data fetching will be done by a server component and any further filtering will be handled client-side. Data is not super large or sensentive so this is fine
-export default function EventsView({ allEvents,categories }: { allEvents: Array<EventType>,categories:Array<categoriesType> }) {
-  const [events,setEvents] = useState<Array<EventType>>(allEvents);
-  
-   const defaultFilters:Filters = {
-    view:'card',
-    showPastEvents:false,
-    checkedOrgs:new Set<string>(),
-    searchQuery:""
-  } 
-  const [filters,setFilters] = useState<Filters>(defaultFilters);
-  useEffect(()=>{
-    // console.log("Filters have changed");
-    
-    // This is basically just to save a bit of computation as we do not need to filter on the first render
-      const filteredEvents = filterEvents();
-      setEvents(filteredEvents);
-  } ,[filters]);
+export default async function EventsView({params}:{params:SearchParams}) {
+	noStore();
+	
+	console.log("events searchParams: ", params);
+	const cardViewSelected = params[eventFilters.view]
+		? eventFilters.card === params[eventFilters.view] ?? eventFilters.card
+		: true;
+	// await new Promise((resolve)=>setTimeout(resolve, 1000));
+	// showUpcomingEvents boolean and its respective query value
+	const showUpcomingEvents = params[eventFilters.showEvents]
+		? eventFilters.showUpcomingEvents === params[eventFilters.showEvents] ??
+			eventFilters.showUpcomingEvents
+		: true;
 
-  // NOTE: for filtering, we will have to ensure that we handle whether they have checked past events or not
-  const filterEvents = ():Array<EventType>=>{
-    // console.log("called with filters",filters)
-    
-    const data = allEvents.filter((event) => {
-        // console.log("Checking event",event.name,filters.searchQuery);
-        // Clean up our data to ensure we properly compare the filters
-       const containsSearch = event.name.toUpperCase().trim().includes(filters.searchQuery.toUpperCase().trim());
-      //  Check if an event has the selected orgs a part of it
-       const containsOrgs = filters.checkedOrgs.size > 0 ? event.eventsToCategories.some((category) => filters.checkedOrgs.has(category.category.name)): true;
-      //  Check if the event is past or not
-       const isPast = new Date(event.start) < new Date(); 
-       const validDate = filters.showPastEvents ? isPast : !isPast;
-      return (
-        // Check if the search value is within the word
-       containsSearch && containsOrgs && validDate && !event.isHidden
-          
-      );
-    });
+	const dateComparison = showUpcomingEvents
+		? gte(events.start, new Date())
+		: lt(events.start, new Date());
 
-    // console.log("Data size:",data.length);
-    return data;
-  }
+	// We will process the categories and have them be passed down to the state. So still a single database call, but we can get access to them here for preprocessing
 
-  const handleFilterChange = (k:string ,value:string | boolean | Set<string>)=>{
-    setFilters({...filters,[k]:value});
-  }
+	// Event search query and its respective query value
+	const eventSearch = params[eventFilters.query] ?? "";
+	const eventSearchQuery = ilike(events.name, `%${eventSearch}%`);
+	// Categories and its respective query value
+	const categories = params[eventFilters.categories]?.split(",") ?? [];
 
-  const eventOptionsProps = {
-    filters,
-    handleFilterChange,
-    categories
-  }
+	const categoryQuery =
+		categories.length > 0
+			? inArray(eventCategories.name, categories)
+			: undefined;
+	// TODO: Come back and add filtering options to db call
+	const start = new Date().getTime();
 
-  return (
-    <div className="flex flex-col w-full overflow-x-hidden">
-      <div className="w-full flex items-center justify-center pt-4">
-        <EventsOptionsBar {...eventOptionsProps} />
-      </div>
-      {events.length > 0 ? (
-        <div className="h-3/4 no-scrollbar">
-          {filters.view === "card" ? (
-            <EventsCardView events={events} />
-          ) : (
-            <EventsCalendarView events={events} />
-          )}
-        </div>
-      ) : (
-        <div className="flex flex-col w-full justify-center pt-[6%] md:pt-[2%] space-y-6">
-          <h1 className="w-full text-center text-3xl font-bold">
-            Womp Womp :(
-          </h1>
-          <h1 className="w-[95%] mx-auto text-center text-xl">
-            There are no events to display at this time for your desired
-            parameters. Please check back later or widen your filtering options.
-          </h1>
-        </div>
-      )}
-    </div>
-  );
+	noStore();
+	const allEvents = await db.query.events.findMany({
+		with: {
+			eventsToCategories: {
+				with: {
+					category: {
+						columns: {
+							name: true,
+							color: true,
+						},
+					},
+				},
+			},
+		},
+		where: and(eventSearchQuery, dateComparison), 
+		// This will give us our most recent events first. This will be useful for how we sort
+		orderBy: events.start,
+	});
+
+	
+
+	console.log(new Date().getTime() - start, "ms");
+
+	return (
+		<>
+			{allEvents.length > 0 ? (
+				<div className="h-3/4 no-scrollbar">
+					{cardViewSelected ? (
+						<EventsCardView events={allEvents} />
+					) : (
+						<EventsCalendarView events={allEvents} />
+					)}
+				</div>
+			) : (
+				<div className="flex w-full flex-col justify-center space-y-6 pt-[6%] md:pt-[2%]">
+					<h1 className="w-full text-center text-3xl font-bold">
+						Womp Womp :(
+					</h1>
+					<h1 className="mx-auto w-[95%] text-center text-xl">
+						There are no events to display at this time for your
+						desired parameters. Please check back later or widen
+						your filtering options.
+					</h1>
+				</div>
+			)}
+		</>
+	);
 }
+
+

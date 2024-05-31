@@ -78,7 +78,7 @@ export const events = pgTable("events", {
 	isHidden: boolean("is_hidden").notNull().default(false),
 });
 
-export const eventsRelations = relations(events, ({ one, many }) => ({
+export const eventsRelations = relations(events, ({ many }) => ({
 	eventsToCategories: many(eventsToCategories),
 	checkins: many(checkins),
 }));

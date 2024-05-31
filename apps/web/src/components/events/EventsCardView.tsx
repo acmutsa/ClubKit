@@ -1,6 +1,6 @@
-import type { EventType } from "./Events";
+import type { EventType } from "@/app/events/page";
 import EventCardComponent from "./EventCardComponent";
-
+import { Suspense } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 export default function  EventsCardView({
   events,

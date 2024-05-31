@@ -1,4 +1,4 @@
-import type { EventType } from "./Events";
+import type { EventType } from "@/app/events/page";
 import Image from "next/image";
 import {
   Card,
