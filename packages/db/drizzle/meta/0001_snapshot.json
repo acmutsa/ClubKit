@@ -1,5 +1,5 @@
 {
-  "id": "bbdb8772-1350-461a-a085-f146533bf44f",
+  "id": "371d133a-fe63-4e55-bead-ff8bbf4f3ac6",
   "prevId": "42d21de9-4f81-4515-b58b-6ab78492d294",
   "version": "5",
   "dialect": "pg",
@@ -122,12 +122,26 @@
           "type": "text[]",
           "primaryKey": false,
           "notNull": true
+        },
+        "short_id": {
+          "name": "short_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "data_short_id_unique": {
+          "name": "data_short_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "short_id"
+          ]
+        }
+      }
     },
     "event_categories": {
       "name": "event_categories",
@@ -186,6 +200,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "thumbnail_Url": {
+          "name": "thumbnail_Url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'/img/thumbnails/default.png'"
         },
         "start": {
           "name": "start",
@@ -326,12 +347,6 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'member'"
-        },
-        "short_id": {
-          "name": "short_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
@@ -364,13 +379,6 @@
           "nullsNotDistinct": false,
           "columns": [
             "email"
-          ]
-        },
-        "users_short_id_unique": {
-          "name": "users_short_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "short_id"
           ]
         }
       }

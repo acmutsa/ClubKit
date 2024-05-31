@@ -14,6 +14,7 @@ import {
 	serial,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+import c from "config";
 
 /* USERS */
 
@@ -68,6 +69,7 @@ export const events = pgTable("events", {
 	id: text("id").primaryKey(),
 	name: text("name").notNull(),
 	description: text("description").notNull(),
+	thumbnailUrl: text("thumbnail_Url").default(c.thumbnails.default).notNull(),
 	start: timestamp("start").notNull(),
 	end: timestamp("end").notNull(),
 	checkinStart: timestamp("checkin_start").notNull(),
