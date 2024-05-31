@@ -31,12 +31,12 @@ export default function PastPresentDropDown({cardViewSelected,showUpcomingEvents
 					onValueChange={(value) =>
 						handleSelectChange(value)
 					}>
-					<SelectTrigger className="flex w-[180px] justify-start border-transparent bg-transparent py-0 pl-3 pr-0 text-sm opacity-100 focus:ring-0 focus:ring-offset-0 sm:pl-2 md:py-2 md:pl-3">
+					<SelectTrigger className="flex my-auto w-auto justify-start items-center border-transparent bg-transparent py-0 pl-3 pr-0 text-sm focus:ring-0 focus:ring-offset-0 sm:pl-2 md:py-2 md:pl-3">
 						<SelectValue
 							placeholder={
 								showUpcomingEvents ? "Upcoming" : "Past"
 							}
-							className="[color:black] "
+							className=" "
 						/>
 					</SelectTrigger>
 					<SelectContent>

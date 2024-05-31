@@ -4,7 +4,7 @@ import PastPresentDropDown from "./PastPresentDropDown";
 import ViewToggle from "./ViewToggle";
 import type { SearchParams } from "config";
 import { db } from "db";
-
+import clsx from "clsx";
 
 export type EventCategory = {
 	name: string;
@@ -57,16 +57,26 @@ const showUpcomingEvents = params[eventFilters.showEvents]
 const categories = await db.query.eventCategories.findMany();
 
 return (
-	<div className="flex w-full flex-row justify-between rounded-lg border-2 sm:w-[90%] ">
+	<div className="flex w-[98%] flex-row justify-between rounded-lg border-2 sm:w-[90%] ">
 		{/* Dropdown to show either past or present events */}
-		<PastPresentDropDown cardViewSelected={cardViewSelected} showUpcomingEvents={showUpcomingEvents} />
+		<PastPresentDropDown
+			cardViewSelected={cardViewSelected}
+			showUpcomingEvents={showUpcomingEvents}
+		/>
 		{/* Search Component*/}
 		<EventsSearch cardViewSelected={cardViewSelected} />
-		<div className="flex">
+		<div className={clsx('flex',{
+			'w-full justify-between md:px-2': !cardViewSelected,
+		
+		})}>
 			{/* Filter by categories component */}
-		<CategoriesDropDown cardViewSelected={cardViewSelected} categories={categories} searchParams={params} />
-		{/* Toggle either to card or calendar view */}
-		<ViewToggle cardViewSelected={cardViewSelected}/>
+			<CategoriesDropDown
+				cardViewSelected={cardViewSelected}
+				categories={categories}
+				searchParams={params}
+			/>
+			{/* Toggle either to card or calendar view */}
+			<ViewToggle cardViewSelected={cardViewSelected} />
 		</div>
 	</div>
 );
