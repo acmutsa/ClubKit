@@ -1,4 +1,4 @@
-import type { EventType } from "@/app/events/page";
+import type { EventType } from "./filters/EventsOptionsBar";
 import Image from "next/image";
 import {
   Card,
