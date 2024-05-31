@@ -4,8 +4,48 @@ import PastPresentDropDown from "./PastPresentDropDown";
 import ViewToggle from "./ViewToggle";
 import type { SearchParams } from "config";
 import { db } from "db";
-import { eventFilters } from "@/app/events/page";
 
+
+export type EventCategory = {
+	name: string;
+	color: string;
+	id: string;
+};
+
+type EventsToCategories = {
+	eventID: string;
+	categoryID: string;
+	category: {
+		name: string;
+		color: string;
+	};
+};
+
+export type EventType = {
+	id: string;
+	name: string;
+	description: string;
+	start: Date;
+	end: Date;
+	checkinStart: Date;
+	checkinEnd: Date;
+	location: string;
+	isUserCheckinable: boolean;
+	isHidden: boolean;
+	eventsToCategories: Array<EventsToCategories>;
+};
+
+// This is use to create a single source of truth in our filters for the events
+export const eventFilters = {
+	query: "query",
+	card: "card",
+	view: "view",
+	calendar: "calendar",
+	showUpcomingEvents: "upcoming",
+	showPastEvents: "past",
+	showEvents: "show_events",
+	categories: "categories",
+};
 
 export default async function EventsOptionsBar({params}:{params:SearchParams}) {
 

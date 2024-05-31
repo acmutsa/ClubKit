@@ -3,7 +3,9 @@
 import { Select,SelectContent,SelectTrigger,SelectGroup,SelectValue,SelectItem } from "@/components/ui/select";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
-import { eventFilters } from "@/app/events/page";
+import { eventFilters } from "./EventsOptionsBar";
+
+
 export default function PastPresentDropDown({cardViewSelected,showUpcomingEvents}: {cardViewSelected: boolean,showUpcomingEvents: boolean}){
     const searchParams = useSearchParams();
     

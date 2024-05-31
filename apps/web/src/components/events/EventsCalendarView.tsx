@@ -1,4 +1,4 @@
-import type { EventType } from "@/app/events/page";
+import type { EventType } from "./filters/EventsOptionsBar";
 
 export default function EventsCalendarView({events}:{events: Array<EventType>}) {
     return (

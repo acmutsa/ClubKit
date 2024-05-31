@@ -1,5 +1,5 @@
 'use client'
-import { eventFilters } from "@/app/events/page";
+import { eventFilters } from "./EventsOptionsBar";
 import { Popover,PopoverTrigger,PopoverContent } from "../../ui/popover";
 import { Search,ChevronDown } from "lucide-react";
 import { Input } from "../../ui/input";

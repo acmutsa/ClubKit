@@ -1,6 +1,6 @@
 'use client'
 import { useRouter,useSearchParams,usePathname } from "next/navigation"
-import { eventFilters } from "@/app/events/page";
+import { eventFilters } from "./EventsOptionsBar";
 import { Calendar, Grid2X2 } from "lucide-react";
 import clsx from "clsx";
 

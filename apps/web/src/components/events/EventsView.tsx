@@ -3,7 +3,7 @@ import EventsCalendarView from "./EventsCalendarView";
 import { db,eq,ilike,gte, and,lt,inArray, SQL } from "db";
 import { events,eventCategories, eventsToCategories, eventCategoriesRelations, eventsToCategoriesRelations } from "db/schema";
 import type { SearchParams } from "config";
-import { eventFilters } from "@/app/events/page";
+import { eventFilters } from "./filters/EventsOptionsBar";
 import { unstable_noStore as noStore } from "next/cache";
 
 

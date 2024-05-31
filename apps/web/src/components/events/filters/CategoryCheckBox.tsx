@@ -2,8 +2,8 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname,useSearchParams,useRouter } from "next/navigation";
 import { useState } from "react";
-import type { EventCategory } from "@/app/events/page";
-import { eventFilters } from "@/app/events/page";
+import type { EventCategory } from "./EventsOptionsBar";
+import { eventFilters } from "./EventsOptionsBar";
 
 export default function CategoryCheckBox({category,checkBoxSet}:{category:EventCategory,checkBoxSet:Set<string>}){
     const name = category.name;
@@ -13,7 +13,7 @@ export default function CategoryCheckBox({category,checkBoxSet}:{category:EventC
     const {replace,refresh} = useRouter();
     const pathname = usePathname();
     const params = new URLSearchParams(searchParams);
-	  const checkedBoxes = params.get("categories");
+	  const checkedBoxes = params.get(eventFilters.categories);
     const [checked,setCheck] = useState(checkBoxSet.has(name));
     
     console.log(`${name}:`,checkBoxSet.has(name));

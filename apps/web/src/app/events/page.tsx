@@ -7,46 +7,7 @@ import EventsView from "@/components/events/EventsView";
 import { db } from "db";
 import { Suspense } from "react";
 
-export type EventCategory = {
-	name: string;
-	color: string;
-	id: string;
-};
 
-type EventsToCategories = {
-	eventID: string;
-	categoryID: string;
-	category: {
-		name: string;
-		color: string;
-	};
-};
-
-export type EventType = {
-	id: string;
-	name: string;
-	description: string;
-	start: Date;
-	end: Date;
-	checkinStart: Date;
-	checkinEnd: Date;
-	location: string;
-	isUserCheckinable: boolean;
-	isHidden: boolean;
-	eventsToCategories: Array<EventsToCategories>;
-};
-
-// This is use to create a single source of truth in our filters for the events
-export const eventFilters = {
-	query: "query",
-	card: "card",
-	view: "view",
-	calendar: "calendar",
-	showUpcomingEvents: "upcoming",
-	showPastEvents: "past",
-	showEvents: "show_events",
-	categories: "categories",
-};
 
 export default function EventsPage({
 	searchParams,
