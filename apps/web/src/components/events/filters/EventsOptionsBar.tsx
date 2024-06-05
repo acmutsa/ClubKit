@@ -45,6 +45,7 @@ export const eventFilters = {
 	showPastEvents: "past",
 	showEvents: "show_events",
 	categories: "categories",
+	weekOf: "week_of",
 };
 
 export default async function EventsOptionsBar({params}:{params:SearchParams}) {
@@ -55,7 +56,8 @@ const showUpcomingEvents = params[eventFilters.showEvents]
 		eventFilters.showUpcomingEvents
 	: true;
 const categories = await db.query.eventCategories.findMany();
-
+console.log('EventOptionsBar categories',categories);
+console.log('EventOptionsBar params',params);
 return (
 	<div className="flex w-[98%] flex-row justify-between rounded-lg border-2 sm:w-[90%] ">
 		{/* Dropdown to show either past or present events */}

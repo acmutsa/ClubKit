@@ -1,7 +1,7 @@
 "use client"
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname,useSearchParams,useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { EventCategory } from "./EventsOptionsBar";
 import { eventFilters } from "./EventsOptionsBar";
 
@@ -13,11 +13,11 @@ export default function CategoryCheckBox({category,checkBoxSet}:{category:EventC
     const {replace,refresh} = useRouter();
     const pathname = usePathname();
     const params = new URLSearchParams(searchParams);
-	  const checkedBoxes = params.get(eventFilters.categories);
+	const checkedBoxes = params.get(eventFilters.categories);
+
+    // This is being used as a fast way to update the state of the checkbox
     const [checked,setCheck] = useState(checkBoxSet.has(name));
     
-    console.log(`${name}:`,checkBoxSet.has(name));
-
     // Come back and test this logic
     const handleCheck = (name:string)=>{
         
@@ -43,9 +43,15 @@ export default function CategoryCheckBox({category,checkBoxSet}:{category:EventC
     }
     return (
       <div className="flex items-center space-x-2">
-        <Checkbox id={name} onClick={()=>{handleCheck(name)}}
-        // Probably need to move this to something different
-        checked={checkBoxSet.has(name)}
+        <Checkbox 
+        id={name} 
+        onClick={()=>{
+            setCheck(!checked);
+            handleCheck(name);  
+        }}
+        // Checked is based off of the search params sent in, but will call a small re-render of this piece 
+        checked={checked}
+        className=" focus-visible:ring-0 focus-visible:ring-offset-0"
          />
         <label
           htmlFor={name}

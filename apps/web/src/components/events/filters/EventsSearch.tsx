@@ -22,7 +22,7 @@ export default function EventsSearch({cardViewSelected}:{cardViewSelected:boolea
 			params.delete("query");
 		}
 		replace(`${pathname}?${params.toString()}`);
-	}, 200);
+	}, 100);
     return (
 		<>
 			{/* Mobile Search bar */}

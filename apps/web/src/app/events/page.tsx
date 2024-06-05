@@ -15,11 +15,11 @@ export default function EventsPage({
 	searchParams: { [key: string]: string | undefined };
 }) {
 	return (
-		<div className="flex h-screen w-screen flex-col items-center">
+		<div className="flex min-h-screen w-screen flex-col items-center">
 			{/* <Navbar /> */}
 			<EventsTitle />
 			<EventsOptionsBar params={searchParams} />
-			<Suspense fallback={<div className="w-full bg-red-600 text-center">Loading...</div>}>
+			<Suspense fallback={<div className="w-full flex flex-row h-full items-center justify-center text-center font-bold">Grabbing Events. One sec...</div>}>
 				<EventsView params={searchParams} />
 			</Suspense>
 		</div>

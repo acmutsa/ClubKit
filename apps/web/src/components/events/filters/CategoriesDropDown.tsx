@@ -9,7 +9,7 @@ import type { EventCategory } from "./EventsOptionsBar";
 export default function CategoriesDropDown({cardViewSelected,categories,searchParams}:{cardViewSelected:boolean,categories:Array<EventCategory>,searchParams:SearchParams}){
     
     const checkBoxSet = new Set(searchParams.categories ? searchParams.categories.split(",") : []);
-
+	console.log(checkBoxSet);
     return (
 		<div
 			className={clsx("flex justify-end", {
