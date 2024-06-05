@@ -18,25 +18,25 @@ export default async function AdminLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	// const { userId } = auth();
+	const { userId } = auth();
 
-	// if (!userId) {
-	//   return redirect("/sign-in");
-	// }
+	if (!userId) {
+		return redirect("/sign-in");
+	}
 
-	// const user = await db.query.users.findFirst({
-	//   where: eq(users.clerkID, userId),
-	// });
+	const user = await db.query.users.findFirst({
+		where: eq(users.clerkID, userId),
+	});
 
-	// if (!user || (user.role !== "admin" && user.role !== "super_admin")) {
-	//   console.log("Denying admin access to user", user);
-	//   return (
-	//     <FullScreenMessage
-	//       title="Access Denied"
-	//       message="You are not an admin. If you belive this is a mistake, please contact a administrator."
-	//     />
-	//   );
-	// }
+	if (!user || (user.role !== "admin" && user.role !== "super_admin")) {
+		console.log("Denying admin access to user", user);
+		return (
+			<FullScreenMessage
+				title="Access Denied"
+				message="You are not an admin. If you belive this is a mistake, please contact a administrator."
+			/>
+		);
+	}
 	return (
 		<>
 			<ClientToast />

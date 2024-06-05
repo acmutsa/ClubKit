@@ -1,5 +1,5 @@
 import NewEventForm from "@/components/dash/admin/events/NewEventForm";
-import { getCategoryOptions } from "@/actions/events/new";
+import { getCategoryOptions } from "@/lib/queries";
 
 export default async function Page() {
 	const defaultDate = new Date();

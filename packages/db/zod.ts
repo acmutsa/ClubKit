@@ -86,6 +86,13 @@ const sometable = createInsertSchema(data);
 
 type iType = z.infer<typeof sometable>;
 
-export const insertEventSchema = createInsertSchema(events).omit({
-	id: true,
-});
+// TODO: tighten insert schema constraints
+export const insertEventSchema = createInsertSchema(events);
+
+export const insertEventSchemaFormified = insertEventSchema
+	.omit({
+		id: true,
+	})
+	.merge(
+		z.object({ categories: z.string().array(), thumbnailUrl: z.string() }),
+	);

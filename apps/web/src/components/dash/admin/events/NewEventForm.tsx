@@ -43,21 +43,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { insertEventSchema } from "db/zod";
+import { insertEventSchema, insertEventSchemaFormified } from "db/zod";
 import { CalendarWithYears } from "@/components/ui/calendarWithYearSelect";
 import { FormGroupWrapper } from "@/components/shared/form-group-wrapper";
 import { DateTimePicker } from "@/components/ui/date-time-picker/date-time-picker";
 import c from "config";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useAction } from "next-safe-action/hooks";
+import { upload } from "@vercel/blob/client";
+import { createEvent } from "@/actions/events/new";
 
 type NewEventFormProps = {
 	defaultDate: Date;
 	categoryOptions: { [key: string]: string };
 };
 
-const formSchema = insertEventSchema.merge(
-	// @ts-ignore
-	z.object({ categories: z.string().array(), thumbnail: z.string() }),
-);
+const formSchema = insertEventSchemaFormified;
 
 export default function NewEventForm({
 	defaultDate,
@@ -67,6 +69,7 @@ export default function NewEventForm({
 		title: string;
 		description: string;
 	} | null>(null);
+	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -75,8 +78,9 @@ export default function NewEventForm({
 			checkinStart: defaultDate,
 			end: new Date(defaultDate.getTime() + 1000 * 60 * 60),
 			checkinEnd: new Date(defaultDate.getTime() + 1000 * 60 * 60),
-			thumbnail: c.thumbnails.default,
+			thumbnailUrl: c.thumbnails.default,
 			categories: [],
+			isUserCheckinable: true,
 		},
 	});
 	const [thumbnail, setThumbnail] = useState<File | null>(null);
@@ -91,7 +95,7 @@ export default function NewEventForm({
 			return false;
 		}
 		if (file.size > c.thumbnails.maxSizeInBytes) {
-			form.setError("thumbnail", {
+			form.setError("thumbnailUrl", {
 				message: "thumbnail file is too large.",
 			});
 			setThumbnail(null);
@@ -107,8 +111,9 @@ export default function NewEventForm({
 				"image/bmp",
 			].includes(file.type)
 		) {
-			form.setError("thumbnail", {
-				message: "Resume file must be a .pdf or .docx file.",
+			form.setError("thumbnailUrl", {
+				message:
+					"Invalid image format. Only jpeg, png, gif, webp, svg+xml, bmp.",
 			});
 			setThumbnail(null);
 			return false;
@@ -123,8 +128,71 @@ export default function NewEventForm({
 		}
 	}, [form.formState]);
 
-	const onSubmit = (values: z.infer<typeof formSchema>) => {
+	const {
+		execute: runCreateEvent,
+		status: actionStatus,
+		result: actionResult,
+		reset: resetAction,
+	} = useAction(createEvent, {
+		onSuccess: async ({ success, code, eventID }) => {
+			toast.dismiss();
+			if (!success) {
+				switch (code) {
+					case "insert_event_failed":
+						setError({
+							title: "Creating event failed",
+							description: `Attempt to create event has failed. Please try again or contact ${c.contactEmail}.`,
+						});
+						break;
+					default:
+						toast.error(
+							`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
+						);
+						break;
+				}
+				resetAction();
+				return;
+			}
+			toast.success("Registration successful!", {
+				description: "You'll be redirected shortly.",
+			});
+			setTimeout(() => {
+				router.push(`/events/${eventID}`);
+			}, 1500);
+		},
+		onError: async (error) => {
+			toast.dismiss();
+			toast.error(
+				`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
+			);
+			console.log("error: ", error);
+			resetAction();
+		},
+	});
+
+	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		console.log("Submit: ", values);
+		toast.loading("Creating Event...");
+		if (thumbnail) {
+			const thumbnailBlob = await upload(thumbnail.name, thumbnail, {
+				access: "public",
+				handleUploadUrl: "/api/upload/thumbnail",
+			});
+			runCreateEvent({
+				...values,
+				thumbnailUrl: thumbnailBlob.url,
+				categories: values.categories.map(
+					(cat) => categoryOptions[cat],
+				),
+			});
+		} else {
+			runCreateEvent({
+				...values,
+				categories: values.categories.map(
+					(cat) => categoryOptions[cat],
+				),
+			});
+		}
 	};
 
 	return (
@@ -181,7 +249,7 @@ export default function NewEventForm({
 							/>
 							<FormField
 								control={form.control}
-								name="thumbnail"
+								name="thumbnailUrl"
 								render={({
 									field: { value, onChange, ...fieldProps },
 								}) => (
@@ -444,11 +512,11 @@ export default function NewEventForm({
 							/>
 						</FormGroupWrapper>
 						<Button
-							// disabled={
-							// 	actionStatus == "executing" ||
-							// 	(actionStatus == "hasSucceeded" &&
-							// 		actionResult.data?.success)
-							// }
+							disabled={
+								actionStatus == "executing" ||
+								(actionStatus == "hasSucceeded" &&
+									actionResult.data?.success)
+							}
 							type="submit"
 						>
 							Submit
