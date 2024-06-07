@@ -68,19 +68,6 @@ export default async function EventsView({params}:{params:SearchParams}) {
 	});
 
 
-	// allEvents.filter((event) => 
-	// 	event.eventsToCategories
-
-	// const allEvents = await db.select()
-	// .from(events)
-	// .innerJoin(eventsToCategories,eq(events.id,eventsToCategories.eventID))
-	// .innerJoin(eventCategories,eq(eventsToCategories.categoryID,eventCategories.id))
-	// .where(and(eventSearchQuery, dateComparison))
-	// .groupBy(events.id,eventsToCategories.categoryID,eventsToCategories.eventID,eventCategories.id)
-
-
-	
-	// console.log(allEvents);
 	console.log(new Date().getTime() - start, "ms");
 
 	

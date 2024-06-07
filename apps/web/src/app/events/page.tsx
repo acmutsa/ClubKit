@@ -14,12 +14,18 @@ export default function EventsPage({
 }: {
 	searchParams: { [key: string]: string | undefined };
 }) {
+	// bg-gradient-to-tr from-blue-400 to-muted
 	return (
-		<div className="flex min-h-screen w-screen flex-col items-center">
+		<div className="flex min-h-screen w-screen flex-col items-center ">
 			{/* <Navbar /> */}
 			<EventsTitle />
 			<EventsOptionsBar params={searchParams} />
-			<Suspense fallback={<div className="w-full flex flex-row h-full items-center justify-center text-center font-bold">Grabbing Events. One sec...</div>}>
+			<Suspense
+				fallback={
+					<div className="flex h-full w-full flex-row items-center justify-center text-center font-bold">
+						<h1>Grabbing Events. One sec...</h1>
+					</div>
+				}>
 				<EventsView params={searchParams} />
 			</Suspense>
 		</div>
