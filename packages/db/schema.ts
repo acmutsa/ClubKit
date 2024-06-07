@@ -53,6 +53,7 @@ export const eventCategories = pgTable("event_categories", {
 	// category can be a sub org or other things depending on the event
 	id: text("id").primaryKey(),
 	name: text("name").notNull().unique(),
+	// badge background
 	color: text("color").notNull(),
 });
 
@@ -64,7 +65,9 @@ export const eventCategoriesRelations = relations(
 );
 
 
-// Add Thumbnail url for events
+
+// Add points
+// Created at timestamp
 export const events = pgTable("events", {
 	id: text("id").primaryKey(),
 	name: text("name").notNull(),
@@ -107,6 +110,7 @@ export const eventsToCategoriesRelations = relations(
 	}),
 );
 
+// nullable admin id - backburner
 export const checkins = pgTable(
 	"checkins",
 	{
