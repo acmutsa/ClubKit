@@ -14,7 +14,6 @@ export default function EventsSearch({cardViewSelected}:{cardViewSelected:boolea
 
 	// We use a debouncing strategy to prevent the search from querying every single keystroke and instead will run a time after the user completes typing
     const handleSearch = useDebouncedCallback((term) => {
-		console.log(`Searching... ${term}`);
 		const params = new URLSearchParams(searchParams);
 		if (term) {
 			params.set("query", term);
@@ -41,7 +40,7 @@ export default function EventsSearch({cardViewSelected}:{cardViewSelected:boolea
 									type="text"
 									placeholder="Search for events"
 									defaultValue={searchParams.get(eventFilters.query)?.toString()}
-									className="bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+									className="bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
 									onChange={(e) =>
 										handleSearch(e.target.value)
 									}
@@ -50,7 +49,7 @@ export default function EventsSearch({cardViewSelected}:{cardViewSelected:boolea
 						</Popover>
 					</div>
 					{/* Desktop Search bar */}
-					<div className="hidden w-1/3 items-center justify-start rounded-md ring-black focus-within:ring-1 sm:flex  ">
+					<div className="hidden md:w-3/4 items-center justify-end sm:flex  ">
 						<Search className="" />
 						<Input
 							type="text"
@@ -59,7 +58,7 @@ export default function EventsSearch({cardViewSelected}:{cardViewSelected:boolea
 							onChange={(e) =>
 								handleSearch(e.target.value)
 							}
-							className="my-0 border-transparent bg-transparent py-0 focus-visible:ring-0 focus-visible:ring-offset-0  "
+							className="my-0 border-transparent bg-transparent py-0 focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-1/2 md:[40%] "
 						/>
 					</div>
 				</>

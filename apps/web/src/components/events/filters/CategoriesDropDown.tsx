@@ -21,7 +21,15 @@ export default function CategoriesDropDown({cardViewSelected,categories,searchPa
 				<Popover>
 					<PopoverTrigger asChild>
 						<div className="flex items-center ">
-							<p className="w-12 truncate whitespace-nowrap  text-sm min-[350px]:w-16 min-[400px]:w-20 sm:w-auto">
+							<p
+								className={clsx(
+									"truncate whitespace-nowrap text-sm",
+									{
+										"w-12 min-[350px]:w-[4.55rem]  sm:w-auto":
+											cardViewSelected,
+									},
+								)}
+							>
 								Categories
 							</p>
 							<ChevronDown size={15} />

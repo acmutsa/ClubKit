@@ -59,7 +59,7 @@ const categories = await db.query.eventCategories.findMany();
 console.log('EventOptionsBar categories',categories);
 console.log('EventOptionsBar params',params);
 return (
-	<div className="flex w-[98%] flex-row justify-between rounded-lg border-2 sm:w-[90%] ">
+	<div className="flex w-[98%] flex-row justify-between rounded-lg border-2 sm:w-[90%] border-muted mt-2 md:mt-4">
 		{/* Dropdown to show either past or present events */}
 		<PastPresentDropDown
 			cardViewSelected={cardViewSelected}
@@ -67,10 +67,9 @@ return (
 		/>
 		{/* Search Component*/}
 		<EventsSearch cardViewSelected={cardViewSelected} />
+		{/* Div to keep both of these pieces at the end of the div */}
 		<div className={clsx('flex',{
-			'w-full justify-between md:px-2': !cardViewSelected,
-		
-		})}>
+			'w-full justify-between md:px-2': !cardViewSelected,})}>
 			{/* Filter by categories component */}
 			<CategoriesDropDown
 				cardViewSelected={cardViewSelected}
