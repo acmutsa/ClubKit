@@ -2,7 +2,7 @@
 
 import { db } from "db";
 import { customAlphabet } from "nanoid";
-import { insertEventSchema, insertEventSchemaFormified } from "db/zod";
+import { insertEventSchemaFormified } from "db/zod";
 import { adminAction } from "@/lib/safe-action";
 import { events, eventsToCategories } from "db/schema";
 
@@ -19,7 +19,7 @@ export const createEvent = adminAction(
 		await db.transaction(async (tx) => {
 			const eventIDs = await tx
 				.insert(events)
-				.values({ id: nanoid(), ...e })
+				.values({ ...e, id: nanoid() })
 				.returning({ eventID: events.id });
 
 			if (eventIDs.length === 0) {

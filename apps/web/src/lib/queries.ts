@@ -10,3 +10,9 @@ export const getCategoryOptions = async () => {
 	);
 	return categories;
 };
+
+// TODO: Apply filtering options later
+export const getEvents = async () => {
+	const events = await db.query.events.findMany();
+	return events;
+};

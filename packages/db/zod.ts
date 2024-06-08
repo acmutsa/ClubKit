@@ -1,4 +1,4 @@
-import { createInsertSchema } from "drizzle-zod";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { data, users, events, eventsToCategories } from "./schema";
 import { z } from "zod";
 import c from "config";
@@ -89,10 +89,9 @@ type iType = z.infer<typeof sometable>;
 // TODO: tighten insert schema constraints
 export const insertEventSchema = createInsertSchema(events);
 
-export const insertEventSchemaFormified = insertEventSchema
-	.omit({
-		id: true,
-	})
-	.merge(
-		z.object({ categories: z.string().array(), thumbnailUrl: z.string() }),
-	);
+export const insertEventSchemaFormified = insertEventSchema.merge(
+	z.object({ categories: z.string().array(), thumbnailUrl: z.string() }),
+);
+
+export const selectEventSchema = createSelectSchema(events);
+export type Event = z.infer<typeof selectEventSchema>;
