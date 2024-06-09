@@ -8,7 +8,12 @@ jiti("./src/env");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
-		domains: ["itlxdtyrc4ggxyuw.public.blob.vercel-storage.com"],
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "itlxdtyrc4ggxyuw.public.blob.vercel-storage.com",
+			},
+		],
 	},
 };
 
