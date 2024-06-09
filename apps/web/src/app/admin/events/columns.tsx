@@ -13,6 +13,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { DataTableColumnHeader } from "@/components/ui/data-table";
 import { Event } from "db/zod";
 import { formatDate } from "date-fns";
 
@@ -34,18 +35,9 @@ export const columns: ColumnDef<Event>[] = [
 	{
 		accessorKey: "name",
 		header: ({ column }) => {
-			return (
-				<Button
-					variant={"ghost"}
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-				>
-					Name
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</Button>
-			);
+			return <DataTableColumnHeader column={column} title="Name" />;
 		},
+		enableSorting: true,
 	},
 	{
 		accessorKey: "description",
@@ -84,34 +76,14 @@ export const columns: ColumnDef<Event>[] = [
 	{
 		accessorKey: "start",
 		header: ({ column }) => {
-			return (
-				<Button
-					variant={"ghost"}
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-				>
-					Start
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</Button>
-			);
+			return <DataTableColumnHeader column={column} title="Start" />;
 		},
 		cell: timeCell,
 	},
 	{
 		accessorKey: "end",
 		header: ({ column }) => {
-			return (
-				<Button
-					variant={"ghost"}
-					onClick={() =>
-						column.toggleSorting(column.getIsSorted() === "asc")
-					}
-				>
-					End
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</Button>
-			);
+			return <DataTableColumnHeader column={column} title="End" />;
 		},
 		cell: timeCell,
 	},
