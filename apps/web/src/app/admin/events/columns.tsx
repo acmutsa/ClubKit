@@ -17,14 +17,16 @@ import { DataTableColumnHeader } from "@/components/ui/data-table";
 import { Event } from "db/zod";
 import { formatDate } from "date-fns";
 
+type EventWithCheckins = Partial<Event> & { checkin_count: number };
+
 const timeFormatString = "eee, MMM dd yyyy HH:mm bb";
 
-const timeCell = ({ row }: { row: Row<Event> }) => {
+const timeCell = ({ row }: { row: Row<EventWithCheckins> }) => {
 	const formattedDate = formatDate(row.getValue("start"), timeFormatString);
 	return <div>{formattedDate}</div>;
 };
 
-export const columns: ColumnDef<Event>[] = [
+export const columns: ColumnDef<EventWithCheckins>[] = [
 	{
 		accessorKey: "id",
 		header: "ID",
@@ -86,6 +88,12 @@ export const columns: ColumnDef<Event>[] = [
 			return <DataTableColumnHeader column={column} title="End" />;
 		},
 		cell: timeCell,
+	},
+	{
+		accessorKey: "checkin_count",
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title="Checkins" />;
+		},
 	},
 	{
 		id: "actions",

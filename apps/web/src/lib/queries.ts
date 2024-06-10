@@ -1,4 +1,5 @@
-import { db } from "db";
+import { count, db, eq, sql } from "db";
+import { checkins, events, users } from "db/schema";
 
 export const getCategoryOptions = async () => {
 	const categories = (await db.query.eventCategories.findMany()).reduce(
@@ -28,4 +29,21 @@ export const getEventCheckins = async (id: string) => {
 		where: (checkins, { eq }) => eq(checkins.eventID, id),
 		orderBy: (checkins, { desc }) => desc(checkins.time),
 	});
+};
+
+export const getEventsWithCheckins = async () => {
+	return (
+		await db
+			.select({ events: events, checkin_count: count(checkins.eventID) })
+			.from(checkins)
+			.rightJoin(events, eq(events.id, checkins.eventID))
+			.groupBy(checkins.eventID, events.id)
+	).map(({ events, checkin_count }) => ({ checkin_count, ...events }));
+	// return await db.execute(sql`
+	// 	SELECT
+	// 		events.*,
+	// 		COUNT(*) AS checkin_count
+	// 	FROM checkins
+	// 	LEFT JOIN events on checkins.event_id = events.id
+	// 	GROUP BY event_id, events.id`);
 };
