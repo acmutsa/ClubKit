@@ -22,6 +22,8 @@ export default function EventsSearch({cardViewSelected}:{cardViewSelected:boolea
 		}
 		replace(`${pathname}?${params.toString()}`);
 	}, 100);
+
+	
     return (
 		<>
 			{/* Mobile Search bar */}

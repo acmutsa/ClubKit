@@ -9,7 +9,7 @@ import { unstable_noStore as noStore } from "next/cache";
 
 // Original data fetching will be done by a server component and any further filtering will be handled client-side. Data is not super large or sensentive so this is fine
 export default async function EventsView({params}:{params:SearchParams}) {
-	noStore();
+	
 	
 	console.log("events searchParams: ", params);
 	const cardViewSelected = params[eventFilters.view]
@@ -38,8 +38,8 @@ export default async function EventsView({params}:{params:SearchParams}) {
 	// TODO: Come back and add filtering options to db call
 	const start = new Date().getTime();
 
-	noStore();
 	// Currently written like this because of weirdness with the where clause where it cannot be nested far down the with clauses
+	noStore();
 	const allEvents = await db.query.events.findMany({
 		with: {
 			eventsToCategories: {
@@ -69,8 +69,6 @@ export default async function EventsView({params}:{params:SearchParams}) {
 
 
 	console.log(new Date().getTime() - start, "ms");
-
-	
 
 	return (
 		<>

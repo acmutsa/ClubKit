@@ -22,9 +22,7 @@ export default function EventsPage({
 			<EventsOptionsBar params={searchParams} />
 			<Suspense
 				fallback={
-					<div className="flex h-full w-full flex-row items-center justify-center text-center font-bold">
-						<h1>Grabbing Events. One sec...</h1>
-					</div>
+						<h1 className="font-bold text-4xl text-center pt-[15%]">Grabbing Events. One sec...</h1>
 				}>
 				<EventsView params={searchParams} />
 			</Suspense>
