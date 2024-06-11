@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import Link from "next/link";
+
 import {
 	ArrowDownIcon,
 	ArrowUpIcon,
@@ -40,15 +42,18 @@ import { Button } from "@/components/ui/button";
 import { Column } from "@tanstack/react-table";
 
 import { cn } from "@/lib/utils";
+import { string } from "zod";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	viewRoute?: string;
 }
 
 export function DataTable<TData, TValue>({
 	columns,
 	data,
+	viewRoute,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -93,21 +98,26 @@ export function DataTable<TData, TValue>({
 					<TableBody>
 						{table.getRowModel().rows?.length ? (
 							table.getRowModel().rows.map((row) => (
-								<TableRow
-									key={row.id}
-									data-state={
-										row.getIsSelected() && "selected"
-									}
+								<Link
+									legacyBehavior
+									href={`${viewRoute ?? ""}${row.getValue("id")}`}
 								>
-									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>
-											{flexRender(
-												cell.column.columnDef.cell,
-												cell.getContext(),
-											)}
-										</TableCell>
-									))}
-								</TableRow>
+									<TableRow
+										key={row.id}
+										data-state={
+											row.getIsSelected() && "selected"
+										}
+									>
+										{row.getVisibleCells().map((cell) => (
+											<TableCell key={cell.id}>
+												{flexRender(
+													cell.column.columnDef.cell,
+													cell.getContext(),
+												)}
+											</TableCell>
+										))}
+									</TableRow>
+								</Link>
 							))
 						) : (
 							<TableRow>

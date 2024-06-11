@@ -46,7 +46,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 		header: "Description",
 		cell: ({ row }) => {
 			return (
-				<div className="max-w-[80ch]">
+				<div className="relative max-h-[6lh] w-[45ch] overflow-y-hidden text-ellipsis">
 					{row.getValue("description")}
 				</div>
 			);
@@ -78,17 +78,17 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 	{
 		accessorKey: "start",
 		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title="Start" />;
+			return <DataTableColumnHeader column={column} title="Date" />;
 		},
 		cell: timeCell,
 	},
-	{
-		accessorKey: "end",
-		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title="End" />;
-		},
-		cell: timeCell,
-	},
+	// {
+	// 	accessorKey: "end",
+	// 	header: ({ column }) => {
+	// 		return <DataTableColumnHeader column={column} title="End" />;
+	// 	},
+	// 	cell: timeCell,
+	// },
 	{
 		accessorKey: "checkin_count",
 		header: ({ column }) => {
@@ -109,12 +109,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 					</DropdownMenuTrigger>
 					<DropdownMenuContent align="end">
 						<DropdownMenuItem>
-							<Link href={`/admin/events/${data.id}`}>View</Link>
-						</DropdownMenuItem>
-						<DropdownMenuItem>
-							<Link href={`/admin/events/${data.id}/edit`}>
-								Edit
-							</Link>
+							<Link href={`/events/${data.id}`}>View</Link>
 						</DropdownMenuItem>
 						<DropdownMenuItem>
 							<div
@@ -123,10 +118,23 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 										`https://portal.acmutsa.org/events/${data.id}`,
 									)
 								}
+								//TODO: set sonner to signify link copied
 							>
 								Copy link
 							</div>
 						</DropdownMenuItem>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem>
+							<Link href={`/admin/events/${data.id}/edit`}>
+								Edit
+							</Link>
+						</DropdownMenuItem>
+						<DropdownMenuItem>
+							<Link href={`/admin/events/${data.id}/checkin`}>
+								Add Checkin
+							</Link>
+						</DropdownMenuItem>
+						{/* TODO: Add delete button w/confirmation dialogue */}
 					</DropdownMenuContent>
 				</DropdownMenu>
 			);

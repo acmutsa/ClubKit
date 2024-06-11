@@ -14,7 +14,11 @@ async function Page() {
 			</div>
 			{/* <div className="border-muted">{events?.[0].name}</div> */}
 			<div className="rounded-xl p-5">
-				<DataTable columns={columns} data={events} />
+				<DataTable
+					columns={columns}
+					data={events}
+					viewRoute="/events/"
+				/>
 			</div>
 		</div>
 	);
