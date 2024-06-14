@@ -43,7 +43,16 @@ export const getEventsWithCheckins = async () => {
 
 export const getUserWithData = async () => {
 	return await db
-		.select({ user: users, data: data })
-		.from(users)
+		.select({
+			user: users,
+			data: data,
+			checkin_count: count(checkins.userID),
+		})
+		.from(checkins)
+		.rightJoin(
+			users,
+			eq(sql`CAST (users.user_id AS TEXT)`, checkins.userID),
+		)
+		.groupBy(checkins.userID, users.userID, data.userID)
 		.innerJoin(data, eq(data.userID, users.userID));
 };

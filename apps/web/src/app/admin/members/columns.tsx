@@ -35,7 +35,7 @@ export const columns: ColumnDef<UserWithData>[] = [
 	// 	},
 	// },
 	{
-		id: "fdivlName",
+		id: "name",
 		accessorFn: (row) => `${row.user.firstName} ${row.user.lastName}`,
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title="Name" />;
@@ -47,6 +47,13 @@ export const columns: ColumnDef<UserWithData>[] = [
 		id: "email",
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title="Email" />;
+		},
+	},
+	{
+		accessorKey: "checkin_count",
+		id: "checkins",
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title="Checkins" />;
 		},
 	},
 	{
@@ -81,9 +88,11 @@ export const columns: ColumnDef<UserWithData>[] = [
 		},
 		cell: ({ row }) => {
 			return (
-				<div>
+				<div className="overflow-x-scroll">
 					{row.original.data.ethnicity.map((e) => (
-						<Badge key={e}>{e}</Badge>
+						<Badge className="w-max" key={e}>
+							{e}
+						</Badge>
 					))}
 				</div>
 			);
@@ -99,9 +108,7 @@ export const columns: ColumnDef<UserWithData>[] = [
 			return (
 				<div>
 					{row.original.data.gender.map((e) => (
-						<Badge className="w-max" key={e}>
-							{e}
-						</Badge>
+						<Badge key={e}>{e}</Badge>
 					))}
 				</div>
 			);
@@ -120,49 +127,6 @@ export const columns: ColumnDef<UserWithData>[] = [
 						<Badge key={e}>{e}</Badge>
 					))}
 				</div>
-			);
-		},
-	},
-	// {
-	// 	accessorKey: "checkin_count",
-	// 	header: ({ column }) => {
-	// 		return <DataTableColumnHeader column={column} title="Checkins" />;
-	// 	},
-	// },
-	{
-		id: "actions",
-		cell: ({ row }) => {
-			const data = row.original;
-			return (
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant="ghost" className="h-8 w-8 p-0">
-							<span className="sr-only">Open menu</span>
-							<MoreHorizontal className="h-4 w-4" />
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						{/* <DropdownMenuItem>
-							<Badgenk href={`/members/${data.user.userID}`}>
-								View
-							</Badgenk>
-						</DropdownMenuItem>
-						<DropdownMenuItem>
-							<div
-								onCBadgeck={async () =>
-									await navigator.cBadgepboard.writeText(
-										`https://portal.acmutsa.org/members/${data.user.userID}`,
-									)
-								}
-								//TODO: set sonner to signify Badgenk copied
-							>
-								Copy Badgenk
-							</div>
-						</DropdownMenuItem>
-						<DropdownMenuSeparator /> */}
-						{/* TODO: Add delete button w/confirmation dialogue */}
-					</DropdownMenuContent>
-				</DropdownMenu>
 			);
 		},
 	},
