@@ -97,11 +97,37 @@ export function DataTable<TData, TValue>({
 					</TableHeader>
 					<TableBody>
 						{table.getRowModel().rows?.length ? (
-							table.getRowModel().rows.map((row) => (
-								<Link
-									legacyBehavior
-									href={`${viewRoute ?? ""}${row.getValue("id")}`}
-								>
+							viewRoute ? (
+								table.getRowModel().rows.map((row) => (
+									// Row with Link
+									<Link
+										legacyBehavior
+										href={`${viewRoute ?? ""}${row.getValue("id")}`}
+									>
+										<TableRow
+											key={row.id}
+											data-state={
+												row.getIsSelected() &&
+												"selected"
+											}
+										>
+											{row
+												.getVisibleCells()
+												.map((cell) => (
+													<TableCell key={cell.id}>
+														{flexRender(
+															cell.column
+																.columnDef.cell,
+															cell.getContext(),
+														)}
+													</TableCell>
+												))}
+										</TableRow>
+									</Link>
+								))
+							) : (
+								table.getRowModel().rows.map((row) => (
+									// Row without Link
 									<TableRow
 										key={row.id}
 										data-state={
@@ -117,8 +143,8 @@ export function DataTable<TData, TValue>({
 											</TableCell>
 										))}
 									</TableRow>
-								</Link>
-							))
+								))
+							)
 						) : (
 							<TableRow>
 								<TableCell

@@ -52,7 +52,6 @@ export const data = pgTable("data", {
 });
 
 /* EVENTS */
-
 export const eventCategories = pgTable("event_categories", {
 	id: text("id").primaryKey(),
 	name: text("name").notNull().unique(),

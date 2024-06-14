@@ -1,5 +1,5 @@
 import { count, db, eq, sql } from "db";
-import { checkins, events, users } from "db/schema";
+import { checkins, data, events, users } from "db/schema";
 
 export const getCategoryOptions = async () => {
 	const categories = (await db.query.eventCategories.findMany()).reduce(
@@ -39,11 +39,11 @@ export const getEventsWithCheckins = async () => {
 			.rightJoin(events, eq(events.id, checkins.eventID))
 			.groupBy(checkins.eventID, events.id)
 	).map(({ events, checkin_count }) => ({ checkin_count, ...events }));
-	// return await db.execute(sql`
-	// 	SELECT
-	// 		events.*,
-	// 		COUNT(*) AS checkin_count
-	// 	FROM checkins
-	// 	LEFT JOIN events on checkins.event_id = events.id
-	// 	GROUP BY event_id, events.id`);
+};
+
+export const getUserWithData = async () => {
+	return await db
+		.select({ user: users, data: data })
+		.from(users)
+		.innerJoin(data, eq(data.userID, users.userID));
 };
