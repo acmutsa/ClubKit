@@ -15,9 +15,5 @@ export default async function Page() {
 	});
 
 	if (!user) return redirect("/onboarding");
-	return (
-		<div>
-			Dash Index <SignOutButton />
-		</div>
-	);
+	return <div>Dash Index</div>;
 }

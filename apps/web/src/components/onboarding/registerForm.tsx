@@ -44,7 +44,11 @@ import {
 } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarWithYears } from "@/components/ui/calendarWithYearSelect";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
 import {
 	MultiSelector,
 	MultiSelectorContent,
@@ -53,7 +57,13 @@ import {
 	MultiSelectorList,
 	MultiSelectorTrigger,
 } from "@/components/ui/MultiSelect";
-import { Check, ChevronsUpDown, CalendarIcon, TriangleAlert } from "lucide-react";
+import { FormGroupWrapper } from "@/components/shared/form-group-wrapper";
+import {
+	Check,
+	ChevronsUpDown,
+	CalendarIcon,
+	TriangleAlert,
+} from "lucide-react";
 import { cn, range } from "@/lib/utils";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
@@ -89,7 +99,10 @@ interface RegisterFormProps {
 }
 
 export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
-	const [error, setError] = useState<{ title: string; description: string } | null>(null);
+	const [error, setError] = useState<{
+		title: string;
+		description: string;
+	} | null>(null);
 	const [resume, setResume] = useState<File | null>(null);
 	const router = useRouter();
 
@@ -123,7 +136,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 						break;
 					default:
 						toast.error(
-							`An unknown error occurred. Please try again or contact ${c.contactEmail}.`
+							`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
 						);
 						break;
 				}
@@ -140,7 +153,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 		onError: async (error) => {
 			toast.dismiss();
 			toast.error(
-				`An unknown error occurred. Please try again or contact ${c.contactEmail}.`
+				`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
 			);
 			console.log("error: ", error);
 			resetAction();
@@ -190,7 +203,9 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 			return false;
 		}
 		if (file.size > c.maxResumeSizeInBytes) {
-			form.setError("data.resume", { message: "Resume file is too large." });
+			form.setError("data.resume", {
+				message: "Resume file is too large.",
+			});
 			setResume(null);
 			return false;
 		}
@@ -200,7 +215,9 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 				"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 			].includes(file.type)
 		) {
-			form.setError("data.resume", { message: "Resume file must be a .pdf or .docx file." });
+			form.setError("data.resume", {
+				message: "Resume file must be a .pdf or .docx file.",
+			});
 			setResume(null);
 			return false;
 		}
@@ -217,10 +234,14 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>{error?.title}</AlertDialogTitle>
-						<AlertDialogDescription>{error?.description}</AlertDialogDescription>
+						<AlertDialogDescription>
+							{error?.description}
+						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel onClick={() => setError(null)}>Ok</AlertDialogCancel>
+						<AlertDialogCancel onClick={() => setError(null)}>
+							Ok
+						</AlertDialogCancel>
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
@@ -230,7 +251,10 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 				<p>Error Creating Registration: </p>
 			</div> */}
 				<Form {...form}>
-					<form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+					<form
+						className="space-y-8"
+						onSubmit={form.handleSubmit(onSubmit)}
+					>
 						<FormGroupWrapper title="Basic Info">
 							<div className="grid grid-cols-3 gap-4">
 								<FormField
@@ -281,7 +305,9 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									name="data.universityID"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>{c.universityID.name}</FormLabel>
+											<FormLabel>
+												{c.universityID.name}
+											</FormLabel>
 											<FormControl>
 												<Input {...field} />
 											</FormControl>
@@ -304,13 +330,16 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 															className={cn(
 																"w-full justify-between",
 																!field.value &&
-																	"text-muted-foreground"
+																	"text-muted-foreground",
 															)}
 														>
 															{field.value
 																? majors.find(
-																		(major) =>
-																			major === field.value
+																		(
+																			major,
+																		) =>
+																			major ===
+																			field.value,
 																	)
 																: "Select a Major"}
 															<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -320,35 +349,47 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 												<PopoverContent className="no-scrollbar max-h-[400px] w-[250px] p-0">
 													<Command>
 														<CommandInput placeholder="Search major..." />
-														<CommandEmpty>No major found.</CommandEmpty>
+														<CommandEmpty>
+															No major found.
+														</CommandEmpty>
 														<CommandList>
 															<CommandGroup>
-																{majors.map((major) => {
-																	return (
-																		<CommandItem
-																			value={major}
-																			key={major}
-																			onSelect={(value) => {
-																				form.setValue(
-																					"data.major",
-																					value
-																				);
-																			}}
-																			className="cursor-pointer "
-																		>
-																			<Check
-																				className={`h-4 mr-2 overflow-hidden w-4 ${
-																					major.toLowerCase() ===
-																					field.value
-																						? "block"
-																						: "hidden"
+																{majors.map(
+																	(major) => {
+																		return (
+																			<CommandItem
+																				value={
+																					major
 																				}
+																				key={
+																					major
+																				}
+																				onSelect={(
+																					value,
+																				) => {
+																					form.setValue(
+																						"data.major",
+																						value,
+																					);
+																				}}
+																				className="cursor-pointer "
+																			>
+																				<Check
+																					className={`mr-2 h-4 w-4 overflow-hidden ${
+																						major.toLowerCase() ===
+																						field.value
+																							? "block"
+																							: "hidden"
+																					}
 																		`}
-																			/>
-																			{major}
-																		</CommandItem>
-																	);
-																})}
+																				/>
+																				{
+																					major
+																				}
+																			</CommandItem>
+																		);
+																	},
+																)}
 															</CommandGroup>
 														</CommandList>
 													</Command>
@@ -363,7 +404,9 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									name="data.classification"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Classification</FormLabel>
+											<FormLabel>
+												Classification
+											</FormLabel>
 											<Select
 												onValueChange={field.onChange}
 												defaultValue={field.value?.toString()}
@@ -409,7 +452,9 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									name="data.graduationMonth"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Graduation Month</FormLabel>
+											<FormLabel>
+												Graduation Month
+											</FormLabel>
 											<Select
 												onValueChange={field.onChange}
 												defaultValue={field.value?.toString()}
@@ -518,7 +563,8 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 												<SelectContent>
 													{range(
 														new Date().getFullYear(),
-														new Date().getFullYear() + 5
+														new Date().getFullYear() +
+															5,
 													).map((year) => (
 														<SelectItem
 															className="cursor-pointer"
@@ -552,13 +598,18 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 															className={cn(
 																"pl-3 text-left font-normal",
 																!field.value &&
-																	"text-muted-foreground"
+																	"text-muted-foreground",
 															)}
 														>
 															{field.value ? (
-																format(field.value, "PPP")
+																format(
+																	field.value,
+																	"PPP",
+																)
 															) : (
-																<span>Pick a Date</span>
+																<span>
+																	Pick a Date
+																</span>
 															)}
 															<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
 														</Button>
@@ -576,12 +627,20 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 																? undefined
 																: field.value
 														}
-														onSelect={field.onChange}
+														onSelect={
+															field.onChange
+														}
 														disabled={(date) =>
 															date > new Date() ||
-															date < new Date("1900-01-01")
+															date <
+																new Date(
+																	"1900-01-01",
+																)
 														}
-														fromYear={new Date().getFullYear() - 100}
+														fromYear={
+															new Date().getFullYear() -
+															100
+														}
 														toYear={new Date().getFullYear()}
 														initialFocus
 													/>
@@ -600,7 +659,9 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 											<FormItem className="flex flex-col justify-between gap-y-1">
 												<FormLabel>Gender</FormLabel>
 												<MultiSelector
-													onValuesChange={field.onChange}
+													onValuesChange={
+														field.onChange
+													}
 													values={field.value}
 													loop={true}
 												>
@@ -652,7 +713,8 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 																key="I prefer not to say"
 																value="I prefer not to say"
 															>
-																I prefer not to say
+																I prefer not to
+																say
 															</MultiSelectorItem>
 														</MultiSelectorList>
 													</MultiSelectorContent>
@@ -670,7 +732,9 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 											<FormItem className="flex flex-col justify-between gap-y-1">
 												<FormLabel>Ethnicity</FormLabel>
 												<MultiSelector
-													onValuesChange={field.onChange}
+													onValuesChange={
+														field.onChange
+													}
 													values={field.value}
 													loop={true}
 												>
@@ -686,7 +750,8 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 																key="African American or Black"
 																value="African American or Black"
 															>
-																African American or Black
+																African American
+																or Black
 															</MultiSelectorItem>
 															<MultiSelectorItem
 																key="Asian"
@@ -698,19 +763,24 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 																key="Native American/Alaskan Native"
 																value="Native American/Alaskan Native"
 															>
-																Native American/Alaskan Native
+																Native
+																American/Alaskan
+																Native
 															</MultiSelectorItem>
 															<MultiSelectorItem
 																key="Native Hawaiian or Pacific Islander"
 																value="Native Hawaiian or Pacific Islander"
 															>
-																Native Hawaiian or Pacific Islander
+																Native Hawaiian
+																or Pacific
+																Islander
 															</MultiSelectorItem>
 															<MultiSelectorItem
 																key="Hispanic / Latinx"
 																value="Hispanic / Latinx"
 															>
-																Hispanic / Latinx
+																Hispanic /
+																Latinx
 															</MultiSelectorItem>
 															<MultiSelectorItem
 																key="White"
@@ -824,18 +894,28 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 								<FormField
 									control={form.control}
 									name="data.resume"
-									render={({ field: { value, onChange, ...fieldProps } }) => (
+									render={({
+										field: {
+											value,
+											onChange,
+											...fieldProps
+										},
+									}) => (
 										<FormItem>
 											<FormLabel>Resume</FormLabel>
 											<FormControl>
 												<Input
 													{...fieldProps}
 													type="file"
-													accept="application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+													accept="image/jpeg,image/png,image/gif,image/webp,image/avif,image/svg+xml"
 													onChange={(event) => {
-														const success = validateAndSetResume(event);
+														const success =
+															validateAndSetResume(
+																event,
+															);
 														if (!success) {
-															event.target.value = "";
+															event.target.value =
+																"";
 														}
 													}}
 												/>
@@ -850,7 +930,8 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 						<Button
 							disabled={
 								actionStatus == "executing" ||
-								(actionStatus == "hasSucceeded" && actionResult.data?.success)
+								(actionStatus == "hasSucceeded" &&
+									actionResult.data?.success)
 							}
 							type="submit"
 						>
@@ -860,21 +941,5 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 				</Form>
 			</div>
 		</>
-	);
-}
-
-interface FormGroupWrapperProps {
-	title: string;
-	children: React.ReactNode;
-}
-
-function FormGroupWrapper({ children, title }: FormGroupWrapperProps) {
-	return (
-		<div className="relative rounded-lg border p-5">
-			<p className="bg-background absolute top-0 z-10 -translate-y-[10px] px-2 text-sm font-bold">
-				{title}
-			</p>
-			<div className="relative top-0 space-y-6">{children}</div>
-		</div>
 	);
 }
