@@ -63,21 +63,15 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 			</div>
 
 			{/* Large screen navbar */}
-			<div className="hidden items-center justify-end gap-x-2 md:flex my-2">
+			<div className="my-2 hidden items-center justify-end gap-x-2 md:flex">
 				{user ? (
 					<>
 						<Link
-							href={
-								registrationComplete
-									? "/dash"
-									: "/sign-up"
-							}
+							href={registrationComplete ? "/dash" : "/sign-up"}
 						>
 							<Button
 								variant={
-										registrationComplete
-										? "outline"
-										: "default"
+									registrationComplete ? "outline" : "default"
 								}
 							>
 								{registrationComplete
@@ -91,7 +85,12 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 						{(user.role === "admin" ||
 							user.role === "super_admin") && (
 							<Link href={"/admin"}>
-								<Button variant={"outline"} className="text-blue-400">Admin</Button>
+								<Button
+									variant={"outline"}
+									className="text-blue-400"
+								>
+									Admin
+								</Button>
 							</Link>
 						)}
 						<ProfileButton
@@ -128,20 +127,19 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 							<>
 								<Link
 									href={
-											registrationComplete
+										registrationComplete
 											? "/dash"
 											: "/register"
 									}
 								>
 									<Button
 										variant={
-												registrationComplete
+											registrationComplete
 												? "ghost"
 												: "default"
 										}
 									>
-										{
-											registrationComplete
+										{registrationComplete
 											? "Dashboard"
 											: "Complete Registration"}
 									</Button>
