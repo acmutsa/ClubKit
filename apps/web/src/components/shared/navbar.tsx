@@ -33,6 +33,8 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 				with: { data: true },
 			})
 		: null;
+
+	const registrationComplete = user != null;
 	return (
 		<div
 			className={
@@ -61,25 +63,24 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 			</div>
 
 			{/* Large screen navbar */}
-			<div className="hidden items-center justify-end gap-x-2 md:flex">
+			<div className="hidden items-center justify-end gap-x-2 md:flex my-2">
 				{user ? (
 					<>
 						<Link
 							href={
-								clerkUser?.publicMetadata.registrationComplete
+								registrationComplete
 									? "/dash"
-									: "/register"
+									: "/sign-up"
 							}
 						>
 							<Button
 								variant={
-									clerkUser?.publicMetadata
-										.registrationComplete
+										registrationComplete
 										? "outline"
 										: "default"
 								}
 							>
-								{clerkUser?.publicMetadata.registrationComplete
+								{registrationComplete
 									? "Dashboard"
 									: "Complete Registration"}
 							</Button>
@@ -90,7 +91,7 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 						{(user.role === "admin" ||
 							user.role === "super_admin") && (
 							<Link href={"/admin"}>
-								<Button variant={"outline"}>Admin</Button>
+								<Button variant={"outline"} className="text-blue-400">Admin</Button>
 							</Link>
 						)}
 						<ProfileButton
@@ -109,7 +110,7 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 								Sign In
 							</Button>
 						</Link>
-						<Link href={"/register"}>
+						<Link href={"/sign-up"}>
 							<Button>Register</Button>
 						</Link>
 					</>
@@ -127,22 +128,20 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 							<>
 								<Link
 									href={
-										clerkUser?.publicMetadata
-											.registrationComplete
+											registrationComplete
 											? "/dash"
 											: "/register"
 									}
 								>
 									<Button
 										variant={
-											clerkUser?.publicMetadata
-												.registrationComplete
+												registrationComplete
 												? "ghost"
 												: "default"
 										}
 									>
-										{clerkUser?.publicMetadata
-											.registrationComplete
+										{
+											registrationComplete
 											? "Dashboard"
 											: "Complete Registration"}
 									</Button>

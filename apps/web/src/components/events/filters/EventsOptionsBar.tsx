@@ -25,6 +25,7 @@ export type EventType = {
 	id: string;
 	name: string;
 	description: string;
+	thumbnailUrl: string;
 	start: Date;
 	end: Date;
 	checkinStart: Date;
@@ -50,14 +51,16 @@ export const eventFilters = {
 
 export default async function EventsOptionsBar({params}:{params:SearchParams}) {
 
-const cardViewSelected = (params.view) ? eventFilters.card === params[eventFilters.view] ?? eventFilters.card : true;
+const cardViewSelected = (params.view) 
+	? eventFilters.card === params[eventFilters.view] ?? eventFilters.card : true;
+
 const showUpcomingEvents = params[eventFilters.showEvents]
 	? eventFilters.showUpcomingEvents === params[eventFilters.showEvents] ??
 		eventFilters.showUpcomingEvents
 	: true;
+
 const categories = await db.query.eventCategories.findMany();
-console.log('EventOptionsBar categories',categories);
-console.log('EventOptionsBar params',params);
+
 return (
 	<div className="flex w-[98%] flex-row justify-between rounded-lg border-2 sm:w-[90%] border-muted mt-2 md:mt-4">
 		{/* Dropdown to show either past or present events */}
