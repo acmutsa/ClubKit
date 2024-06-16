@@ -17,8 +17,8 @@ export default async function EventDetails({id}:{id:string}) {
 
   // Also, we should display how many points something is worth to entice people to show up for it 
   return (
-      <div>
-        <h1>Event Details of id: {id} </h1>
+      <div className="flex flex-1 flex-col mt-2">
+        <h1 className="font-black text-center border-b sm:text-xl md:text-3xl">{event.name} </h1>
       </div>
     );
 }

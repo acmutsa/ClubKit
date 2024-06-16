@@ -90,8 +90,9 @@ type iType = z.infer<typeof sometable>;
 export const insertEventSchema = createInsertSchema(events);
 
 export const insertEventSchemaFormified = insertEventSchema.merge(
-	z.object({ categories: z.string().array(), thumbnailUrl: z.string() }),
+	z.object({ categories: z.string().array().min(1,"You must select one or more categories"),  }),
 );
+// thumbnailUrl: z.string()
 
 export const selectEventSchema = createSelectSchema(events);
 export type Event = z.infer<typeof selectEventSchema>;

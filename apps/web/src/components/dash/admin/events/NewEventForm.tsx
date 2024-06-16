@@ -126,6 +126,7 @@ export default function NewEventForm({
 		if (Object.keys(form.formState.errors).length > 0) {
 			console.log("Errors: ", form.formState.errors);
 		}
+		
 	}, [form.formState]);
 
 	const {
@@ -148,6 +149,10 @@ export default function NewEventForm({
 						toast.error(
 							`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
 						);
+						setError({
+							title: "Some error",
+							description: "Error occured",
+						});
 						break;
 				}
 				resetAction();
