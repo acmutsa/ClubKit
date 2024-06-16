@@ -14,20 +14,26 @@ import clsx from "clsx";
 import { Badge } from "../ui/badge";
 import c from "config"
 export default function EventCardComponent({ event,isPast }: { event: EventType,isPast:boolean }) {
-
+	// Should this be in suspense bc of the pictures? 
   return (
 		<Card className="group flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md hover:shadow-slate-400 md:hover:scale-105">
 			{/* flex w-full flex-col items-center */}
-			<CardHeader className="flex w-full flex-col p-0 pb-4">
-				<Image
-					src={defaultImg}
-					alt="Event Image"
-					priority={true}
-					className={clsx("rounded-md", {
-						"grayscale group-hover:grayscale-0": isPast,
-					})}
-					placeholder="blur"
-				/>
+			<CardHeader className="flex w-full flex-col items-center p-0 pb-4">
+				<div className="flex h-auto w-full">
+					<Image
+						src={event.thumbnailUrl}
+						alt="Event Image"
+						priority={true}
+						width={0}
+						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+						height={0}
+						quality={75}
+						className={clsx("h-auto w-full rounded-md", {
+							"h-auto grayscale group-hover:grayscale-0": isPast,
+						})}
+						// placeholder="blur"
+					/>
+				</div>
 			</CardHeader>
 			<CardContent className="flex w-full flex-col p-0 pb-4">
 				{/* This will eventually change to the source passed in */}
@@ -93,9 +99,11 @@ export default function EventCardComponent({ event,isPast }: { event: EventType,
 					aria-disabled={isPast}
 					tabIndex={isPast ? -1 : 0}
 				>
-					<h1 className={clsx('text-blue-400 dark:text-sky-300',{
-						'line-through':isPast,
-					})}>
+					<h1
+						className={clsx("text-blue-400 dark:text-sky-300", {
+							"line-through": isPast,
+						})}
+					>
 						Check-In
 					</h1>
 				</Link>
