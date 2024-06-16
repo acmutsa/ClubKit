@@ -1,7 +1,7 @@
 
 
 
-export default function EventsCheckin(){
+export default function EventsCheckin({id}: {id: string}){
     return (
         <div>
             <h1>Events Checkin</h1>

@@ -47,3 +47,21 @@ export const getEventsWithCheckins = async () => {
 	// 	LEFT JOIN events on checkins.event_id = events.id
 	// 	GROUP BY event_id, events.id`);
 };
+
+export const getEventDetails = async (id: string) => {
+	return db.query.events.findFirst({
+		with: {
+			eventsToCategories: {
+				with: {
+					category: {
+						columns: {
+							name: true,
+							color: true,
+						},
+					},
+				},
+			},
+		},
+		where: eq(events.id, id),
+	});
+}

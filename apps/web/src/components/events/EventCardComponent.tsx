@@ -13,6 +13,9 @@ import defaultImg from "../../../public/img/test_image.webp";
 import clsx from "clsx";
 import { Badge } from "../ui/badge";
 import c from "config"
+import EventCategories from "./EventCategories";
+
+
 export default function EventCardComponent({ event,isPast }: { event: EventType,isPast:boolean }) {
 	// Should this be in suspense bc of the pictures? 
   return (
@@ -40,39 +43,15 @@ export default function EventCardComponent({ event,isPast }: { event: EventType,
 				<CardTitle className="w-full truncate whitespace-nowrap px-4 pb-1 text-center font-bold md:px-2 ">
 					{event.name}
 				</CardTitle>
-				<div className="flex w-full flex-row items-center justify-center space-x-3 pb-6 pt-2 md:space-x-4">
-					{event.eventsToCategories.length > 0 ? (
-						event.eventsToCategories.map((category) => {
-							// Style is like this for now because of the way tailwind ships, it prevents you from using arbitrary colors that are not known ahead of time
-							return (
-								<Badge
-									key={category.category.name}
-									style={{
-										backgroundColor:
-											category.category.color,
-									}}
-								>
-									<h1 className="text-sm text-muted ">
-										{category.category.name}
-									</h1>
-								</Badge>
-							);
-						})
-					) : (
-						<Badge>
-							<h1 className="text-sm">{c.clubName}</h1>
-						</Badge>
-					)}
-					{isPast && (
-						<Badge className="bg-red-400 hover:bg-red-400">
-							<h1 className="text-sm">Past</h1>
-						</Badge>
-					)}
-				</div>
+				<EventCategories
+					event={event}
+					isPast={isPast}
+					className="pb-3 pt-3"
+				/>
 				<div className="flex w-full justify-center px-2 text-gray-600 md:px-6">
 					<p className="text-primary">
 						{`${isPast ? "Ended on: " : ""}`}
-						{event.start.toLocaleString("en-US", {
+						{event.start.toLocaleString(undefined, {
 							hourCycle: "h12",
 							dateStyle: "medium",
 							timeStyle: "short",
