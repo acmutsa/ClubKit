@@ -15,14 +15,17 @@ export default function EventsPage({
 }) {
 	// bg-gradient-to-tr from-blue-400 to-muted
 	return (
-		<div className="flex h-screen w-screen flex-col items-center no-scrollbar">
-			<Navbar/>
+		<div className="flex h-[100dvh] w-screen flex-col items-center no-scrollbar">
+			<Navbar />
 			<EventsTitle />
 			<EventsOptionsBar params={searchParams} />
 			<Suspense
 				fallback={
-						<h1 className="font-bold text-4xl text-center pt-[15%]">Grabbing Events. One sec...</h1>
-				}>
+					<h1 className="pt-[15%] text-center text-4xl font-bold">
+						Grabbing Events. One sec...
+					</h1>
+				}
+			>
 				<EventsView params={searchParams} />
 			</Suspense>
 		</div>
