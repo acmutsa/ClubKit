@@ -8,16 +8,16 @@ import EventCategories from "./EventCategories";
 import { getEventDetails } from "@/lib/queries";
 import { MapPin,Clock,Calendar,Hourglass } from "lucide-react";
 import { format } from "path";
-import { unstable_noStore as no_store } from "next/cache";
 import Link from "next/link";
 import { ScrollArea } from "../ui/scroll-area";
+import {google,ics,outlook} from "calendar-link"
+
 
 export default async function EventDetails({id}:{id:string}) {
   const aboutACM ="ACM is the premier organization on campus for students interested in technology. ACM is dedicated to providing members with opportunities for professional, academic, and social growth outside the classroom in order to prepare students for their career in tech or fuel their interest in the tech field. Anyone who has an interest in technology can join ACM.";
-  const checkingIn = 'The membership portal is ACM\'s new method of tracking member check-ins and awarding points. By simply visiting this page during the event and clicking the Check-in button, you can easily garner points towards your membership for the semester.Share this event\'s check-in page quickly using this QR Code:'
+  const checkingIn = 'The membership portal is ACM\'s new method of tracking member check-ins and awarding points. By simply visiting this page during the event and clicking the Check-in button, you can easily garner points towards your membership for the semester.';
 
 
-    no_store();
     const event = await getEventDetails(id);
     
   if (!event){
@@ -47,19 +47,33 @@ export default async function EventDetails({id}:{id:string}) {
 
   const checkInUrl = `events/${event.id}/checkin`;
   
-  const checknAvailabile = event.checkinStart <= currentDate && currentDate<= event.checkinEnd;
+  const checkinAvailabile = event.checkinStart <= currentDate && currentDate<= event.checkinEnd;
 
-  const checkInMessage = checknAvailabile 
-  ? "Ready to check in? Click here!" : (isPast) ? "Check-in is closed":
-  `Check-in starts at ${event.checkinStart.toLocaleString(undefined, {
-    hourCycle: "h12",
-    hour:"numeric",
-    minute:"2-digit",
-    timeZoneName:"short"
-  })}`;
+  const checkInMessage = checkinAvailabile
+		? "Ready to check in? Click here!"
+		: isPast
+			? "Check-in is closed"
+			: `Check-in starts at ${event.checkinStart.toLocaleString(
+					undefined,
+					{
+						hourCycle: "h12",
+						hour: "numeric",
+						minute: "2-digit",
+						timeZoneName: "short",
+					},
+				)}`;
 
-  const googleCalLink = "https://www.google.com/";
-  const icalLink = "https://www.google.com/";
+  const eventCalendarLink = {
+    title: event.name,
+    description: event.description,
+    start: event.start.toISOString(),
+    end: event.end.toISOString(),
+    location: event.location,
+  }
+
+  const googleCalLink = google(eventCalendarLink);
+  const icalLink = ics(eventCalendarLink);
+  const outlookLink = outlook(eventCalendarLink);
 
   // Also, we should display how many points something is worth to entice people to show up for it 
   return (
@@ -102,8 +116,8 @@ export default async function EventDetails({id}:{id:string}) {
 			</div>
 			<div className="flex w-full flex-col items-center justify-center">
 				{/* Might want to consider a scrollview for this if it gets too long? */}
-				<div className="flex w-full items-center justify-center px-7 pb-6">
-					<p className="text-center font-bold">{event.description}</p>
+				<div className="flex w-full flex-col items-center justify-center px-7 pb-6 pt-2">
+					<p className="text-center">{event.description}</p>
 				</div>
 			</div>
 			<div className="flex flex-col items-center justify-center">
@@ -112,7 +126,7 @@ export default async function EventDetails({id}:{id:string}) {
 					className={clsx(
 						"flex h-full w-1/2 flex-row items-center justify-center",
 						{
-							"pointer-events-none": isPast,
+							"pointer-events-none": isPast || !checkinAvailabile,
 						},
 					)}
 					aria-disabled={isPast}
@@ -120,7 +134,8 @@ export default async function EventDetails({id}:{id:string}) {
 				>
 					<Button
 						className={clsx("bg-blue-400 dark:bg-sky-300", {
-							grayscale: isPast || !checknAvailabile,
+							"pointer-events-none grayscale":
+								isPast || !checkinAvailabile,
 						})}
 					>
 						{checkInMessage}
@@ -130,12 +145,15 @@ export default async function EventDetails({id}:{id:string}) {
 			<div className="flex w-full flex-col items-center justify-center gap-5 pt-5">
 				<h1 className="text-xl font-bold">Streaming on...</h1>
 				<div className="flex w-full flex-row items-center justify-center gap-5">
-					<Link href="https://www.youtube.com/@acmutsa/streams">
+					<Link
+						href="https://www.youtube.com/@acmutsa/streams"
+						target="_blank"
+					>
 						<Button className=" bg-red-400 text-slate-100">
 							Youtube
 						</Button>
 					</Link>
-					<Link href="https://www.twitch.tv/acmutsa">
+					<Link href="https://www.twitch.tv/acmutsa" target="_blank">
 						<Button className="bg-purple-400 text-slate-100">
 							Twitch
 						</Button>
@@ -145,24 +163,33 @@ export default async function EventDetails({id}:{id:string}) {
 			<div className="flex w-full flex-col items-center justify-center gap-5">
 				<h1 className="text-xl font-bold">Need a Reminder?</h1>
 				<div className="flex w-full flex-row items-center justify-center gap-5">
-					<Link href={googleCalLink}>
-						<Button>Google Calendar</Button>
+					<Link href={googleCalLink} target="_blank">
+						<Button className="bg-blue-500 text-slate-100">
+							Google Calendar
+						</Button>
 					</Link>
-          <Link href={icalLink}>
-          <Button>
-            iCal
-          </Button>
-          </Link>
+					<Link href={icalLink} target="_blank">
+						<Button className="bg-red-600 text-slate-100">
+							iCalendar
+						</Button>
+					</Link>
+					<Link href={outlookLink} target="_blank">
+						<Button className="bg-blue-800 text-white">
+							Outlook
+						</Button>
+					</Link>
 				</div>
 			</div>
-      <div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
-        <h1 className="text-xl font-bold border-b-2">About ACM</h1>
-        <p className=" px-7">{aboutACM}</p>
-        </div>
-        <div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
-        <h1 className="text-xl font-bold border-b-2">Checking In</h1>
-        <p className=" px-7">{checkingIn}</p>
-        </div>
+			<div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
+				<h1 className="border-b-[3px] text-xl font-bold">About ACM</h1>
+				<p className=" px-7">{aboutACM}</p>
+			</div>
+			<div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
+				<h1 className="border-b-[3px] text-xl font-bold">
+					Checking In
+				</h1>
+				<p className=" px-7">{checkingIn}</p>
+			</div>
 		</div>
   );
 }
