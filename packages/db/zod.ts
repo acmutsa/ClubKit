@@ -96,9 +96,16 @@ export type UserWithData = z.infer<typeof selectUserWithDataSchema>;
 
 export const insertEventSchema = createInsertSchema(events);
 
-export const insertEventSchemaFormified = insertEventSchema.merge(
-	z.object({ categories: z.string().array(), thumbnailUrl: z.string() }),
-);
+export const insertEventSchemaFormified = insertEventSchema
+	.merge(
+		z.object({
+			categories: z
+				.string()
+				.array()
+				.min(1, "You must select one or more categories"),
+		}),
+	)
+	.omit({ id: true });
 
 export const selectEventSchema = createSelectSchema(events);
 export type Event = z.infer<typeof selectEventSchema>;
