@@ -21,8 +21,7 @@ export default function EventCardComponent({ event,isPast }: { event: EventType,
   return (
 		<Card className="group flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md hover:shadow-slate-400 md:hover:scale-105">
 			{/* flex w-full flex-col items-center */}
-			<CardHeader className="flex w-full flex-col items-center p-0 pb-4">
-				<div className="flex h-auto w-full">
+			<CardHeader className="p-0 pb-4 h-full flex justify-center">
 					<Image
 						src={event.thumbnailUrl}
 						alt="Event Image"
@@ -31,15 +30,12 @@ export default function EventCardComponent({ event,isPast }: { event: EventType,
 						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 						height={0}
 						quality={75}
-						className={clsx("h-auto w-full rounded-md", {
+						className={clsx("w-full rounded-md", {
 							"h-auto grayscale group-hover:grayscale-0": isPast,
 						})}
-						// placeholder="blur"
 					/>
-				</div>
 			</CardHeader>
-			<CardContent className="flex w-full flex-col p-0 pb-4">
-				{/* This will eventually change to the source passed in */}
+			<CardContent className="flex flex-1 flex-col w-full p-0 pb-4 justify-end">
 				<CardTitle className="w-full truncate whitespace-nowrap px-4 pb-1 text-center font-bold md:px-2 ">
 					{event.name}
 				</CardTitle>
@@ -59,7 +55,7 @@ export default function EventCardComponent({ event,isPast }: { event: EventType,
 					</p>
 				</div>
 			</CardContent>
-			<CardFooter className="flex w-full items-end">
+			<CardFooter className="flex w-full">
 				<Link
 					href={`/events/${event.id}`}
 					className="flex h-full w-1/2 flex-row items-center justify-center border-r border-gray-400"
