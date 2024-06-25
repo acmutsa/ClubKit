@@ -20,18 +20,17 @@ export default async function EventsView({params}:{params:SearchParams}) {
 			eventFilters.showUpcomingEvents
 		: true;
 
+	const currDate = new Date();
+
 	const dateComparison = showUpcomingEvents
-		? gte(events.start, new Date())
-		: lt(events.start, new Date());
+		? gte(events.end,currDate)
+		: lt(events.end, currDate);
 
 
 	const eventSearch = params[eventFilters.query] ?? "";
 	const eventSearchQuery = ilike(events.name, `%${eventSearch}%`);
 	const categories = new Set(params[eventFilters.categories]?.split(",") ?? [])
 	
-	
-	const start = new Date().getTime();
-
 	// Currently written like this because of weirdness with the where clause where it cannot be nested far down the with clauses
 	noStore();
 	const allEvents = await db.query.events.findMany({
@@ -78,7 +77,7 @@ export default async function EventsView({params}:{params:SearchParams}) {
 	}
 
 	return (
-			<div className="flex w-full no-scrollbar">
+			<div className="flex flex-1 w-full no-scrollbar">
 				{cardViewSelected ? (
 					<EventsCardView events={allEvents} />
 				) : (

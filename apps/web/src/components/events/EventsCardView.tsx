@@ -10,15 +10,18 @@ export default function EventsCardView({
   const currentDate = new Date();
 
   return (
-   
-    <div className="w-full flex flex-col items-center no-scrollbar">
-      <ScrollArea className="w-[95%] flex h-[600px] no-scrollbar">
-        <div className="w-[90%] md:w-[95%] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 mx-auto mt-4 md:mb-4 no-scrollbar">
-          {events.map((event) => (
-            <EventCardComponent key={event.id} event={event} isPast={event.start < currentDate} />
-          ))}
-        </div>
-      </ScrollArea>
-    </div>
+		<div className="flex flex-1 w-full flex-col items-center no-scrollbar">
+			<ScrollArea className="flex w-[95%] no-scrollbar max-h-[75dvh] h-auto">
+				<div className="mx-auto mt-4 grid w-[90%] grid-cols-1 gap-6 no-scrollbar sm:grid-cols-2 md:mb-4 md:w-[95%] lg:grid-cols-3 2xl:grid-cols-4">
+					{events.map((event) => (
+						<EventCardComponent
+							key={event.id}
+							event={event}
+							isPast={event.end < currentDate}
+						/>
+					))}
+				</div>
+			</ScrollArea>
+		</div>
   );
 }
