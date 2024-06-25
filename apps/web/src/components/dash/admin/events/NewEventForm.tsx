@@ -158,7 +158,7 @@ export default function NewEventForm({
 				resetAction();
 				return;
 			}
-			toast.success("Registration successful!", {
+			toast.success("Event Created successfully!", {
 				description: "You'll be redirected shortly.",
 			});
 			setTimeout(() => {
