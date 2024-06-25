@@ -5,6 +5,7 @@ export default {
 		maxLength: 6,
 	},
 	contactEmail: "tech@acmutsa.org",
+	// Think this can be removed?
 	eventTypes: {
 		ACM: {
 			color: "#179BD5",
@@ -35,6 +36,15 @@ export default {
 			"Prefer not to say",
 		],
 	},
+	calendarLinks:[
+		'google',
+		'outlook',
+		'ics',
+	],
+	streamingLinks: [
+		{title:'twitch',href:'https://www.twitch.tv/acmutsa'},
+		{title:'youtube',href:'https://www.youtube.com/@acmutsa/streams'}
+	],
 	maxResumeSizeInBytes: 3670016,
 	dashPaths: {
 		admin: {
