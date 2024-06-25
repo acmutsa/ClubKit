@@ -2,8 +2,7 @@ import EventCheckin from "@/components/events/id/checkin/EventCheckin";
 import Navbar from "@/components/shared/navbar";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import c from "config";
-import EventNotFound from "@/components/events/shared/EventNotFound";
+import EventError from "@/components/events/shared/EventError";
 import { Suspense } from "react";
 
 export default function Page({params}: {params: {slug: string}}){
@@ -15,7 +14,7 @@ export default function Page({params}: {params: {slug: string}}){
 
     // This case should never be a thing, but just in case...
     if (!params?.slug){
-        return <EventNotFound />;
+        return <EventError message="Event Not Found" />;
     }
 
     return (

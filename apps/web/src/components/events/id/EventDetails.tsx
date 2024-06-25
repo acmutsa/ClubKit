@@ -6,7 +6,7 @@ import { getEventDetails } from "@/lib/queries";
 import { MapPin,Clock,Calendar,Hourglass } from "lucide-react";
 import Link from "next/link";
 import {google,ics,outlook} from "calendar-link"
-import EventNotFound from "../shared/EventNotFound";
+import EventError from "../shared/EventError";
 import TwitchIcon from "../../../../public/img/logos/twitch-icon.svg";
 // Icons below are all credit to Icons 8
 import YoutubeIcon from "../../../../public/img/logos/youtube-icon.svg";
@@ -22,7 +22,7 @@ export default async function EventDetails({id}:{id:string}) {
     const event = await getEventDetails(id);
     
   if (!event){
-    return <EventNotFound/>;
+    return <EventError message="Event Not Found" />;
   }
   const currentDate = new Date();
   console.log(event);

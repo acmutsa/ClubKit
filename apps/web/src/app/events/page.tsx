@@ -16,7 +16,7 @@ export default function EventsPage({
 	// bg-gradient-to-tr from-blue-400 to-muted
 	return (
 		<div className="flex h-[100dvh] w-screen flex-col items-center no-scrollbar">
-			<Navbar />
+			<Navbar showBorder />
 			<EventsTitle />
 			<EventsOptionsBar params={searchParams} />
 			<Suspense
