@@ -11,16 +11,12 @@ import {
 import Link from "next/link";
 import defaultImg from "../../../public/img/test_image.webp";
 import clsx from "clsx";
-import { Badge } from "../ui/badge";
-import c from "config"
 import EventCategories from "./EventCategories";
 
 
 export default function EventCardComponent({ event,isPast }: { event: EventType,isPast:boolean }) {
-	// Should this be in suspense bc of the pictures? 
   return (
 		<Card className="group flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md hover:shadow-slate-400 md:hover:scale-105">
-			{/* flex w-full flex-col items-center */}
 			<CardHeader className="p-0 pb-4 h-full flex justify-center">
 					<Image
 						src={event.thumbnailUrl}
