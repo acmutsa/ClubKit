@@ -53,6 +53,7 @@ export default {
 			Events: "/admin/events",
 		},
 	},
+	maxCheckinDescriptionLength: 400,
 	icon: {
 		svg: "/img/logos/acm.svg",
 	},
