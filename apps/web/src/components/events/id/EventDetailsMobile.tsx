@@ -7,7 +7,7 @@ import EventCategories from "../EventCategories";
 import { MapPin, Clock, Calendar, Hourglass } from "lucide-react";
 import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
-
+import { UserRoundCheck } from "lucide-react";
 import type { EventType } from "../filters/EventsOptionsBar";
 
 
@@ -24,7 +24,7 @@ export default function EventDetailsMobile({event}:{event:EventType}) {
 
     const currentDate = new Date();
 	//   console.log(event);
-	const isPast = event.end < currentDate;
+	const isEventPassed = event.end < currentDate;
 	// Make sure that this is converting properly
 	const startTime = event.start.toLocaleString(undefined, {
 		hourCycle: "h12",
@@ -46,12 +46,12 @@ export default function EventDetailsMobile({event}:{event:EventType}) {
 
 	const checkInUrl = `/events/${event.id}/checkin`;
 
-	const checkinAvailabile =
+	const isCheckinAvailable =
 		event.checkinStart <= currentDate && currentDate <= event.checkinEnd;
 
-	const checkInMessage = checkinAvailabile
+	const checkInMessage = isCheckinAvailable
 		? "Ready to check in? Click here!"
-		: isPast
+		: isEventPassed
 			? "Check-in is closed"
 			: `Check-in starts at ${event.checkinStart.toLocaleString(
 					undefined,
@@ -74,7 +74,7 @@ export default function EventDetailsMobile({event}:{event:EventType}) {
 
     return (
 		<div className="flex flex-col space-y-4 md:hidden">
-			<div className="flex h-auto w-full items-center justify-center mb-2">
+			<div className="flex h-auto w-full items-center justify-center">
 				<Image
 					src={event.thumbnailUrl}
 					alt="Event Image"
@@ -86,8 +86,8 @@ export default function EventDetailsMobile({event}:{event:EventType}) {
 					className={clsx("h-auto w-1/2 rounded-md", {})}
 				/>
 			</div>
-			<div className="flex w-full flex-col items-center justify-center gap-4">
-				<EventCategories event={event} isPast={isPast} />
+			<div className="flex w-full flex-col items-center justify-center gap-5">
+				<EventCategories event={event} isPast={isEventPassed} />
 				<div className="flex flex-col gap-2">
 					<div className="flex items-center justify-start gap-3">
 						<MapPin size={24} />
@@ -119,19 +119,26 @@ export default function EventDetailsMobile({event}:{event:EventType}) {
 					className={clsx(
 						"flex h-full w-1/2 flex-row items-center justify-center",
 						{
-							"pointer-events-none": isPast || !checkinAvailabile,
+							"pointer-events-none":
+								isEventPassed || !isCheckinAvailable,
 						},
 					)}
-					aria-disabled={isPast}
-					tabIndex={isPast ? -1 : 0}
+					aria-disabled={isEventPassed}
+					tabIndex={isEventPassed ? -1 : 0}
 				>
 					<Button
-						className={clsx("bg-blue-400 dark:bg-sky-300", {
-							"pointer-events-none grayscale":
-								isPast || !checkinAvailabile,
-						})}
+						className={clsx(
+							"flex items-center gap-4 bg-blue-400 p-5 dark:bg-sky-300",
+							{
+								"pointer-events-none grayscale":
+									isEventPassed || !isCheckinAvailable,
+							},
+						)}
 					>
-						{checkInMessage}
+						<UserRoundCheck size={24} />
+						<p className="text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+							{checkInMessage}
+						</p>
 					</Button>
 				</Link>
 			</div>

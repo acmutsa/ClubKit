@@ -65,3 +65,13 @@ export const getEventDetails = async (id: string) => {
 		where: eq(events.id, id),
 	});
 }
+
+
+export const getUserCheckin = async (eventID: string,userID:string) => {
+	return db.query.checkins.findFirst({
+		where: (checkins, { and }) => and(
+			eq(checkins.eventID, eventID),
+			eq(checkins.userID, userID)
+		)
+	});
+}
