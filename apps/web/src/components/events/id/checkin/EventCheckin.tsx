@@ -1,16 +1,23 @@
-import { db } from "db";
-import NotFound from "../../../shared/NotFound";
-import Link from "next/link";
-export default async function EventCheckin({ id }: { id: string }) {
+import PageError from "../../../shared/PageError";
+import { getEventById,getUserCheckin } from "@/lib/queries";
+import EventCheckinForm from "./EventCheckinForm";
+export default async function EventCheckin({ eventID,userID }: { eventID: string,userID:string }) {
 
-    const event = await db.query.events.findFirst({
-		where: (events, { eq }) => eq(events.id, id),
-	});
+    const eventPromise = getEventById(eventID);
+
+    const checkedInUser = getUserCheckin(eventID,userID);
+
+    const [event,isCheckedInUser] = await Promise.all([eventPromise,checkedInUser]);
 
     const currDate = new Date();
-    const href = "/events";
     if (!event){
-        return <NotFound message="Event Not Found" href={href} />
+        return <PageError message="Event Not Found" href={"/events"} />
+    }
+
+    const href = `/events/${event.id}`;
+
+    if (isCheckedInUser){
+        return <PageError message="You have already checked in" href={href} />;
     }
 
     const isPassed = event.end < currDate;
@@ -32,8 +39,12 @@ export default async function EventCheckin({ id }: { id: string }) {
     // }
 
     return (
-        <div>
-            <h1>Events Checkin</h1>
-        </div>
-    );
+		<div className="flex w-full flex-1 flex-col gap-[8%]">
+			<div className="flex w-full flex-col items-center justify-center gap-3 text-xl">
+				<h1 className="text-2xl">Event Check-In</h1>
+				<h1 className="text-2xl font-bold text-center">{`${event.name}`}</h1>
+			</div>
+			<EventCheckinForm eventID={eventID} userID={userID}  />
+		</div>
+	);
 }

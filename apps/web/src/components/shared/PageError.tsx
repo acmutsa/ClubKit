@@ -1,7 +1,7 @@
 import c from "config"
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
-export default function NotFound({message,href}:{message:string,href:string}) {
+export default function PageError({message,href}:{message:string,href:string}) {
     return (
 		<div className="flex w-full flex-1 flex-col items-center justify-center space-y-5">
 			<h1 className="text-center text-4xl font-black md:text-6xl">
