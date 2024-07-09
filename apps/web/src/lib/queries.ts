@@ -1,4 +1,5 @@
-import { count, db, eq, sql } from "db";
+import { now } from "@internationalized/date";
+import { count, db, eq, sql, between, union } from "db";
 import { checkins, events, users } from "db/schema";
 
 export const getCategoryOptions = async () => {
@@ -16,6 +17,19 @@ export const getCategoryOptions = async () => {
 export const getEvents = async () => {
 	const events = await db.query.events.findMany();
 	return events;
+};
+
+export const getEventStatsOverview = async () => {
+	const [groupedStats] = await db
+		.select({
+			total: count(),
+			thisWeek:
+				sql`COUNT(*) FILTER (WHERE ${events.start} BETWEEN CURRENT_TIMESTAMP AND CURRENT_TIMESTAMP + INTERVAL '7 days')`.mapWith(
+					Number,
+				),
+		})
+		.from(events);
+	return groupedStats;
 };
 
 export const getEventById = async (id: string) => {
