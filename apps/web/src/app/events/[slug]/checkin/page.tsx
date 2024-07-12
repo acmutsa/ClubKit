@@ -26,6 +26,7 @@ export default function Page({params}: {params: {slug: string}}){
 		</div>
     );
 }   
+export const runtime = "edge";
 
 
   

@@ -3,7 +3,6 @@ import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import c from "config"
 export default function EventCategories ({event,isPast,className}:{event: EventType,isPast:boolean,className?:string}) {
-	// flex w-full flex-row items-center justify-center space-x-3 md:space-x-4 ${className}
 	return (
 		<div className={cn('flex w-full flex-row items-center justify-center space-x-3 md:space-x-4',className)}>
 			{event.eventsToCategories.length > 0 ? (
