@@ -117,9 +117,9 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
 			<Form {...userCheckinForm}>
 				<form
 					onSubmit={userCheckinForm.handleSubmit(onSubmit)}
-					className="flex h-full w-full flex-row justify-center"
+					className="flex h-full flex-row mx-5 sm:mx-0 sm:justify-center"
 				>
-					<div className="flex flex-col items-start space-y-8 w-3/4">
+					<div className="flex flex-col items-start space-y-8 w-full sm:w-3/4">
 						<FormField
 							control={userCheckinForm.control}
 							name="feedback"
