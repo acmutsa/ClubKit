@@ -34,7 +34,7 @@ export const createEvent = adminAction(
 
 			const { eventID } = eventIDs[0];
 
-			const vals = categories.map((cat) => ({
+			const vals = categories.map((cat: string) => ({
 				eventID,
 				categoryID: cat,
 			}));
