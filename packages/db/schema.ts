@@ -120,6 +120,8 @@ export const checkins = pgTable(
 		eventID: text("event_id").notNull(),
 		userID: text("user_id").notNull(),
 		time: timestamp("time").defaultNow().notNull(),
+		rating: integer("rating"),
+		adminID: text("admin_id"),
 		feedback: text("feedback"),
 	},
 	(table) => {
