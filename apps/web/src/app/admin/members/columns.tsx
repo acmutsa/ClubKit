@@ -88,9 +88,12 @@ export const columns: ColumnDef<UserWithData>[] = [
 		},
 		cell: ({ row }) => {
 			return (
-				<div className="overflow-x-scroll">
+				<div className="">
 					{row.original.data.ethnicity.map((e) => (
-						<Badge className="w-max" key={e}>
+						<Badge
+							className="m-0.5 w-fit whitespace-nowrap"
+							key={e}
+						>
 							{e}
 						</Badge>
 					))}

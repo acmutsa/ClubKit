@@ -16,6 +16,9 @@ export default {
 			color: "#FFD51E",
 		},
 	},
+	membership: {
+		activeThreshold: 7,
+	},
 	// TODO: Actually use this instead of hardcoded values in form
 	userIdentityOptions: {
 		ethnicity: [
