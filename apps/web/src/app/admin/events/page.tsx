@@ -1,9 +1,13 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { getEventsWithCheckins } from "@/lib/queries";
+import { CalendarPlus } from "lucide-react";
 import { columns } from "./columns";
 
 import { DataTable } from "@/components/ui/data-table";
 import EventStatsSheet from "@/components/dash/admin/events/EventStatsSheet";
+import Seperator from "@radix-ui/react-separator";
+import { Button } from "@/components/ui/button";
 
 async function Page() {
 	const events = await getEventsWithCheckins();
@@ -14,10 +18,18 @@ async function Page() {
 					Events
 				</h1>
 			</div>
-			<div className="px-5">
+			<div className="mx-5 flex items-center justify-between rounded-lg border p-2">
 				<Suspense fallback={<div>...loading</div>}>
 					<EventStatsSheet />
 				</Suspense>
+				<div>
+					<Link href="/admin/events/new">
+						<Button className="flex flex-nowrap gap-x-2">
+							<CalendarPlus />
+							Create Event
+						</Button>
+					</Link>
+				</div>
 			</div>
 			{/* <div className="border-muted">{events?.[0].name}</div> */}
 			<div className="rounded-xl p-5">

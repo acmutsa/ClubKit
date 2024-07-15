@@ -8,7 +8,7 @@ type Props = {};
 async function EventStatsSheet({}: Props) {
 	const stats = await getEventStatsOverview();
 	return (
-		<div className="flex w-fit space-x-4 rounded-lg border p-2">
+		<div className="flex w-fit space-x-4">
 			<div className="flex flex-col p-1">
 				<span className="text-xs text-muted-foreground">
 					Total Events
