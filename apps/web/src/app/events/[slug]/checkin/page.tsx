@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import PageError from "@/components/shared/PageError";
 import { Suspense } from "react";
-
+import { getUserCheckin } from "@/lib/queries";
 export default function Page({params}: {params: {slug: string}}){
 
     const { userId } = auth();

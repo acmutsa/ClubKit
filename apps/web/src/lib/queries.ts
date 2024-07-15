@@ -75,3 +75,12 @@ export const getUserCheckin = async (eventID: string,userID:string) => {
 		)
 	});
 }
+
+export const getUserCheckins = async (userID: string) => {
+	return db.query.checkins.findMany({
+		where: (checkins, { eq }) => eq(checkins.userID, userID),
+	});
+}
+
+// export const checkInUser = async (eventID: string,userID:string) => {
+

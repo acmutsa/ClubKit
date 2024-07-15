@@ -65,9 +65,9 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
             // }
         });
 
-            setTimeout(() => {
-                push("/events");
-            }, 3000);
+            // setTimeout(() => {
+            //     push("/events");
+            // }, 3000);
         },
         onError:async (e)=>{
             toast.dismiss();
@@ -111,28 +111,27 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
     const isSuccess = checkInUserStatus === "hasSucceeded" && checkInUserResult.data?.success;
     const isError = checkInUserStatus === "hasErrored";
     
-   
 
     return (
 		<>
 			<Form {...userCheckinForm}>
 				<form
 					onSubmit={userCheckinForm.handleSubmit(onSubmit)}
-					className="flex w-full flex-row justify-center"
+					className="flex h-full w-full flex-row justify-center"
 				>
-					<div className="w-[95%] space-y-8 2xl:w-[93%]">
+					<div className="flex flex-col items-start space-y-8 w-3/4">
 						<FormField
 							control={userCheckinForm.control}
 							name="feedback"
 							render={({ field }) => (
-								<FormItem>
+								<FormItem className="w-full">
 									<FormLabel className="text-base">
 										{"Feedback (Optional)"}
 									</FormLabel>
 									<FormControl>
 										<Textarea
 											{...field}
-											className="min-h-[120px] lg:min-h-[150px] lg:w-3/4"
+											className="min-h-[120px] lg:min-h-[150px] lg:w-full"
 											onChange={(e) => {
 												setFeedbackLengthMessage(
 													`${e.target.value.length} / ${c.maxCheckinDescriptionLength} characters`,
@@ -155,8 +154,8 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
 							control={userCheckinForm.control}
 							name="rating"
 							render={({ field }) => (
-								<FormItem>
-									<FormLabel className="text-base">
+								<FormItem className="flex w-full flex-col items-center">
+									<FormLabel className="flex w-full items-center justify-start text-base">
 										{"Rating"}
 									</FormLabel>
 									<FormControl>
@@ -166,7 +165,7 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
 								</FormItem>
 							)}
 						/>
-						<div className="flex flex-row gap-4 items-center">
+						<div className="w-full flex flex-row items-center justify-center gap-4 pt-4">
 							<Button
 								type="submit"
 								disabled={
@@ -177,16 +176,16 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
 							>
 								Check In
 							</Button>
-							{
-                            (isSuccess) ? <Check size={32} color="green" /> 
-                            : (isError) ? <X size={32} color="red" /> 
-                            : null
-                            }
+							{isSuccess ? (
+								<Check size={32} color="green" />
+							) : isError ? (
+								<X size={32} color="red" />
+							) : null}
 						</div>
 					</div>
 				</form>
 			</Form>
-			<Toaster position="top-left" richColors className="max-w-[90%] sm:max-w-full"/>
+			<Toaster position="bottom-right" richColors />
 		</>
 	);
 }
