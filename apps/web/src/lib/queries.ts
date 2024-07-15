@@ -22,9 +22,13 @@ export const getEvents = async () => {
 export const getEventStatsOverview = async () => {
 	const [groupedStats] = await db
 		.select({
-			total: count(),
+			totalEvents: count(),
 			thisWeek:
 				sql`COUNT(*) FILTER (WHERE ${events.start} BETWEEN CURRENT_TIMESTAMP AND CURRENT_TIMESTAMP + INTERVAL '7 days')`.mapWith(
+					Number,
+				),
+			pastEvents:
+				sql`COUNT(*) FILTER (WHERE ${events.end} <= CURRENT_TIMESTAMP)`.mapWith(
 					Number,
 				),
 		})

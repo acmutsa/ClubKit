@@ -9,7 +9,7 @@ async function Page() {
 	const events = await getEventsWithCheckins();
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
-			<div className="mb-4 grid grid-cols-2 px-5">
+			<div className="mb-5 grid grid-cols-2 px-5">
 				<h1 className="font-foreground text-3xl font-bold tracking-tight">
 					Events
 				</h1>
