@@ -16,9 +16,9 @@ export default async function EventCheckin({ eventID,userID }: { eventID: string
 
     const href = `/events/${event.id}`;
 
-    if (isCheckedInUser){
-        return <PageError message="You have already checked in" href={href} />;
-    }
+    // if (isCheckedInUser){
+    //     return <PageError message="You have already checked in" href={href} />;
+    // }
 
     const isPassed = event.end < currDate;
 

@@ -56,17 +56,12 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
             toast.dismiss();
             toast.success("Thanks for stopping by. See you next time!", {
 				duration: Infinity,
-				description: "Redirecting to events page in 3 seconds...",
-                action:{
-                    label:"or click here",
-                    onClick:()=>{
-                        push("/events");
-                }
-            }
+				description: "Redirecting to events page...",
+                
         });
             setTimeout(() => {
                 push("/events");
-            }, 3000);
+            }, 2500);
         },
         onError:async (e)=>{
             toast.dismiss();
