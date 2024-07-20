@@ -11,8 +11,9 @@ export default function EventsCardView({
 
   return (
 		<div className="flex flex-1 w-full flex-col items-center no-scrollbar">
-			<ScrollArea className="flex w-[95%] no-scrollbar max-h-[75dvh] h-auto">
-				<div className="mx-auto mt-4 grid w-[90%] grid-cols-1 gap-6 no-scrollbar sm:grid-cols-2 md:mb-4 md:w-[95%] lg:grid-cols-3 2xl:grid-cols-4">
+			{/* h-auto */}
+			<ScrollArea className="flex w-[95%] no-scrollbar  max-h-[75dvh] monitor:h-[90dvh]">
+				<div className="mx-auto mt-4 py-3 2xl:mt-6 grid w-[90%] grid-cols-1 gap-6 no-scrollbar sm:grid-cols-2 md:mb-4 md:w-[95%] lg:grid-cols-3 2xl:grid-cols-4">
 					{events.map((event) => (
 						<EventCardComponent
 							key={event.id}
