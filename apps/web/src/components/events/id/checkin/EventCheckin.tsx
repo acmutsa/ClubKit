@@ -16,27 +16,25 @@ export default async function EventCheckin({ eventID,userID }: { eventID: string
 
     const href = `/events/${event.id}`;
 
-    // if (isCheckedInUser){
-    //     return <PageError message="You have already checked in" href={href} />;
-    // }
-
     const isPassed = event.end < currDate;
 
-    // TODO: Uncomment after testing
+    if (isPassed){
+        return <PageError message="Event has already passed" href={href} />;
+    }
 
-    // if (isPassed){
-    //     return <NotFound message="Event has already passed" href={href} />;
-    // }
+    if (isCheckedInUser){
+        return <PageError message="You have already checked in" href={href} />;
+    }
 
-    // const checkinAvailabile = event.checkinStart <= currDate && currDate <= event.checkinEnd;
-    // if (!checkinAvailabile){
-    //     return (
-	// 		<NotFound
-	// 			message="Check-in is not available at this time"
-	// 			href={href}
-	// 		/>
-	// 	);
-    // }
+    const checkinAvailabile = event.checkinStart <= currDate && currDate <= event.checkinEnd;
+    if (!checkinAvailabile){
+        return (
+			<PageError
+				message="Check-in is not available at this time"
+				href={href}
+			/>
+		);
+    }
 
     return (
 		<div className="flex w-full flex-1 flex-col gap-[8%]">

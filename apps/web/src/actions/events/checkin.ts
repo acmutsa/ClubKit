@@ -14,20 +14,18 @@ async({feedback,rating,userId,eventId})=>{
     console.log("Checking in user!");
     console.log(feedback,rating);
 
-    // const userCheckin = await getUserCheckin(eventId,userId);
+    const userCheckin = await getUserCheckin(eventId,userId);
 
-    // if (userCheckin){
-    //     throw new Error("You have already checked in!");
-    // }
+    if (userCheckin){
+        throw new Error("You have already checked in!");
+    }
 
-    // const checkedInUser = await db.insert(checkins).values({
-    //     userID:userId,
-    //     eventID:eventId,
-    //     rating,
-    //     feedback
-    // }).returning({checkInTime:checkins.time});
-
-    // console.log("Successfully checked in for ",checkedInUser);
+    const checkedInUser = await db.insert(checkins).values({
+        userID:userId,
+        eventID:eventId,
+        rating,
+        feedback
+    }).returning({checkInTime:checkins.time});
 
     return {
         success:true,

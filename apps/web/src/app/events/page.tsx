@@ -1,6 +1,6 @@
 // This is the main component for the events page
 import EventsTitle from "@/components/events/EventsTitle";
-import type { SearchParams } from "config";
+import type { SearchParams } from "@/lib/types/shared";
 import EventsOptionsBar from "@/components/events/filters/EventsOptionsBar";
 import EventsView from "@/components/events/EventsView";
 import { db } from "db";

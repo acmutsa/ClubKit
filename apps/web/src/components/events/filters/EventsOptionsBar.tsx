@@ -2,7 +2,7 @@ import EventsSearch from "./EventsSearch";
 import CategoriesDropDown from "./CategoriesDropDown";
 import PastPresentDropDown from "./PastPresentDropDown";
 import ViewToggle from "./ViewToggle";
-import type { SearchParams } from "config";
+import type { SearchParams } from "@/lib/types/shared";
 import { db } from "db";
 import clsx from "clsx";
 

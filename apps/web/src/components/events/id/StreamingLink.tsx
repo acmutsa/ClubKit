@@ -20,8 +20,7 @@ export default function StreamingLink({title,href}:{title:string,href:string}){
 		<Link
 			href={href}
 			target="_blank"
-			className="flex gap-4 rounded-md bg-primary/80 px-4 py-2 text-primary-foreground hover:bg-primary/70"
-		>
+			className="flex gap-4 rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/70">
 			<Image
 				src={src}
 				alt="Streaming Icon"

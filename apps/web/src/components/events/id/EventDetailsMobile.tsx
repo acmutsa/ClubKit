@@ -23,7 +23,6 @@ export default function EventDetailsMobile({event}:{event:EventType}) {
 	const calendarLinks = c.calendarLinks;
 
     const currentDate = new Date();
-	//   console.log(event);
 	const isEventPassed = event.end < currentDate;
 	// Make sure that this is converting properly
 	const startTime = event.start.toLocaleString(undefined, {
@@ -71,9 +70,8 @@ export default function EventDetailsMobile({event}:{event:EventType}) {
 		location: event.location,
 	};
 
-
     return (
-		<div className="flex flex-col space-y-4 md:hidden">
+		<div className="flex flex-col space-y-4 lg:hidden">
 			<div className="flex h-auto w-full items-center justify-center">
 				<Image
 					src={event.thumbnailUrl}
@@ -156,7 +154,7 @@ export default function EventDetailsMobile({event}:{event:EventType}) {
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-5">
 				<h1 className="text-xl font-bold">Need a Reminder?</h1>
-				<div className="flex w-full flex-row items-center justify-center gap-5">
+				<div className="flex w-full flex-row items-center justify-center gap-6 px-3">
 					{calendarLinks.map((cal) => (
 						<CalendarLink
 							calendarName={cal}

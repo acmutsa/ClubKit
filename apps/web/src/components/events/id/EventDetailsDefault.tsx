@@ -11,13 +11,12 @@ import { UserRoundCheck } from "lucide-react";
 import type { EventType } from "../filters/EventsOptionsBar";
 
 export default function EventDetailsDefault({ event }: { event: EventType }) {
-	const aboutACM =
-		"ACM is the premier organization on campus for students interested in technology. ACM is dedicated to providing members with opportunities for professional, academic, and social growth outside the classroom in order to prepare students for their career in tech or fuel their interest in the tech field. Anyone who has an interest in technology can join ACM.";
-	const checkingIn =
-		"The membership portal is ACM's new method of tracking member check-ins and awarding points. By simply visiting this page during the event and clicking the Check-in button, you can easily garner points towards your membership for the semester.";
-
-	const StreamingLinks = c.streamingLinks;
-	const calendarLinks = c.calendarLinks;
+	const {
+		streamingLinks,
+		calendarLinks,
+		checkingInInfo,
+		aboutOrg
+	} = c;
 
 	const currentDate = new Date();
 	//   console.log(event);
@@ -69,7 +68,7 @@ export default function EventDetailsDefault({ event }: { event: EventType }) {
 	};
 
 	return (
-		<div className="hidden flex-col items-center gap-4 md:flex">
+		<div className="hidden flex-col items-center gap-4 lg:flex">
 			<div className="flex w-[90%] flex-row items-center justify-center">
 				<div className="flex w-1/2 flex-col items-start justify-center gap-6">
 					<Image
@@ -118,7 +117,7 @@ export default function EventDetailsDefault({ event }: { event: EventType }) {
 									Streaming on...
 								</h1>
 								<div className="flex w-full flex-row items-center justify-center gap-5">
-									{StreamingLinks.map((link) => (
+									{streamingLinks.map((link) => (
 										<StreamingLink
 											title={link.title}
 											href={link.href}
@@ -180,13 +179,13 @@ export default function EventDetailsDefault({ event }: { event: EventType }) {
 				<div className="flex flex-col items-start justify-center gap-1">
 					<h1 className="text-3xl font-bold">About ACM</h1>
 					<p className="border-t border-muted-foreground pl-1 text-xl">
-						{aboutACM}
+						{aboutOrg}
 					</p>
 				</div>
 				<div className="flex flex-col items-start justify-center gap-1">
 					<h1 className=" text-3xl font-bold">Checking In</h1>
 					<p className="border-t border-muted-foreground pl-1 text-xl">
-						{checkingIn}
+						{checkingInInfo}
 					</p>
 				</div>
 			</div>

@@ -57,7 +57,6 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
             toast.success("Thanks for stopping by. See you next time!", {
 				duration: Infinity,
 				description: "Redirecting to events page...",
-                
         });
             setTimeout(() => {
                 push("/events");
@@ -70,9 +69,8 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
 					duration:Infinity,
                     cancel:{
                         label:"Dismiss",
-                        onClick:()=>{
-                            console.log("dismissed")
-                    }},
+                        onClick:()=>{}
+                    },
 				});
             }
             else{
@@ -104,16 +102,29 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
 
     const isSuccess = checkInUserStatus === "hasSucceeded" && checkInUserResult.data?.success;
     const isError = checkInUserStatus === "hasErrored";
-    
 
     return (
 		<>
 			<Form {...userCheckinForm}>
 				<form
 					onSubmit={userCheckinForm.handleSubmit(onSubmit)}
-					className="flex h-full flex-row mx-5 sm:mx-0 sm:justify-center"
-				>
-					<div className="flex flex-col items-start space-y-8 w-full sm:w-3/4">
+					className="mx-5 flex h-full flex-row sm:mx-0 sm:justify-center">
+					<div className="flex w-full flex-col items-start justify-start space-y-12 sm:w-3/4">
+						<FormField
+							control={userCheckinForm.control}
+							name="rating"
+							render={({ field }) => (
+								<FormItem className="flex w-full flex-col items-center">
+									<FormLabel className="flex w-full items-center justify-start text-base">
+										{"Rating"}
+									</FormLabel>
+									<FormControl>
+										<StarContainer {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						<FormField
 							control={userCheckinForm.control}
 							name="feedback"
@@ -143,23 +154,7 @@ export default function EventCheckinForm({ eventID,userID }: { eventID: string,u
 								</FormItem>
 							)}
 						/>
-
-						<FormField
-							control={userCheckinForm.control}
-							name="rating"
-							render={({ field }) => (
-								<FormItem className="flex w-full flex-col items-center">
-									<FormLabel className="flex w-full items-center justify-start text-base">
-										{"Rating"}
-									</FormLabel>
-									<FormControl>
-										<StarContainer {...field} />
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<div className="w-full flex flex-row items-center justify-center gap-4 pt-4">
+						<div className="flex w-full flex-row items-center justify-center gap-4 pt-4">
 							<Button
 								type="submit"
 								disabled={
