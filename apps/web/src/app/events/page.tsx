@@ -6,7 +6,7 @@ import EventsView from "@/components/events/EventsView";
 import { db } from "db";
 import { Suspense } from "react";
 import Navbar from "@/components/shared/navbar";
-
+import { headers } from "next/headers";
 
 export default function EventsPage({
 	searchParams,
@@ -14,6 +14,9 @@ export default function EventsPage({
 	searchParams: { [key: string]: string | undefined };
 }) {
 	// bg-gradient-to-tr from-blue-400 to-muted
+
+	console.log(headers().get("x-vercel-ip-timezone"));
+
 	return (
 		<div className="flex h-[100dvh] w-screen flex-col items-center no-scrollbar">
 			<Navbar showBorder />

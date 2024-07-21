@@ -1,7 +1,7 @@
 import PageError from "../../../shared/PageError";
-import { getEventById, getUserCheckin } from "@/lib/queries";
+import { getEventById,getUserDataAndCheckin } from "@/lib/queries";
 import EventCheckinForm from "./EventCheckinForm";
-import { getUserDataAndCheckin } from "@/lib/queries";
+import { headers } from "next/headers";
 export default async function EventCheckin({
 	eventID,
 	clerkId,
@@ -9,6 +9,12 @@ export default async function EventCheckin({
 	eventID: string;
 	clerkId: string;
 }) {
+
+    const getIPAddress = getClientIPAddress();
+    console.log(getIPAddress);
+    
+    
+    
 	const eventPromise = getEventById(eventID);
 
 	const userEventDataPromise = getUserDataAndCheckin(eventID, clerkId);
@@ -41,9 +47,11 @@ export default async function EventCheckin({
 		);
 	}
 
-	const { checkins } = userEventData;
+	const {
+        userID,
+        checkins
+    } = userEventData;
 
-	// return null;
 	if (checkins.length > 0) {
 		return <PageError message="You have already checked in" href={href} />;
 	}
@@ -65,7 +73,18 @@ export default async function EventCheckin({
 				<h1 className="text-2xl">Event Check-In</h1>
 				<h1 className="text-center text-2xl font-bold">{`${event.name}`}</h1>
 			</div>
-			<EventCheckinForm eventID={eventID} userID={userEventData.userID} />
+			<EventCheckinForm eventID={eventID} userID={userID} />
 		</div>
 	);
+}
+
+const getClientIPAddress = () => {
+    const FALLBACK_IP_ADDRESS = "0.0.0.0";
+	const forwardedFor = headers().get("x-forwarded-for");
+
+	if (forwardedFor) {
+		return forwardedFor.split(",")[0] ?? FALLBACK_IP_ADDRESS;
+	}
+
+	return headers().get("x-real-ip") ?? FALLBACK_IP_ADDRESS;
 }
