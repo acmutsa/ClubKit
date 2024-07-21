@@ -10,7 +10,7 @@ export const userCheckinFormSchema = z.object({
 
 export const userCheckInSchemaFormified = userCheckinFormSchema.merge(
     z.object({
-    userId:z.string().min(1),
+    userId:z.number(),
     eventId:z.string().min(1)
     })
 );
