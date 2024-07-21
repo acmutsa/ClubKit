@@ -53,10 +53,8 @@ export const data = pgTable("data", {
 
 /* EVENTS */
 export const eventCategories = pgTable("event_categories", {
-	// category can be a sub org or other things depending on the event
 	id: text("id").primaryKey(),
 	name: text("name").notNull().unique(),
-	// badge background
 	color: text("color").notNull(),
 });
 

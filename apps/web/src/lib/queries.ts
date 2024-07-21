@@ -87,9 +87,6 @@ export const getUserDataAndCheckin = async (eventID: string,clerkId:string) =>{
         with:{
             checkins:{
                 where:eq(checkins.eventID,eventID),
-				with:{
-					event:true
-				}
             }
             
         }
