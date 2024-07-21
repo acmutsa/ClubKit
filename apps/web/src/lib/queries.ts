@@ -68,10 +68,7 @@ export const getUserWithData = async () => {
 			checkin_count: count(checkins.userID),
 		})
 		.from(checkins)
-		.rightJoin(
-			users,
-			eq(sql`CAST (users.user_id AS TEXT)`, checkins.userID),
-		)
+		.rightJoin(users, eq(users.userID, checkins.userID))
 		.groupBy(checkins.userID, users.userID, data.userID)
 		.innerJoin(data, eq(data.userID, users.userID));
 };
@@ -114,34 +111,33 @@ export const getEventDetails = async (id: string) => {
 		},
 		where: eq(events.id, id),
 	});
-}
+};
 
-export const getUserCheckin = async (eventID: string,userID:number) => {
+export const getUserCheckin = async (eventID: string, userID: number) => {
 	return db.query.checkins.findFirst({
-		where: (checkins, { and }) => and(
-			eq(checkins.eventID, eventID),
-			eq(checkins.userID, userID)
-		)
+		where: (checkins, { and }) =>
+			and(eq(checkins.eventID, eventID), eq(checkins.userID, userID)),
 	});
-}
+};
 
 export const getUserCheckins = async (userID: number) => {
 	return db.query.checkins.findMany({
 		where: eq(checkins.userID, userID),
 	});
-}
+};
 
-export const getUserDataAndCheckin = async (eventID: string,clerkId:string) =>{
+export const getUserDataAndCheckin = async (
+	eventID: string,
+	clerkId: string,
+) => {
 	return db.query.users.findFirst({
-        where:eq(users.clerkID,clerkId),
-        with:{
-            checkins:{
-                where:eq(checkins.eventID,eventID),
-            }
-            
-        }
-    });
-}
+		where: eq(users.clerkID, clerkId),
+		with: {
+			checkins: {
+				where: eq(checkins.eventID, eventID),
+			},
+		},
+	});
+};
 
 // export const checkInUser = async (eventID: string,userID:string) => {
-
