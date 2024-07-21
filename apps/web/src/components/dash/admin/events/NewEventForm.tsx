@@ -71,13 +71,15 @@ export default function NewEventForm({
 	} | null>(null);
 	const router = useRouter();
 
+	const OneHourInMiliseconds = c.OneHourInMilliseconds;
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			start: defaultDate,
 			checkinStart: defaultDate,
-			end: new Date(defaultDate.getTime() + 1000 * 60 * 60),
-			checkinEnd: new Date(defaultDate.getTime() + 1000 * 60 * 60),
+			end: new Date(defaultDate.getTime() + OneHourInMiliseconds),
+			checkinEnd: new Date(defaultDate.getTime() + OneHourInMiliseconds),
 			thumbnailUrl: c.thumbnails.default,
 			categories: [],
 			isUserCheckinable: true,
@@ -126,6 +128,7 @@ export default function NewEventForm({
 		if (Object.keys(form.formState.errors).length > 0) {
 			console.log("Errors: ", form.formState.errors);
 		}
+		
 	}, [form.formState]);
 
 	const {
@@ -148,12 +151,16 @@ export default function NewEventForm({
 						toast.error(
 							`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
 						);
+						setError({
+							title: "Some error",
+							description: "Error occured",
+						});
 						break;
 				}
 				resetAction();
 				return;
 			}
-			toast.success("Registration successful!", {
+			toast.success("Event Created successfully!", {
 				description: "You'll be redirected shortly.",
 			});
 			setTimeout(() => {

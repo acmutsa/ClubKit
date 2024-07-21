@@ -97,3 +97,51 @@ export const getMemberStatsOverview = async () => {
 
 	return { totalMembers, activeMembers };
 };
+
+export const getEventDetails = async (id: string) => {
+	return db.query.events.findFirst({
+		with: {
+			eventsToCategories: {
+				with: {
+					category: {
+						columns: {
+							name: true,
+							color: true,
+						},
+					},
+				},
+			},
+		},
+		where: eq(events.id, id),
+	});
+}
+
+export const getUserCheckin = async (eventID: string,userID:number) => {
+	return db.query.checkins.findFirst({
+		where: (checkins, { and }) => and(
+			eq(checkins.eventID, eventID),
+			eq(checkins.userID, userID)
+		)
+	});
+}
+
+export const getUserCheckins = async (userID: number) => {
+	return db.query.checkins.findMany({
+		where: eq(checkins.userID, userID),
+	});
+}
+
+export const getUserDataAndCheckin = async (eventID: string,clerkId:string) =>{
+	return db.query.users.findFirst({
+        where:eq(users.clerkID,clerkId),
+        with:{
+            checkins:{
+                where:eq(checkins.eventID,eventID),
+            }
+            
+        }
+    });
+}
+
+// export const checkInUser = async (eventID: string,userID:string) => {
+
