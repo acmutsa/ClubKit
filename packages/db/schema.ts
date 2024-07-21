@@ -118,7 +118,7 @@ export const checkins = pgTable(
 	"checkins",
 	{
 		eventID: text("event_id").notNull(),
-		userID: text("user_id").notNull(),
+		userID: integer("user_id").notNull(),
 		time: timestamp("time").defaultNow().notNull(),
 		rating: integer("rating"),
 		adminID: text("admin_id"),

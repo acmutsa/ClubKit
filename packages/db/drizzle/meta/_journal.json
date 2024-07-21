@@ -22,6 +22,13 @@
       "when": 1721017773488,
       "tag": "0002_chief_galactus",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1721522166252,
+      "tag": "0003_known_junta",
+      "breakpoints": true
     }
   ]
 }
