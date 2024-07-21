@@ -15,8 +15,8 @@ export default function EventsPage({
 }) {
 	// bg-gradient-to-tr from-blue-400 to-muted
 
-	console.log(headers().get("x-vercel-ip-timezone"));
-
+	console.log('Header timezone: ',headers().get("x-vercel-ip-timezone"));
+	console.log('Header from config timezone: ',headers().get('x-timezone'));
 	return (
 		<div className="flex h-[100dvh] w-screen flex-col items-center no-scrollbar">
 			<Navbar showBorder />
