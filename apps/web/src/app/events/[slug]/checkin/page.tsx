@@ -7,8 +7,8 @@ import { Suspense } from "react";
 import { getUserCheckin } from "@/lib/queries";
 export default function Page({params}: {params: {slug: string}}){
 
-    const { userId } = auth();
-	if (!userId) {
+    const { userId: clerkId } = auth();
+	if (!clerkId) {
 		redirect("/sign-in");
 	}
 
@@ -17,11 +17,13 @@ export default function Page({params}: {params: {slug: string}}){
         return <PageError message="Event Not Found" href="/events" />;
     }
 
+    
+
     return (
 		<div className="flex h-[100dvh] w-full flex-col">
 			<Navbar />
 			<Suspense fallback={<h1>Grabbing the Event 1 sec...</h1>}>
-                <EventCheckin eventID={params.slug} userID={userId} />
+                <EventCheckin eventID={params.slug} clerkId={clerkId} />
             </Suspense>
 		</div>
     );

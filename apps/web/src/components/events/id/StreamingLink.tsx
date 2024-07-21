@@ -1,26 +1,29 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { capitalizeFirstLetter } from "@/lib/utils";
 
-
-export default function StreamingLink({title,href}:{title:string,href:string}){
-
-    const [src, setSrc] = useState(
+export default function StreamingLink({
+	title,
+	href,
+}: {
+	title: string;
+	href: string;
+}) {
+	const [src, setSrc] = useState(
 		`/img/logos/${title.toLocaleLowerCase()}-icon.svg`,
 	);
-    
 
 	const fallBackSrc = "/img/logos/stream.svg";
 
-
-    return (
+	return (
 		<Link
 			href={href}
 			target="_blank"
-			className="flex gap-4 rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/70">
+			className="flex gap-4 rounded-md bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/70"
+		>
 			<Image
 				src={src}
 				alt="Streaming Icon"
@@ -30,13 +33,9 @@ export default function StreamingLink({title,href}:{title:string,href:string}){
 					setSrc(fallBackSrc);
 				}}
 			/>
-			<p className="md:text-base lg:text-lg">{capitalizeFirstLetter(title)}</p>
+			<p className="md:text-base lg:text-lg">
+				{capitalizeFirstLetter(title)}
+			</p>
 		</Link>
 	);
-
-
-
-
-
-
 }

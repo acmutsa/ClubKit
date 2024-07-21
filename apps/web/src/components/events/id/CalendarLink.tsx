@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { createCalendarLink,capitalizeFirstLetter } from "@/lib/utils";
+import { createCalendarLink, capitalizeFirstLetter } from "@/lib/utils";
 
 type CalendarDetails = {
-    title: string,
-    description: string,
-	start: string,
-	end: string,
-	location: string,
-}
+	title: string;
+	description: string;
+	start: string;
+	end: string;
+	location: string;
+};
 
-// TODO: Have a quick convo about this. They are tiny icons so they 
+// TODO: Have a quick convo about this. They are tiny icons so they
 export default function CalendarLink({
 	calendarName,
 	calendarDetails,
 }: {
-	calendarName: string,
-	calendarDetails: CalendarDetails}) {
-
+	calendarName: string;
+	calendarDetails: CalendarDetails;
+}) {
 	const [src, setSrc] = useState(
 		`/img/logos/${calendarName.toLocaleLowerCase()}-icon.svg`,
 	);
 
 	const fallBackSrc = "/img/logos/calendar.svg";
-    console.log(src);
-	const calendarLink = createCalendarLink(calendarName,calendarDetails);
+	console.log(src);
+	const calendarLink = createCalendarLink(calendarName, calendarDetails);
 
 	return (
 		<Link
@@ -45,7 +45,9 @@ export default function CalendarLink({
 				}}
 			/>
 			<p className="md:text-base lg:text-lg">
-				{calendarName === 'ics' ? 'iCal' : capitalizeFirstLetter(calendarName)}
+				{calendarName === "ics"
+					? "iCal"
+					: capitalizeFirstLetter(calendarName)}
 			</p>
 		</Link>
 	);

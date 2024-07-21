@@ -11,15 +11,9 @@ import { UserRoundCheck } from "lucide-react";
 import type { EventType } from "../filters/EventsOptionsBar";
 
 export default function EventDetailsDefault({ event }: { event: EventType }) {
-	const {
-		streamingLinks,
-		calendarLinks,
-		checkingInInfo,
-		aboutOrg
-	} = c;
+	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
 
 	const currentDate = new Date();
-	//   console.log(event);
 	const isEventPassed = event.end < currentDate;
 	// Make sure that this is converting properly
 	const startTime = event.start.toLocaleString(undefined, {

@@ -60,11 +60,11 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 		});
 
 	if (allEvents.length < 0) {
-		return <NoEvents/>
+		return <NoEvents />;
 	}
 
 	return (
-		<div className="flex w-full flex-1 no-scrollbar overflow-x-hidden">
+		<div className="flex w-full flex-1 overflow-x-hidden no-scrollbar">
 			{cardViewSelected ? (
 				<EventsCardView events={allEvents} />
 			) : (

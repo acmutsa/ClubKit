@@ -71,13 +71,15 @@ export default function NewEventForm({
 	} | null>(null);
 	const router = useRouter();
 
+	const OneHourInMiliseconds = c.OneHourInMilliseconds;
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			start: defaultDate,
 			checkinStart: defaultDate,
-			end: new Date(defaultDate.getTime() + 1000 * 60 * 60),
-			checkinEnd: new Date(defaultDate.getTime() + 1000 * 60 * 60),
+			end: new Date(defaultDate.getTime() + OneHourInMiliseconds),
+			checkinEnd: new Date(defaultDate.getTime() + OneHourInMiliseconds),
 			thumbnailUrl: c.thumbnails.default,
 			categories: [],
 			isUserCheckinable: true,

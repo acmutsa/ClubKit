@@ -18,6 +18,7 @@ export default function EventCardComponent({ event,isPast }: { event: EventType,
   return (
 		<Card className="group flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md hover:shadow-slate-400 md:hover:scale-105">
 			<CardHeader className="p-0 pb-4 h-full flex justify-center">
+				{/* Come back and make sure skeleton loads here or something to ensure no weird layouts */}
 					<Image
 						src={event.thumbnailUrl}
 						alt="Event Image"
@@ -32,7 +33,7 @@ export default function EventCardComponent({ event,isPast }: { event: EventType,
 					/>
 			</CardHeader>
 			<CardContent className="flex flex-1 flex-col w-full p-0 pb-4 justify-end">
-				<CardTitle className="w-full truncate whitespace-nowrap px-4 pb-1 text-center font-bold md:px-2 ">
+				<CardTitle className="w-full truncate whitespace-nowrap px-4 pb-1 text-center font-bold md:px-4 ">
 					{event.name}
 				</CardTitle>
 				<EventCategories

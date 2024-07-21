@@ -66,8 +66,7 @@ export const getEventDetails = async (id: string) => {
 	});
 }
 
-
-export const getUserCheckin = async (eventID: string,userID:string) => {
+export const getUserCheckin = async (eventID: string,userID:number) => {
 	return db.query.checkins.findFirst({
 		where: (checkins, { and }) => and(
 			eq(checkins.eventID, eventID),
@@ -76,10 +75,25 @@ export const getUserCheckin = async (eventID: string,userID:string) => {
 	});
 }
 
-export const getUserCheckins = async (userID: string) => {
+export const getUserCheckins = async (userID: number) => {
 	return db.query.checkins.findMany({
-		where: (checkins, { eq }) => eq(checkins.userID, userID),
+		where: eq(checkins.userID, userID),
 	});
+}
+
+export const getUserDataAndCheckin = async (eventID: string,clerkId:string) =>{
+	return db.query.users.findFirst({
+        where:eq(users.clerkID,clerkId),
+        with:{
+            checkins:{
+                where:eq(checkins.eventID,eventID),
+				with:{
+					event:true
+				}
+            }
+            
+        }
+    });
 }
 
 // export const checkInUser = async (eventID: string,userID:string) => {

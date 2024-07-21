@@ -10,19 +10,16 @@ import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
 import type { EventType } from "../filters/EventsOptionsBar";
 
-
-export default function EventDetailsMobile({event}:{event:EventType}) {
-
-    const aboutACM =
+export default function EventDetailsMobile({ event }: { event: EventType }) {
+	const aboutACM =
 		"ACM is the premier organization on campus for students interested in technology. ACM is dedicated to providing members with opportunities for professional, academic, and social growth outside the classroom in order to prepare students for their career in tech or fuel their interest in the tech field. Anyone who has an interest in technology can join ACM.";
 	const checkingIn =
 		"The membership portal is ACM's new method of tracking member check-ins and awarding points. By simply visiting this page during the event and clicking the Check-in button, you can easily garner points towards your membership for the semester.";
 
-
-    const StreamingLinks = c.streamingLinks;
+	const StreamingLinks = c.streamingLinks;
 	const calendarLinks = c.calendarLinks;
 
-    const currentDate = new Date();
+	const currentDate = new Date();
 	const isEventPassed = event.end < currentDate;
 	// Make sure that this is converting properly
 	const startTime = event.start.toLocaleString(undefined, {
@@ -70,7 +67,7 @@ export default function EventDetailsMobile({event}:{event:EventType}) {
 		location: event.location,
 	};
 
-    return (
+	return (
 		<div className="flex flex-col space-y-4 lg:hidden">
 			<div className="flex h-auto w-full items-center justify-center">
 				<Image
@@ -178,5 +175,4 @@ export default function EventDetailsMobile({event}:{event:EventType}) {
 			</div>
 		</div>
 	);
-
 }
