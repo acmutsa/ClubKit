@@ -113,11 +113,13 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 						</DropdownMenuItem>
 						<DropdownMenuItem>
 							<div
-								onClick={async () =>
+								className="h-full w-full"
+								onClick={async (e) => {
+									e.stopPropagation();
 									await navigator.clipboard.writeText(
 										`https://portal.acmutsa.org/events/${data.id}`,
-									)
-								}
+									);
+								}}
 								//TODO: set sonner to signify link copied
 							>
 								Copy link
