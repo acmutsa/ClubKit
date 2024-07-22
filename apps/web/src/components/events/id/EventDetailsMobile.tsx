@@ -8,17 +8,12 @@ import { MapPin, Clock, Calendar, Hourglass } from "lucide-react";
 import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
-import type { EventType } from "../filters/EventsOptionsBar";
+import type { EventType } from "@/lib/types/events";
+
 
 export default function EventDetailsMobile({ event }: { event: EventType }) {
-	const aboutACM =
-		"ACM is the premier organization on campus for students interested in technology. ACM is dedicated to providing members with opportunities for professional, academic, and social growth outside the classroom in order to prepare students for their career in tech or fuel their interest in the tech field. Anyone who has an interest in technology can join ACM.";
-	const checkingIn =
-		"The membership portal is ACM's new method of tracking member check-ins and awarding points. By simply visiting this page during the event and clicking the Check-in button, you can easily garner points towards your membership for the semester.";
 
-	const StreamingLinks = c.streamingLinks;
-	const calendarLinks = c.calendarLinks;
-
+	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
 	const currentDate = new Date();
 	const isEventPassed = event.end < currentDate;
 	// Make sure that this is converting properly
@@ -140,7 +135,7 @@ export default function EventDetailsMobile({ event }: { event: EventType }) {
 			<div className="flex w-full flex-col items-center justify-center gap-5 pt-5">
 				<h1 className="text-xl font-bold">Streaming on...</h1>
 				<div className="flex w-full flex-row items-center justify-center gap-5">
-					{StreamingLinks.map((link) => (
+					{streamingLinks.map((link) => (
 						<StreamingLink
 							title={link.title}
 							href={link.href}
@@ -165,13 +160,13 @@ export default function EventDetailsMobile({ event }: { event: EventType }) {
 				<h1 className="border-b border-muted-foreground text-xl font-bold">
 					About ACM
 				</h1>
-				<p className=" px-7 text-center">{aboutACM}</p>
+				<p className=" px-7 text-center">{aboutOrg}</p>
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
 				<h1 className="border-b border-muted-foreground text-xl font-bold">
 					Checking In
 				</h1>
-				<p className="px-7 text-center">{checkingIn}</p>
+				<p className="px-7 text-center">{checkingInInfo}</p>
 			</div>
 		</div>
 	);

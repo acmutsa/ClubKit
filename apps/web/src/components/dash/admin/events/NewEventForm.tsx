@@ -53,6 +53,7 @@ import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
 import { upload } from "@vercel/blob/client";
 import { createEvent } from "@/actions/events/new";
+import { ONE_HOUR_IN_MILLISECONDS } from "@/lib/constants/shared";
 
 type NewEventFormProps = {
 	defaultDate: Date;
@@ -71,15 +72,13 @@ export default function NewEventForm({
 	} | null>(null);
 	const router = useRouter();
 
-	const OneHourInMiliseconds = c.OneHourInMilliseconds;
-
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			start: defaultDate,
 			checkinStart: defaultDate,
-			end: new Date(defaultDate.getTime() + OneHourInMiliseconds),
-			checkinEnd: new Date(defaultDate.getTime() + OneHourInMiliseconds),
+			end: new Date(defaultDate.getTime() + ONE_HOUR_IN_MILLISECONDS),
+			checkinEnd: new Date(defaultDate.getTime() + ONE_HOUR_IN_MILLISECONDS),
 			thumbnailUrl: c.thumbnails.default,
 			categories: [],
 			isUserCheckinable: true,

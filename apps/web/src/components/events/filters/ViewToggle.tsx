@@ -1,6 +1,6 @@
 'use client'
 import { useRouter,useSearchParams,usePathname } from "next/navigation"
-import { eventFilters } from "./EventsOptionsBar";
+import { EVENT_FILTERS } from "@/lib/constants/events";
 import { Calendar, Grid2X2 } from "lucide-react";
 import clsx from "clsx";
 
@@ -8,10 +8,11 @@ export default function ({cardViewSelected}:{cardViewSelected:boolean}){
     const searchParams = useSearchParams();
     const pathname = usePathname();
     const {replace} = useRouter();
+		const {CALENDAR, CARD} = EVENT_FILTERS;
 
     const handleFilterChange = (value:string)=>{
         const params = new URLSearchParams(searchParams);
-        if (value !== eventFilters.calendar){
+        if (value !== CALENDAR){
             params.delete('view');
             replace(`${pathname}?${params.toString()}`);
             return;
@@ -23,7 +24,7 @@ export default function ({cardViewSelected}:{cardViewSelected:boolean}){
 		// Toggle for card or calendar view 
 		<div className="flex">
 			<button
-				onClick={() => handleFilterChange(eventFilters.card)}
+				onClick={() => handleFilterChange(CARD)}
 				className={clsx("p-2", {
 					"rounded-md border bg-stone-300 bg-opacity-80 ":
 						cardViewSelected,
@@ -31,7 +32,7 @@ export default function ({cardViewSelected}:{cardViewSelected:boolean}){
 				<Grid2X2 />
 			</button>
 			<button
-				onClick={() => handleFilterChange(eventFilters.calendar)}
+				onClick={() => handleFilterChange(CALENDAR)}
 				className={clsx("p-2", {
 					"rounded-md border bg-stone-300 bg-opacity-80 ":
 						!cardViewSelected,

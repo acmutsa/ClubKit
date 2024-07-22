@@ -3,7 +3,7 @@
 import { Select,SelectContent,SelectTrigger,SelectGroup,SelectValue,SelectItem } from "@/components/ui/select";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
-import { eventFilters } from "./EventsOptionsBar";
+import { EVENT_FILTERS } from "@/lib/constants/events";
 
 
 export default function PastPresentDropDown({cardViewSelected,showUpcomingEvents}: {cardViewSelected: boolean,showUpcomingEvents: boolean}){
@@ -12,15 +12,17 @@ export default function PastPresentDropDown({cardViewSelected,showUpcomingEvents
     const pathname = usePathname();
     const {replace} = useRouter();
 
+		const { SHOW_EVENTS, SHOW_UPCOMING_EVENTS, SHOW_PAST_EVENTS } = EVENT_FILTERS;
+
     // Maybe come back and add a small debounce, but who is clicking checkboxes that fast?
     const handleSelectChange = (value:string)=>{
         const params = new URLSearchParams(searchParams);
-        if (value === eventFilters.showUpcomingEvents){
-            params.delete(eventFilters.showEvents);
+        if (value === SHOW_UPCOMING_EVENTS){
+            params.delete(SHOW_EVENTS);
             replace(`${pathname}?${params.toString()}`);
             return;
         }
-        params.set(eventFilters.showEvents,value);
+        params.set(SHOW_EVENTS,value);
         replace(`${pathname}?${params.toString()}`);
     }
     return (
@@ -41,8 +43,8 @@ export default function PastPresentDropDown({cardViewSelected,showUpcomingEvents
 					</SelectTrigger>
 					<SelectContent>
 						<SelectGroup>
-							<SelectItem value={eventFilters.showUpcomingEvents}>Upcoming</SelectItem>
-							<SelectItem value={eventFilters.showPastEvents}>Past</SelectItem>
+							<SelectItem value={SHOW_UPCOMING_EVENTS}>Upcoming</SelectItem>
+							<SelectItem value={SHOW_PAST_EVENTS}>Past</SelectItem>
 						</SelectGroup>
 					</SelectContent>
 				</Select>

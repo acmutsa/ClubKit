@@ -20,8 +20,8 @@ export default function PageError({message,href}:{message:string,href:string}) {
 			</p>
 			<Link
 				href={href}
-				className="flex flex-row items-center justify-center space-x-2">
-					<MoveLeft size={24} />
+				className="flex flex-row items-center justify-center space-x-2 border-b border-muted-foreground ">
+				<MoveLeft size={24} />
 				<p>Go Back</p>
 			</Link>
 		</div>

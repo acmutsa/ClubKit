@@ -1,4 +1,4 @@
-import { EventType } from "./filters/EventsOptionsBar";
+import type { EventType } from "@/lib/types/events";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import c from "config";

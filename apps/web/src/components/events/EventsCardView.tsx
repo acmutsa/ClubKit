@@ -1,4 +1,4 @@
-import type { EventType } from "./filters/EventsOptionsBar";
+import type { EventType } from "@/lib/types/events";
 import EventCardComponent from "./EventCardComponent";
 import { Suspense } from "react";
 import { ScrollArea } from "../ui/scroll-area";

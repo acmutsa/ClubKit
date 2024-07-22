@@ -10,11 +10,6 @@ export default async function EventCheckin({
 	clerkId: string;
 }) {
 
-    const getIPAddress = getClientIPAddress();
-    console.log(getIPAddress);
-    
-    
-    
 	const eventPromise = getEventById(eventID);
 
 	const userEventDataPromise = getUserDataAndCheckin(eventID, clerkId);

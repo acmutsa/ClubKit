@@ -8,7 +8,7 @@ import { MapPin, Clock, Calendar, Hourglass } from "lucide-react";
 import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
-import type { EventType } from "../filters/EventsOptionsBar";
+import type { EventType } from "@/lib/types/events";
 
 export default function EventDetailsDefault({ event }: { event: EventType }) {
 	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;

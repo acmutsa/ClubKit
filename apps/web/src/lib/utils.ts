@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as links from "calendar-link";
+import { headers } from "next/headers";
 
 type CalendarDetails = {
     title: string,
@@ -31,15 +32,28 @@ export function createCalendarLink(calendarLinkName:string,eventCalendarLink:Cal
 	const lowerLinkName = calendarLinkName.toLocaleLowerCase();
 	
 
-//   @ts-ignore shhh it works for now
+/// @ts-ignore shhh it works for now
   const calendarFunction = links[lowerLinkName as keyof links];
 	if (calendarFunction){
 		return calendarFunction(eventCalendarLink);
 	}
 	// We will default to a google calendar link if the calendar link name is not found
 	return links.google(eventCalendarLink);
+}
 
+export const getClientTimeZone = (vercelIPTimeZone:string | null) =>{
+	return vercelIPTimeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
 
+export const convertDateToUtc = (date:Date) =>{
+	return date.toISOString();
+}
 
-
+export const convertDateWithTimeZone = (date:Date,timeZone:string) =>{
+	return date.toLocaleString(undefined, {
+				hourCycle: "h12",
+				dateStyle: "medium",
+				timeStyle: "short",
+				timeZone: timeZone,
+			});
 }

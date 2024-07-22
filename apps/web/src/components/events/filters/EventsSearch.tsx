@@ -1,5 +1,5 @@
 'use client'
-import { eventFilters } from "./EventsOptionsBar";
+import { EVENT_FILTERS } from "@/lib/constants/events";
 import { Popover,PopoverTrigger,PopoverContent } from "../../ui/popover";
 import { Search,ChevronDown } from "lucide-react";
 import { Input } from "../../ui/input";
@@ -10,7 +10,8 @@ export default function EventsSearch({cardViewSelected}:{cardViewSelected:boolea
     
     const searchParams = useSearchParams();
     const {replace} = useRouter();
-    const pathname = usePathname();    
+    const pathname = usePathname();  
+		const { QUERY } = EVENT_FILTERS  
 
 	// We use a debouncing strategy to prevent the search from querying every single keystroke and instead will run a time after the user completes typing
     const handleSearch = useDebouncedCallback((term) => {
@@ -41,7 +42,7 @@ export default function EventsSearch({cardViewSelected}:{cardViewSelected:boolea
 								<Input
 									type="text"
 									placeholder="Search for events"
-									defaultValue={searchParams.get(eventFilters.query)?.toString()}
+									defaultValue={searchParams.get(QUERY)?.toString()}
 									className="bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
 									onChange={(e) =>
 										handleSearch(e.target.value)
@@ -56,7 +57,7 @@ export default function EventsSearch({cardViewSelected}:{cardViewSelected:boolea
 						<Input
 							type="text"
 							placeholder="Search for events"
-							defaultValue={searchParams.get(eventFilters.query)?.toString()}
+							defaultValue={searchParams.get(QUERY)?.toString()}
 							onChange={(e) =>
 								handleSearch(e.target.value)
 							}

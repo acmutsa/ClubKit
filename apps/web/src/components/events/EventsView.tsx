@@ -3,18 +3,28 @@ import EventsCalendarView from "./EventsCalendarView";
 import { db, ilike, gte, and, lt } from "db";
 import { events } from "db/schema";
 import type { SearchParams } from "@/lib/types/shared";
-import { eventFilters } from "./filters/EventsOptionsBar";
+import { EVENT_FILTERS } from "@/lib/constants/events";
 import { unstable_noStore as noStore } from "next/cache";
 import NoEvents from "./NoEvents";
 // Original data fetching will be done by a server component and any further filtering will be handled client-side. Data is not super large or sensentive so this is fine
 export default async function EventsView({ params }: { params: SearchParams }) {
-	const cardViewSelected = params[eventFilters.view]
-		? eventFilters.card === params[eventFilters.view] ?? eventFilters.card
+
+	const {
+		VIEW,
+		CARD,
+		SHOW_EVENTS,
+		SHOW_UPCOMING_EVENTS,
+		QUERY,
+		CATEGORIES
+	} = EVENT_FILTERS;
+
+	const cardViewSelected = params[EVENT_FILTERS.VIEW]
+		? CARD === params[VIEW] ?? CARD
 		: true;
 
-	const showUpcomingEvents = params[eventFilters.showEvents]
-		? eventFilters.showUpcomingEvents === params[eventFilters.showEvents] ??
-			eventFilters.showUpcomingEvents
+	const showUpcomingEvents = params[SHOW_EVENTS]
+		? SHOW_UPCOMING_EVENTS === params[SHOW_EVENTS] ??
+			SHOW_UPCOMING_EVENTS
 		: true;
 
 	const currDate = new Date();
@@ -23,10 +33,10 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 		? gte(events.end, currDate)
 		: lt(events.end, currDate);
 
-	const eventSearch = params[eventFilters.query] ?? "";
+	const eventSearch = params[QUERY] ?? "";
 	const eventSearchQuery = ilike(events.name, `%${eventSearch}%`);
 	const categories = new Set(
-		params[eventFilters.categories]?.split(",") ?? [],
+		params[CATEGORIES]?.split(",") ?? [],
 	);
 
 	// Currently written like this because of weirdness with the where clause where it cannot be nested far down the with clauses

@@ -1,6 +1,6 @@
 import { count, db, eq, sql } from "db";
 import { checkins, events, users } from "db/schema";
-
+import { UserHasCheckedInError } from "./constants/events";
 export const getCategoryOptions = async () => {
 	const categories = (await db.query.eventCategories.findMany()).reduce(
 		(acc, cat) => {
@@ -88,10 +88,21 @@ export const getUserDataAndCheckin = async (eventID: string,clerkId:string) =>{
             checkins:{
                 where:eq(checkins.eventID,eventID),
             }
-            
         }
     });
 }
+export const checkInUser = async (eventID: string,userID:number,feedback:string,rating:number) => {
+	const userCheckin = await getUserCheckin(eventID,userID);
 
-// export const checkInUser = async (eventID: string,userID:string) => {
+    if (userCheckin){
+        throw new UserHasCheckedInError(`User ${userID} has already checked in`);
+    }
+
+    return db.insert(checkins).values({
+        userID:userID,
+        eventID:eventID,
+        rating,
+        feedback
+    });
+}
 

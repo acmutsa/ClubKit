@@ -22,7 +22,7 @@ import c from "config";
 import React, { useState, useEffect } from "react";
 import { Star, X, Check } from "lucide-react";
 import { toast } from "sonner";
-import { checkInUser } from "@/actions/events/checkin";
+import { checkInUserAction } from "@/actions/events/checkin";
 import { useRouter } from "next/navigation";
 type RatingFormAttributes = {
 	onChange: (...event: any[]) => void;
@@ -59,9 +59,21 @@ export default function EventCheckinForm({
 		status: checkInUserStatus,
 		result: checkInUserResult,
 		reset: resetCheckInUser,
-	} = useAction(checkInUser, {
+	} = useAction(checkInUserAction, {
 		onSuccess: async ({ success, code }) => {
 			toast.dismiss();
+
+			if (!success) {
+				toast.error(code, {
+					duration: Infinity,
+					cancel: {
+						label: "Close",
+						// cancel object requires an onclick so a blank one is passed
+						onClick: () => {},
+					},
+				});
+				return;
+			}
 			toast.success("Thanks for stopping by. See you next time!", {
 				duration: Infinity,
 				description: "Redirecting to events page...",
@@ -81,6 +93,7 @@ export default function EventCheckinForm({
 					},
 				});
 			} else {
+				console.log(e.serverError)
 				toast.error(`Something went wrong checking in user.`, {
 					duration: Infinity,
 					cancel: {
