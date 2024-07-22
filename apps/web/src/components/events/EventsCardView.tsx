@@ -2,11 +2,7 @@ import type { EventType } from "@/lib/types/events";
 import EventCardComponent from "./EventCardComponent";
 import { Suspense } from "react";
 import { ScrollArea } from "../ui/scroll-area";
-export default function EventsCardView({
-	events,
-}: {
-	events: Array<EventType>;
-}) {
+export default function EventsCardView({events,clientTimeZone}: {events: Array<EventType>,clientTimeZone: string}) {
 	const currentDate = new Date();
 
 	return (
@@ -19,6 +15,7 @@ export default function EventsCardView({
 							key={event.id}
 							event={event}
 							isPast={event.end < currentDate}
+							clientTimezone={clientTimeZone}
 						/>
 					))}
 				</div>

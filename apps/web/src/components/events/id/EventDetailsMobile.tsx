@@ -11,8 +11,13 @@ import { UserRoundCheck } from "lucide-react";
 import type { EventType } from "@/lib/types/events";
 
 
-export default function EventDetailsMobile({ event }: { event: EventType }) {
-
+export default function EventDetailsMobile({
+	event,
+	clientTimeZone,
+}: {
+	event: EventType;
+	clientTimeZone: string;
+}) {
 	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
 	const currentDate = new Date();
 	const isEventPassed = event.end < currentDate;
@@ -21,6 +26,7 @@ export default function EventDetailsMobile({ event }: { event: EventType }) {
 		hourCycle: "h12",
 		hour: "numeric",
 		minute: "2-digit",
+		timeZone: clientTimeZone,
 		timeZoneName: "short",
 	});
 
@@ -50,6 +56,7 @@ export default function EventDetailsMobile({ event }: { event: EventType }) {
 						hourCycle: "h12",
 						hour: "numeric",
 						minute: "2-digit",
+						timeZone:clientTimeZone,
 						timeZoneName: "short",
 					},
 				)}`;

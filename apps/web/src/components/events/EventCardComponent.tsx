@@ -3,18 +3,16 @@ import Image from "next/image";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import defaultImg from "../../../public/img/test_image.webp";
 import clsx from "clsx";
 import EventCategories from "./EventCategories";
 
+export default function EventCardComponent({ event,isPast,clientTimezone }: { event: EventType,isPast:boolean,clientTimezone:string }) {
 
-export default function EventCardComponent({ event,isPast }: { event: EventType,isPast:boolean }) {
   return (
 		<Card className="group flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md hover:shadow-slate-400 md:hover:scale-105">
 			<CardHeader className="p-0 pb-4 h-full flex justify-center">
@@ -26,7 +24,7 @@ export default function EventCardComponent({ event,isPast }: { event: EventType,
 						width={0}
 						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 						height={0}
-						quality={75}
+						quality={100}
 						className={clsx("w-full rounded-md", {
 							"h-auto grayscale group-hover:grayscale-0": isPast,
 						})}
@@ -48,6 +46,7 @@ export default function EventCardComponent({ event,isPast }: { event: EventType,
 							hourCycle: "h12",
 							dateStyle: "medium",
 							timeStyle: "short",
+							timeZone: clientTimezone,
 						})}
 					</p>
 				</div>

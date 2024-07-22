@@ -6,6 +6,9 @@ import type { SearchParams } from "@/lib/types/shared";
 import { EVENT_FILTERS } from "@/lib/constants/events";
 import { unstable_noStore as noStore } from "next/cache";
 import NoEvents from "./NoEvents";
+import { headers } from "next/headers";
+import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants/shared";
+import { getClientTimeZone } from "@/lib/utils";
 // Original data fetching will be done by a server component and any further filtering will be handled client-side. Data is not super large or sensentive so this is fine
 export default async function EventsView({ params }: { params: SearchParams }) {
 
@@ -73,12 +76,24 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 		return <NoEvents />;
 	}
 
+	const clientHeaderTimezoneValue = headers().get(
+		VERCEL_IP_TIMEZONE_HEADER_KEY,
+	);
+
+	const clientTimeZone = getClientTimeZone(clientHeaderTimezoneValue);
+
 	return (
 		<div className="flex w-full flex-1 overflow-x-hidden no-scrollbar">
 			{cardViewSelected ? (
-				<EventsCardView events={allEvents} />
+				<EventsCardView
+					events={allEvents}
+					clientTimeZone={clientTimeZone}
+				/>
 			) : (
-				<EventsCalendarView events={allEvents} />
+				<EventsCalendarView
+					events={allEvents}
+					clientTimeZone={clientTimeZone}
+				/>
 			)}
 		</div>
 	);

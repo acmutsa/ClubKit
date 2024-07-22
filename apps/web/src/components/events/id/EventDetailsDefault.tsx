@@ -9,8 +9,14 @@ import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
 import type { EventType } from "@/lib/types/events";
-
-export default function EventDetailsDefault({ event }: { event: EventType }) {
+import { ONE_HOUR_IN_MILLISECONDS } from "@/lib/constants/shared";
+export default function EventDetailsDefault({
+	event,
+	clientTimeZone,
+}: {
+	event: EventType;
+	clientTimeZone: string;
+}) {
 	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
 
 	const currentDate = new Date();
@@ -20,13 +26,15 @@ export default function EventDetailsDefault({ event }: { event: EventType }) {
 		hourCycle: "h12",
 		hour: "numeric",
 		minute: "2-digit",
+		timeZone: clientTimeZone,
 		timeZoneName: "short",
 	});
 
 	const startDate = event.start.toDateString();
 
 	const rawEventDuration =
-		event.end.getHours() - event.start.getHours() / 1000 / 3600;
+		event.end.getHours() -
+		event.start.getHours() / ONE_HOUR_IN_MILLISECONDS;
 
 	const isEventLongerThanADay = rawEventDuration > 24;
 
