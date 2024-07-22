@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
 
@@ -21,13 +21,24 @@ import {
 
 import {
 	ColumnDef,
+	ColumnFiltersState,
+	FilterFn,
 	SortingState,
+	SortingFn,
 	flexRender,
 	getCoreRowModel,
+	getFilteredRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
+	sortingFns,
 	useReactTable,
 } from "@tanstack/react-table";
+
+import {
+	compareItems,
+	rankItem,
+	RankingInfo,
+} from "@tanstack/match-sorter-utils";
 
 import {
 	Table,
@@ -39,10 +50,10 @@ import {
 } from "@/components/ui/table";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Column } from "@tanstack/react-table";
 
 import { cn } from "@/lib/utils";
-import { string } from "zod";
 import { DataTablePagination } from "../shared/data-table-pagination";
 
 interface DataTableProps<TData, TValue> {
@@ -51,29 +62,95 @@ interface DataTableProps<TData, TValue> {
 	viewRoute?: string;
 }
 
+declare module "@tanstack/react-table" {
+	//add fuzzy filter to the filterFns
+	interface FilterFns {
+		fuzzy: FilterFn<unknown>;
+	}
+	interface FilterMeta {
+		itemRank: RankingInfo;
+	}
+}
+
+// Define a custom fuzzy filter function that will apply ranking info to rows (using match-sorter utils)
+const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+	// Rank the item
+	const itemRank = rankItem(row.getValue(columnId), value);
+
+	// Store the itemRank info
+	addMeta({
+		itemRank,
+	});
+
+	// Return if the item should be filtered in/out
+	return itemRank.passed;
+};
+
+// Define a custom fuzzy sort function that will sort by rank if the row has ranking information
+const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
+	let dir = 0;
+
+	// Only sort by rank if the column has ranking information
+	if (rowA.columnFiltersMeta[columnId]) {
+		dir = compareItems(
+			rowA.columnFiltersMeta[columnId]?.itemRank!,
+			rowB.columnFiltersMeta[columnId]?.itemRank!,
+		);
+	}
+
+	// Provide an alphanumeric fallback for when the item ranks are equal
+	return dir === 0 ? sortingFns.alphanumeric(rowA, rowB, columnId) : dir;
+};
+
 export function DataTable<TData, TValue>({
 	columns,
 	data,
 	viewRoute,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const [globalFilter, setGlobalFilter] = useState("");
 
 	const table = useReactTable({
 		data,
 		columns,
+		filterFns: {
+			fuzzy: fuzzyFilter,
+		},
+		state: {
+			sorting,
+			columnFilters,
+			globalFilter,
+		},
+		globalFilterFn: "fuzzy",
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		onSortingChange: setSorting,
 		getSortedRowModel: getSortedRowModel(),
-		state: {
-			sorting,
-		},
+		onColumnFiltersChange: setColumnFilters,
+		getFilteredRowModel: getFilteredRowModel(),
 	});
+
+	useEffect(() => {
+		if (table.getState().columnFilters[0]?.id === "fullName") {
+			if (table.getState().sorting[0]?.id !== "fullName") {
+				table.setSorting([{ id: "fullName", desc: false }]);
+			}
+		}
+	}, [table.getState().columnFilters[0]?.id]);
 
 	return (
 		<div>
-			<div className="m-2 text-sm text-muted-foreground">
-				Viewing {table.getFilteredRowModel().rows.length} result(s).
+			<div className="flex w-full items-center py-4">
+				<Input
+					placeholder="Search events..."
+					value={(globalFilter as string) ?? ""}
+					onChange={(e) => setGlobalFilter(e.target.value)}
+					className="max-w-sm"
+				/>
+				<div className="m-2 text-sm text-muted-foreground">
+					Viewing {table.getFilteredRowModel().rows.length} result(s).
+				</div>
 			</div>
 			<div className="rounded-md border">
 				<Table>
