@@ -1,29 +1,39 @@
-export type EventsToCategories = {
-	eventID: string;
-	categoryID: string;
+import { events,eventsToCategories,eventCategories,eventsToCategoriesRelations } from "db/schema"
+
+export type EventToCategoriesType = typeof eventsToCategories.$inferSelect;
+
+export type EventCategoryType = typeof eventCategories.$inferSelect;
+
+export type EventsToCategoriesWithCategoryType = EventToCategoriesType & {
 	category: {
+		// id?: string;
 		name: string;
 		color: string;
 	};
-};
+}
 
-export type EventCategory = {
-	name: string;
-	color: string;
-	id: string;
-};
+export type EventType =  typeof events.$inferSelect;
 
-export type EventType = {
-	id: string;
-	name: string;
+export type EventAndCategoriesType = EventType & {
+	eventsToCategories: EventsToCategoriesWithCategoryType[];
+}
+
+export type EventCalendarLink = {
+	title: string;
 	description: string;
-	thumbnailUrl: string;
-	start: Date;
-	end: Date;
-	checkinStart: Date;
-	checkinEnd: Date;
+	start: string;
+	end: string;
 	location: string;
-	isUserCheckinable: boolean;
-	isHidden: boolean;
-	eventsToCategories: Array<EventsToCategories>;
+};
+
+export type DetailsProps = {
+	event: EventAndCategoriesType;
+	startTime: string;
+	startDate: string;
+	formattedEventDuration: string;
+	checkInUrl: string;
+	checkInMessage: string;
+	eventCalendarLink: EventCalendarLink;
+	isEventPassed: boolean;
+	isCheckinAvailable: boolean;
 };

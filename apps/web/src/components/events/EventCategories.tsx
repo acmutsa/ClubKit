@@ -1,4 +1,4 @@
-import type { EventType } from "@/lib/types/events";
+import type { EventAndCategoriesType } from "@/lib/types/events";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import c from "config";
@@ -7,7 +7,7 @@ export default function EventCategories({
 	isPast,
 	className,
 }: {
-	event: EventType;
+	event: EventAndCategoriesType;
 	isPast: boolean;
 	className?: string;
 }) {

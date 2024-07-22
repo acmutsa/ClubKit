@@ -1,8 +1,8 @@
-import type { EventType } from "@/lib/types/events";
+import type { EventAndCategoriesType } from "@/lib/types/events";
 import EventCardComponent from "./EventCardComponent";
 import { Suspense } from "react";
 import { ScrollArea } from "../ui/scroll-area";
-export default function EventsCardView({events,clientTimeZone}: {events: Array<EventType>,clientTimeZone: string}) {
+export default function EventsCardView({events,clientTimeZone}: {events: Array<EventAndCategoriesType>,clientTimeZone: string}) {
 	const currentDate = new Date();
 
 	return (

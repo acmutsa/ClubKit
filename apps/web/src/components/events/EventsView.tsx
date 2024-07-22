@@ -9,7 +9,7 @@ import NoEvents from "./NoEvents";
 import { headers } from "next/headers";
 import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants/shared";
 import { getClientTimeZone } from "@/lib/utils";
-// Original data fetching will be done by a server component and any further filtering will be handled client-side. Data is not super large or sensentive so this is fine
+
 export default async function EventsView({ params }: { params: SearchParams }) {
 
 	const {
@@ -42,7 +42,7 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 		params[CATEGORIES]?.split(",") ?? [],
 	);
 
-	// Currently written like this because of weirdness with the where clause where it cannot be nested far down the with clauses
+	// Currently written like this because of weirdness with the 'where' clause where it cannot be nested far down the 'with' clauses
 	noStore();
 	const allEvents = await db.query.events
 		.findMany({

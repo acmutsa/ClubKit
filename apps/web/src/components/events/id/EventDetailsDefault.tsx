@@ -8,66 +8,21 @@ import { MapPin, Clock, Calendar, Hourglass } from "lucide-react";
 import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
-import type { EventType } from "@/lib/types/events";
-import { ONE_HOUR_IN_MILLISECONDS } from "@/lib/constants/shared";
-export default function EventDetailsDefault({
-	event,
-	clientTimeZone,
-}: {
-	event: EventType;
-	clientTimeZone: string;
-}) {
+import type { EventAndCategoriesType } from "@/lib/types/events";
+import { DetailsProps } from "@/lib/types/events";
+export default function EventDetailsDefault(detailsProps: DetailsProps) {
 	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
-
-	const currentDate = new Date();
-	const isEventPassed = event.end < currentDate;
-	// Make sure that this is converting properly
-	const startTime = event.start.toLocaleString(undefined, {
-		hourCycle: "h12",
-		hour: "numeric",
-		minute: "2-digit",
-		timeZone: clientTimeZone,
-		timeZoneName: "short",
-	});
-
-	const startDate = event.start.toDateString();
-
-	const rawEventDuration =
-		event.end.getHours() -
-		event.start.getHours() / ONE_HOUR_IN_MILLISECONDS;
-
-	const isEventLongerThanADay = rawEventDuration > 24;
-
-	const formattedEventDuration = isEventLongerThanADay
-		? (rawEventDuration / 24).toFixed(2) + " day(s)"
-		: rawEventDuration.toFixed(2) + " hour(s)";
-
-	const checkInUrl = `/events/${event.id}/checkin`;
-
-	const isCheckinAvailable =
-		event.checkinStart <= currentDate && currentDate <= event.checkinEnd;
-
-	const checkInMessage = isCheckinAvailable
-		? "Ready to check in? Click here!"
-		: isEventPassed
-			? "Check-in is closed"
-			: `Check-in starts at ${event.checkinStart.toLocaleString(
-					undefined,
-					{
-						hourCycle: "h12",
-						hour: "numeric",
-						minute: "2-digit",
-						timeZoneName: "short",
-					},
-				)}`;
-
-	const eventCalendarLink = {
-		title: event.name,
-		description: event.description,
-		start: event.start.toISOString(),
-		end: event.end.toISOString(),
-		location: event.location,
-	};
+	const {
+		event,
+		checkInMessage,
+		checkInUrl,
+		eventCalendarLink,
+		startTime,
+		startDate,
+		formattedEventDuration,
+		isCheckinAvailable,
+		isEventPassed,
+	} = detailsProps;
 
 	return (
 		<div className="hidden flex-col items-center gap-4 lg:flex">

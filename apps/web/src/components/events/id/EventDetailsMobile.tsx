@@ -8,66 +8,21 @@ import { MapPin, Clock, Calendar, Hourglass } from "lucide-react";
 import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
-import type { EventType } from "@/lib/types/events";
+import type { DetailsProps } from "@/lib/types/events";
 
-
-export default function EventDetailsMobile({
-	event,
-	clientTimeZone,
-}: {
-	event: EventType;
-	clientTimeZone: string;
-}) {
+export default function EventDetailsMobile(detailsProps: DetailsProps) {
 	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
-	const currentDate = new Date();
-	const isEventPassed = event.end < currentDate;
-	// Make sure that this is converting properly
-	const startTime = event.start.toLocaleString(undefined, {
-		hourCycle: "h12",
-		hour: "numeric",
-		minute: "2-digit",
-		timeZone: clientTimeZone,
-		timeZoneName: "short",
-	});
-
-	const startDate = event.start.toDateString();
-
-	const rawEventDuration =
-		event.end.getHours() - event.start.getHours() / 1000 / 3600;
-
-	const isEventLongerThanADay = rawEventDuration > 24;
-
-	const formattedEventDuration = isEventLongerThanADay
-		? (rawEventDuration / 24).toFixed(2) + " day(s)"
-		: rawEventDuration.toFixed(2) + " hour(s)";
-
-	const checkInUrl = `/events/${event.id}/checkin`;
-
-	const isCheckinAvailable =
-		event.checkinStart <= currentDate && currentDate <= event.checkinEnd;
-
-	const checkInMessage = isCheckinAvailable
-		? "Ready to check in? Click here!"
-		: isEventPassed
-			? "Check-in is closed"
-			: `Check-in starts at ${event.checkinStart.toLocaleString(
-					undefined,
-					{
-						hourCycle: "h12",
-						hour: "numeric",
-						minute: "2-digit",
-						timeZone:clientTimeZone,
-						timeZoneName: "short",
-					},
-				)}`;
-
-	const eventCalendarLink = {
-		title: event.name,
-		description: event.description,
-		start: event.start.toISOString(),
-		end: event.end.toISOString(),
-		location: event.location,
-	};
+	const {
+		event,
+		checkInMessage,
+		checkInUrl,
+		eventCalendarLink,
+		startTime,
+		startDate,
+		formattedEventDuration,
+		isCheckinAvailable,
+		isEventPassed,
+	} = detailsProps;
 
 	return (
 		<div className="flex flex-col space-y-4 lg:hidden">

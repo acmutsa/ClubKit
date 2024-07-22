@@ -1,4 +1,4 @@
-import type { EventType } from "@/lib/types/events";
+import type { EventAndCategoriesType } from "@/lib/types/events";
 import Image from "next/image";
 import {
   Card,
@@ -11,7 +11,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import EventCategories from "./EventCategories";
 
-export default function EventCardComponent({ event,isPast,clientTimezone }: { event: EventType,isPast:boolean,clientTimezone:string }) {
+export default function EventCardComponent({ event,isPast,clientTimezone }: { event: EventAndCategoriesType,isPast:boolean,clientTimezone:string }) {
 
   return (
 		<Card className="group flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md hover:shadow-slate-400 md:hover:scale-105">

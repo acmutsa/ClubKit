@@ -2,10 +2,10 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname,useSearchParams,useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { EventCategory } from "@/lib/types/events";
+import type { EventCategoryType } from "@/lib/types/events";
 import { EVENT_FILTERS } from "@/lib/constants/events";
 
-export default function CategoryCheckBox({category,checkBoxSet}:{category:EventCategory,checkBoxSet:Set<string>}){
+export default function CategoryCheckBox({category,checkBoxSet}:{category:EventCategoryType,checkBoxSet:Set<string>}){
     const name = category.name;
     const color = category.color;
     const { CATEGORIES} = EVENT_FILTERS
