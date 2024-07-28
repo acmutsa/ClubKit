@@ -19,11 +19,11 @@ async function Page() {
 					<EventStatsSheet />
 				</Suspense>
 			</div>
-			{/* <div className="border-muted">{events?.[0].name}</div> */}
 			<div className="rounded-xl p-5">
 				<DataTable
 					columns={columns}
 					data={events}
+					tableName="events"
 					viewRoute="/events/"
 				/>
 			</div>

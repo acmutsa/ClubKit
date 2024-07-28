@@ -60,6 +60,7 @@ interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	viewRoute?: string;
+	tableName?: string;
 }
 
 declare module "@tanstack/react-table" {
@@ -106,6 +107,7 @@ export function DataTable<TData, TValue>({
 	columns,
 	data,
 	viewRoute,
+	tableName,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -143,7 +145,7 @@ export function DataTable<TData, TValue>({
 		<div>
 			<div className="flex w-full items-center py-4">
 				<Input
-					placeholder="Search events..."
+					placeholder={`Search ${tableName}...`}
 					value={(globalFilter as string) ?? ""}
 					onChange={(e) => setGlobalFilter(e.target.value)}
 					className="max-w-sm"

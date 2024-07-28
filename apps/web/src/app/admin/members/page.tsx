@@ -24,6 +24,7 @@ async function Page() {
 				<DataTable
 					columns={columns}
 					data={members}
+					tableName="members"
 					// viewRoute="/member/"
 				/>
 			</div>
