@@ -98,7 +98,15 @@ export const insertEventSchemaFormified = insertEventSchema
 				.min(1, "You must select one or more categories"),
 		}),
 	)
-	.omit({ id: true });
+	.omit({ id: true })
+	.refine((event) => event.start < event.end, {
+		message: "Event start time must be before end",
+		path: ["end"],
+	})
+	.refine((event) => event.checkinStart < event.checkinEnd, {
+		message: "Event checkin start time must be before checkin end",
+		path: ["checkinEnd"],
+	});
 
 export const selectEventSchema = createSelectSchema(events);
 export type Event = z.infer<typeof selectEventSchema>;

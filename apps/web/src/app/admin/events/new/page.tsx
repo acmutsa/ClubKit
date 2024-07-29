@@ -7,7 +7,7 @@ export default async function Page() {
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
 			<div className="grid grid-cols-2 px-5">
-				<h1 className="font-foreground text-3xl font-bold tracking-tight">
+				<h1 className="font-foreground mb-2 text-3xl font-bold tracking-tight">
 					New Event
 				</h1>
 			</div>
