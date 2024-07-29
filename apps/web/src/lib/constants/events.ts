@@ -10,9 +10,3 @@ export const EVENT_FILTERS = Object.freeze({
 	CATEGORIES: "categories",
 	WEEK_OF: "week_of",
 });
-
-export class UserHasCheckedInError extends Error {
-	constructor(message:string) {
-		super(message);
-	}
-}

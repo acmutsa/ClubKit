@@ -1,6 +1,5 @@
 import { count, db, eq, sql } from "db";
 import { checkins, events, users } from "db/schema";
-import { UserHasCheckedInError } from "./constants/events";
 export const getCategoryOptions = async () => {
 	const categories = (await db.query.eventCategories.findMany()).reduce(
 		(acc, cat) => {
@@ -64,45 +63,45 @@ export const getEventDetails = async (id: string) => {
 		},
 		where: eq(events.id, id),
 	});
-}
+};
 
-export const getUserCheckin = async (eventID: string,userID:number) => {
+export const getUserCheckin = async (eventID: string, userID: number) => {
 	return db.query.checkins.findFirst({
-		where: (checkins, { and }) => and(
-			eq(checkins.eventID, eventID),
-			eq(checkins.userID, userID)
-		)
+		where: (checkins, { and }) =>
+			and(eq(checkins.eventID, eventID), eq(checkins.userID, userID)),
 	});
-}
+};
 
 export const getUserCheckins = async (userID: number) => {
 	return db.query.checkins.findMany({
 		where: eq(checkins.userID, userID),
 	});
-}
+};
 
-export const getUserDataAndCheckin = async (eventID: string,clerkId:string) =>{
+export const getUserDataAndCheckin = async (
+	eventID: string,
+	clerkId: string,
+) => {
 	return db.query.users.findFirst({
-        where:eq(users.clerkID,clerkId),
-        with:{
-            checkins:{
-                where:eq(checkins.eventID,eventID),
-            }
-        }
-    });
-}
-export const checkInUser = async (eventID: string,userID:number,feedback:string,rating:number) => {
-	const userCheckin = await getUserCheckin(eventID,userID);
+		where: eq(users.clerkID, clerkId),
+		with: {
+			checkins: {
+				where: eq(checkins.eventID, eventID),
+			},
+		},
+	});
+};
+export const checkInUser = async (
+	eventID: string,
+	userID: number,
+	feedback: string,
+	rating: number,
+) => {
 
-    if (userCheckin){
-        throw new UserHasCheckedInError(`User ${userID} has already checked in`);
-    }
-
-    return db.insert(checkins).values({
-        userID:userID,
-        eventID:eventID,
-        rating,
-        feedback
-    });
-}
-
+	return db.insert(checkins).values({
+		userID: userID,
+		eventID: eventID,
+		rating,
+		feedback,
+	});
+};
