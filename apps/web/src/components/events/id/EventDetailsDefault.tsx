@@ -8,10 +8,15 @@ import { MapPin, Clock, Calendar, Hourglass } from "lucide-react";
 import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
-import type { EventAndCategoriesType } from "@/lib/types/events";
 import { DetailsProps } from "@/lib/types/events";
 export default function EventDetailsDefault(detailsProps: DetailsProps) {
-	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
+	const { 
+		streamingLinks, 
+		calendarLinks, 
+		checkingInInfo, 
+		aboutOrg 
+	} = c;
+	
 	const {
 		event,
 		checkInMessage,
@@ -24,12 +29,18 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 		isEventPassed,
 	} = detailsProps;
 
+	const {
+		thumbnailUrl,
+		location,
+		description,
+	} = event
+
 	return (
 		<div className="hidden flex-col items-center gap-4 lg:flex">
 			<div className="flex w-[90%] flex-row items-center justify-center">
 				<div className="flex w-1/2 flex-col items-start justify-center gap-6">
 					<Image
-						src={event.thumbnailUrl}
+						src={thumbnailUrl}
 						alt="Event Image"
 						priority={true}
 						width={0}
@@ -46,13 +57,13 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 				</div>
 				<div className="flex h-full w-3/4 flex-col gap-12">
 					<p className="w-full md:text-sm lg:text-base xl:text-lg 2xl:text-xl">
-						{event.description}
+						{description}
 					</p>
 					<div className="flex h-full w-full flex-row items-start justify-between">
-						<div className="flex flex-col gap-2 md:text-base lg:text-lg xl:text-xl">
+						<div className="flex flex-col gap-2 md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
 							<div className="flex items-center justify-start gap-3">
 								<MapPin size={24} />
-								<p className="flex">{event.location}</p>
+								<p className="flex">{location}</p>
 							</div>
 							<div className="flex items-center justify-start gap-3">
 								<Clock size={24} />
@@ -101,7 +112,6 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 					</div>
 				</div>
 			</div>
-			{/* Check in */}
 			<div className="flex flex-col items-center justify-center">
 				<Link
 					href={checkInUrl}
@@ -125,7 +135,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 						)}
 					>
 						<UserRoundCheck size={24} />
-						<p className="text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+						<p className="text-base lg:text-lg xl:text-xl 2xl:text-2xl monitor:text-3xl">
 							{checkInMessage}
 						</p>
 					</Button>
@@ -135,7 +145,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 			<div className="flex w-full flex-row items-start justify-between gap-20 px-10 pt-10">
 				<div className="flex flex-col items-start justify-center gap-1">
 					<h1 className="text-3xl font-bold">About ACM</h1>
-					<p className="border-t border-muted-foreground pl-1 text-xl">
+					<p className="border-t border-muted-foreground pl-1 text-xl 2xl:text-2xl">
 						{aboutOrg}
 					</p>
 				</div>

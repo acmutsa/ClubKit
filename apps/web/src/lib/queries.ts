@@ -91,6 +91,7 @@ export const getUserDataAndCheckin = async (
 		},
 	});
 };
+
 export const checkInUser = async (
 	eventID: string,
 	userID: number,

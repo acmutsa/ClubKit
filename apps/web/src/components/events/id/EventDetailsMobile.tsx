@@ -11,7 +11,13 @@ import { UserRoundCheck } from "lucide-react";
 import type { DetailsProps } from "@/lib/types/events";
 
 export default function EventDetailsMobile(detailsProps: DetailsProps) {
-	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
+	const { 
+		streamingLinks, 
+		calendarLinks, 
+		checkingInInfo, 
+		aboutOrg 
+	} = c;
+	
 	const {
 		event,
 		checkInMessage,
@@ -88,7 +94,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 						)}
 					>
 						<UserRoundCheck size={24} />
-						<p className="text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+						<p className="text-sm sm:text-base md:text-lg lg:text-lg xl:text-xl">
 							{checkInMessage}
 						</p>
 					</Button>
