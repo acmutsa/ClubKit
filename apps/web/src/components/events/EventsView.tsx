@@ -8,7 +8,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import NoEvents from "./NoEvents";
 import { headers } from "next/headers";
 import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants/shared";
-import { getClientTimeZone } from "@/lib/utils";
+import { getClientTimeZone,getUTCDate } from "@/lib/utils";
 
 export default async function EventsView({ params }: { params: SearchParams }) {
 
@@ -30,11 +30,11 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 			SHOW_UPCOMING_EVENTS
 		: true;
 
-	const currDate = new Date();
+	const currentDateUTC = getUTCDate();
 
 	const dateComparison = showUpcomingEvents
-		? gte(events.end, currDate)
-		: lt(events.end, currDate);
+		? gte(events.end, currentDateUTC)
+		: lt(events.end, currentDateUTC);
 
 	const eventSearch = params[QUERY] ?? "";
 	const eventSearchQuery = ilike(events.name, `%${eventSearch}%`);
@@ -88,11 +88,13 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 				<EventsCardView
 					events={allEvents}
 					clientTimeZone={clientTimeZone}
+					currentDateUTC={currentDateUTC}
 				/>
 			) : (
 				<EventsCalendarView
 					events={allEvents}
 					clientTimeZone={clientTimeZone}
+					currentDateUTC={currentDateUTC}
 				/>
 			)}
 		</div>

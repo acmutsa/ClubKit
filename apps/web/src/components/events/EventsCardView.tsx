@@ -1,9 +1,7 @@
 import type { EventAndCategoriesType } from "@/lib/types/events";
 import EventCardComponent from "./EventCardComponent";
-import { Suspense } from "react";
 import { ScrollArea } from "../ui/scroll-area";
-export default function EventsCardView({events,clientTimeZone}: {events: Array<EventAndCategoriesType>,clientTimeZone: string}) {
-	const currentDate = new Date();
+export default function EventsCardView({events,clientTimeZone,currentDateUTC}: {events: Array<EventAndCategoriesType>,clientTimeZone: string,currentDateUTC: Date}) {
 
 	return (
 		<div className="flex w-full flex-1 flex-col items-center no-scrollbar">
@@ -14,7 +12,7 @@ export default function EventsCardView({events,clientTimeZone}: {events: Array<E
 						<EventCardComponent
 							key={event.id}
 							event={event}
-							isPast={event.end < currentDate}
+							isPast={event.end < currentDateUTC}
 							clientTimezone={clientTimeZone}
 						/>
 					))}

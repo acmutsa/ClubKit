@@ -2,7 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as links from "calendar-link";
 import type { CalendarDetails } from "./types/events";
-
+import { ONE_HOUR_IN_MILLISECONDS } from "./constants/shared";
 const linksAsObject = links as Record<string, Function>;
 
 export function cn(...inputs: ClassValue[]) {
@@ -34,15 +34,15 @@ export function createCalendarLink(
 	return links.google(eventCalendarLink);
 }
 
-export const getClientTimeZone = (vercelIPTimeZone: string | null) => {
+export function getClientTimeZone(vercelIPTimeZone: string | null) {
 	return vercelIPTimeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
 };
 
-export const convertDateToUtc = (date: Date) => {
+export function convertDateToUtc(date: Date){
 	return date.toISOString();
 };
 
-export const convertDateWithTimeZone = (date: Date, timeZone: string) => {
+export function getDateAndTimeWithTimeZoneString(date: Date, timeZone: string){
 	return date.toLocaleString(undefined, {
 		hourCycle: "h12",
 		dateStyle: "medium",
@@ -50,3 +50,23 @@ export const convertDateWithTimeZone = (date: Date, timeZone: string) => {
 		timeZone: timeZone,
 	});
 };
+
+export function getDateWithTimeZoneString(date: Date, timeZone: string){
+	return date.toLocaleString(undefined, {
+		hourCycle: "h12",
+		hour: "numeric",
+		minute: "2-digit",
+		timeZone: timeZone,
+		timeZoneName: "short",
+	});
+}
+
+export function getUTCDate(){
+	const currentDate = new Date();
+	return new Date(currentDate.toUTCString());
+}
+
+export function getDateDifferentInHours(date1: Date, date2: Date){
+	const diffInMs = date1.getTime() - date2.getTime();
+	return diffInMs / ONE_HOUR_IN_MILLISECONDS;
+}

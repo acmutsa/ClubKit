@@ -3,9 +3,16 @@ import PageError from "../../shared/PageError";
 import EventDetailsMobile from "./EventDetailsMobile";
 import EventDetailsDefault from "./EventDetailsDefault";
 import { headers } from "next/headers";
-import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants/shared";
-import { getClientTimeZone } from "@/lib/utils";
-import {ONE_HOUR_IN_MILLISECONDS} from "@/lib/constants/shared";
+import { VERCEL_IP_TIMEZONE_HEADER_KEY,TWENTY_FOUR_HOURS } from "@/lib/constants/shared";
+import {
+	getClientTimeZone,
+	getDateAndTimeWithTimeZoneString,
+	getDateWithTimeZoneString,
+	getDateDifferentInHours,
+	getUTCDate,
+} from "@/lib/utils";
+
+
 export default async function EventDetails({ id }: { id: string }) {
 	const headerTimeZone = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
 	const clientTimeZone = getClientTimeZone(headerTimeZone);
@@ -14,48 +21,37 @@ export default async function EventDetails({ id }: { id: string }) {
 	if (!event) {
 		return <PageError message="Event Not Found" href="/events" />;
 	}
+	// This needs to be fixed
+	const currentDateUTC = getUTCDate();
+	const isEventPassed = event.end < currentDateUTC;
 
-	const currentDate = new Date();
-	const isEventPassed = event.end < currentDate;
-	const startTime = event.start.toLocaleString(undefined, {
-		hourCycle: "h12",
-		hour: "numeric",
-		minute: "2-digit",
+	const startTime = getDateWithTimeZoneString(event.start, clientTimeZone);
+	
+	const startDate = event.start.toLocaleDateString(undefined,{
 		timeZone: clientTimeZone,
-		timeZoneName: "short",
+		month: "long",
+		day: "numeric",
+		year: "numeric"
 	});
 
-	const startDate = event.start.toDateString();
-
-	const rawEventDuration =
-		event.end.getHours() -
-		event.start.getHours() / ONE_HOUR_IN_MILLISECONDS;
-
-	const isEventLongerThanADay = rawEventDuration > 24;
+	const rawEventDuration = getDateDifferentInHours(event.end, event.start);
+	
+	const isEventLongerThanADay = rawEventDuration > TWENTY_FOUR_HOURS;
 
 	const formattedEventDuration = isEventLongerThanADay
-		? (rawEventDuration / 24).toFixed(2) + " day(s)"
+		? (rawEventDuration / TWENTY_FOUR_HOURS).toFixed(2) + " day(s)"
 		: rawEventDuration.toFixed(2) + " hour(s)";
 
 	const checkInUrl = `/events/${event.id}/checkin`;
 
 	const isCheckinAvailable =
-		event.checkinStart <= currentDate && currentDate <= event.checkinEnd;
+		event.checkinStart <= currentDateUTC && currentDateUTC <= event.checkinEnd;
 
 	const checkInMessage = isCheckinAvailable
 		? "Ready to check in? Click here!"
 		: isEventPassed
 			? "Check-in is closed"
-			: `Check-in starts at ${event.checkinStart.toLocaleString(
-					undefined,
-					{
-						hourCycle: "h12",
-						hour: "numeric",
-						minute: "2-digit",
-						timeZone: clientTimeZone,
-						timeZoneName: "short",
-					},
-				)}`;
+			: `Check-in starts on ${getDateAndTimeWithTimeZoneString(event.checkinStart, clientTimeZone)}`;
 
 	const eventCalendarLink = {
 		title: event.name,
