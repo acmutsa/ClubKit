@@ -58,14 +58,12 @@ export default async function EventCheckin({
 
 	const isCheckinAvailable =
 		event.checkinStart <= currentDateUTC && currentDateUTC <= event.checkinEnd;
-
 	if (!isCheckinAvailable) {
 		return (
 			<PageError
 				message={`Check-in does not start until ${getDateAndTimeWithTimeZoneString(event.checkinStart, clientTimeZone)}`}
 				href={href}
 				className="md:px-12 lg:px-16 text-base"
-				
 			/>
 		);
 	}

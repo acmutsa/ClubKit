@@ -37,8 +37,8 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 
 	return (
 		<div className="hidden flex-col items-center gap-4 lg:flex">
-			<div className="flex w-[90%] flex-row items-center justify-center">
-				<div className="flex w-1/2 flex-col items-start justify-center gap-6">
+			<div className="flex w-full flex-row items-center justify-center xl:w-[90%]">
+				<div className="flex flex-col items-start justify-center xl:w-1/2 ">
 					<Image
 						src={thumbnailUrl}
 						alt="Event Image"
@@ -46,13 +46,13 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 						width={0}
 						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 						height={0}
-						quality={75}
-						className="h-auto w-[500px] max-w-[500px] rounded-md"
+						quality={100}
+						className="h-auto w-[350px] max-w-[350px] rounded-md xl:w-[500px] xl:max-w-[500px]"
 					/>
 					<EventCategories
 						event={event}
 						isPast={isEventPassed}
-						className="h-full w-[500px] max-w-[500px] items-start pt-3"
+						className="h-full w-[350px] max-w-[350px] items-start pt-3 xl:w-[500px] xl:max-w-[500px]3"
 					/>
 				</div>
 				<div className="flex h-full w-3/4 flex-col gap-12">
