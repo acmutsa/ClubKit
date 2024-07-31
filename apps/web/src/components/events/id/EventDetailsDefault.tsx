@@ -10,13 +10,8 @@ import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
 import { DetailsProps } from "@/lib/types/events";
 export default function EventDetailsDefault(detailsProps: DetailsProps) {
-	const { 
-		streamingLinks, 
-		calendarLinks, 
-		checkingInInfo, 
-		aboutOrg 
-	} = c;
-	
+	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
+
 	const {
 		event,
 		checkInMessage,
@@ -29,11 +24,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 		isEventPassed,
 	} = detailsProps;
 
-	const {
-		thumbnailUrl,
-		location,
-		description,
-	} = event
+	const { thumbnailUrl, location, description } = event;
 
 	return (
 		<div className="hidden flex-col items-center gap-4 lg:flex">
@@ -52,7 +43,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 					<EventCategories
 						event={event}
 						isPast={isEventPassed}
-						className="h-full w-[350px] max-w-[350px] items-start pt-3 xl:w-[500px] xl:max-w-[500px]3"
+						className="h-full w-[350px] max-w-[350px] items-start pt-3 xl:w-[500px] xl:max-w-[500px]"
 					/>
 				</div>
 				<div className="flex h-full w-3/4 flex-col gap-12">
@@ -98,7 +89,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 								<h1 className="text-3xl font-bold">
 									Need a Reminder?
 								</h1>
-								<div className="flex w-full flex-row items-center justify-center gap-5">
+								<div className="flex w-full flex-row flex-wrap items-center justify-center gap-5">
 									{calendarLinks.map((cal) => (
 										<CalendarLink
 											calendarName={cal}

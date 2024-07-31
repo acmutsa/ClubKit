@@ -11,13 +11,8 @@ import { UserRoundCheck } from "lucide-react";
 import type { DetailsProps } from "@/lib/types/events";
 
 export default function EventDetailsMobile(detailsProps: DetailsProps) {
-	const { 
-		streamingLinks, 
-		calendarLinks, 
-		checkingInInfo, 
-		aboutOrg 
-	} = c;
-	
+	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
+
 	const {
 		event,
 		checkInMessage,
@@ -114,7 +109,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-5">
 				<h1 className="text-xl font-bold">Need a Reminder?</h1>
-				<div className="flex w-full flex-row items-center justify-center gap-6 px-3">
+				<div className="flex w-full flex-row flex-wrap items-center justify-center gap-6 px-3">
 					{calendarLinks.map((cal) => (
 						<CalendarLink
 							calendarName={cal}

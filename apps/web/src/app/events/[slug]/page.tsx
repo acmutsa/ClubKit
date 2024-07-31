@@ -7,7 +7,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   return (
 		<div className="flex min-h-[100dvh] w-full flex-col">
 			<Navbar showBorder />
-			<Suspense fallback={<h1>Grabbing the event 1 sec...</h1>}>
+			<Suspense fallback={<h1>Grabbing the event. One sec...</h1>}>
         <EventDetails id={params.slug} />
       </Suspense>
 		</div>
