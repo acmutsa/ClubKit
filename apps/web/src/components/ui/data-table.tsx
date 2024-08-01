@@ -100,7 +100,7 @@ export function DataTable<TData, TValue>({
 							table.getRowModel().rows.map((row) => (
 								<Link
 									legacyBehavior
-									href={`${viewRoute ?? ""}${row.getValue("id")}`}
+									href={`${viewRoute || ""}${row.getValue("id")}`}
 								>
 									<TableRow
 										key={row.id}

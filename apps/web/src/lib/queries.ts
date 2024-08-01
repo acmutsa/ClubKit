@@ -1,5 +1,5 @@
 import { now } from "@internationalized/date";
-import { count, db, eq, sql, between, union } from "db";
+import { count, db, eq, sql, between, desc } from "db";
 import { checkins, events, users } from "db/schema";
 
 export const getCategoryOptions = async () => {
@@ -47,6 +47,41 @@ export const getEventCheckins = async (id: string) => {
 		where: (checkins, { eq }) => eq(checkins.eventID, id),
 		orderBy: (checkins, { desc }) => desc(checkins.time),
 	});
+};
+
+export const getCheckinLog = async () => {
+	return await db.query.checkins.findMany({
+		columns: {
+			time: true,
+			feedback: true,
+		},
+		with: {
+			author: {
+				columns: {
+					userID: true,
+					firstName: true,
+					lastName: true,
+				},
+			},
+			event: {
+				columns: {
+					name: true,
+				},
+			},
+		},
+	});
+
+	// return await db
+	// 	.select({
+	// 		event: events.name,
+	// 		user: users.firstName,
+	// 		time: checkins.time,
+	// 		feedback: checkins.feedback,
+	// 	})
+	// 	.from(checkins)
+	// 	.orderBy(desc(checkins.time))
+	// 	.innerJoin(events, eq(checkins.eventID, events.id))
+	// 	.innerJoin(users, eq(checkins.userID, users.userID));
 };
 
 export const getEventsWithCheckins = async () => {

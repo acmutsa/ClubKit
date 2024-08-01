@@ -1,0 +1,19 @@
+import React from "react";
+import { getCheckinLog } from "@/lib/queries";
+import { DataTable } from "@/components/ui/data-table";
+import { checkinLogColumns } from "./CheckinLogColumns";
+
+type Props = {};
+
+async function AdminCheckinLog({}: Props) {
+	const data = await getCheckinLog();
+	return (
+		<div>
+			<div>
+				<DataTable data={data} columns={checkinLogColumns} />
+			</div>
+		</div>
+	);
+}
+
+export default AdminCheckinLog;

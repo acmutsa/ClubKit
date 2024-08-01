@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { data, users, events, eventsToCategories } from "./schema";
+import { data, users, events, checkins, eventsToCategories } from "./schema";
 import { z } from "zod";
 import c from "config";
 
@@ -110,3 +110,6 @@ export const insertEventSchemaFormified = insertEventSchema
 
 export const selectEventSchema = createSelectSchema(events);
 export type Event = z.infer<typeof selectEventSchema>;
+
+export const selectCheckinSchema = createSelectSchema(checkins);
+export type Checkin = z.infer<typeof selectCheckinSchema>;

@@ -41,6 +41,7 @@ export default {
 			Overview: "/admin",
 			Members: "/admin/members",
 			Events: "/admin/events",
+			Checkins: "/admin/checkins",
 		},
 	},
 	icon: {
