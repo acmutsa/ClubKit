@@ -53,6 +53,7 @@ import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
 import { upload } from "@vercel/blob/client";
 import { createEvent } from "@/actions/events/new";
+import { ONE_HOUR_IN_MILLISECONDS } from "@/lib/constants/shared";
 
 type NewEventFormProps = {
 	defaultDate: Date;
@@ -76,8 +77,8 @@ export default function NewEventForm({
 		defaultValues: {
 			start: defaultDate,
 			checkinStart: defaultDate,
-			end: new Date(defaultDate.getTime() + 1000 * 60 * 60),
-			checkinEnd: new Date(defaultDate.getTime() + 1000 * 60 * 60),
+			end: new Date(defaultDate.getTime() + ONE_HOUR_IN_MILLISECONDS),
+			checkinEnd: new Date(defaultDate.getTime() + ONE_HOUR_IN_MILLISECONDS),
 			thumbnailUrl: c.thumbnails.default,
 			categories: [],
 			isUserCheckinable: true,
@@ -126,6 +127,7 @@ export default function NewEventForm({
 		if (Object.keys(form.formState.errors).length > 0) {
 			console.log("Errors: ", form.formState.errors);
 		}
+		
 	}, [form.formState]);
 
 	const {
@@ -148,12 +150,16 @@ export default function NewEventForm({
 						toast.error(
 							`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
 						);
+						setError({
+							title: "Some error",
+							description: "Error occured",
+						});
 						break;
 				}
 				resetAction();
 				return;
 			}
-			toast.success("Registration successful!", {
+			toast.success("Event Created successfully!", {
 				description: "You'll be redirected shortly.",
 			});
 			setTimeout(() => {

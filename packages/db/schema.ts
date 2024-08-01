@@ -18,7 +18,7 @@ import { relations } from "drizzle-orm";
 import c from "config";
 
 /* USERS */
-
+// Why is this not the other way around? If a user is deleted, then their data should be deleted as well
 export const users = pgTable("users", {
 	userID: serial("user_id")
 		.primaryKey()
@@ -52,7 +52,6 @@ export const data = pgTable("data", {
 });
 
 /* EVENTS */
-
 export const eventCategories = pgTable("event_categories", {
 	id: text("id").primaryKey(),
 	name: text("name").notNull().unique(),
@@ -78,9 +77,10 @@ export const events = pgTable("events", {
 	location: text("location").notNull(),
 	isUserCheckinable: boolean("is_user_checkinable").notNull().default(true),
 	isHidden: boolean("is_hidden").notNull().default(false),
+	points: integer("points").notNull().default(1),
 });
 
-export const eventsRelations = relations(events, ({ one, many }) => ({
+export const eventsRelations = relations(events, ({ many }) => ({
 	eventsToCategories: many(eventsToCategories),
 	checkins: many(checkins),
 }));
@@ -88,10 +88,10 @@ export const eventsRelations = relations(events, ({ one, many }) => ({
 export const eventsToCategories = pgTable("events_to_categories", {
 	eventID: text("event_id")
 		.notNull()
-		.references(() => events.id),
+		.references(() => events.id,{onDelete:"cascade"}),
 	categoryID: text("category_id")
 		.notNull()
-		.references(() => eventCategories.id),
+		.references(() => eventCategories.id, {onDelete:"cascade"})
 });
 
 export const eventsToCategoriesRelations = relations(
@@ -111,9 +111,11 @@ export const eventsToCategoriesRelations = relations(
 export const checkins = pgTable(
 	"checkins",
 	{
-		eventID: text("event_id").notNull(),
-		userID: text("user_id").notNull(),
+		eventID: text("event_id").references(()=>events.id,{onDelete:"cascade"}).notNull(),
+		userID: integer("user_id").references(()=>users.userID,{onDelete:"cascade"}).notNull(),
 		time: timestamp("time").defaultNow().notNull(),
+		rating: integer("rating"),
+		adminID: text("admin_id"),
 		feedback: text("feedback"),
 	},
 	(table) => {
