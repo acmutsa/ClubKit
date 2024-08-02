@@ -114,6 +114,7 @@ export const getEventDetails = async (id: string) => {
 export const getEventList = async () => {
 	return await db.query.events.findMany({
 		columns: { id: true, name: true },
+		orderBy: desc(events.start),
 	});
 };
 
