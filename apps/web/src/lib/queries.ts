@@ -69,18 +69,11 @@ export const getCheckinLog = async () => {
 			},
 		},
 	});
+};
 
-	// return await db
-	// 	.select({
-	// 		event: events.name,
-	// 		user: users.firstName,
-	// 		time: checkins.time,
-	// 		feedback: checkins.feedback,
-	// 	})
-	// 	.from(checkins)
-	// 	.orderBy(desc(checkins.time))
-	// 	.innerJoin(events, eq(checkins.eventID, events.id))
-	// 	.innerJoin(users, eq(checkins.userID, users.userID));
+export const getCheckinStatsOverview = async () => {
+	const [res] = await db.select({ total_checkins: count() }).from(checkins);
+	return res;
 };
 
 export const getEventsWithCheckins = async () => {
@@ -118,6 +111,12 @@ export const getEventDetails = async (id: string) => {
 	});
 };
 
+export const getEventList = async () => {
+	return await db.query.events.findMany({
+		columns: { id: true, name: true },
+	});
+};
+
 export const getUserCheckin = async (eventID: string, userID: number) => {
 	return db.query.checkins.findFirst({
 		where: (checkins, { and }) =>
@@ -151,7 +150,6 @@ export const checkInUser = async (
 	feedback: string,
 	rating: number,
 ) => {
-
 	return db.insert(checkins).values({
 		userID: userID,
 		eventID: eventID,

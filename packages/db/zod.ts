@@ -82,13 +82,8 @@ const userDataFormified = z.object({
 export const insertUserWithDataSchemaFormified =
 	userFormified.merge(userDataFormified);
 
-const sometable = createInsertSchema(data);
-
-type iType = z.infer<typeof sometable>;
-
 // TODO: tighten insert schema constraints
 export const insertEventSchema = createInsertSchema(events);
-
 export const insertEventSchemaFormified = insertEventSchema
 	.merge(
 		z.object({
@@ -113,3 +108,18 @@ export type Event = z.infer<typeof selectEventSchema>;
 
 export const selectCheckinSchema = createSelectSchema(checkins);
 export type Checkin = z.infer<typeof selectCheckinSchema>;
+
+export const adminCheckinSchema = z.object({
+	universityIDs: z
+		.string()
+		.regex(new RegExp(`(\\w{,${c.universityID.maxLength}}\\W*)+`), {
+			message: "Invalid format for ID or list of ID's",
+		}),
+	eventID: z.string().min(1).max(c.universityID.maxLength),
+});
+export type AdminCheckin = z.infer<typeof adminCheckinSchema>;
+export const universityIDSplitter = z
+	.string()
+	.transform((val) => val.split(/\W+/));
+
+// Current events or events of the week

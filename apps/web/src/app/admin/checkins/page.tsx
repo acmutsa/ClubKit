@@ -1,17 +1,18 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { getEventsWithCheckins } from "@/lib/queries";
-import { CalendarPlus } from "lucide-react";
+import { UserRoundPlus } from "lucide-react";
 // import { columns } from "./columns";
 
-import { DataTable } from "@/components/ui/data-table";
+import AddCheckinDialogue from "@/components/dash/shared/AddCheckinDialogue";
 import CheckinsStatsSheet from "@/components/dash/shared/CheckinStatsSheet";
 import Seperator from "@radix-ui/react-separator";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AdminCheckinLog from "@/components/dash/shared/AdminCheckinLog";
+import { getEventList } from "@/lib/queries";
 
 async function Page() {
-	const events = await getEventsWithCheckins();
+	const eventList = await getEventList();
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
 			<div className="mb-5 grid grid-cols-2 px-5">
@@ -26,16 +27,20 @@ async function Page() {
 					<CheckinsStatsSheet />
 				</Suspense>
 				<div>
-					<Link href="">
-						<Button className="flex flex-nowrap gap-x-2">
-							Add Checkin
-						</Button>
-					</Link>
+					<AddCheckinDialogue
+						eventList={eventList}
+						trigger={
+							<Button className="flex flex-nowrap gap-x-2">
+								<UserRoundPlus />
+								Add Checkin
+							</Button>
+						}
+					/>
 				</div>
 			</div>
 			{/* <div className="border-muted">{events?.[0].name}</div> */}
 			<div className="rounded-xl p-5">
-				<div >
+				<div>
 					<Suspense
 						fallback={<div>Grabbing checkin log. One sec...</div>}
 					>
