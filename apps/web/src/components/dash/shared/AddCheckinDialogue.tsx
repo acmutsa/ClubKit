@@ -34,16 +34,24 @@ import {
 type Props = {
 	trigger: ReactNode;
 	eventList: { id: string; name: string }[];
-	default?: string;
+	default?: {
+		eventID?: string;
+		universityIDs?: string;
+	};
 };
 
-async function AddCheckinDialogue({ trigger, eventList }: Props) {
+async function AddCheckinDialogue({ trigger, eventList, ...props }: Props) {
 	const form = useForm<AdminCheckin>({
 		resolver: zodResolver(adminCheckinSchema),
+		defaultValues: {
+			eventID: props.default?.eventID || eventList[0].id,
+			universityIDs: props.default?.universityIDs || "",
+		},
 	});
 
-	function onSubmit(values: AdminCheckin) {
-		console.log(values);
+	async function onSubmit(data: AdminCheckin, evt: any) {
+		evt.preventDefault();
+		console.log(data);
 	}
 
 	return (
@@ -53,14 +61,20 @@ async function AddCheckinDialogue({ trigger, eventList }: Props) {
 				<DialogHeader>
 					<DialogTitle>Add Checkin</DialogTitle>
 					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)}>
+						<form
+							className="space-y-6"
+							onSubmit={form.handleSubmit(onSubmit)}
+						>
 							<FormField
 								name="eventID"
 								control={form.control}
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel>Event</FormLabel>
-										<Select {...field}>
+										<Select
+											onValueChange={field.onChange}
+											defaultValue={field.value}
+										>
 											<FormControl>
 												<SelectTrigger>
 													<SelectValue
@@ -73,7 +87,6 @@ async function AddCheckinDialogue({ trigger, eventList }: Props) {
 											<SelectContent>
 												{eventList.map((event) => (
 													<SelectItem
-														key={event.id}
 														value={event.id}
 													>
 														{event.name}
@@ -93,7 +106,8 @@ async function AddCheckinDialogue({ trigger, eventList }: Props) {
 										<FormLabel>University ID(s)</FormLabel>
 										<FormControl>
 											<Textarea
-												{...field}
+												onChange={field.onChange}
+												defaultValue={field.value}
 												placeholder="abc123, jkm456, xyz789"
 											/>
 										</FormControl>
@@ -106,8 +120,10 @@ async function AddCheckinDialogue({ trigger, eventList }: Props) {
 									</FormItem>
 								)}
 							/>
+							<Button type="submit" className="w-full">
+								Submit
+							</Button>
 						</form>
-						<Button type="submit">Submit</Button>
 					</Form>
 				</DialogHeader>
 			</DialogContent>

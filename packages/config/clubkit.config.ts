@@ -17,6 +17,9 @@ export default {
 			color: "#FFD51E",
 		},
 	},
+	events: {
+		idLength: 6,
+	},
 	// TODO: Actually use this instead of hardcoded values in form
 	userIdentityOptions: {
 		ethnicity: [
@@ -36,17 +39,15 @@ export default {
 			"Prefer not to say",
 		],
 	},
-	calendarLinks:[
-		'google',
-		'outlook',
-		'ics',
-	],
+	calendarLinks: ["google", "outlook", "ics"],
 	streamingLinks: [
-		{title:'twitch',href:'https://www.twitch.tv/acmutsa'},
-		{title:'youtube',href:'https://www.youtube.com/@acmutsa/streams'}
+		{ title: "twitch", href: "https://www.twitch.tv/acmutsa" },
+		{ title: "youtube", href: "https://www.youtube.com/@acmutsa/streams" },
 	],
-	checkingInInfo:"The membership portal is ACM's new method of tracking member check-ins and awarding points. By simply visiting this page during the event and clicking the Check-in button, you can easily garner points towards your membership for the semester.",
-	aboutOrg:"ACM is the premier organization on campus for students interested in technology. ACM is dedicated to providing members with opportunities for professional, academic, and social growth outside the classroom in order to prepare students for their career in tech or fuel their interest in the tech field. Anyone who has an interest in technology can join ACM.",
+	checkingInInfo:
+		"The membership portal is ACM's new method of tracking member check-ins and awarding points. By simply visiting this page during the event and clicking the Check-in button, you can easily garner points towards your membership for the semester.",
+	aboutOrg:
+		"ACM is the premier organization on campus for students interested in technology. ACM is dedicated to providing members with opportunities for professional, academic, and social growth outside the classroom in order to prepare students for their career in tech or fuel their interest in the tech field. Anyone who has an interest in technology can join ACM.",
 	maxResumeSizeInBytes: 3670016,
 	dashPaths: {
 		admin: {
@@ -179,7 +180,3 @@ export const majors = [
 	"Webpage Design",
 	"Other",
 ] as const;
-
-
-	
-
