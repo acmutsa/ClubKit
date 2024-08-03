@@ -12,32 +12,40 @@ import clsx from "clsx";
 import EventCategories from "./EventCategories";
 import { getDateAndTimeWithTimeZoneString } from "@/lib/utils";
 
-export default function EventCardComponent({ event,isPast,clientTimezone }: { event: EventAndCategoriesType,isPast:boolean,clientTimezone:string }) {
+export default function EventCardComponent({ event,isPast,isEventCurrentlyHappening, isEventCheckinAllowed,clientTimezone }: { event: EventAndCategoriesType,isPast:boolean,isEventCurrentlyHappening:boolean,clientTimezone:string,isEventCheckinAllowed:boolean}) {
 
 	const {
 		thumbnailUrl,
 		start,
+		checkinStart,
+		checkinEnd,
 		id,
 	} = event;
 
+
   return (
-		<Card className="group flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md hover:shadow-slate-400 md:hover:scale-105">
-			<CardHeader className="p-0 pb-4 h-full flex justify-center">
+		<Card
+			className={`group relative flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md hover:shadow-slate-400 md:hover:scale-105`}
+		>
+			{isEventCheckinAllowed && (
+				<span className="absolute right-0 top-0 inline-flex h-4 w-4 animate-ping rounded-full bg-purple-400 lg:-right-1 " />
+			)}
+			<CardHeader className="flex h-full justify-center p-0 pb-4">
 				{/* Come back and make sure skeleton loads here or something to ensure no weird layouts */}
-					<Image
-						src={thumbnailUrl}
-						alt="Event Image"
-						priority={true}
-						width={0}
-						sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-						height={0}
-						quality={100}
-						className={clsx("w-full rounded-md", {
-							"h-auto grayscale group-hover:grayscale-0": isPast,
-						})}
-					/>
+				<Image
+					src={thumbnailUrl}
+					alt="Event Image"
+					priority={true}
+					width={0}
+					sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+					height={0}
+					quality={100}
+					className={clsx("w-full rounded-md", {
+						"h-auto grayscale group-hover:grayscale-0": isPast,
+					})}
+				/>
 			</CardHeader>
-			<CardContent className="flex flex-1 flex-col w-full p-0 pb-4 justify-end">
+			<CardContent className="flex w-full flex-1 flex-col justify-end p-0 pb-4">
 				<CardTitle className="w-full truncate whitespace-nowrap px-4 pb-1 text-center font-bold md:px-4 ">
 					{event.name}
 				</CardTitle>
@@ -49,7 +57,10 @@ export default function EventCardComponent({ event,isPast,clientTimezone }: { ev
 				<div className="flex w-full justify-center px-2 text-gray-600 md:px-6">
 					<p className="text-primary">
 						{`${isPast ? "Ended on: " : ""}`}
-						{getDateAndTimeWithTimeZoneString(start, clientTimezone)}
+						{getDateAndTimeWithTimeZoneString(
+							start,
+							clientTimezone,
+						)}
 					</p>
 				</div>
 			</CardContent>
@@ -66,15 +77,16 @@ export default function EventCardComponent({ event,isPast,clientTimezone }: { ev
 					className={clsx(
 						"flex h-full w-1/2 flex-row items-center justify-center border-l border-gray-400",
 						{
-							"pointer-events-none": isPast,
+							"pointer-events-none": isEventCheckinAllowed,
 						},
 					)}
-					aria-disabled={isPast}
-					tabIndex={isPast ? -1 : 0}
+					aria-disabled={isEventCheckinAllowed}
+					tabIndex={isEventCheckinAllowed ? -1 : 0}
 				>
 					<h1
 						className={clsx("text-blue-400 dark:text-sky-300", {
 							"line-through": isPast,
+							"opacity-40": !isEventCurrentlyHappening,
 						})}
 					>
 						Check-In
