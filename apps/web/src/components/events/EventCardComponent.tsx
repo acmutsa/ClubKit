@@ -22,11 +22,13 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 		id,
 	} = event;
 
+	const eventDetailsLink = `/events/${id}`;
+	const eventCheckinLink = `/events/${id}/checkin`;
 
   return (
-		<Card
-			className={`group relative flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md hover:shadow-slate-400 md:hover:scale-105`}
-		>
+		<Link href={eventDetailsLink}>
+			<Card
+			className={`group relative flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md ${isEventCurrentlyHappening ? 'hover:shadow-purple-400': 'hover:shadow-slate-400'} md:hover:scale-105`}>
 			{isEventCheckinAllowed && (
 				<span className="absolute right-0 top-0 inline-flex h-4 w-4 animate-ping rounded-full bg-purple-400 lg:-right-1 " />
 			)}
@@ -66,14 +68,14 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 			</CardContent>
 			<CardFooter className="flex w-full">
 				<Link
-					href={`/events/${id}`}
+					href={eventDetailsLink}
 					className="flex h-full w-1/2 flex-row items-center justify-center border-r border-gray-400"
 				>
 					<h1 className="text-primary">Details</h1>
 				</Link>
 
 				<Link
-					href={`/events/${id}/checkin`}
+					href={eventCheckinLink}
 					className={clsx(
 						"flex h-full w-1/2 flex-row items-center justify-center border-l border-gray-400",
 						{
@@ -94,5 +96,6 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 				</Link>
 			</CardFooter>
 		</Card>
+		</Link>
   );
 }
