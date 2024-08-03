@@ -1,6 +1,6 @@
 import { now } from "@internationalized/date";
-import { count, db, eq, sql, between, desc } from "db";
-import { checkins, events, users } from "db/schema";
+import { count, db, eq, sql, inArray, between, desc } from "db";
+import { checkins, data, events, users } from "db/schema";
 export const getCategoryOptions = async () => {
 	const categories = (await db.query.eventCategories.findMany()).reduce(
 		(acc, cat) => {
@@ -149,12 +149,38 @@ export const checkInUser = async (
 	eventID: string,
 	userID: number,
 	feedback: string,
-	rating: number,
+	rating?: number,
+	adminID?: string,
 ) => {
 	return db.insert(checkins).values({
-		userID: userID,
-		eventID: eventID,
+		userID,
+		eventID,
+		adminID,
 		rating,
 		feedback,
 	});
+};
+
+export const checkInUserList = async (
+	eventID: string,
+	universityIDs: string[],
+	adminID: string,
+) => {
+	const userIDs = await db.query.data.findMany({
+		where: (data) => inArray(data.universityID, universityIDs),
+		columns: { userID: true },
+	});
+
+	const time = new Date();
+	return await db
+		.insert(checkins)
+		.values(
+			userIDs.map(({ userID }) => ({
+				userID,
+				eventID,
+				adminID,
+				time,
+			})),
+		)
+		.returning({ successfulID: checkins.userID });
 };

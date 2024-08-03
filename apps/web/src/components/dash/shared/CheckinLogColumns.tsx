@@ -52,7 +52,6 @@ export const checkinLogColumns: ColumnDef<CheckinLogEntry>[] = [
 			return <DataTableColumnHeader column={column} title="User" />;
 		},
 		cell: ({ row }) => {
-			console.log(row.original.author.firstName);
 			return (
 				<div>
 					{row.original.author.firstName}{" "}

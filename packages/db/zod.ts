@@ -110,7 +110,7 @@ export const selectCheckinSchema = createSelectSchema(checkins);
 export type Checkin = z.infer<typeof selectCheckinSchema>;
 
 export const adminCheckinSchema = z.object({
-	universityIDs: z.string().regex(new RegExp(`(\\w+\\W*)+`), {
+	universityIDs: z.string().regex(new RegExp(`(\\w+[,\\W]*)+`), {
 		message: "Invalid format for ID or list of ID's",
 	}),
 	eventID: z.string().min(c.events.idLength),
@@ -118,6 +118,6 @@ export const adminCheckinSchema = z.object({
 export type AdminCheckin = z.infer<typeof adminCheckinSchema>;
 export const universityIDSplitter = z
 	.string()
-	.transform((val) => val.split(/\W+/));
+	.transform((val) => val.split(/[,\W]+/));
 
 // Current events or events of the week

@@ -15,7 +15,7 @@ const nanoid = customAlphabet(
 export const createEvent = adminAction(
 	insertEventSchemaFormified,
 	async ({ categories, ...e }) => {
-		var res = {
+		let res = {
 			success: true,
 			code: "success",
 			eventID: "",

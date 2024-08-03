@@ -1,12 +1,25 @@
 "use client";
 
-import { DialogHeader } from "@/components/ui/dialog";
+import { useState } from "react";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
 	Dialog,
 	DialogTrigger,
 	DialogTitle,
 	DialogContent,
+	DialogHeader,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
 import {
 	Form,
 	FormDescription,
@@ -18,8 +31,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
+import { useAction } from "next-safe-action/hooks";
 import React, { ReactNode } from "react";
-import { AdminCheckin, adminCheckinSchema } from "db/zod";
+import { AdminCheckin, adminCheckinSchema, universityIDSplitter } from "db/zod";
+import { adminCheckin } from "@/actions/events/checkin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,6 +45,9 @@ import {
 	SelectContent,
 	SelectItem,
 } from "@/components/ui/select";
+
+import c from "config";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 type Props = {
 	trigger: ReactNode;
@@ -49,9 +67,50 @@ async function AddCheckinDialogue({ trigger, eventList, ...props }: Props) {
 		},
 	});
 
+	const {
+		execute: runAddCheckin,
+		status: actionStatus,
+		result: actionResult,
+		reset: resetAction,
+	} = useAction(adminCheckin, {
+		onSuccess: async ({ success, code, failedIDs }) => {
+			toast.dismiss();
+			if (!success) {
+				switch (code) {
+					case "no_checkins_made":
+						toast.error("No checkins were made.");
+						break;
+					case "some_checkins_failed":
+						toast.warning(
+							`The following checkins failed: ${failedIDs.join(", ")}`,
+						);
+						break;
+					default:
+						toast.error(
+							`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
+						);
+						break;
+				}
+				return;
+			}
+			toast.success("Checkins Successfully Added!");
+			resetAction();
+		},
+		onError: async (error) => {
+			toast.dismiss();
+			toast.error(
+				`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
+			);
+			console.log("error: ", error);
+			resetAction();
+		},
+	});
+
 	async function onSubmit(data: AdminCheckin, evt: any) {
 		evt.preventDefault();
-		console.log(data);
+		console.log(universityIDSplitter.parse(data.universityIDs));
+		toast.loading("Creating Event...");
+		runAddCheckin(data);
 	}
 
 	return (
@@ -120,7 +179,15 @@ async function AddCheckinDialogue({ trigger, eventList, ...props }: Props) {
 									</FormItem>
 								)}
 							/>
-							<Button type="submit" className="w-full">
+							<Button
+								type="submit"
+								className="w-full"
+								disabled={
+									actionStatus == "executing" ||
+									(actionStatus == "hasSucceeded" &&
+										actionResult.data?.success)
+								}
+							>
 								Submit
 							</Button>
 						</form>
