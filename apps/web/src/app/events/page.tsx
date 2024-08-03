@@ -17,7 +17,7 @@ export default function EventsPage({
 			<EventsOptionsBar params={searchParams} />
 			<Suspense
 				fallback={
-					<h1 className="pt-[15%] text-center text-4xl font-bold">
+					<h1 className="pt-[15%] text-center text-2xl md:text-3xl lg:text-4xl font-bold">
 						Grabbing Events. One sec...
 					</h1>
 				}

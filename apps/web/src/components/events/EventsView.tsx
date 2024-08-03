@@ -5,7 +5,7 @@ import { events } from "db/schema";
 import type { SearchParams } from "@/lib/types/shared";
 import { EVENT_FILTERS } from "@/lib/constants/events";
 import { unstable_noStore as noStore } from "next/cache";
-import NoEvents from "./NoEvents";
+import PageError from "../shared/PageError";
 import { headers } from "next/headers";
 import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants/shared";
 import { getClientTimeZone,getUTCDate } from "@/lib/utils";
@@ -71,9 +71,12 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 			}
 			return events;
 		});
+	
 
-	if (allEvents.length < 0) {
-		return <NoEvents />;
+
+	if (allEvents.length < 1) {
+		return <PageError href="/events" message="There are no events to display at this time for your desired
+				parameters. Please check back later or widen your filtering options." className="flex flex-auto w-full h-full justify-start items-start px-4" />;
 	}
 
 	const clientHeaderTimezoneValue = headers().get(
