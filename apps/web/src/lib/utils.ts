@@ -70,3 +70,11 @@ export function getDateDifferentInHours(date1: Date, date2: Date){
 	const diffInMs = date1.getTime() - date2.getTime();
 	return diffInMs / ONE_HOUR_IN_MILLISECONDS;
 }
+
+export function isEventCurrentlyHappening(currentDateUTC:Date,eventStart: Date, eventEnd: Date){
+	return currentDateUTC >= eventStart && currentDateUTC <= eventEnd;
+}
+
+export function isEventCheckinAllowed(currentDateUTC:Date,checkinStart:Date,checkinEnd:Date){
+	return currentDateUTC >= checkinStart && currentDateUTC <= checkinEnd;
+}
