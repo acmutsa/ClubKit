@@ -1,6 +1,7 @@
 import PageError from "../../../shared/PageError";
 import { getEventById,getUserDataAndCheckin } from "@/lib/queries";
 import EventCheckinForm from "./EventCheckinForm";
+<<<<<<< HEAD
 import { headers } from "next/headers";
 export default async function EventCheckin({
 	eventID,
@@ -17,6 +18,26 @@ export default async function EventCheckin({
     
 	const eventPromise = getEventById(eventID);
 
+=======
+import { getDateAndTimeWithTimeZoneString,getClientTimeZone } from "@/lib/utils";
+import { headers } from "next/headers";
+import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants/shared";
+export default async function EventCheckin({
+	eventID,
+	clerkId,
+	currentDateUTC,
+}: {
+	eventID: string;
+	clerkId: string;
+	currentDateUTC: Date;
+}) {
+
+	const eventPromise = getEventById(eventID);
+
+	const headerTimeZone = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
+	const clientTimeZone = getClientTimeZone(headerTimeZone);
+	// This query is going to be way too expensive. We should break this up into two queries
+>>>>>>> dev
 	const userEventDataPromise = getUserDataAndCheckin(eventID, clerkId);
 
 	const [event, userEventData] = await Promise.all([
@@ -24,15 +45,22 @@ export default async function EventCheckin({
 		userEventDataPromise,
 	]);
 
+<<<<<<< HEAD
 	const currDate = new Date();
 
+=======
+>>>>>>> dev
 	if (!event) {
 		return <PageError message="Event Not Found" href={"/events"} />;
 	}
 
 	const href = `/events/${event.id}`;
 
+<<<<<<< HEAD
 	const isPassed = event.end < currDate;
+=======
+	const isPassed = event.end < currentDateUTC;
+>>>>>>> dev
 
 	if (isPassed) {
 		return <PageError message="Event has already passed" href={href} />;
@@ -41,28 +69,48 @@ export default async function EventCheckin({
 	if (!userEventData) {
 		return (
 			<PageError
+<<<<<<< HEAD
 				message={`User ${clerkId} could not be found`}
+=======
+				message={`There was an issue finding your account.`}
+>>>>>>> dev
 				href={"/events"}
 			/>
 		);
 	}
 
 	const {
+<<<<<<< HEAD
         userID,
         checkins
     } = userEventData;
+=======
+    userID,
+    checkins
+  } = userEventData;
+>>>>>>> dev
 
 	if (checkins.length > 0) {
 		return <PageError message="You have already checked in" href={href} />;
 	}
 
 	const isCheckinAvailable =
+<<<<<<< HEAD
 		event.checkinStart <= currDate && currDate <= event.checkinEnd;
 	if (!isCheckinAvailable) {
 		return (
 			<PageError
 				message="Check-in is not available at this time"
 				href={href}
+=======
+		event.checkinStart <= currentDateUTC && currentDateUTC <= event.checkinEnd;
+	if (!isCheckinAvailable) {
+		return (
+			<PageError
+				message={`Check-in does not start until ${getDateAndTimeWithTimeZoneString(event.checkinStart, clientTimeZone)}`}
+				href={href}
+				className="md:px-12 lg:px-16 text-base"
+>>>>>>> dev
 			/>
 		);
 	}
@@ -77,6 +125,7 @@ export default async function EventCheckin({
 		</div>
 	);
 }
+<<<<<<< HEAD
 
 const getClientIPAddress = () => {
     const FALLBACK_IP_ADDRESS = "0.0.0.0";
@@ -88,3 +137,5 @@ const getClientIPAddress = () => {
 
 	return headers().get("x-real-ip") ?? FALLBACK_IP_ADDRESS;
 }
+=======
+>>>>>>> dev

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { EventType } from "./filters/EventsOptionsBar";
+=======
+import type { EventAndCategoriesType } from "@/lib/types/events";
+>>>>>>> dev
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import c from "config";
@@ -7,7 +11,11 @@ export default function EventCategories({
 	isPast,
 	className,
 }: {
+<<<<<<< HEAD
 	event: EventType;
+=======
+	event: EventAndCategoriesType;
+>>>>>>> dev
 	isPast: boolean;
 	className?: string;
 }) {

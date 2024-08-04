@@ -2,23 +2,41 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { usePathname,useSearchParams,useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+<<<<<<< HEAD
 import type { EventCategory } from "./EventsOptionsBar";
 import { eventFilters } from "./EventsOptionsBar";
 
 export default function CategoryCheckBox({category,checkBoxSet}:{category:EventCategory,checkBoxSet:Set<string>}){
     const name = category.name;
     const color = category.color;
+=======
+import type { EventCategoryType } from "@/lib/types/events";
+import { EVENT_FILTERS } from "@/lib/constants/events";
+
+export default function CategoryCheckBox({category,checkBoxSet}:{category:EventCategoryType,checkBoxSet:Set<string>}){
+    const name = category.name;
+    const color = category.color;
+    const { CATEGORIES} = EVENT_FILTERS
+    
+>>>>>>> dev
     
     const searchParams = useSearchParams();
     const {replace,refresh} = useRouter();
     const pathname = usePathname();
     const params = new URLSearchParams(searchParams);
+<<<<<<< HEAD
 	const checkedBoxes = params.get(eventFilters.categories);
 
     // This is being used as a fast way to update the state of the checkbox
     const [checked,setCheck] = useState(checkBoxSet.has(name));
     
     // Come back and test this logic
+=======
+	const checkedBoxes = params.get(CATEGORIES);
+
+    const [checked,setCheck] = useState(checkBoxSet.has(name));
+    
+>>>>>>> dev
     const handleCheck = (name:string)=>{
         
         if(checkedBoxes){
@@ -38,7 +56,10 @@ export default function CategoryCheckBox({category,checkBoxSet}:{category:EventC
         }
         console.log("Replacing with:",`${pathname}?${params.toString()}`);
         replace(`${pathname}?${params.toString()}`);
+<<<<<<< HEAD
         // Next JS seems to be doing some weird stuff with how replace works where if it sees a similar thing we have done before, it will not refresh
+=======
+>>>>>>> dev
         refresh();
     }
     return (
@@ -49,7 +70,10 @@ export default function CategoryCheckBox({category,checkBoxSet}:{category:EventC
             setCheck(!checked);
             handleCheck(name);  
         }}
+<<<<<<< HEAD
         // Checked is based off of the search params sent in, but will call a small re-render of this piece 
+=======
+>>>>>>> dev
         checked={checked}
         className=" focus-visible:ring-0 focus-visible:ring-offset-0"
          />

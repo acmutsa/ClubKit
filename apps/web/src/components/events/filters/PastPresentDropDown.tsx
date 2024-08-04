@@ -3,7 +3,11 @@
 import { Select,SelectContent,SelectTrigger,SelectGroup,SelectValue,SelectItem } from "@/components/ui/select";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+<<<<<<< HEAD
 import { eventFilters } from "./EventsOptionsBar";
+=======
+import { EVENT_FILTERS } from "@/lib/constants/events";
+>>>>>>> dev
 
 
 export default function PastPresentDropDown({cardViewSelected,showUpcomingEvents}: {cardViewSelected: boolean,showUpcomingEvents: boolean}){
@@ -12,6 +16,7 @@ export default function PastPresentDropDown({cardViewSelected,showUpcomingEvents
     const pathname = usePathname();
     const {replace} = useRouter();
 
+<<<<<<< HEAD
     // Maybe come back and add a small debounce, but who is clicking checkboxes that fast?
     const handleSelectChange = (value:string)=>{
         const params = new URLSearchParams(searchParams);
@@ -21,6 +26,19 @@ export default function PastPresentDropDown({cardViewSelected,showUpcomingEvents
             return;
         }
         params.set(eventFilters.showEvents,value);
+=======
+		const { SHOW_EVENTS, SHOW_UPCOMING_EVENTS, SHOW_PAST_EVENTS } = EVENT_FILTERS;
+
+    // Maybe come back and add a small debounce, but who is clicking checkboxes that fast?
+    const handleSelectChange = (value:string)=>{
+        const params = new URLSearchParams(searchParams);
+        if (value === SHOW_UPCOMING_EVENTS){
+            params.delete(SHOW_EVENTS);
+            replace(`${pathname}?${params.toString()}`);
+            return;
+        }
+        params.set(SHOW_EVENTS,value);
+>>>>>>> dev
         replace(`${pathname}?${params.toString()}`);
     }
     return (
@@ -41,8 +59,13 @@ export default function PastPresentDropDown({cardViewSelected,showUpcomingEvents
 					</SelectTrigger>
 					<SelectContent>
 						<SelectGroup>
+<<<<<<< HEAD
 							<SelectItem value={eventFilters.showUpcomingEvents}>Upcoming</SelectItem>
 							<SelectItem value={eventFilters.showPastEvents}>Past</SelectItem>
+=======
+							<SelectItem value={SHOW_UPCOMING_EVENTS}>Upcoming</SelectItem>
+							<SelectItem value={SHOW_PAST_EVENTS}>Past</SelectItem>
+>>>>>>> dev
 						</SelectGroup>
 					</SelectContent>
 				</Select>

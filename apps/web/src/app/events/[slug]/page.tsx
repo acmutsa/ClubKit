@@ -1,11 +1,21 @@
 import EventDetails from "@/components/events/id/EventDetails";
 import Navbar from "@/components/shared/navbar";
 import { Suspense } from "react";
+<<<<<<< HEAD
 export default function Page({ params }: { params: { slug: string } }) {
   return (
 		<div className="flex min-h-[100dvh] w-full flex-col">
 			<Navbar showBorder />
 			<Suspense fallback={<h1>Grabbing the event 1 sec...</h1>}>
+=======
+
+export default function Page({ params }: { params: { slug: string } }) {
+
+  return (
+		<div className="flex min-h-[100dvh] w-full flex-col">
+			<Navbar showBorder />
+			<Suspense fallback={<h1>Grabbing the event. One sec...</h1>}>
+>>>>>>> dev
         <EventDetails id={params.slug} />
       </Suspense>
 		</div>

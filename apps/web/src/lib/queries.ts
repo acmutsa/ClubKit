@@ -140,4 +140,21 @@ export const getUserDataAndCheckin = async (
 	});
 };
 
+<<<<<<< HEAD
 // export const checkInUser = async (eventID: string,userID:string) => {
+=======
+export const checkInUser = async (
+	eventID: string,
+	userID: number,
+	feedback: string,
+	rating: number,
+) => {
+
+	return db.insert(checkins).values({
+		userID: userID,
+		eventID: eventID,
+		rating,
+		feedback,
+	});
+};
+>>>>>>> dev

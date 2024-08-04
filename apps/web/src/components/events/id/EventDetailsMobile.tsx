@@ -8,6 +8,7 @@ import { MapPin, Clock, Calendar, Hourglass } from "lucide-react";
 import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
+<<<<<<< HEAD
 import type { EventType } from "../filters/EventsOptionsBar";
 
 export default function EventDetailsMobile({ event }: { event: EventType }) {
@@ -66,6 +67,24 @@ export default function EventDetailsMobile({ event }: { event: EventType }) {
 		end: event.end.toISOString(),
 		location: event.location,
 	};
+=======
+import type { DetailsProps } from "@/lib/types/events";
+
+export default function EventDetailsMobile(detailsProps: DetailsProps) {
+	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
+
+	const {
+		event,
+		checkInMessage,
+		checkInUrl,
+		eventCalendarLink,
+		startTime,
+		startDate,
+		formattedEventDuration,
+		isCheckinAvailable,
+		isEventPassed,
+	} = detailsProps;
+>>>>>>> dev
 
 	return (
 		<div className="flex flex-col space-y-4 lg:hidden">
@@ -131,7 +150,11 @@ export default function EventDetailsMobile({ event }: { event: EventType }) {
 						)}
 					>
 						<UserRoundCheck size={24} />
+<<<<<<< HEAD
 						<p className="text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+=======
+						<p className="text-sm sm:text-base md:text-lg lg:text-lg xl:text-xl">
+>>>>>>> dev
 							{checkInMessage}
 						</p>
 					</Button>
@@ -140,7 +163,11 @@ export default function EventDetailsMobile({ event }: { event: EventType }) {
 			<div className="flex w-full flex-col items-center justify-center gap-5 pt-5">
 				<h1 className="text-xl font-bold">Streaming on...</h1>
 				<div className="flex w-full flex-row items-center justify-center gap-5">
+<<<<<<< HEAD
 					{StreamingLinks.map((link) => (
+=======
+					{streamingLinks.map((link) => (
+>>>>>>> dev
 						<StreamingLink
 							title={link.title}
 							href={link.href}
@@ -151,7 +178,11 @@ export default function EventDetailsMobile({ event }: { event: EventType }) {
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-5">
 				<h1 className="text-xl font-bold">Need a Reminder?</h1>
+<<<<<<< HEAD
 				<div className="flex w-full flex-row items-center justify-center gap-6 px-3">
+=======
+				<div className="flex w-full flex-row flex-wrap items-center justify-center gap-6 px-3">
+>>>>>>> dev
 					{calendarLinks.map((cal) => (
 						<CalendarLink
 							calendarName={cal}
@@ -165,13 +196,21 @@ export default function EventDetailsMobile({ event }: { event: EventType }) {
 				<h1 className="border-b border-muted-foreground text-xl font-bold">
 					About ACM
 				</h1>
+<<<<<<< HEAD
 				<p className=" px-7 text-center">{aboutACM}</p>
+=======
+				<p className=" px-7 text-center">{aboutOrg}</p>
+>>>>>>> dev
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
 				<h1 className="border-b border-muted-foreground text-xl font-bold">
 					Checking In
 				</h1>
+<<<<<<< HEAD
 				<p className="px-7 text-center">{checkingIn}</p>
+=======
+				<p className="px-7 text-center">{checkingInInfo}</p>
+>>>>>>> dev
 			</div>
 		</div>
 	);
