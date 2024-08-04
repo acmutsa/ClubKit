@@ -28,17 +28,18 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 		<Card
 			className={`group relative flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-lg hover:shadow-slate-400 md:hover:scale-105`}
 		>
-			<Badge className="absolute right-0 top-0 z-50  animate-pulse rounded-xl border bg-red-600 hover:bg-red-600">
-				<Link
-					href={eventDetailsLink}
-					className="flex flex-row items-center justify-between gap-3 "
-				>
-					<h3 className="text-lg font-bold text-primary">
-						Happening Now
-					</h3>
-					{/* <span className="h-3 w-3 animate-pulse rounded-full bg-red-600  " /> */}
-				</Link>
-			</Badge>
+			{isEventCurrentlyHappening && (
+				<Badge className="absolute top-0 z-50  animate-pulse rounded-sm border bg-red-600 hover:bg-red-600">
+					<Link
+						href={eventDetailsLink}
+						className="flex flex-row items-center justify-between gap-3 "
+					>
+						<h3 className="text-lg font-bold text-primary">
+							Happening Now
+						</h3>
+					</Link>
+				</Badge>
+			)}
 			<CardHeader className="flex h-full justify-center p-0 pb-4">
 				{/* Come back and make sure skeleton loads here or something to ensure no weird layouts */}
 				<Image
