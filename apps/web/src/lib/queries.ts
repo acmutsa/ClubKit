@@ -1,6 +1,8 @@
 import { now } from "@internationalized/date";
-import { count, db, eq, sql, inArray, between, desc } from "db";
-import { checkins, data, events, users } from "db/schema";
+import { count, db, eq, gte, sql, between, inArray, desc } from "db";
+import { checkins, events, users, data } from "db/schema";
+import c from "config";
+
 export const getCategoryOptions = async () => {
 	const categories = (await db.query.eventCategories.findMany()).reduce(
 		(acc, cat) => {
@@ -84,13 +86,41 @@ export const getEventsWithCheckins = async () => {
 			.rightJoin(events, eq(events.id, checkins.eventID))
 			.groupBy(checkins.eventID, events.id)
 	).map(({ events, checkin_count }) => ({ checkin_count, ...events }));
-	// return await db.execute(sql`
-	// 	SELECT
-	// 		events.*,
-	// 		COUNT(*) AS checkin_count
-	// 	FROM checkins
-	// 	LEFT JOIN events on checkins.event_id = events.id
-	// 	GROUP BY event_id, events.id`);
+};
+
+export const getUserWithData = async () => {
+	return await db
+		.select({
+			user: users,
+			data: data,
+			checkin_count: count(checkins.userID),
+		})
+		.from(checkins)
+		.rightJoin(users, eq(users.userID, checkins.userID))
+		.groupBy(checkins.userID, users.userID, data.userID)
+		.innerJoin(data, eq(data.userID, users.userID));
+};
+
+export const getMemberStatsOverview = async () => {
+	const [{ totalMembers }] = await db
+		.select({
+			totalMembers: count(),
+		})
+		.from(events);
+
+	const checkin_counts = db
+		.select({ user_id: checkins.userID, count: count(checkins.eventID) })
+		.from(checkins)
+		.groupBy(checkins.userID)
+		.having(({ count }) => gte(count, c.membership.activeThreshold))
+		.as("checkin_counts");
+	const [{ activeMembers }] = await db
+		.select({
+			activeMembers: count(checkin_counts.user_id),
+		})
+		.from(checkin_counts);
+
+	return { totalMembers, activeMembers };
 };
 
 export const getEventDetails = async (id: string) => {
@@ -111,13 +141,6 @@ export const getEventDetails = async (id: string) => {
 	});
 };
 
-export const getEventList = async () => {
-	return await db.query.events.findMany({
-		columns: { id: true, name: true },
-		orderBy: desc(events.start),
-	});
-};
-
 export const getUserCheckin = async (eventID: string, userID: number) => {
 	return db.query.checkins.findFirst({
 		where: (checkins, { and }) =>
@@ -128,6 +151,13 @@ export const getUserCheckin = async (eventID: string, userID: number) => {
 export const getUserCheckins = async (userID: number) => {
 	return db.query.checkins.findMany({
 		where: eq(checkins.userID, userID),
+	});
+};
+
+export const getEventList = async () => {
+	return await db.query.events.findMany({
+		columns: { id: true, name: true },
+		orderBy: desc(events.start),
 	});
 };
 

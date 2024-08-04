@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { data, users, events, checkins, eventsToCategories } from "./schema";
-import { z } from "zod";
+import { data, users, events, eventsToCategories } from "./schema";
+import { string, z } from "zod";
 import c from "config";
 
 export const insertUserDataSchema = createInsertSchema(data);
@@ -81,6 +81,10 @@ const userDataFormified = z.object({
 
 export const insertUserWithDataSchemaFormified =
 	userFormified.merge(userDataFormified);
+
+const sometable = createInsertSchema(data);
+
+type iType = z.infer<typeof sometable>;
 
 // TODO: tighten insert schema constraints
 export const insertEventSchema = createInsertSchema(events);

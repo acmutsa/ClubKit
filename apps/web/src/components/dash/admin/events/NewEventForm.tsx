@@ -72,6 +72,8 @@ export default function NewEventForm({
 	} | null>(null);
 	const router = useRouter();
 
+	const OneHourInMiliseconds = c.OneHourInMilliseconds;
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -129,6 +131,7 @@ export default function NewEventForm({
 		if (Object.keys(form.formState.errors).length > 0) {
 			console.log("Errors: ", form.formState.errors);
 		}
+		
 	}, [form.formState]);
 
 	const {

@@ -4,6 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import PageError from "@/components/shared/PageError";
 import { Suspense } from "react";
+import { getUserCheckin } from "@/lib/queries";
 import { getUTCDate } from "@/lib/utils";
 export default function Page({params}: {params: {slug: string}}){
 
@@ -21,7 +22,6 @@ export default function Page({params}: {params: {slug: string}}){
     return (
 		<div className="flex h-[100dvh] w-full flex-col">
 			<Navbar />
-			<Suspense fallback={<h1>Grabbing the Event 1 sec...</h1>}>
                 <EventCheckin eventID={params.slug} clerkId={clerkId} currentDateUTC={currentDateUTC} />
             </Suspense>
 		</div>
@@ -31,3 +31,4 @@ export const runtime = "edge";
 
 
   
+			<Suspense fallback={<h1>Grabbing the event. One sec...</h1>}>

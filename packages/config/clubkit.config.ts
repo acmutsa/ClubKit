@@ -4,6 +4,7 @@ export default {
 		name: "ABC123",
 		maxLength: 6,
 	},
+	OneHourInMilliseconds: 3600000,
 	contactEmail: "tech@acmutsa.org",
 	// Think this can be removed?
 	eventTypes: {
@@ -16,6 +17,9 @@ export default {
 		"Rowdy Creators": {
 			color: "#FFD51E",
 		},
+	},
+	membership: {
+		activeThreshold: 7,
 	},
 	events: {
 		idLength: 6,
@@ -180,3 +184,7 @@ export const majors = [
 	"Webpage Design",
 	"Other",
 ] as const;
+
+
+	
+

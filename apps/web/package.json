@@ -27,6 +27,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@t3-oss/env-nextjs": "^0.10.1",
+    "@tanstack/match-sorter-utils": "^8.15.1",
     "@tanstack/react-table": "^8.17.3",
     "@vercel/blob": "^0.23.3",
     "calendar-link": "^2.6.0",
@@ -57,6 +58,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

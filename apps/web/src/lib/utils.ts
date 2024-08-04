@@ -36,22 +36,22 @@ export function createCalendarLink(
 
 export function getClientTimeZone(vercelIPTimeZone: string | null) {
 	return vercelIPTimeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
-};
+}
 
-export function convertDateToUtc(date: Date){
+export function convertDateToUtc(date: Date) {
 	return date.toISOString();
-};
+}
 
-export function getDateAndTimeWithTimeZoneString(date: Date, timeZone: string){
+export function getDateAndTimeWithTimeZoneString(date: Date, timeZone: string) {
 	return date.toLocaleString(undefined, {
 		hourCycle: "h12",
 		dateStyle: "medium",
 		timeStyle: "short",
 		timeZone: timeZone,
 	});
-};
+}
 
-export function getDateWithTimeZoneString(date: Date, timeZone: string){
+export function getDateWithTimeZoneString(date: Date, timeZone: string) {
 	return date.toLocaleString(undefined, {
 		hourCycle: "h12",
 		hour: "numeric",
@@ -61,12 +61,12 @@ export function getDateWithTimeZoneString(date: Date, timeZone: string){
 	});
 }
 
-export function getUTCDate(){
+export function getUTCDate() {
 	const currentDate = new Date();
 	return new Date(currentDate.toUTCString());
 }
 
-export function getDateDifferentInHours(date1: Date, date2: Date){
+export function getDateDifferentInHours(date1: Date, date2: Date) {
 	const diffInMs = date1.getTime() - date2.getTime();
 	return diffInMs / ONE_HOUR_IN_MILLISECONDS;
 }

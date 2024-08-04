@@ -33,6 +33,8 @@
 		--ring: 0 0% 3.9%;
 
 		--radius: 0.5rem;
+
+		color-scheme: light;
 	}
 
 	.dark {
@@ -63,6 +65,8 @@
 		--border: 0 0% 14.9%;
 		--input: 0 0% 14.9%;
 		--ring: 0 0% 83.1%;
+
+		color-scheme: dark;
 	}
 }
 
@@ -70,18 +74,22 @@
 	* {
 		@apply border-border;
 	}
+
 	body {
 		@apply bg-background text-foreground;
 	}
 }
 
 .no-scrollbar {
-	scrollbar-width: none; /* Firefox */
-	-ms-overflow-style: none; /* Internet Explorer 10+ */
+	scrollbar-width: none;
+	/* Firefox */
+	-ms-overflow-style: none;
+	/* Internet Explorer 10+ */
 }
 
 .no-scrollbar::-webkit-scrollbar {
-	display: none; /* Safari and Chrome */
+	display: none;
+	/* Safari and Chrome */
 }
 
 .rdp-vhidden {
