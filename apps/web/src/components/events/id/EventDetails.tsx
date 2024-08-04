@@ -2,10 +2,6 @@ import { getEventDetails } from "@/lib/queries";
 import PageError from "../../shared/PageError";
 import EventDetailsMobile from "./EventDetailsMobile";
 import EventDetailsDefault from "./EventDetailsDefault";
-<<<<<<< HEAD
-
-export default async function EventDetails({ id }: { id: string }) {
-=======
 import { headers } from "next/headers";
 import { VERCEL_IP_TIMEZONE_HEADER_KEY,TWENTY_FOUR_HOURS } from "@/lib/constants/shared";
 import {
@@ -16,18 +12,14 @@ import {
 	getUTCDate,
 } from "@/lib/utils";
 
-
 export default async function EventDetails({ id }: { id: string }) {
 	const headerTimeZone = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
 	const clientTimeZone = getClientTimeZone(headerTimeZone);
->>>>>>> dev
 	const event = await getEventDetails(id);
 
 	if (!event) {
 		return <PageError message="Event Not Found" href="/events" />;
 	}
-<<<<<<< HEAD
-=======
 	// This needs to be fixed
 	const currentDateUTC = getUTCDate();
 	const isEventPassed = event.end < currentDateUTC;
@@ -81,7 +73,6 @@ export default async function EventDetails({ id }: { id: string }) {
 	};
 	
 
->>>>>>> dev
 
 	// Also, we should display how many points something is worth to entice people to show up for it
 	return (
@@ -89,15 +80,10 @@ export default async function EventDetails({ id }: { id: string }) {
 			<h1 className=" px-2 py-1 text-center text-2xl font-black sm:text-2xl md:px-8 md:text-3xl lg:text-5xl">
 				{event.name}
 			</h1>
-<<<<<<< HEAD
-			<EventDetailsMobile event={event} />
-			<EventDetailsDefault event={event} />
-=======
 			<EventDetailsMobile {...detailsProps} />
 			<EventDetailsDefault
 				{...detailsProps}
 			/>
->>>>>>> dev
 		</div>
 	);
 }

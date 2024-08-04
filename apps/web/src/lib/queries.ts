@@ -146,7 +146,6 @@ export const checkInUser = async (
 	feedback: string,
 	rating: number,
 ) => {
-
 	return db.insert(checkins).values({
 		userID: userID,
 		eventID: eventID,

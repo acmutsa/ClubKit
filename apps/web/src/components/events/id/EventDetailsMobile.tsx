@@ -8,66 +8,6 @@ import { MapPin, Clock, Calendar, Hourglass } from "lucide-react";
 import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
-<<<<<<< HEAD
-import type { EventType } from "../filters/EventsOptionsBar";
-
-export default function EventDetailsMobile({ event }: { event: EventType }) {
-	const aboutACM =
-		"ACM is the premier organization on campus for students interested in technology. ACM is dedicated to providing members with opportunities for professional, academic, and social growth outside the classroom in order to prepare students for their career in tech or fuel their interest in the tech field. Anyone who has an interest in technology can join ACM.";
-	const checkingIn =
-		"The membership portal is ACM's new method of tracking member check-ins and awarding points. By simply visiting this page during the event and clicking the Check-in button, you can easily garner points towards your membership for the semester.";
-
-	const StreamingLinks = c.streamingLinks;
-	const calendarLinks = c.calendarLinks;
-
-	const currentDate = new Date();
-	const isEventPassed = event.end < currentDate;
-	// Make sure that this is converting properly
-	const startTime = event.start.toLocaleString(undefined, {
-		hourCycle: "h12",
-		hour: "numeric",
-		minute: "2-digit",
-		timeZoneName: "short",
-	});
-
-	const startDate = event.start.toDateString();
-
-	const rawEventDuration =
-		event.end.getHours() - event.start.getHours() / 1000 / 3600;
-
-	const isEventLongerThanADay = rawEventDuration > 24;
-
-	const formattedEventDuration = isEventLongerThanADay
-		? (rawEventDuration / 24).toFixed(2) + " day(s)"
-		: rawEventDuration.toFixed(2) + " hour(s)";
-
-	const checkInUrl = `/events/${event.id}/checkin`;
-
-	const isCheckinAvailable =
-		event.checkinStart <= currentDate && currentDate <= event.checkinEnd;
-
-	const checkInMessage = isCheckinAvailable
-		? "Ready to check in? Click here!"
-		: isEventPassed
-			? "Check-in is closed"
-			: `Check-in starts at ${event.checkinStart.toLocaleString(
-					undefined,
-					{
-						hourCycle: "h12",
-						hour: "numeric",
-						minute: "2-digit",
-						timeZoneName: "short",
-					},
-				)}`;
-
-	const eventCalendarLink = {
-		title: event.name,
-		description: event.description,
-		start: event.start.toISOString(),
-		end: event.end.toISOString(),
-		location: event.location,
-	};
-=======
 import type { DetailsProps } from "@/lib/types/events";
 
 export default function EventDetailsMobile(detailsProps: DetailsProps) {
@@ -84,7 +24,6 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 		isCheckinAvailable,
 		isEventPassed,
 	} = detailsProps;
->>>>>>> dev
 
 	return (
 		<div className="flex flex-col space-y-4 lg:hidden">
@@ -150,11 +89,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 						)}
 					>
 						<UserRoundCheck size={24} />
-<<<<<<< HEAD
-						<p className="text-base lg:text-lg xl:text-xl 2xl:text-2xl">
-=======
 						<p className="text-sm sm:text-base md:text-lg lg:text-lg xl:text-xl">
->>>>>>> dev
 							{checkInMessage}
 						</p>
 					</Button>
@@ -163,11 +98,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 			<div className="flex w-full flex-col items-center justify-center gap-5 pt-5">
 				<h1 className="text-xl font-bold">Streaming on...</h1>
 				<div className="flex w-full flex-row items-center justify-center gap-5">
-<<<<<<< HEAD
-					{StreamingLinks.map((link) => (
-=======
 					{streamingLinks.map((link) => (
->>>>>>> dev
 						<StreamingLink
 							title={link.title}
 							href={link.href}
@@ -178,11 +109,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-5">
 				<h1 className="text-xl font-bold">Need a Reminder?</h1>
-<<<<<<< HEAD
-				<div className="flex w-full flex-row items-center justify-center gap-6 px-3">
-=======
 				<div className="flex w-full flex-row flex-wrap items-center justify-center gap-6 px-3">
->>>>>>> dev
 					{calendarLinks.map((cal) => (
 						<CalendarLink
 							calendarName={cal}
@@ -196,21 +123,13 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 				<h1 className="border-b border-muted-foreground text-xl font-bold">
 					About ACM
 				</h1>
-<<<<<<< HEAD
-				<p className=" px-7 text-center">{aboutACM}</p>
-=======
 				<p className=" px-7 text-center">{aboutOrg}</p>
->>>>>>> dev
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
 				<h1 className="border-b border-muted-foreground text-xl font-bold">
 					Checking In
 				</h1>
-<<<<<<< HEAD
-				<p className="px-7 text-center">{checkingIn}</p>
-=======
 				<p className="px-7 text-center">{checkingInInfo}</p>
->>>>>>> dev
 			</div>
 		</div>
 	);

@@ -79,13 +79,8 @@ export default function NewEventForm({
 		defaultValues: {
 			start: defaultDate,
 			checkinStart: defaultDate,
-<<<<<<< HEAD
-			end: new Date(defaultDate.getTime() + OneHourInMiliseconds),
-			checkinEnd: new Date(defaultDate.getTime() + OneHourInMiliseconds),
-=======
 			end: new Date(defaultDate.getTime() + ONE_HOUR_IN_MILLISECONDS),
 			checkinEnd: new Date(defaultDate.getTime() + ONE_HOUR_IN_MILLISECONDS),
->>>>>>> dev
 			thumbnailUrl: c.thumbnails.default,
 			categories: [],
 			isUserCheckinable: true,

@@ -4,15 +4,9 @@ import { Popover,PopoverTrigger,PopoverContent } from "../../ui/popover";
 import { ChevronDown } from "lucide-react";
 import clsx from "clsx";
 import type { SearchParams } from "@/lib/types/shared";
-<<<<<<< HEAD
-import type { EventCategory } from "./EventsOptionsBar";
-
-export default function CategoriesDropDown({cardViewSelected,categories,searchParams}:{cardViewSelected:boolean,categories:Array<EventCategory>,searchParams:SearchParams}){
-=======
 import type { EventCategoryType } from "@/lib/types/events";
 
 export default function CategoriesDropDown({cardViewSelected,categories,searchParams}:{cardViewSelected:boolean,categories:Array<EventCategoryType>,searchParams:SearchParams}){
->>>>>>> dev
     
     const checkBoxSet = new Set(searchParams.categories ? searchParams.categories.split(",") : []);
 	console.log(checkBoxSet);
