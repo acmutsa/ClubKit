@@ -11,27 +11,34 @@ import Link from "next/link";
 import clsx from "clsx";
 import EventCategories from "./EventCategories";
 import { getDateAndTimeWithTimeZoneString } from "@/lib/utils";
-
+import { Badge } from "../ui/badge";
 export default function EventCardComponent({ event,isPast,isEventCurrentlyHappening, isEventCheckinAllowed,clientTimezone }: { event: EventAndCategoriesType,isPast:boolean,isEventCurrentlyHappening:boolean,clientTimezone:string,isEventCheckinAllowed:boolean}) {
 
 	const {
 		thumbnailUrl,
 		start,
-		checkinStart,
-		checkinEnd,
 		id,
+		points,
 	} = event;
 
 	const eventDetailsLink = `/events/${id}`;
 	const eventCheckinLink = `/events/${id}/checkin`;
 
   return (
-		<Link href={eventDetailsLink}>
-			<Card
-			className={`group relative flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-md ${isEventCurrentlyHappening ? 'hover:shadow-purple-400': 'hover:shadow-slate-400'} md:hover:scale-105`}>
-			{isEventCheckinAllowed && (
-				<span className="absolute right-0 top-0 inline-flex h-4 w-4 animate-ping rounded-full bg-purple-400 lg:-right-1 " />
-			)}
+		<Card
+			className={`group relative flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-lg hover:shadow-slate-400 md:hover:scale-105`}
+		>
+			<Badge className="absolute right-0 top-0 z-50  animate-pulse rounded-xl border bg-red-600 hover:bg-red-600">
+				<Link
+					href={eventDetailsLink}
+					className="flex flex-row items-center justify-between gap-3 "
+				>
+					<h3 className="text-lg font-bold text-primary">
+						Happening Now
+					</h3>
+					{/* <span className="h-3 w-3 animate-pulse rounded-full bg-red-600  " /> */}
+				</Link>
+			</Badge>
 			<CardHeader className="flex h-full justify-center p-0 pb-4">
 				{/* Come back and make sure skeleton loads here or something to ensure no weird layouts */}
 				<Image
@@ -56,7 +63,7 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 					isPast={isPast}
 					className="pb-3 pt-3"
 				/>
-				<div className="flex w-full justify-center px-2 text-gray-600 md:px-6">
+				<div className="flex w-full flex-col items-center justify-center gap-3 px-2 text-gray-600 md:px-6">
 					<p className="text-primary">
 						{`${isPast ? "Ended on: " : ""}`}
 						{getDateAndTimeWithTimeZoneString(
@@ -64,6 +71,12 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 							clientTimezone,
 						)}
 					</p>
+					<span className="flex w-full flex-row items-center justify-center gap-3 text-primary">
+						<p>Points:</p>
+						<p>
+							{points} {""} pt(s)
+						</p>
+					</span>
 				</div>
 			</CardContent>
 			<CardFooter className="flex w-full">
@@ -96,6 +109,5 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 				</Link>
 			</CardFooter>
 		</Card>
-		</Link>
   );
 }
