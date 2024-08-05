@@ -29,6 +29,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+import { CheckinResult } from "@/lib/types/events";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
@@ -77,12 +78,12 @@ async function AddCheckinDialogue({ trigger, eventList, ...props }: Props) {
 			toast.dismiss();
 			if (!success) {
 				switch (code) {
-					case "no_checkins_made":
-						toast.error("No checkins were made.");
+					case CheckinResult.FAILED:
+						toast.error("All checkins failed.");
 						break;
-					case "some_checkins_failed":
+					case CheckinResult.SOME_FAILED:
 						toast.warning(
-							`The following checkins failed: ${failedIDs.join(", ")}`,
+							`The following checkins failed: ${failedIDs.join()}`,
 						);
 						break;
 					default:
@@ -109,7 +110,7 @@ async function AddCheckinDialogue({ trigger, eventList, ...props }: Props) {
 	async function onSubmit(data: AdminCheckin, evt: any) {
 		evt.preventDefault();
 		console.log(universityIDSplitter.parse(data.universityIDs));
-		toast.loading("Creating Event...");
+		toast.loading("Creating Checkins...");
 		runAddCheckin(data);
 	}
 

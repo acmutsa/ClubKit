@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { data, users, events, eventsToCategories } from "./schema";
-import { string, z } from "zod";
+import { data, users, events, checkins, eventsToCategories } from "./schema";
+import { z } from "zod";
 import c from "config";
 
 export const insertUserDataSchema = createInsertSchema(data);

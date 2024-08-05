@@ -1,4 +1,9 @@
-import { events,eventsToCategories,eventCategories,eventsToCategoriesRelations } from "db/schema"
+import {
+	events,
+	eventsToCategories,
+	eventCategories,
+	eventsToCategoriesRelations,
+} from "db/schema";
 
 export type EventToCategoriesType = typeof eventsToCategories.$inferSelect;
 
@@ -10,13 +15,13 @@ export type EventsToCategoriesWithCategoryType = EventToCategoriesType & {
 		name: string;
 		color: string;
 	};
-}
+};
 
-export type EventType =  typeof events.$inferSelect;
+export type EventType = typeof events.$inferSelect;
 
 export type EventAndCategoriesType = EventType & {
 	eventsToCategories: EventsToCategoriesWithCategoryType[];
-}
+};
 
 export type EventCalendarLink = {
 	title: string;
@@ -45,3 +50,10 @@ export type CalendarDetails = {
 	end: string;
 	location: string;
 };
+
+export enum CheckinResult {
+	SUCCESS = "success",
+	ALREADY_CHECKED_IN = "already_checked_in",
+	SOME_FAILED = "some_failed",
+	FAILED = "failed",
+}

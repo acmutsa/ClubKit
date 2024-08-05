@@ -10,7 +10,11 @@ async function AdminCheckinLog({}: Props) {
 	return (
 		<div>
 			<div>
-				<DataTable data={data} columns={checkinLogColumns} />
+				<DataTable
+					data={data}
+					columns={checkinLogColumns}
+					tableName="checkins"
+				/>
 			</div>
 		</div>
 	);

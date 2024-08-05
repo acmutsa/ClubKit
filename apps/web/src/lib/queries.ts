@@ -1,6 +1,6 @@
-import { now } from "@internationalized/date";
 import { count, db, eq, gte, sql, between, inArray, desc } from "db";
 import { checkins, events, users, data } from "db/schema";
+import { getUTCDate } from "@/lib/utils";
 import c from "config";
 
 export const getCategoryOptions = async () => {
@@ -198,19 +198,32 @@ export const checkInUserList = async (
 ) => {
 	const userIDs = await db.query.data.findMany({
 		where: (data) => inArray(data.universityID, universityIDs),
-		columns: { userID: true },
+		columns: { userID: true, universityID: true },
 	});
 
-	const time = new Date();
-	return await db
-		.insert(checkins)
-		.values(
-			userIDs.map(({ userID }) => ({
-				userID,
-				eventID,
-				adminID,
-				time,
-			})),
-		)
-		.returning({ successfulID: checkins.userID });
+	const time = getUTCDate();
+	const successfulIDs = (
+		await db
+			.insert(checkins)
+			.values(
+				userIDs.map(({ userID }) => ({
+					userID,
+					eventID,
+					adminID,
+					time,
+				})),
+			)
+			.returning({ userID: checkins.userID })
+			.onConflictDoNothing()
+	).map(({ userID }) => userID);
+
+	// Return only failed ids
+	const successful = userIDs.filter(({ userID }) =>
+		successfulIDs.includes(userID),
+	);
+	const failed = universityIDs.filter(
+		(id) => !successful.some(({ universityID }) => universityID === id),
+	);
+	console.log("The following checkins failed: ", failed);
+	return failed;
 };

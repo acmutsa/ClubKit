@@ -5,7 +5,7 @@ import { userCheckInSchemaFormified } from "@/validators/userCheckin";
 import { checkInUser, checkInUserList } from "@/lib/queries";
 import { UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE } from "@/lib/constants/shared";
 import { adminCheckinSchema, universityIDSplitter } from "db/zod";
-import { fail } from "assert";
+import { CheckinResult } from "@/lib/types/events";
 export const checkInUserAction = authenticatedAction(
 	userCheckInSchemaFormified,
 	async ({ feedback, rating, userId, eventId }) => {
@@ -16,14 +16,14 @@ export const checkInUserAction = authenticatedAction(
 			if (e.code === UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE) {
 				return {
 					success: false,
-					code: "You have already checked in",
+					code: CheckinResult.ALREADY_CHECKED_IN,
 				};
 			}
 			throw e;
 		}
 		return {
 			success: true,
-			code: "success",
+			code: CheckinResult.SUCCESS,
 		};
 	},
 );
@@ -33,47 +33,35 @@ export const adminCheckin = adminAction(
 	async ({ eventID, universityIDs, adminID }) => {
 		try {
 			const idList = universityIDSplitter.parse(universityIDs);
-			const successfulIDs = await checkInUserList(
-				eventID,
-				idList,
-				adminID,
-			);
-			if (successfulIDs.length == 0) {
-				return {
-					success: false,
-					code: "no_checkins_made",
-				};
-			} else if (idList.length == successfulIDs.length) {
+			const failedIDs = await checkInUserList(eventID, idList, adminID);
+
+			console.log("Failed IDs: ", failedIDs);
+
+			if (failedIDs.length == 0) {
 				return {
 					success: true,
-					code: "success",
+					code: CheckinResult.SUCCESS,
 				};
-			} else if (idList.length > successfulIDs.length) {
+			} else if (failedIDs.length < idList.length) {
 				return {
 					success: false,
-					code: "some_checkins_failed",
-					failedIDs: idList.filter(
-						(successfulID) =>
-							!successfulIDs.includes({
-								successfulID: Number.parseInt(successfulID),
-							}),
-					),
+					code: CheckinResult.SOME_FAILED,
+					failedIDs,
+				};
+			} else if (failedIDs.length == idList.length) {
+				return {
+					success: false,
+					code: CheckinResult.FAILED,
 				};
 			}
 			return {
 				success: false,
-				code: "some_checkins_failed",
-				failedIDs: idList.filter(
-					(successfulID) =>
-						!successfulIDs.includes({
-							successfulID: Number.parseInt(successfulID),
-						}),
-				),
+				code: CheckinResult.FAILED,
 			};
 		} catch (e) {
 			return {
 				success: false,
-				code: "checkin_insertion_failed",
+				code: CheckinResult.FAILED,
 			};
 		}
 	},
