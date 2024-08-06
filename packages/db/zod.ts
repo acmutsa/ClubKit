@@ -82,9 +82,15 @@ const userDataFormified = z.object({
 export const insertUserWithDataSchemaFormified =
 	userFormified.merge(userDataFormified);
 
-const sometable = createInsertSchema(data);
-
-type iType = z.infer<typeof sometable>;
+export const selectUserWithDataSchema = z.object({
+	user: createSelectSchema(users),
+	data: createSelectSchema(data, {
+		gender: z.string().array().min(1, "Required"),
+		ethnicity: z.string().array().min(1, "Required"),
+		interestedEventTypes: z.string().array(),
+	}),
+});
+export type UserWithData = z.infer<typeof selectUserWithDataSchema>;
 
 // TODO: tighten insert schema constraints
 export const insertEventSchema = createInsertSchema(events);
