@@ -4,7 +4,7 @@ import { authenticatedAction, adminAction } from "@/lib/safe-action";
 import { userCheckInSchemaFormified } from "@/validators/userCheckin";
 import { checkInUser, checkInUserList } from "@/lib/queries";
 import { UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE } from "@/lib/constants/shared";
-import { adminCheckinSchema, universityIDSplitter } from "db/zod";
+import { AdminCheckin, adminCheckinSchema, universityIDSplitter } from "db/zod";
 import { CheckinResult } from "@/lib/types/events";
 export const checkInUserAction = authenticatedAction(
 	userCheckInSchemaFormified,
@@ -30,10 +30,14 @@ export const checkInUserAction = authenticatedAction(
 
 export const adminCheckin = adminAction(
 	adminCheckinSchema,
-	async ({ eventID, universityIDs, adminID }) => {
+	async ({ eventID, universityIDs }: AdminCheckin, { adminID }) => {
 		try {
 			const idList = universityIDSplitter.parse(universityIDs);
-			const failedIDs = await checkInUserList(eventID, idList, adminID);
+			const failedIDs = await checkInUserList(
+				eventID,
+				idList,
+				adminID.toString(),
+			);
 
 			console.log("Failed IDs: ", failedIDs);
 
