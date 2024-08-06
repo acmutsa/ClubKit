@@ -6,29 +6,34 @@ import PageError from "@/components/shared/PageError";
 import { Suspense } from "react";
 import { getUserCheckin } from "@/lib/queries";
 import { getUTCDate } from "@/lib/utils";
-export default function Page({params}: {params: {slug: string}}){
-
-    const { userId: clerkId } = auth();
+export default function Page({ params }: { params: { slug: string } }) {
+	const { userId: clerkId } = auth();
 	if (!clerkId) {
 		redirect("/sign-in");
 	}
 
-    if (!params?.slug){
-        return <PageError message="How did you even access this without a slug???" href="/events" />;
-    }
+	if (!params?.slug) {
+		return (
+			<PageError
+				message="How did you even access this without a slug???"
+				href="/events"
+			/>
+		);
+	}
 
-    const currentDateUTC = getUTCDate();
+	const currentDateUTC = getUTCDate();
 
-    return (
+	return (
 		<div className="flex h-[100dvh] w-full flex-col">
-			<Navbar />
-                <EventCheckin eventID={params.slug} clerkId={clerkId} currentDateUTC={currentDateUTC} />
-            </Suspense>
-		</div>
-    );
-}   
-export const runtime = "edge";
-
-
-  
+			<Navbar />{" "}
 			<Suspense fallback={<h1>Grabbing the event. One sec...</h1>}>
+				<EventCheckin
+					eventID={params.slug}
+					clerkId={clerkId}
+					currentDateUTC={currentDateUTC}
+				/>
+			</Suspense>
+		</div>
+	);
+}
+export const runtime = "edge";
