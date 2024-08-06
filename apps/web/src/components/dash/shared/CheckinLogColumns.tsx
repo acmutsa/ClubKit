@@ -29,6 +29,7 @@ type CheckinLogEntry = {
 		firstName: string;
 		lastName: string;
 	};
+	rating: number | null;
 };
 
 const timeCell = ({ row }: { row: Row<CheckinLogEntry> }) => {
@@ -68,6 +69,20 @@ export const checkinLogColumns: ColumnDef<CheckinLogEntry>[] = [
 		},
 		cell: timeCell,
 		enableSorting: true,
+	},
+	{
+		accessorKey: "rating",
+		id: "rating",
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title="Rating" />;
+		},
+		cell: ({ row }) => {
+			return (
+				<div>
+					<p>{row.getValue("rating") ?? "unrated"}</p>
+				</div>
+			);
+		},
 	},
 	{
 		accessorKey: "feedback",

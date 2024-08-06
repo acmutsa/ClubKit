@@ -55,6 +55,7 @@ export const getCheckinLog = async () => {
 		columns: {
 			time: true,
 			feedback: true,
+			rating: true,
 		},
 		with: {
 			author: {
