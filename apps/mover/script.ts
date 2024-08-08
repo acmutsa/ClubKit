@@ -39,7 +39,7 @@ async function move() {
 		id: z.string(),
 		email: z.string().email(),
 		name: z.string(),
-		joinDate: z.date(),
+		joinDate: z.string().pipe(z.coerce.date()),
 		data: z.object({
 			memberID: z.string(),
 			major: z.string(),
