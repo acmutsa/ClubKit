@@ -28,6 +28,7 @@ export const users = pgTable("users", {
 	lastName: text("last_name").notNull(),
 	email: text("email").notNull().unique(),
 	role: text("role").notNull().default("member"),
+	joinDate: timestamp("join_date").defaultNow().notNull(),
 });
 
 export const usersRelations = relations(users, ({ one, many }) => ({
