@@ -1,3 +1,5 @@
+import MonthlyRegistrationChart from "@/components/dash/admin/overview/MonthlyRegistrationChart";
+
 export default function Page() {
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
@@ -5,6 +7,11 @@ export default function Page() {
 				<h1 className="font-foreground text-3xl font-bold tracking-tight">
 					Overview
 				</h1>
+			</div>
+			<div>
+				<div>
+					<MonthlyRegistrationChart />
+				</div>
 			</div>
 		</div>
 	);
