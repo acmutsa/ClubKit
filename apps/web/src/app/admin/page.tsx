@@ -4,7 +4,6 @@ import { Suspense } from "react";
 
 export default async function Page() {
 	const monthlyRegistrations = await getRegistrationsByMonth();
-	console.log(monthlyRegistrations);
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
 			<div className="mb-5 grid grid-cols-2 px-5">
@@ -12,8 +11,8 @@ export default async function Page() {
 					Overview
 				</h1>
 			</div>
-			<div className="grid-cols-4">
-				<div>
+			<div className="grid grid-flow-col grid-cols-12">
+				<div className="col-span-4">
 					<Suspense
 						fallback={
 							<div className="text-foreground">
