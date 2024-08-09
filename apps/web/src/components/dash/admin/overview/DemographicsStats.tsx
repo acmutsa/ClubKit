@@ -18,6 +18,8 @@ import {
 	ChartContainer,
 	ChartTooltip,
 	ChartTooltipContent,
+	ChartLegend,
+	ChartLegendContent,
 } from "@/components/ui/chart";
 
 type Props = {
@@ -77,9 +79,15 @@ function DemographicsStats({ classifications }: Props) {
 									data={classifications}
 									dataKey="count"
 									nameKey="classification"
-									innerRadius={60}
+									innerRadius={48}
 									strokeWidth={5}
 								></Pie>
+								<ChartLegend
+									content={
+										<ChartLegendContent nameKey="classification" />
+									}
+									className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+								/>
 							</PieChart>
 						</ChartContainer>
 					</CardContent>
