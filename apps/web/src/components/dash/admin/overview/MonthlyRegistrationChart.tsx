@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { getRegistrationsByMonth } from "@/lib/queries/charts";
@@ -18,7 +20,12 @@ import {
 	ChartTooltipContent,
 } from "@/components/ui/chart";
 
-type Props = {};
+type Props = {
+	registrations: {
+		month: number;
+		count: number;
+	}[];
+};
 
 const chartConfig = {
 	numRegistered: {
@@ -42,8 +49,7 @@ const monthList = [
 	"December",
 ];
 
-async function MonthlyRegistrationChart({}: Props) {
-	const registrations = await getRegistrationsByMonth();
+async function MonthlyRegistrationChart({ registrations }: Props) {
 	return (
 		<Card>
 			<CardHeader>
@@ -62,8 +68,19 @@ async function MonthlyRegistrationChart({}: Props) {
 							axisLine={false}
 							tickMargin={8}
 							tickFormatter={(value) =>
-								monthList[value].slice(0, 3)
+								monthList[value - 1].slice(0, 3)
 							}
+						/>
+						<ChartTooltip
+							cursor={false}
+							content={<ChartTooltipContent indicator="line" />}
+						/>
+						<Area
+							dataKey="count"
+							type="linear"
+							fill="var(--color-numRegistered)"
+							fillOpacity={0.4}
+							stroke="var(--color-numRegistered)"
 						/>
 					</AreaChart>
 				</ChartContainer>
