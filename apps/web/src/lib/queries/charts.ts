@@ -1,5 +1,5 @@
 import { db, count, sql } from "db";
-import { users } from "db/schema";
+import { data, users } from "db/schema";
 
 export async function getRegistrationsByMonth() {
 	return await db
@@ -10,4 +10,17 @@ export async function getRegistrationsByMonth() {
 		.from(users)
 		.groupBy(sql`EXTRACT(MONTH FROM ${users.joinDate})`)
 		.orderBy(sql`EXTRACT(MONTH FROM ${users.joinDate})`);
+}
+
+export async function getUserClassifications() {
+	return await db
+		.select({
+			classification: sql`LOWER(${data.classification})`.mapWith(String),
+			count: count(),
+			fill: sql`CONCAT('var(--color-',LOWER(${data.classification}),')')`.mapWith(
+				String,
+			),
+		})
+		.from(data)
+		.groupBy(sql`LOWER(${data.classification})`.mapWith(String));
 }

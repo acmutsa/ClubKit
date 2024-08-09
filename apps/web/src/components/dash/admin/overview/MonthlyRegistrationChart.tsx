@@ -60,13 +60,16 @@ async function MonthlyRegistrationChart({ registrations }: Props) {
 			</CardHeader>
 			<CardContent>
 				<ChartContainer config={chartConfig}>
-					<AreaChart accessibilityLayer data={registrations}>
+					<AreaChart
+						accessibilityLayer
+						data={registrations.slice(0, 6)}
+					>
 						<CartesianGrid vertical={false} />
 						<XAxis
 							dataKey="month"
 							tickLine={false}
 							axisLine={false}
-							tickMargin={8}
+							tickMargin={4}
 							tickFormatter={(value) =>
 								monthList[value - 1].slice(0, 3)
 							}
