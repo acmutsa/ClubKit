@@ -40,7 +40,7 @@ const classChartConfig = {
 		color: "hsl(var(--chart-2))",
 	},
 	sophmore: {
-		label: "Sophmore",
+		label: "Sophmore 😭",
 		color: "hsl(173 58% 75%)",
 	},
 	junior: {

@@ -1,5 +1,6 @@
 import DemographicsStats from "@/components/dash/admin/overview/DemographicsStats";
 import MonthlyRegistrationChart from "@/components/dash/admin/overview/MonthlyRegistrationChart";
+import { Separator } from "@/components/ui/separator";
 import {
 	getRegistrationsByMonth,
 	getUserClassifications,
@@ -9,7 +10,6 @@ import { Suspense } from "react";
 export default async function Page() {
 	const monthlyRegistrations = await getRegistrationsByMonth();
 	const classifications = await getUserClassifications();
-	console.log(classifications);
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
 			<div className="mb-5 grid grid-cols-2 px-5">
@@ -32,7 +32,7 @@ export default async function Page() {
 					</Suspense>
 				</div>
 			</div>
-			<div className="pt-4">
+			<div className="pt-5">
 				<div className="mb-5 grid grid-cols-2 px-5">
 					<h1 className="font-foreground text-3xl font-bold tracking-tight">
 						Demographics

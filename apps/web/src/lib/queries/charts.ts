@@ -24,3 +24,16 @@ export async function getUserClassifications() {
 		.from(data)
 		.groupBy(sql`LOWER(${data.classification})`.mapWith(String));
 }
+
+export async function getGenderDistribution() {
+	return await db
+		.select({
+			gender: sql`LOWER(${data.gender})`.mapWith(String),
+			count: count(),
+			fill: sql`CONCAT('var(--color-',LOWER(${data.gender}),')')`.mapWith(
+				String,
+			),
+		})
+		.from(data)
+		.groupBy(sql`LOWER(${data.gender})`.mapWith(String));
+}
