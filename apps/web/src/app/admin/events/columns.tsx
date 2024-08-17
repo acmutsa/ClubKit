@@ -14,10 +14,11 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTableColumnHeader } from "@/components/ui/data-table";
-import { Event } from "db/zod";
+import type { EventType } from "@/lib/types/events";
+// import { Event } from "db/zod";
 import { formatDate } from "date-fns";
 
-type EventWithCheckins = Partial<Event> & { checkin_count: number };
+type EventWithCheckins = Partial<EventType> & { checkin_count: number };
 
 const timeFormatString = "eee, MMM dd yyyy HH:mm bb";
 

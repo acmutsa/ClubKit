@@ -114,7 +114,6 @@ export const insertEventSchemaFormified = insertEventSchema
 	});
 
 export const selectEventSchema = createSelectSchema(events);
-export type Event = z.infer<typeof selectEventSchema>;
 
 export const selectCheckinSchema = createSelectSchema(checkins);
 export type Checkin = z.infer<typeof selectCheckinSchema>;
