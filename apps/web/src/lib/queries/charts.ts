@@ -8,6 +8,9 @@ export async function getRegistrationsByMonth() {
 			count: count(),
 		})
 		.from(users)
+		.where(
+			sql`${users.joinDate} > NOW() - INTERVAL '1 year' AND ${users.joinDate} < NOW()`,
+		)
 		.groupBy(sql`EXTRACT(MONTH FROM ${users.joinDate})`)
 		.orderBy(sql`EXTRACT(MONTH FROM ${users.joinDate})`);
 }
