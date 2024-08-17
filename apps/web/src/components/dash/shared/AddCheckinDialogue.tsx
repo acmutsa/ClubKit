@@ -109,7 +109,6 @@ async function AddCheckinDialogue({ trigger, eventList, ...props }: Props) {
 
 	async function onSubmit(data: AdminCheckin, evt: any) {
 		evt.preventDefault();
-		console.log(universityIDSplitter.parse(data.universityIDs));
 		toast.loading("Creating Checkins...");
 		runAddCheckin(data);
 	}

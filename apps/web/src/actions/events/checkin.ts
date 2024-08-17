@@ -40,8 +40,6 @@ export const adminCheckin = adminAction(
 				adminID.toString(),
 			);
 
-			console.log("Failed IDs: ", failedIDs);
-
 			if (failedIDs.length == 0) {
 				return {
 					success: true,

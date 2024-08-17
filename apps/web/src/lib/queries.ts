@@ -225,6 +225,5 @@ export const checkInUserList = async (
 	const failed = universityIDs.filter(
 		(id) => !successful.some(({ universityID }) => universityID === id),
 	);
-	console.log("The following checkins failed: ", failed);
 	return failed;
 };
