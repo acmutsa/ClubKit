@@ -11,7 +11,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import AdminCheckinLog from "@/components/dash/shared/AdminCheckinLog";
 import { getEventList } from "@/lib/queries";
 
-async function Page() {
+export default async function Page() {
 	const eventList = await getEventList();
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
@@ -51,5 +51,3 @@ async function Page() {
 		</div>
 	);
 }
-
-export default Page;
