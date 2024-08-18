@@ -28,12 +28,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
-import { CalendarIcon } from "lucide-react";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { getLocalTimeZone, parseAbsolute } from "@internationalized/date";
@@ -53,7 +47,7 @@ import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
 import { upload } from "@vercel/blob/client";
 import { createEvent } from "@/actions/events/new";
-import { ONE_HOUR_IN_MILLISECONDS } from "@/lib/constants/shared";
+import { ONE_HOUR_IN_MILLISECONDS } from "@/lib/constants";
 
 type NewEventFormProps = {
 	defaultDate: Date;
