@@ -21,9 +21,9 @@ export default function ({cardViewSelected}:{cardViewSelected:boolean}){
         replace(`${pathname}?${params.toString()}`);
     }
     return (
-		// Toggle for card or calendar view 
+		// Feature was not completed by deadline. Will be added later on - Christian
 		<div className="flex">
-			<button
+			{/* <button
 				onClick={() => handleFilterChange(CARD)}
 				className={clsx("p-2", {
 					"rounded-md border bg-stone-300 bg-opacity-80 ":
@@ -38,7 +38,7 @@ export default function ({cardViewSelected}:{cardViewSelected:boolean}){
 						!cardViewSelected,
 				})}>
 				<Calendar />
-			</button>
+			</button> */}
 		</div>
 	);
 }
