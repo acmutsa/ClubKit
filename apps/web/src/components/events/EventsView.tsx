@@ -7,7 +7,7 @@ import { EVENT_FILTERS } from "@/lib/constants/events";
 import { unstable_noStore as noStore } from "next/cache";
 import PageError from "../shared/PageError";
 import { headers } from "next/headers";
-import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants/shared";
+import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants";
 import { getClientTimeZone,getUTCDate } from "@/lib/utils";
 
 export default async function EventsView({ params }: { params: SearchParams }) {

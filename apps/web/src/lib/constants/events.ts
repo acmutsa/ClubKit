@@ -10,3 +10,6 @@ export const EVENT_FILTERS = Object.freeze({
 	CATEGORIES: "categories",
 	WEEK_OF: "week_of",
 });
+
+export const EVENT_DATE_FORMAT_STRING = "MMM do, yyyy";
+export const EVENT_TIME_FORMAT_STRING = "h:MM a";

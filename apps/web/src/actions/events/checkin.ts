@@ -3,8 +3,7 @@
 import { authenticatedAction } from "@/lib/safe-action";
 import { userCheckInSchemaFormified } from "@/validators/userCheckin";
 import { checkInUser } from "@/lib/queries";
-import { UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE } from "@/lib/constants/shared";
-// Fix this so that it will be an on-conflict instead of a try-catch
+import { UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE } from "@/lib/constants/";
 export const checkInUserAction = authenticatedAction(
 	userCheckInSchemaFormified,
 	async ({ feedback, rating, userId, eventId }) => {

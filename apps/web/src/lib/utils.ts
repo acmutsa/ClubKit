@@ -2,8 +2,9 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as links from "calendar-link";
 import type { CalendarDetails } from "./types/events";
-import { ONE_HOUR_IN_MILLISECONDS } from "./constants/shared";
+import { ONE_HOUR_IN_MILLISECONDS } from "./constants";
 const linksAsObject = links as Record<string, Function>;
+import { formatInTimeZone } from "date-fns-tz"
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -34,12 +35,8 @@ export function createCalendarLink(
 	return links.google(eventCalendarLink);
 }
 
-export function getClientTimeZone(vercelIPTimeZone: string | null) {
+export function getClientTimeZone(vercelIPTimeZone?: string | null) {
 	return vercelIPTimeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
-};
-
-export function convertDateToUtc(date: Date){
-	return date.toISOString();
 };
 
 export function getDateAndTimeWithTimeZoneString(date: Date, timeZone: string){

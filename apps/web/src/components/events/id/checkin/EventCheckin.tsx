@@ -3,7 +3,7 @@ import { getEventById,getUserDataAndCheckin } from "@/lib/queries";
 import EventCheckinForm from "./EventCheckinForm";
 import { getDateAndTimeWithTimeZoneString,getClientTimeZone } from "@/lib/utils";
 import { headers } from "next/headers";
-import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants/shared";
+import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants";
 export default async function EventCheckin({
 	eventID,
 	clerkId,
