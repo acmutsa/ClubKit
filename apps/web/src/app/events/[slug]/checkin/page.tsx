@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import PageError from "@/components/shared/PageError";
 import { Suspense } from "react";
 import { getUTCDate } from "@/lib/utils";
+
 export default function Page({params}: {params: {slug: string}}){
 
     const { userId: clerkId } = auth();

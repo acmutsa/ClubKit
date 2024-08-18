@@ -6,11 +6,9 @@ import { headers } from "next/headers";
 import { VERCEL_IP_TIMEZONE_HEADER_KEY,TWENTY_FOUR_HOURS } from "@/lib/constants";
 import {
 	getClientTimeZone,
-	getDateAndTimeWithTimeZoneString,
-	getDateWithTimeZoneString,
-	getDateDifferentInHours,
 	getUTCDate,
 } from "@/lib/utils";
+import { differenceInHours } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import { EVENT_DATE_FORMAT_STRING, EVENT_TIME_FORMAT_STRING } from "@/lib/constants/events";
 
@@ -39,7 +37,7 @@ export default async function EventDetails({ id }: { id: string }) {
 	
 	const startDateFormatted = formatInTimeZone(start,clientTimeZone, `${EVENT_TIME_FORMAT_STRING}`);
 
-	const rawEventDuration = getDateDifferentInHours(end, start);
+	const rawEventDuration = differenceInHours(end, start);
 	
 	const isEventLongerThanADay = rawEventDuration > TWENTY_FOUR_HOURS;
 

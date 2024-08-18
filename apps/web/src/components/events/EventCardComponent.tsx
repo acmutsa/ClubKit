@@ -10,7 +10,6 @@ import {
 import Link from "next/link";
 import clsx from "clsx";
 import EventCategories from "./EventCategories";
-import { getDateAndTimeWithTimeZoneString } from "@/lib/utils";
 import { Badge } from "../ui/badge";
 import { formatInTimeZone } from "date-fns-tz";
 import { EVENT_DATE_FORMAT_STRING, EVENT_TIME_FORMAT_STRING } from "@/lib/constants/events";

@@ -1,9 +1,12 @@
 import PageError from "../../../shared/PageError";
 import { getEventById,getUserDataAndCheckin } from "@/lib/queries";
 import EventCheckinForm from "./EventCheckinForm";
-import { getDateAndTimeWithTimeZoneString,getClientTimeZone } from "@/lib/utils";
+import { getClientTimeZone } from "@/lib/utils";
 import { headers } from "next/headers";
 import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants";
+import { formatInTimeZone } from "date-fns-tz";
+import { EVENT_TIME_FORMAT_STRING, EVENT_DATE_FORMAT_STRING } from "@/lib/constants/events";
+
 export default async function EventCheckin({
 	eventID,
 	clerkId,
@@ -61,7 +64,7 @@ export default async function EventCheckin({
 	if (!isCheckinAvailable) {
 		return (
 			<PageError
-				message={`Check-in does not start until ${getDateAndTimeWithTimeZoneString(event.checkinStart, clientTimeZone)}`}
+				message={`Check-in does not start until ${formatInTimeZone(event.checkinStart,clientTimeZone, `${EVENT_TIME_FORMAT_STRING} @ ${EVENT_DATE_FORMAT_STRING}`)}`}
 				href={href}
 				className="md:px-12 lg:px-16 text-base"
 			/>
