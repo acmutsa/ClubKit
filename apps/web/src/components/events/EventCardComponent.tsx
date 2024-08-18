@@ -12,6 +12,8 @@ import clsx from "clsx";
 import EventCategories from "./EventCategories";
 import { getDateAndTimeWithTimeZoneString } from "@/lib/utils";
 import { Badge } from "../ui/badge";
+import { formatInTimeZone } from "date-fns-tz";
+import { EVENT_DATE_FORMAT_STRING, EVENT_TIME_FORMAT_STRING } from "@/lib/constants/events";
 export default function EventCardComponent({ event,isPast,isEventCurrentlyHappening, isEventCheckinAllowed,clientTimezone }: { event: EventAndCategoriesType,isPast:boolean,isEventCurrentlyHappening:boolean,clientTimezone:string,isEventCheckinAllowed:boolean}) {
 
 	const {
@@ -23,6 +25,7 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 
 	const eventDetailsLink = `/events/${id}`;
 	const eventCheckinLink = `/events/${id}/checkin`;
+	const startDateFormatted = formatInTimeZone(start,clientTimezone, `${EVENT_DATE_FORMAT_STRING} @ ${EVENT_TIME_FORMAT_STRING}`);
 
   return (
 		<Card
@@ -67,10 +70,7 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 				<div className="flex w-full flex-col items-center justify-center gap-3 px-2 text-gray-600 md:px-6">
 					<p className="text-primary">
 						{`${isPast ? "Ended on: " : ""}`}
-						{getDateAndTimeWithTimeZoneString(
-							start,
-							clientTimezone,
-						)}
+						{startDateFormatted}
 					</p>
 					<span className="flex w-full flex-row items-center justify-center gap-3 text-primary">
 						<p>Points:</p>

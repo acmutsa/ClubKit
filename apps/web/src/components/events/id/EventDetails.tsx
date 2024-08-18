@@ -3,7 +3,7 @@ import PageError from "../../shared/PageError";
 import EventDetailsMobile from "./EventDetailsMobile";
 import EventDetailsDefault from "./EventDetailsDefault";
 import { headers } from "next/headers";
-import { VERCEL_IP_TIMEZONE_HEADER_KEY,TWENTY_FOUR_HOURS } from "@/lib/constants/shared";
+import { VERCEL_IP_TIMEZONE_HEADER_KEY,TWENTY_FOUR_HOURS } from "@/lib/constants";
 import {
 	getClientTimeZone,
 	getDateAndTimeWithTimeZoneString,
@@ -11,7 +11,8 @@ import {
 	getDateDifferentInHours,
 	getUTCDate,
 } from "@/lib/utils";
-
+import { formatInTimeZone } from "date-fns-tz";
+import { EVENT_DATE_FORMAT_STRING, EVENT_TIME_FORMAT_STRING } from "@/lib/constants/events";
 
 export default async function EventDetails({ id }: { id: string }) {
 	const headerTimeZone = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
@@ -21,20 +22,24 @@ export default async function EventDetails({ id }: { id: string }) {
 	if (!event) {
 		return <PageError message="Event Not Found" href="/events" />;
 	}
-	// This needs to be fixed
+	const {
+		start,
+		end,
+		checkinStart,
+		checkinEnd,
+	} = event;
 	const currentDateUTC = getUTCDate();
 	const isEventPassed = event.end < currentDateUTC;
 
-	const startTime = getDateWithTimeZoneString(event.start, clientTimeZone);
+	const startTime = formatInTimeZone(
+		start,
+		clientTimeZone,
+		`${EVENT_DATE_FORMAT_STRING}`,
+	);
 	
-	const startDate = event.start.toLocaleDateString(undefined,{
-		timeZone: clientTimeZone,
-		month: "long",
-		day: "numeric",
-		year: "numeric"
-	});
+	const startDateFormatted = formatInTimeZone(start,clientTimeZone, `${EVENT_TIME_FORMAT_STRING}`);
 
-	const rawEventDuration = getDateDifferentInHours(event.end, event.start);
+	const rawEventDuration = getDateDifferentInHours(end, start);
 	
 	const isEventLongerThanADay = rawEventDuration > TWENTY_FOUR_HOURS;
 
@@ -45,13 +50,13 @@ export default async function EventDetails({ id }: { id: string }) {
 	const checkInUrl = `/events/${event.id}/checkin`;
 
 	const isCheckinAvailable =
-		event.checkinStart <= currentDateUTC && currentDateUTC <= event.checkinEnd;
+		checkinStart <= currentDateUTC && currentDateUTC <= checkinEnd;
 
 	const checkInMessage = isCheckinAvailable
 		? "Ready to check in? Click here!"
 		: isEventPassed
 			? "Check-in is closed"
-			: `Check-in starts on ${getDateAndTimeWithTimeZoneString(event.checkinStart, clientTimeZone)}`;
+			: `Check-in starts on ${formatInTimeZone(start,clientTimeZone, `${EVENT_TIME_FORMAT_STRING} @${EVENT_DATE_FORMAT_STRING}`)}`;
 
 	const eventCalendarLink = {
 		title: event.name,
@@ -61,10 +66,12 @@ export default async function EventDetails({ id }: { id: string }) {
 		location: event.location,
 	};
 
+
+
 	const detailsProps = {
 		event,
 		startTime,
-		startDate,
+		startDate: startDateFormatted,
 		formattedEventDuration,
 		checkInUrl,
 		checkInMessage,
