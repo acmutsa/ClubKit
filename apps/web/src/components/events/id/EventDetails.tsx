@@ -7,11 +7,13 @@ import { VERCEL_IP_TIMEZONE_HEADER_KEY,TWENTY_FOUR_HOURS } from "@/lib/constants
 import {
 	getClientTimeZone,
 	getUTCDate,
+	isEventCurrentlyHappening,
 } from "@/lib/utils";
-import { differenceInHours } from "date-fns";
+import { differenceInHours, isAfter } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import { EVENT_DATE_FORMAT_STRING, EVENT_TIME_FORMAT_STRING } from "@/lib/constants/events";
-
+import { Badge } from "@/components/ui/badge";
+import EventDetailsLiveIndicator from "../shared/EventDetailsLiveIndicator";
 export default async function EventDetails({ id }: { id: string }) {
 	const headerTimeZone = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
 	const clientTimeZone = getClientTimeZone(headerTimeZone);
@@ -27,7 +29,9 @@ export default async function EventDetails({ id }: { id: string }) {
 		checkinEnd,
 	} = event;
 	const currentDateUTC = getUTCDate();
-	const isEventPassed = event.end < currentDateUTC;
+	const isEventPassed = isAfter(currentDateUTC, end);
+	const isEventHappening = isEventCurrentlyHappening(currentDateUTC, start, end);
+
 
 	const startTime = formatInTimeZone(
 		start,
@@ -64,8 +68,6 @@ export default async function EventDetails({ id }: { id: string }) {
 		location: event.location,
 	};
 
-
-
 	const detailsProps = {
 		event,
 		startTime,
@@ -75,21 +77,21 @@ export default async function EventDetails({ id }: { id: string }) {
 		checkInMessage,
 		eventCalendarLink,
 		isEventPassed,
-		isCheckinAvailable
+		isCheckinAvailable,
+		isEventHappening,
 	};
 	
-
-
 	// Also, we should display how many points something is worth to entice people to show up for it
 	return (
 		<div className="mt-2 flex flex-1 flex-col space-y-4 pb-20">
-			<h1 className=" px-2 py-1 text-center text-2xl font-black sm:text-2xl md:px-8 md:text-3xl lg:text-5xl">
-				{event.name}
-			</h1>
+			<div className="flex w-full flex-col items-center justify-center lg:flex-row">
+				<h1 className="px-2 py-1 text-center text-2xl font-black sm:text-2xl md:px-8 md:text-3xl lg:text-5xl">
+					{event.name}
+				</h1>
+				<div className="hidden lg:flex">{isEventHappening && <EventDetailsLiveIndicator />}</div>
+			</div>
 			<EventDetailsMobile {...detailsProps} />
-			<EventDetailsDefault
-				{...detailsProps}
-			/>
+			<EventDetailsDefault {...detailsProps} />
 		</div>
 	);
 }

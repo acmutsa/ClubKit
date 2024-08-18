@@ -30,7 +30,6 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 		<Card
 			className={`group relative flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-lg hover:shadow-slate-400 md:hover:scale-105`}
 		>
-			{/* */}
 			{isEventCurrentlyHappening && (
 				<Link
 					href={eventDetailsLink}
