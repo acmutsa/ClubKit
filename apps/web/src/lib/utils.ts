@@ -40,7 +40,6 @@ export function getClientTimeZone(vercelIPTimeZone?: string | null) {
 
 export function getUTCDate(){
 	const currentDate = new Date();
-	console.log("date",currentDate,'offset',currentDate.getTimezoneOffset(), 'isostring',currentDate.toISOString());
 	return new Date(currentDate.toUTCString());
 }
 

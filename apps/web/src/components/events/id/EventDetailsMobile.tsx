@@ -9,6 +9,7 @@ import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
 import type { DetailsProps } from "@/lib/types/events";
+import EventDetailsLiveIndicator from "../shared/EventDetailsLiveIndicator";
 
 export default function EventDetailsMobile(detailsProps: DetailsProps) {
 	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
@@ -23,11 +24,12 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 		formattedEventDuration,
 		isCheckinAvailable,
 		isEventPassed,
+		isEventHappening,
 	} = detailsProps;
 
 	return (
 		<div className="flex flex-col space-y-4 lg:hidden">
-			<div className="flex h-auto w-full items-center justify-center">
+			<div className="flex h-auto w-full items-center justify-center relative">
 				<Image
 					src={event.thumbnailUrl}
 					alt="Event Image"
@@ -38,6 +40,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 					quality={75}
 					className={clsx("h-auto w-1/2 rounded-md", {})}
 				/>
+				{isEventHappening && <EventDetailsLiveIndicator className="absolute z-50 top-1 left-[26%]" />}
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-5">
 				<EventCategories event={event} isPast={isEventPassed} />

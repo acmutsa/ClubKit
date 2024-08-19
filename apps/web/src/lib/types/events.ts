@@ -36,6 +36,7 @@ export type DetailsProps = {
 	eventCalendarLink: EventCalendarLink;
 	isEventPassed: boolean;
 	isCheckinAvailable: boolean;
+	isEventHappening: boolean;
 };
 
 export type CalendarDetails = {
