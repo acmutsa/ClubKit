@@ -30,6 +30,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 	return (
 		<div className="flex flex-col space-y-4 lg:hidden">
 			<div className="relative flex h-auto w-full items-center justify-center">
+				{/* Find a way to wrap this for async */}
 				<Image
 					src={event.thumbnailUrl}
 					alt="Event Image"
@@ -75,8 +76,11 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 			</div>
 			<div className="flex w-full flex-col items-center justify-center">
 				{/* Might want to consider a scrollview for this if it gets too long? */}
-				<div className="flex w-full flex-col items-center justify-center px-7 pb-6 pt-2">
-					<p className="text-center">{event.description}</p>
+				<div className="flex w-full flex-col items-center justify-center gap-y-1 px-7 pb-6 pt-2">
+					<h1 className="w-1/2 border-b border-muted-foreground text-center text-xl font-bold">
+						Description
+					</h1>
+					<p className="text-center md:w-3/4">{event.description}</p>
 				</div>
 			</div>
 			<div className="flex flex-col items-center justify-center">
@@ -127,22 +131,22 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 						<CalendarLink
 							calendarName={cal}
 							calendarDetails={eventCalendarLink}
-							key={cal}
+							key={cal.title}
 						/>
 					))}
 				</div>
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
-				<h1 className="border-b border-muted-foreground text-xl font-bold">
+				<h1 className="w-1/2 border-b border-muted-foreground text-center text-xl font-bold">
 					About ACM
 				</h1>
-				<p className=" px-7 text-center">{aboutOrg}</p>
+				<p className=" px-7 text-center md:w-3/4">{aboutOrg}</p>
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
-				<h1 className="border-b border-muted-foreground text-xl font-bold">
-					Checking In
+				<h1 className="w-1/2 border-b border-muted-foreground text-center text-xl font-bold">
+					Checking-in
 				</h1>
-				<p className="px-7 text-center">{checkingInInfo}</p>
+				<p className="px-7 text-center md:w-3/4">{checkingInInfo}</p>
 			</div>
 		</div>
 	);

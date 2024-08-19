@@ -4,29 +4,28 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { createCalendarLink, capitalizeFirstLetter } from "@/lib/utils";
-
-type CalendarDetails = {
-	title: string;
-	description: string;
-	start: string;
-	end: string;
-	location: string;
-};
+import type { CalendarDetails, EventCalendarName } from "@/lib/types/events";
 
 // TODO: Have a quick convo about this. They are tiny icons so they
 export default function CalendarLink({
 	calendarName,
 	calendarDetails,
 }: {
-	calendarName: string;
+	calendarName: EventCalendarName;
 	calendarDetails: CalendarDetails;
 }) {
+
+	const {
+		title,
+		titleOverride
+	} = calendarName;
+
 	const [src, setSrc] = useState(
-		`/img/logos/${calendarName.toLocaleLowerCase()}-icon.svg`,
+		`/img/logos/${title.toLocaleLowerCase()}-icon.svg`,
 	);
 
 	const fallBackSrc = "/img/logos/calendar.svg";
-	const calendarLink = createCalendarLink(calendarName, calendarDetails);
+	const calendarLink = createCalendarLink(title, calendarDetails);
 
 	return (
 		<Link
@@ -43,10 +42,8 @@ export default function CalendarLink({
 					setSrc(fallBackSrc);
 				}}
 			/>
-			<p className="md:text-base lg:text-lg">
-				{calendarName === "ics"
-					? "iCal"
-					: capitalizeFirstLetter(calendarName)}
+			<p className="md:text-base lg:text-lg 2xl:text-2xl">
+				{titleOverride ? titleOverride : capitalizeFirstLetter(title)}
 			</p>
 		</Link>
 	);
