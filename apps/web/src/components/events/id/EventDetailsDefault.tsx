@@ -9,7 +9,6 @@ import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
 import { DetailsProps } from "@/lib/types/events";
-import EventDetailsLiveIndicator from "../shared/EventDetailsLiveIndicator";
 export default function EventDetailsDefault(detailsProps: DetailsProps) {
 
 	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
@@ -31,7 +30,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 
 	return (
 		<div className="hidden flex-col items-center gap-4 lg:flex">
-			<div className="flex w-full flex-row items-center justify-center xl:w-[90%]">
+			<div className="flex w-[98%] flex-row items-center justify-between xl:w-[95%]">
 				<div className="flex flex-col items-start justify-center xl:w-1/2 ">
 					<Image
 						src={thumbnailUrl}
@@ -49,12 +48,9 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 						className="h-full w-[350px] max-w-[350px] items-start pt-3 xl:w-[500px] xl:max-w-[500px]"
 					/>
 				</div>
-				<div className="flex h-full w-3/4 flex-col gap-12">
-					<p className="w-full md:text-sm lg:text-base xl:text-lg 2xl:text-xl">
-						{description}
-					</p>
-					<div className="flex h-full w-full flex-row items-start justify-between">
-						<div className="flex flex-col gap-2 md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
+				<div className="flex h-full w-full flex-col gap-12">
+					<div className="flex h-full w-full flex-row justify-evenly 2xl:justify-around gap-4">
+						<div className="flex h-auto flex-col justify-center gap-2 md:text-base lg:text-lg xl:text-xl 2xl:text-2xl 3xl:text-3xl font-semibold">
 							<div className="flex items-center justify-start gap-3">
 								<MapPin size={24} />
 								<p className="flex">{location}</p>
@@ -80,13 +76,13 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 								</h3>
 							</div>
 						</div>
-						<div className="flex h-full w-1/2 flex-col items-center justify-center gap-6">
+						<div className="flex h-full flex-col items-center justify-center gap-6">
 							{/* Streaming on div */}
-							<div className="flex w-full flex-col items-center justify-center gap-5">
+							<div className="flex flex-col items-center justify-center gap-5">
 								<h1 className="text-3xl font-bold">
 									Streaming on...
 								</h1>
-								<div className="flex w-full flex-row items-center justify-center gap-5">
+								<div className="flex flex-wrap items-center justify-center gap-5">
 									{streamingLinks.map((link) => (
 										<StreamingLink
 											title={link.title}
@@ -96,52 +92,56 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 									))}
 								</div>
 							</div>
-							<div className="flex w-full flex-col items-center justify-center gap-5">
+							<div className="flex flex-col items-center justify-center gap-5">
 								<h1 className="text-3xl font-bold">
 									Need a Reminder?
 								</h1>
-								<div className="flex w-full flex-row flex-wrap items-center justify-center gap-5">
+								<div className="flex w-full flex-wrap items-center justify-center gap-5">
 									{calendarLinks.map((cal) => (
 										<CalendarLink
 											calendarName={cal}
 											calendarDetails={eventCalendarLink}
-											key={cal}
+											key={cal.title}
 										/>
 									))}
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			<div className="flex flex-col items-center justify-center">
-				<Link
-					href={checkInUrl}
-					className={clsx(
-						"flex h-full w-3/4 flex-row items-center justify-center",
-						{
-							"pointer-events-none":
-								isEventPassed || !isCheckinAvailable,
-						},
-					)}
-					aria-disabled={isEventPassed}
-					tabIndex={isEventPassed ? -1 : 0}
-				>
-					<Button
+					<Link
+						href={checkInUrl}
 						className={clsx(
-							"flex items-center gap-4 bg-blue-400 p-6 dark:bg-sky-300",
+							"flex h-full w-3/4 flex-row items-center justify-center",
 							{
-								"pointer-events-none grayscale":
+								"pointer-events-none":
 									isEventPassed || !isCheckinAvailable,
 							},
 						)}
+						aria-disabled={isEventPassed}
+						tabIndex={isEventPassed ? -1 : 0}
 					>
-						<UserRoundCheck size={24} />
-						<p className="text-base lg:text-lg xl:text-xl 2xl:text-2xl monitor:text-3xl">
-							{checkInMessage}
-						</p>
-					</Button>
-				</Link>
+						<Button
+							className={clsx(
+								"flex items-center gap-4 bg-blue-400 p-6 dark:bg-sky-300",
+								{
+									"pointer-events-none grayscale":
+										isEventPassed || !isCheckinAvailable,
+								},
+							)}
+						>
+							<UserRoundCheck size={24} />
+							<p className="text-base lg:text-lg xl:text-xl 2xl:text-2xl monitor:text-3xl">
+								{checkInMessage}
+							</p>
+						</Button>
+					</Link>
+				</div>
+			</div>
+			<div className="flex w-full flex-col items-center justify-center gap-y-1">
+				<h1 className="text-2xl font-bold">Description</h1>
+				<p className="w-3/4 border-t border-muted-foreground text-center text-lg 2xl:text-2xl">
+					{description}
+				</p>
 			</div>
 
 			<div className="flex w-full flex-row items-start justify-between gap-20 px-10 pt-10">
@@ -152,8 +152,8 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 					</p>
 				</div>
 				<div className="flex flex-col items-start justify-center gap-1">
-					<h1 className=" text-3xl font-bold">Checking In</h1>
-					<p className="border-t border-muted-foreground pl-1 text-xl">
+					<h1 className="text-3xl font-bold">Checking-in</h1>
+					<p className="border-t border-muted-foreground pl-1 text-xl 2xl:text-2xl">
 						{checkingInInfo}
 					</p>
 				</div>

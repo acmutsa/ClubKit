@@ -15,6 +15,7 @@ import { EVENT_DATE_FORMAT_STRING, EVENT_TIME_FORMAT_STRING } from "@/lib/consta
 import { Badge } from "@/components/ui/badge";
 import EventDetailsLiveIndicator from "../shared/EventDetailsLiveIndicator";
 export default async function EventDetails({ id }: { id: string }) {
+	
 	const headerTimeZone = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
 	const clientTimeZone = getClientTimeZone(headerTimeZone);
 	const event = await getEventDetails(id);
@@ -55,7 +56,7 @@ export default async function EventDetails({ id }: { id: string }) {
 		checkinStart <= currentDateUTC && currentDateUTC <= checkinEnd;
 
 	const checkInMessage = isCheckinAvailable
-		? "Ready to check in? Click here!"
+		? "Ready to check-in? Click here!"
 		: isEventPassed
 			? "Check-in is closed"
 			: `Check-in starts on ${formatInTimeZone(start,clientTimeZone, `${EVENT_TIME_FORMAT_STRING} @${EVENT_DATE_FORMAT_STRING}`)}`;
