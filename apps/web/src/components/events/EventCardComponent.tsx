@@ -74,7 +74,7 @@ export default function EventCardComponent({ event,isPast,isEventCurrentlyHappen
 					<span className="flex w-full flex-row items-center justify-center gap-3 text-primary">
 						<p>Points:</p>
 						<p>
-							{points} {""} pt(s)
+							{points}
 						</p>
 					</span>
 				</div>

@@ -29,7 +29,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 
 	return (
 		<div className="flex flex-col space-y-4 lg:hidden">
-			<div className="flex h-auto w-full items-center justify-center relative">
+			<div className="relative flex h-auto w-full items-center justify-center">
 				<Image
 					src={event.thumbnailUrl}
 					alt="Event Image"
@@ -40,7 +40,9 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 					quality={75}
 					className={clsx("h-auto w-1/2 rounded-md", {})}
 				/>
-				{isEventHappening && <EventDetailsLiveIndicator className="absolute z-50 top-1 left-[26%]" />}
+				{isEventHappening && (
+					<EventDetailsLiveIndicator className="absolute left-[26%] top-1 z-50" />
+				)}
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-5">
 				<EventCategories event={event} isPast={isEventPassed} />
@@ -60,6 +62,14 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 					<div className="flex items-center justify-start gap-3">
 						<Calendar size={24} />
 						<p className="flex">{startDate}</p>
+					</div>
+					<div>
+						<h3>
+							Points Gained:{" "}
+							<span className="text-sky-500">
+								{event.points} Point(s)
+							</span>
+						</h3>
 					</div>
 				</div>
 			</div>

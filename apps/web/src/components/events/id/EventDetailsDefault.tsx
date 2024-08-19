@@ -27,7 +27,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 		isEventHappening,
 	} = detailsProps;
 
-	const { thumbnailUrl, location, description } = event;
+	const { thumbnailUrl, location, description, points } = event;
 
 	return (
 		<div className="hidden flex-col items-center gap-4 lg:flex">
@@ -70,6 +70,14 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 							<div className="flex items-center justify-start gap-3">
 								<Calendar size={24} />
 								<p className="flex">{startDate}</p>
+							</div>
+							<div>
+								<h3>
+									Points Gained:{" "}
+									<span className="text-sky-500">
+										{points} Point(s)
+									</span>
+								</h3>
 							</div>
 						</div>
 						<div className="flex h-full w-1/2 flex-col items-center justify-center gap-6">
