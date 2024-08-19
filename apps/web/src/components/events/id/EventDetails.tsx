@@ -82,7 +82,6 @@ export default async function EventDetails({ id }: { id: string }) {
 		isEventHappening,
 	};
 	
-	// Also, we should display how many points something is worth to entice people to show up for it
 	return (
 		<div className="mt-2 flex flex-1 flex-col space-y-4 pb-20">
 			<div className="flex w-full flex-col items-center justify-center lg:flex-row">

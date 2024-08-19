@@ -32,7 +32,7 @@ export const createEvent = adminAction(
 					code: "insert_event_failed",
 					eventID: "",
 				};
-				await tx.rollback();
+				tx.rollback();
 				return;
 			}
 
@@ -54,7 +54,7 @@ export const createEvent = adminAction(
 					code: "events_to_categories_failed",
 					eventID: "",
 				};
-				await tx.rollback();
+				tx.rollback();
 				return;
 			}
 

@@ -12,4 +12,4 @@ export const EVENT_FILTERS = Object.freeze({
 });
 
 export const EVENT_DATE_FORMAT_STRING = "MMM do, yyyy";
-export const EVENT_TIME_FORMAT_STRING = "h:MM a";
+export const EVENT_TIME_FORMAT_STRING = "h:mm a";
