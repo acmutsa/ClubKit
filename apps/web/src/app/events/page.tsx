@@ -9,7 +9,6 @@ export default function EventsPage({
 }: {
 	searchParams: SearchParams;
 }) {
-
 	return (
 		<div className="flex h-[100dvh] w-screen flex-col items-center no-scrollbar">
 			<Navbar showBorder />
@@ -28,4 +27,3 @@ export default function EventsPage({
 	);
 }
 export const runtime = "edge";
-

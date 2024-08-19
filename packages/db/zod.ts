@@ -1,6 +1,6 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { data, users, events, eventsToCategories } from "./schema";
-import { string, z } from "zod";
+import { data, users, events, checkins, eventsToCategories } from "./schema";
+import { z } from "zod";
 import c from "config";
 
 export const insertUserDataSchema = createInsertSchema(data);
@@ -82,8 +82,6 @@ const userDataFormified = z.object({
 export const insertUserWithDataSchemaFormified =
 	userFormified.merge(userDataFormified);
 
-const sometable = createInsertSchema(data);
-
 export const selectUserWithDataSchema = z.object({
 	user: createSelectSchema(users),
 	data: createSelectSchema(data, {
@@ -94,8 +92,8 @@ export const selectUserWithDataSchema = z.object({
 });
 export type UserWithData = z.infer<typeof selectUserWithDataSchema>;
 
+// TODO: tighten insert schema constraints
 export const insertEventSchema = createInsertSchema(events);
-
 export const insertEventSchemaFormified = insertEventSchema
 	.merge(
 		z.object({
@@ -116,4 +114,19 @@ export const insertEventSchemaFormified = insertEventSchema
 	});
 
 export const selectEventSchema = createSelectSchema(events);
-export type Event = z.infer<typeof selectEventSchema>;
+
+export const selectCheckinSchema = createSelectSchema(checkins);
+export type Checkin = z.infer<typeof selectCheckinSchema>;
+
+export const adminCheckinSchema = z.object({
+	universityIDs: z.string().regex(new RegExp(`(\\w+[,\\W]*)+`), {
+		message: "Invalid format for ID or list of ID's",
+	}),
+	eventID: z.string().min(c.events.idLength),
+});
+export type AdminCheckin = z.infer<typeof adminCheckinSchema>;
+export const universityIDSplitter = z
+	.string()
+	.transform((val) => val.split(/[,\W]+/));
+
+// Current events or events of the week

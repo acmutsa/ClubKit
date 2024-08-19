@@ -28,6 +28,7 @@ export const users = pgTable("users", {
 	lastName: text("last_name").notNull(),
 	email: text("email").notNull().unique(),
 	role: text("role").notNull().default("member"),
+	joinDate: timestamp("join_date").defaultNow().notNull(),
 });
 
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -88,10 +89,10 @@ export const eventsRelations = relations(events, ({ many }) => ({
 export const eventsToCategories = pgTable("events_to_categories", {
 	eventID: text("event_id")
 		.notNull()
-		.references(() => events.id,{onDelete:"cascade"}),
+		.references(() => events.id, { onDelete: "cascade" }),
 	categoryID: text("category_id")
 		.notNull()
-		.references(() => eventCategories.id, {onDelete:"cascade"})
+		.references(() => eventCategories.id, { onDelete: "cascade" }),
 });
 
 export const eventsToCategoriesRelations = relations(
@@ -111,8 +112,12 @@ export const eventsToCategoriesRelations = relations(
 export const checkins = pgTable(
 	"checkins",
 	{
-		eventID: text("event_id").references(()=>events.id,{onDelete:"cascade"}).notNull(),
-		userID: integer("user_id").references(()=>users.userID,{onDelete:"cascade"}).notNull(),
+		eventID: text("event_id")
+			.references(() => events.id, { onDelete: "cascade" })
+			.notNull(),
+		userID: integer("user_id")
+			.references(() => users.userID, { onDelete: "cascade" })
+			.notNull(),
 		time: timestamp("time").defaultNow().notNull(),
 		rating: integer("rating"),
 		adminID: text("admin_id"),

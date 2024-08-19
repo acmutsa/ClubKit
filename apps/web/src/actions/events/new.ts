@@ -5,13 +5,17 @@ import { customAlphabet } from "nanoid";
 import { insertEventSchemaFormified } from "db/zod";
 import { adminAction } from "@/lib/safe-action";
 import { events, eventsToCategories } from "db/schema";
+import c from "config";
 
-const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 6);
+const nanoid = customAlphabet(
+	"1234567890abcdefghijklmnopqrstuvwxyz",
+	c.events.idLength,
+);
 
 export const createEvent = adminAction(
 	insertEventSchemaFormified,
 	async ({ categories, ...e }) => {
-		var res = {
+		let res = {
 			success: true,
 			code: "success",
 			eventID: "",

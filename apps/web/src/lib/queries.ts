@@ -1,6 +1,6 @@
-import { now } from "@internationalized/date";
-import { count, db, eq, gte, sql, between, union } from "db";
+import { count, db, eq, gte, sql, between, inArray, desc } from "db";
 import { checkins, events, users, data } from "db/schema";
+import { getUTCDate } from "@/lib/utils";
 import c from "config";
 
 export const getCategoryOptions = async () => {
@@ -48,6 +48,35 @@ export const getEventCheckins = async (id: string) => {
 		where: (checkins, { eq }) => eq(checkins.eventID, id),
 		orderBy: (checkins, { desc }) => desc(checkins.time),
 	});
+};
+
+export const getCheckinLog = async () => {
+	return await db.query.checkins.findMany({
+		columns: {
+			time: true,
+			feedback: true,
+			rating: true,
+		},
+		with: {
+			author: {
+				columns: {
+					userID: true,
+					firstName: true,
+					lastName: true,
+				},
+			},
+			event: {
+				columns: {
+					name: true,
+				},
+			},
+		},
+	});
+};
+
+export const getCheckinStatsOverview = async () => {
+	const [res] = await db.select({ total_checkins: count() }).from(checkins);
+	return res;
 };
 
 export const getEventsWithCheckins = async () => {
@@ -126,6 +155,13 @@ export const getUserCheckins = async (userID: number) => {
 	});
 };
 
+export const getEventList = async () => {
+	return await db.query.events.findMany({
+		columns: { id: true, name: true },
+		orderBy: desc(events.start),
+	});
+};
+
 export const getUserDataAndCheckin = async (
 	eventID: string,
 	clerkId: string,
@@ -144,12 +180,50 @@ export const checkInUser = async (
 	eventID: string,
 	userID: number,
 	feedback: string,
-	rating: number,
+	rating?: number,
+	adminID?: string,
 ) => {
 	return db.insert(checkins).values({
-		userID: userID,
-		eventID: eventID,
+		userID,
+		eventID,
+		adminID,
 		rating,
 		feedback,
 	});
+};
+
+export const checkInUserList = async (
+	eventID: string,
+	universityIDs: string[],
+	adminID: string,
+) => {
+	const userIDs = await db.query.data.findMany({
+		where: (data) => inArray(data.universityID, universityIDs),
+		columns: { userID: true, universityID: true },
+	});
+
+	const time = getUTCDate();
+	const successfulIDs = (
+		await db
+			.insert(checkins)
+			.values(
+				userIDs.map(({ userID }) => ({
+					userID,
+					eventID,
+					adminID,
+					time,
+				})),
+			)
+			.returning({ userID: checkins.userID })
+			.onConflictDoNothing()
+	).map(({ userID }) => userID);
+
+	// Return only failed ids
+	const successful = userIDs.filter(({ userID }) =>
+		successfulIDs.includes(userID),
+	);
+	const failed = universityIDs.filter(
+		(id) => !successful.some(({ universityID }) => universityID === id),
+	);
+	return failed;
 };

@@ -25,6 +25,6 @@ export const adminAction = createSafeActionClient({
 		if (!user || (user.role !== "admin" && user.role !== "super_admin"))
 			throw new Error("Unauthorized");
 
-		return { userRole: user.role };
+		return { userRole: user.role, adminID: user.userID };
 	},
 });

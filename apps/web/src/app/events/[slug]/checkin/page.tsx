@@ -14,22 +14,28 @@ export default function Page({params}: {params: {slug: string}}){
 		redirect("/sign-in");
 	}
 
-    if (!params?.slug){
-        return <PageError message="How did you even access this without a slug???" href="/events" />;
-    }
+	if (!params?.slug) {
+		return (
+			<PageError
+				message="How did you even access this without a slug???"
+				href="/events"
+			/>
+		);
+	}
 
-    const currentDateUTC = getUTCDate();
+	const currentDateUTC = getUTCDate();
 
-    return (
+	return (
 		<div className="flex h-[100dvh] w-full flex-col">
-			<Navbar />
-			<Suspense fallback={<h1>Grabbing the Event 1 sec...</h1>}>
-                <EventCheckin eventID={params.slug} clerkId={clerkId} currentDateUTC={currentDateUTC} />
-            </Suspense>
+			<Navbar />{" "}
+			<Suspense fallback={<h1>Grabbing the event. One sec...</h1>}>
+				<EventCheckin
+					eventID={params.slug}
+					clerkId={clerkId}
+					currentDateUTC={currentDateUTC}
+				/>
+			</Suspense>
 		</div>
-    );
-}   
+	);
+}
 export const runtime = "edge";
-
-
-  

@@ -1,8 +1,10 @@
 import NewEventForm from "@/components/dash/admin/events/NewEventForm";
 import { getCategoryOptions } from "@/lib/queries";
+import { getUTCDate } from "@/lib/utils";
 
 export default async function Page() {
-	const defaultDate = new Date();
+	const defaultDate = getUTCDate();
+	defaultDate.setSeconds(0);
 	const categoryOptions = await getCategoryOptions();
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">

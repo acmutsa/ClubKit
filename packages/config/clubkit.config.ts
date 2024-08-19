@@ -21,6 +21,9 @@ export default {
 	membership: {
 		activeThreshold: 7,
 	},
+	events: {
+		idLength: 6,
+	},
 	// TODO: Actually use this instead of hardcoded values in form
 	userIdentityOptions: {
 		ethnicity: [
@@ -59,6 +62,7 @@ export default {
 			Overview: "/admin",
 			Members: "/admin/members",
 			Events: "/admin/events",
+			Checkins: "/admin/checkins",
 		},
 	},
 	maxCheckinDescriptionLength: 400,
