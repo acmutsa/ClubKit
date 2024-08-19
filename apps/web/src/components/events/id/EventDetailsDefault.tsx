@@ -9,7 +9,9 @@ import StreamingLink from "./StreamingLink";
 import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
 import { DetailsProps } from "@/lib/types/events";
+import EventDetailsLiveIndicator from "../shared/EventDetailsLiveIndicator";
 export default function EventDetailsDefault(detailsProps: DetailsProps) {
+
 	const { streamingLinks, calendarLinks, checkingInInfo, aboutOrg } = c;
 
 	const {
@@ -22,6 +24,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 		formattedEventDuration,
 		isCheckinAvailable,
 		isEventPassed,
+		isEventHappening,
 	} = detailsProps;
 
 	const { thumbnailUrl, location, description } = event;

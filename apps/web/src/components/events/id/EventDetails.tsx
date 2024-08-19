@@ -36,10 +36,10 @@ export default async function EventDetails({ id }: { id: string }) {
 	const startTime = formatInTimeZone(
 		start,
 		clientTimeZone,
-		`${EVENT_DATE_FORMAT_STRING}`,
+		`${EVENT_TIME_FORMAT_STRING}`,
 	);
 	
-	const startDateFormatted = formatInTimeZone(start,clientTimeZone, `${EVENT_TIME_FORMAT_STRING}`);
+	const startDateFormatted = formatInTimeZone(start,clientTimeZone, `${EVENT_DATE_FORMAT_STRING}`);
 
 	const rawEventDuration = differenceInHours(end, start);
 	
