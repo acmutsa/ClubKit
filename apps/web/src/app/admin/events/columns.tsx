@@ -46,7 +46,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 		header: "Description",
 		cell: ({ row }) => {
 			return (
-				<div className="relative max-h-[6lh] w-[45ch] overflow-y-hidden text-ellipsis">
+				<div className="relative line-clamp-4 w-[45ch]">
 					{row.getValue("description")}
 				</div>
 			);
@@ -113,11 +113,13 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 						</DropdownMenuItem>
 						<DropdownMenuItem>
 							<div
-								onClick={async () =>
+								className="h-full w-full"
+								onClick={async (e) => {
+									e.stopPropagation();
 									await navigator.clipboard.writeText(
 										`https://portal.acmutsa.org/events/${data.id}`,
-									)
-								}
+									);
+								}}
 								//TODO: set sonner to signify link copied
 							>
 								Copy link

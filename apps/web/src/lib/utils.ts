@@ -38,7 +38,7 @@ export function getClientTimeZone(vercelIPTimeZone?: string | null) {
 	return vercelIPTimeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
 };
 
-export function getUTCDate(){
+export function getUTCDate() {
 	const currentDate = new Date();
 	return new Date(currentDate.toUTCString());
 }

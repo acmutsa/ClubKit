@@ -66,6 +66,8 @@ export default function NewEventForm({
 	} | null>(null);
 	const router = useRouter();
 
+	const OneHourInMiliseconds = c.OneHourInMilliseconds;
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {

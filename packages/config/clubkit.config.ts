@@ -4,6 +4,7 @@ export default {
 		name: "ABC123",
 		maxLength: 6,
 	},
+	OneHourInMilliseconds: 3600000,
 	contactEmail: "tech@acmutsa.org",
 	// Think this can be removed?
 	eventTypes: {
@@ -16,6 +17,9 @@ export default {
 		"Rowdy Creators": {
 			color: "#FFD51E",
 		},
+	},
+	membership: {
+		activeThreshold: 7,
 	},
 	// TODO: Actually use this instead of hardcoded values in form
 	userIdentityOptions: {

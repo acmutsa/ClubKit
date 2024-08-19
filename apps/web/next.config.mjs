@@ -15,6 +15,19 @@ const nextConfig = {
 			},
 		],
 	},
+	async headers(){
+		return [
+			{
+				source:"/events",
+				headers:[
+					{
+						key:"x-timezone",
+						value:Intl.DateTimeFormat().resolvedOptions().timeZone
+					}
+				]
+			}
+		]
+	}
 };
 
 export default nextConfig;
