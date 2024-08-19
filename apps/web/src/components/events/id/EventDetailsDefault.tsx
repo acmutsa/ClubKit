@@ -48,9 +48,9 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 						className="h-full w-[350px] max-w-[350px] items-start pt-3 xl:w-[500px] xl:max-w-[500px]"
 					/>
 				</div>
-				<div className="flex h-full w-full flex-col gap-12">
-					<div className="flex h-full w-full flex-row justify-evenly 2xl:justify-around gap-4">
-						<div className="flex h-auto flex-col justify-center gap-2 md:text-base lg:text-lg xl:text-xl 2xl:text-2xl 3xl:text-3xl font-semibold">
+				<div className="flex h-auto w-full flex-col gap-12">
+					<div className="ml-2 flex h-full w-full flex-row justify-evenly gap-4 2xl:justify-around">
+						<div className="flex h-auto flex-col justify-center gap-2 font-bold  md:text-base lg:text-lg xl:text-xl 2xl:text-2xl 3xl:text-3xl 3xl:font-medium">
 							<div className="flex items-center justify-start gap-3">
 								<MapPin size={24} />
 								<p className="flex">{location}</p>
@@ -79,7 +79,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 						<div className="flex h-full flex-col items-center justify-center gap-6">
 							{/* Streaming on div */}
 							<div className="flex flex-col items-center justify-center gap-5">
-								<h1 className="text-3xl font-bold">
+								<h1 className="text-2xl font-bold xl:text-3xl">
 									Streaming on...
 								</h1>
 								<div className="flex flex-wrap items-center justify-center gap-5">
@@ -93,7 +93,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 								</div>
 							</div>
 							<div className="flex flex-col items-center justify-center gap-5">
-								<h1 className="text-3xl font-bold">
+								<h1 className="text-2xl font-bold xl:text-3xl">
 									Need a Reminder?
 								</h1>
 								<div className="flex w-full flex-wrap items-center justify-center gap-5">
@@ -122,7 +122,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 					>
 						<Button
 							className={clsx(
-								"flex items-center gap-4 bg-blue-400 p-6 dark:bg-sky-300",
+								"flex min-w-[70%] items-center gap-4 bg-blue-400 p-6 dark:bg-sky-300",
 								{
 									"pointer-events-none grayscale":
 										isEventPassed || !isCheckinAvailable,
@@ -138,7 +138,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 				</div>
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-y-1">
-				<h1 className="text-2xl font-bold">Description</h1>
+				<h1 className="text-3xl font-bold">Description</h1>
 				<p className="w-3/4 border-t border-muted-foreground text-center text-lg 2xl:text-2xl">
 					{description}
 				</p>

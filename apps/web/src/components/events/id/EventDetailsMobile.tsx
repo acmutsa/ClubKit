@@ -87,7 +87,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 				<Link
 					href={checkInUrl}
 					className={clsx(
-						"flex h-full w-1/2 flex-row items-center justify-center",
+						"flex h-full w-full flex-row items-center justify-center",
 						{
 							"pointer-events-none":
 								isEventPassed || !isCheckinAvailable,
@@ -98,7 +98,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 				>
 					<Button
 						className={clsx(
-							"flex items-center gap-4 bg-blue-400 p-5 dark:bg-sky-300",
+							"flex items-center gap-4 bg-blue-400 p-5 dark:bg-sky-300 min-w-[60%] md:min-w-[50%]",
 							{
 								"pointer-events-none grayscale":
 									isEventPassed || !isCheckinAvailable,

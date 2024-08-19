@@ -31,7 +31,7 @@ export default function CalendarLink({
 		<Link
 			href={calendarLink}
 			target="_blank"
-			className="flex w-auto justify-between gap-3 rounded-md bg-primary px-3 py-2 text-primary-foreground hover:bg-primary/70 md:max-w-[7.5rem]"
+			className="flex w-auto justify-between gap-3 rounded-md bg-primary px-3 py-2 text-primary-foreground hover:bg-primary/70 md:max-w-[7.5rem] lg:max-w-none"
 		>
 			<Image
 				src={src}
