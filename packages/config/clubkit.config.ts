@@ -70,6 +70,8 @@ export default {
 	},
 } as const;
 
+export const defaultTheme = "light";
+
 export const majors = [
 	"Computer Science",
 	"Accounting",
@@ -183,7 +185,3 @@ export const majors = [
 	"Webpage Design",
 	"Other",
 ] as const;
-
-
-	
-
