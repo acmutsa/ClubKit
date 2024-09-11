@@ -22,7 +22,7 @@ export default function StreamingLink({
 		<Link
 			href={href}
 			target="_blank"
-			className="flex gap-4 px-4 py-2"
+			className="flex w-auto justify-between gap-3 rounded-md px-3 py-2 text-primary-foreground md:max-w-[7.5rem] lg:max-w-none"
 		>
 			<Image
 				src={src}
@@ -33,7 +33,7 @@ export default function StreamingLink({
 					setSrc(fallBackSrc);
 				}}
 			/>
-			<p className="md:text-base xl:text-lg 2xl:text-xl text-primary">
+			<p className="text-primary md:text-base xl:text-lg 2xl:text-xl">
 				{capitalizeFirstLetter(title)}
 			</p>
 		</Link>

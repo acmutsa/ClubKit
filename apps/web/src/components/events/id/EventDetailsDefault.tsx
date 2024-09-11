@@ -57,9 +57,9 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 
 	return (
 		<div className="hidden flex-col items-center gap-4 overflow-x-hidden pt-7 lg:flex">
-			<div className="max-w-[1600px]">
+			<div className="w-full max-w-[1550px] space-y-4 pl-4 3xl:pl-2">
 				<div className="grid w-[98%] grid-cols-2 pb-6">
-					<div className="flex h-auto w-full flex-col justify-center space-y-4 2xl:ml-5 relative">
+					<div className="relative flex h-auto w-full flex-col justify-center space-y-4 ">
 						<EventImage
 							src={thumbnailUrl}
 							className="rounded-md"
@@ -74,6 +74,47 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 							isPast={isEventPassed}
 							className={`h-full w-[${width}px] max-w-[${height}px] items-start xl:w-[500px] xl:max-w-[500px]`}
 						/>
+						<div className="mt-[4%] grid grid-cols-2 gap-4 pr-3">
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button
+										variant="outline"
+										className="text-2xl"
+									>
+										Where to Watch
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)]">
+									{streamingLinks.map((link) => (
+										<StreamingLink
+											title={link.title}
+											href={link.href}
+											key={link.title}
+										/>
+									))}
+								</DropdownMenuContent>
+							</DropdownMenu>
+
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button
+										variant="outline"
+										className="text-2xl"
+									>
+										Reminders
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)]">
+									{calendarLinks.map((cal) => (
+										<CalendarLink
+											calendarName={cal}
+											calendarDetails={eventCalendarLink}
+											key={cal.title}
+										/>
+									))}
+								</DropdownMenuContent>
+							</DropdownMenu>
+						</div>
 					</div>
 
 					{/* Right side view starts here */}
@@ -116,61 +157,12 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 							<div className="grid grid-cols-1">
 								<h3>
 									Points Gained:{" "}
-									<span className="text-blue-500">
+									<span className="text-blue-400 dark:text-sky-300">
 										{event.points}
 									</span>{" "}
 									pt(s)
 								</h3>
 							</div>
-						</div>
-					</div>
-				</div>
-
-				{/* New layout */}
-				<div className="flex h-auto w-full flex-col gap-20 pt-10">
-					<div className="ml-2 flex h-full w-full flex-row justify-evenly gap-4 2xl:justify-around">
-						<div className="flex h-full w-full flex-row items-center justify-evenly">
-							<div className="flex flex-row gap-7">
-								<DropdownMenu>
-									<DropdownMenuTrigger asChild>
-										<Button
-											variant="outline"
-											className="text-2xl"
-										>
-											Where to Watch
-										</Button>
-									</DropdownMenuTrigger>
-									<DropdownMenuContent>
-										{streamingLinks.map((link) => (
-											<StreamingLink
-												title={link.title}
-												href={link.href}
-												key={link.title}
-											/>
-										))}
-									</DropdownMenuContent>
-								</DropdownMenu>
-
-								<DropdownMenu>
-									<DropdownMenuTrigger asChild>
-										<p className="border-b border-muted-foreground text-2xl">
-											Reminders
-										</p>
-									</DropdownMenuTrigger>
-									<DropdownMenuContent className="w-40">
-										{calendarLinks.map((cal) => (
-											<CalendarLink
-												calendarName={cal}
-												calendarDetails={
-													eventCalendarLink
-												}
-												key={cal.title}
-											/>
-										))}
-									</DropdownMenuContent>
-								</DropdownMenu>
-							</div>
-
 							<Link
 								href={checkInUrl}
 								className={clsx(
@@ -193,19 +185,32 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 					</div>
 				</div>
 
-				<div className="flex w-[98%] flex-row items-start justify-between gap-20 px-10 pt-10 xl:w-[90%]">
-					<div className="flex flex-col items-start justify-center gap-1">
-						<h1 className="text-3xl font-bold">About ACM</h1>
-						<p className="border-t border-muted-foreground pl-2 text-xl 2xl:text-2xl">
-							{aboutOrg}
-						</p>
-					</div>
-					<div className="flex flex-col items-start justify-center gap-1">
-						<h1 className="text-3xl font-bold">Checking In</h1>
-						<p className="border-t border-muted-foreground pl-2 text-xl 2xl:text-2xl">
-							{checkingInInfo}
-						</p>
-					</div>
+				<div className="grid grid-cols-2 gap-10">
+					<Accordion type="single" collapsible>
+						<AccordionItem value="about">
+							<AccordionTrigger className="text-3xl font-bold">
+								About ACM
+							</AccordionTrigger>
+							<AccordionContent>
+								<p className="border-t border-muted-foreground pl-2 text-xl 2xl:text-2xl">
+									{aboutOrg}
+								</p>
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
+
+					<Accordion type="single" collapsible>
+						<AccordionItem value="Check-In">
+							<AccordionTrigger className="text-3xl font-bold">
+								Checkin In
+							</AccordionTrigger>
+							<AccordionContent>
+								<p className="border-t border-muted-foreground text-xl 2xl:text-2xl">
+									{checkingInInfo}
+								</p>
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
 				</div>
 			</div>
 		</div>
