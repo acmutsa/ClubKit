@@ -178,7 +178,7 @@ export default async function UserDash({
 						</div>
 					</CardHeader>
 					<CardContent>
-						{attendedEvents.length > 1 && (
+						{attendedEvents.length > 0 && (
 							<div className="flex flex-col space-y-2">
 							{slicedEvents?.map((event, index) => (
 								<Link
