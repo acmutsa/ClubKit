@@ -10,6 +10,13 @@ import { UserRoundCheck } from "lucide-react";
 import type { DetailsProps } from "@/lib/types/events";
 import EventDetailsLiveIndicator from "../shared/EventDetailsLiveIndicator";
 import EventImage from "../shared/EventImage";
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion";
+
 
 export default function EventDetailsMobile(detailsProps: DetailsProps) {
 	const {
@@ -44,7 +51,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 					height={300}
 				/>
 				{isEventHappening && (
-					<EventDetailsLiveIndicator className="absolute left-[26%] top-1 z-50" />
+					<EventDetailsLiveIndicator className="absolute left-[15%] top-1 z-50" />
 				)}
 			</div>
 			<div className="flex w-full flex-col items-center justify-center gap-5">
@@ -79,18 +86,18 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 					</div>
 				</div>
 			</div>
-			<div className="flex w-full flex-col items-center justify-center">
-				<div className="flex w-full flex-col items-center justify-center gap-y-1 px-7 pb-6 pt-2">
-					<div className="w-full px-[8%]">
-						<h1 className="border-b border-muted-foreground text-left text-xl font-bold sm:text-2xl md:text-3xl">
-							Description
-						</h1>
-					</div>
-					<p className="w-[85%] pl-[9px] md:px-3">
-						{event.description}
-					</p>
-				</div>
-			</div>
+
+			<Accordion type="single" collapsible className="px-[8%]">
+				<AccordionItem value="description">
+					<AccordionTrigger>Description</AccordionTrigger>
+					<AccordionContent>
+						<p className="w-[85%] pl-[9px] md:px-3">
+							{event.description}
+						</p>
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
+
 			<div className="flex flex-col items-center justify-center">
 				<Link
 					href={checkInUrl}
@@ -144,22 +151,44 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 					))}
 				</div>
 			</div>
-			<div className="flex flex-col items-center justify-center gap-1 pt-8">
+
+			{/* <div className="flex flex-col items-center justify-center gap-1 pt-8">
 				<div className="w-full px-[8%]">
 					<h1 className="border-b border-muted-foreground text-left text-xl font-bold sm:text-2xl md:text-3xl">
 						About ACM
 					</h1>
 				</div>
-				<p className="w-[85%] pl-[9px] md:pl-3">{aboutOrg}</p>
-			</div>
-			<div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
+			</div> */}
+
+			<Accordion type="single" collapsible className="px-[8%]">
+				<AccordionItem value="description">
+					<AccordionTrigger>About ACM</AccordionTrigger>
+					<AccordionContent>
+						<p className="w-[85%] pl-[9px] md:pl-3">{aboutOrg}</p>
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
+
+			<Accordion type="single" collapsible className="px-[8%]">
+				<AccordionItem value="description">
+					<AccordionTrigger>Checking In</AccordionTrigger>
+					<AccordionContent>
+						<p className="w-[85%] pl-[9px] md:pl-3">
+							{checkingInInfo}
+						</p>
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
+
+			{/* <div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
 				<div className="w-full px-[8%]">
 					<h1 className="border-b border-muted-foreground text-left text-xl font-bold sm:text-2xl md:text-3xl">
 						Checking In
 					</h1>
 				</div>
-				<p className="w-[85%] pl-[9px] md:pl-3">{checkingInInfo}</p>
-			</div>
+			</div> */}
+
+
 		</div>
 	);
 }

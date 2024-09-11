@@ -9,6 +9,9 @@ import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
 import { DetailsProps } from "@/lib/types/events";
 import EventImage from "../shared/EventImage";
+
+
+
 export default function EventDetailsDefault(detailsProps: DetailsProps) {
 
 	const {
@@ -42,7 +45,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 		<div className="hidden flex-col items-center gap-4 overflow-x-hidden pt-7 lg:flex">
 			<div className="max-w-[1600px]">
 				<div className="grid w-[98%] grid-cols-2 pb-6">
-					<div className="flex w-full flex-col justify-center space-y-4 2xl:ml-5">
+					<div className="flex w-full flex-col justify-center space-y-4 2xl:ml-5 h-auto">
 						<EventImage
 							src={thumbnailUrl}
 							className="rounded-md"
@@ -66,6 +69,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 								{description}
 							</p>
 						</div>
+						
 						<div className="flex h-auto w-full flex-col justify-center gap-2 space-y-1 font-bold md:text-base lg:text-lg xl:text-xl 2xl:text-2xl 3xl:text-3xl 3xl:font-medium">
 							<div className="grid grid-cols-2">
 								<div className="flex items-center justify-start gap-2">
