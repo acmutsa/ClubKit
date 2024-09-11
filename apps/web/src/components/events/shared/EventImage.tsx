@@ -26,7 +26,7 @@ export default function EventImage(props:EventImageProps){
 				onLoad={() => setLoaded(true)}
         hidden={!loaded}
 			/>
-			<Skeleton className={`${loaded ? "hidden" : "h-60 w-full"}`} hidden={loaded} />
+			<Skeleton className={`${loaded ? "hidden" : `h-[${props.width || '300px'}] w-full`}`} hidden={loaded} />
 		</>
   );
 }

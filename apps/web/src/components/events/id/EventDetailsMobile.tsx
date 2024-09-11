@@ -39,7 +39,9 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 			<div className="relative flex h-auto w-full items-center justify-center">
 				<EventImage
 					src={event.thumbnailUrl}
-					className="h-auto w-1/2 rounded-md"
+					className="rounded-md"
+					width={300}
+					height={300}
 				/>
 				{isEventHappening && (
 					<EventDetailsLiveIndicator className="absolute left-[26%] top-1 z-50" />
@@ -69,8 +71,10 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 					<div>
 						<h3>
 							Points Gained:{" "}
-							<span className="text-blue-500">{event.points}</span>
-							{" "}pt(s)
+							<span className="text-blue-500">
+								{event.points}
+							</span>{" "}
+							pt(s)
 						</h3>
 					</div>
 				</div>
