@@ -50,17 +50,20 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 
 	return (
 		<div className="flex flex-col space-y-4 lg:hidden">
-			<div className="relative flex h-auto w-full items-center justify-center">
-				<EventImage
-					src={event.thumbnailUrl}
-					className="rounded-md"
-					width={300}
-					height={300}
-				/>
-				{isEventHappening && (
-					<EventDetailsLiveIndicator className="absolute left-[15%] top-1 z-50" />
-				)}
+			<div className="w-full flex items-center justify-center">
+				<div className="relative">
+					<EventImage
+						src={event.thumbnailUrl}
+						className="rounded-md"
+						width={300}
+						height={300}
+					/>
+					{isEventHappening && (
+						<EventDetailsLiveIndicator className="absolute left-3 top-2 z-50" />
+					)}
+				</div>
 			</div>
+
 			<div className="flex w-full flex-col items-center justify-center gap-5">
 				<EventCategories event={event} isPast={isEventPassed} />
 				<div className="flex flex-col gap-2 text-base sm:text-lg md:text-xl">
@@ -105,7 +108,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 				</AccordionItem>
 			</Accordion>
 
-			<div className="flex flex-col items-center justify-center my-10">
+			<div className="my-10 flex flex-col items-center justify-center">
 				<Link
 					href={checkInUrl}
 					className={clsx(

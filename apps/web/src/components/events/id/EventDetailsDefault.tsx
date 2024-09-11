@@ -9,8 +9,22 @@ import CalendarLink from "./CalendarLink";
 import { UserRoundCheck } from "lucide-react";
 import { DetailsProps } from "@/lib/types/events";
 import EventImage from "../shared/EventImage";
+import EventDetailsLiveIndicator from "../shared/EventDetailsLiveIndicator";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function EventDetailsDefault(detailsProps: DetailsProps) {
 
@@ -45,13 +59,16 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 		<div className="hidden flex-col items-center gap-4 overflow-x-hidden pt-7 lg:flex">
 			<div className="max-w-[1600px]">
 				<div className="grid w-[98%] grid-cols-2 pb-6">
-					<div className="flex w-full flex-col justify-center space-y-4 2xl:ml-5 h-auto">
+					<div className="flex h-auto w-full flex-col justify-center space-y-4 2xl:ml-5 relative">
 						<EventImage
 							src={thumbnailUrl}
 							className="rounded-md"
 							width={width}
 							height={height}
 						/>
+						{isEventHappening && (
+							<EventDetailsLiveIndicator className="absolute left-3 top-0 z-50" />
+						)}
 						<EventCategories
 							event={event}
 							isPast={isEventPassed}
@@ -65,11 +82,13 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 							<h2 className="w-full text-center text-2xl font-semibold underline">
 								Description
 							</h2>
-							<p className={`w-full ${isDescriptionTextCentered ? 'text-center':'text-start'} text-lg 2xl:text-2xl `}>
+							<p
+								className={`w-full ${isDescriptionTextCentered ? "text-center" : "text-start"} text-lg 2xl:text-2xl `}
+							>
 								{description}
 							</p>
 						</div>
-						
+
 						<div className="flex h-auto w-full flex-col justify-center gap-2 space-y-1 font-bold md:text-base lg:text-lg xl:text-xl 2xl:text-2xl 3xl:text-3xl 3xl:font-medium">
 							<div className="grid grid-cols-2">
 								<div className="flex items-center justify-start gap-2">
@@ -81,7 +100,6 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 									<p className=" flex">{startTime}</p>
 								</div>
 							</div>
-
 							<div className="grid grid-cols-2">
 								<div className="flex items-center justify-start gap-2">
 									<Hourglass size={24} />
@@ -111,69 +129,70 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 				{/* New layout */}
 				<div className="flex h-auto w-full flex-col gap-20 pt-10">
 					<div className="ml-2 flex h-full w-full flex-row justify-evenly gap-4 2xl:justify-around">
-						<div className="flex h-full w-3/4 flex-row items-center justify-around">
-							{/* Streaming on div */}
-							<div className="flex flex-col items-center justify-center gap-5">
-								<h1 className="text-2xl font-bold xl:text-3xl">
-									Where to Watch
-								</h1>
-								<div className="flex flex-wrap items-center justify-center gap-5">
-									{streamingLinks.map((link) => (
-										<StreamingLink
-											title={link.title}
-											href={link.href}
-											key={link.title}
-										/>
-									))}
-								</div>
+						<div className="flex h-full w-full flex-row items-center justify-evenly">
+							<div className="flex flex-row gap-7">
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<Button
+											variant="outline"
+											className="text-2xl"
+										>
+											Where to Watch
+										</Button>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent>
+										{streamingLinks.map((link) => (
+											<StreamingLink
+												title={link.title}
+												href={link.href}
+												key={link.title}
+											/>
+										))}
+									</DropdownMenuContent>
+								</DropdownMenu>
+
+								<DropdownMenu>
+									<DropdownMenuTrigger asChild>
+										<p className="border-b border-muted-foreground text-2xl">
+											Reminders
+										</p>
+									</DropdownMenuTrigger>
+									<DropdownMenuContent className="w-40">
+										{calendarLinks.map((cal) => (
+											<CalendarLink
+												calendarName={cal}
+												calendarDetails={
+													eventCalendarLink
+												}
+												key={cal.title}
+											/>
+										))}
+									</DropdownMenuContent>
+								</DropdownMenu>
 							</div>
-							<div className="flex flex-col items-center justify-center gap-5">
-								<h1 className="text-2xl font-bold xl:text-3xl">
-									Reminders
-								</h1>
-								<div className="flex w-full flex-wrap items-center justify-center gap-5">
-									{calendarLinks.map((cal) => (
-										<CalendarLink
-											calendarName={cal}
-											calendarDetails={eventCalendarLink}
-											key={cal.title}
-										/>
-									))}
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="flex w-full items-center justify-center">
-						<Link
-							href={checkInUrl}
-							className={clsx(
-								"flex h-full w-[60%] flex-row items-center justify-center xl:w-1/2 monitor:w-[40%]",
-								{
-									"pointer-events-none":
-										isEventPassed || !isCheckinAvailable,
-								},
-							)}
-							aria-disabled={isEventPassed}
-							tabIndex={isEventPassed ? -1 : 0}
-						>
-							<Button
+
+							<Link
+								href={checkInUrl}
 								className={clsx(
-									"flex min-w-[70%] items-center gap-4 bg-blue-400 p-6 dark:bg-sky-300",
+									"flex h-full flex-row items-center justify-center gap-4 rounded-md bg-blue-400 p-4 dark:bg-sky-300 ",
 									{
 										"pointer-events-none grayscale":
 											isEventPassed ||
 											!isCheckinAvailable,
 									},
 								)}
+								aria-disabled={isEventPassed}
+								tabIndex={isEventPassed ? -1 : 0}
 							>
 								<UserRoundCheck size={24} />
 								<p className="text-base lg:text-lg xl:text-xl 2xl:text-2xl monitor:text-3xl">
 									{checkInMessage}
 								</p>
-							</Button>
-						</Link>
+							</Link>
+						</div>
 					</div>
 				</div>
+
 				<div className="flex w-[98%] flex-row items-start justify-between gap-20 px-10 pt-10 xl:w-[90%]">
 					<div className="flex flex-col items-start justify-center gap-1">
 						<h1 className="text-3xl font-bold">About ACM</h1>
@@ -182,7 +201,7 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 						</p>
 					</div>
 					<div className="flex flex-col items-start justify-center gap-1">
-						<h1 className="text-3xl font-bold">Checking-in</h1>
+						<h1 className="text-3xl font-bold">Checking In</h1>
 						<p className="border-t border-muted-foreground pl-2 text-xl 2xl:text-2xl">
 							{checkingInInfo}
 						</p>
