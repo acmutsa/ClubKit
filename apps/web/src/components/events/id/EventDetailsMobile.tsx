@@ -16,7 +16,6 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -191,14 +190,6 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 					</AccordionContent>
 				</AccordionItem>
 			</Accordion>
-
-			{/* <div className="flex w-full flex-col items-center justify-center gap-1 pt-8">
-				<div className="w-full px-[8%]">
-					<h1 className="border-b border-muted-foreground text-left text-xl font-bold sm:text-2xl md:text-3xl">
-						Checking In
-					</h1>
-				</div>
-			</div> */}
 		</div>
 	);
 }
