@@ -73,6 +73,9 @@ const c = {
 	},
 } as const;
 
+export const defaultTheme = "light";
+
+
 const majors = [
 	"Computer Science",
 	"Accounting",

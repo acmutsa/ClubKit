@@ -95,19 +95,16 @@ export default async function ProfileButton({
 				<DropdownMenuLabel className="font-normal">
 					<div className="flex flex-col space-y-1">
 						<p className="text-sm font-medium leading-none">{`${user.firstName} ${user.lastName}`}</p>
-						<p className="text-xs leading-none text-muted-foreground">
-							{/* TODO: Replace with user.clubTag */}@
-							{"<clubtag>"}
-						</p>
+						<p className="text-xs leading-none text-muted-foreground"></p>
 					</div>
 				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownSwitcher />
 					{/* TODO: Replace with user.clubTag */}
-					<Link href={`/@${"<clubtag>"}`}>
+					<Link href={`/profile`}>
 						<DropdownMenuItem className="cursor-pointer">
-							Profile
+							Edit Profile
 						</DropdownMenuItem>
 					</Link>
 					<Link href={`/bug-report`}>
