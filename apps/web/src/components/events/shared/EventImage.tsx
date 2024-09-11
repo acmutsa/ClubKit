@@ -23,7 +23,7 @@ export default function EventImage(props:EventImageProps){
 		<>
 			<Image
 				{...combinedProps}
-				// onLoad={() => setLoaded(true)}
+				onLoad={() => setLoaded(true)}
         hidden={!loaded}
 			/>
 			<Skeleton className={`${loaded ? "hidden" : `h-[${props.width || '300'}px] w-full`}`} hidden={loaded} />
