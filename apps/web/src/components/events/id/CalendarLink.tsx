@@ -30,7 +30,7 @@ export default function CalendarLink({
 		<Link
 			href={calendarLink}
 			target="_blank"
-			className="flex w-auto justify-between gap-3 rounded-md bg-primary px-3 py-2 text-primary-foreground hover:bg-primary/70 md:max-w-[7.5rem] lg:max-w-none"
+			className="flex w-auto justify-between gap-3 rounded-md px-3 py-2 text-primary-foreground md:max-w-[7.5rem] lg:max-w-none"
 		>
 			<Image
 				src={src}
@@ -41,7 +41,7 @@ export default function CalendarLink({
 					setSrc(fallBackSrc);
 				}}
 			/>
-			<p className="md:text-base lg:text-lg 2xl:text-2xl">
+			<p className="md:text-base lg:text-lg 2xl:text-2xl text-primary">
 				{titleOverride ? titleOverride : capitalizeFirstLetter(title)}
 			</p>
 		</Link>

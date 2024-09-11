@@ -17,6 +17,14 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function EventDetailsMobile(detailsProps: DetailsProps) {
 	const {
@@ -87,7 +95,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 				</div>
 			</div>
 
-			<Accordion type="single" collapsible className="px-[8%]">
+			<Accordion type="single" collapsible className="px-[8%] py-[4%]">
 				<AccordionItem value="description">
 					<AccordionTrigger>Description</AccordionTrigger>
 					<AccordionContent>
@@ -98,7 +106,7 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 				</AccordionItem>
 			</Accordion>
 
-			<div className="flex flex-col items-center justify-center">
+			<div className="flex flex-col items-center justify-center my-10">
 				<Link
 					href={checkInUrl}
 					className={clsx(
@@ -127,38 +135,42 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 					</Button>
 				</Link>
 			</div>
-			<div className="flex w-full flex-col items-center justify-center gap-5 pt-5">
-				<h1 className="text-xl font-bold">Where to Watch</h1>
-				<div className="flex w-full flex-row items-center justify-center gap-5">
-					{streamingLinks.map((link) => (
-						<StreamingLink
-							title={link.title}
-							href={link.href}
-							key={link.title}
-						/>
-					))}
-				</div>
-			</div>
-			<div className="flex w-full flex-col items-center justify-center gap-5">
-				<h1 className="text-xl font-bold">Reminders</h1>
-				<div className="flex w-full flex-row flex-wrap items-center justify-center gap-6 px-3">
-					{calendarLinks.map((cal) => (
-						<CalendarLink
-							calendarName={cal}
-							calendarDetails={eventCalendarLink}
-							key={cal.title}
-						/>
-					))}
-				</div>
-			</div>
 
-			{/* <div className="flex flex-col items-center justify-center gap-1 pt-8">
-				<div className="w-full px-[8%]">
-					<h1 className="border-b border-muted-foreground text-left text-xl font-bold sm:text-2xl md:text-3xl">
-						About ACM
-					</h1>
-				</div>
-			</div> */}
+			<div className="flex w-full flex-row items-center justify-center gap-6 py-[5%]">
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button className="w-40" variant="outline">
+							Where to Watch
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent className="w-40">
+						{streamingLinks.map((link) => (
+							<StreamingLink
+								title={link.title}
+								href={link.href}
+								key={link.title}
+							/>
+						))}
+					</DropdownMenuContent>
+				</DropdownMenu>
+
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button className="w-40" variant="outline">
+							Reminders
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent className="w-40">
+						{calendarLinks.map((cal) => (
+							<CalendarLink
+								calendarName={cal}
+								calendarDetails={eventCalendarLink}
+								key={cal.title}
+							/>
+						))}
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</div>
 
 			<Accordion type="single" collapsible className="px-[8%]">
 				<AccordionItem value="description">
@@ -187,8 +199,6 @@ export default function EventDetailsMobile(detailsProps: DetailsProps) {
 					</h1>
 				</div>
 			</div> */}
-
-
 		</div>
 	);
 }
