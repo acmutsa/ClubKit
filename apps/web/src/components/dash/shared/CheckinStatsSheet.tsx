@@ -1,6 +1,6 @@
 import React from "react";
 import { Separator } from "@/components/ui/separator";
-import { getCheckinStatsOverview } from "@/lib/queries";
+import { getCheckinStatsOverview } from "@/lib/queries/checkins";
 
 type Props = {};
 

@@ -1,12 +1,16 @@
 import PageError from "../../../shared/PageError";
-import { getEventById,getUserDataAndCheckin } from "@/lib/queries";
+import { getEventById } from "@/lib/queries/events";
+import { getUserDataAndCheckin } from "@/lib/queries/users";
 import EventCheckinForm from "./EventCheckinForm";
 import { getClientTimeZone } from "@/lib/utils";
 import { headers } from "next/headers";
 import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants";
 import { formatInTimeZone } from "date-fns-tz";
 import { isAfter } from "date-fns";
-import { EVENT_TIME_FORMAT_STRING, EVENT_DATE_FORMAT_STRING } from "@/lib/constants/events";
+import {
+	EVENT_TIME_FORMAT_STRING,
+	EVENT_DATE_FORMAT_STRING,
+} from "@/lib/constants/events";
 
 export default async function EventCheckin({
 	eventID,
@@ -17,7 +21,6 @@ export default async function EventCheckin({
 	clerkId: string;
 	currentDateUTC: Date;
 }) {
-
 	const event = await getEventById(eventID);
 
 	const headerTimeZone = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
@@ -46,23 +49,21 @@ export default async function EventCheckin({
 		);
 	}
 
-	const {
-    userID,
-    checkins
-  } = userEventData;
+	const { userID, checkins } = userEventData;
 
 	if (checkins.length > 0) {
 		return <PageError message="You have already checked in" href={href} />;
 	}
 
 	const isCheckinAvailable =
-		event.checkinStart <= currentDateUTC && currentDateUTC <= event.checkinEnd;
+		event.checkinStart <= currentDateUTC &&
+		currentDateUTC <= event.checkinEnd;
 	if (!isCheckinAvailable) {
 		return (
 			<PageError
-				message={`Check-in does not start until ${formatInTimeZone(event.checkinStart,clientTimeZone, `${EVENT_TIME_FORMAT_STRING} @ ${EVENT_DATE_FORMAT_STRING}`)}`}
+				message={`Check-in does not start until ${formatInTimeZone(event.checkinStart, clientTimeZone, `${EVENT_TIME_FORMAT_STRING} @ ${EVENT_DATE_FORMAT_STRING}`)}`}
 				href={href}
-				className="md:px-12 lg:px-16 text-base"
+				className="text-base md:px-12 lg:px-16"
 			/>
 		);
 	}
@@ -71,7 +72,7 @@ export default async function EventCheckin({
 		<div className="flex w-full flex-1 flex-col gap-[8%]">
 			<div className="flex w-full flex-col items-center justify-center gap-3 text-xl">
 				<h1 className="text-2xl lg:text-3xl">Thanks for attending</h1>
-				<h1 className="text-center text-2xl lg:text-3xl font-bold">{`${event.name}`}</h1>
+				<h1 className="text-center text-2xl font-bold lg:text-3xl">{`${event.name}`}</h1>
 			</div>
 			<EventCheckinForm eventID={eventID} userID={userID} />
 		</div>

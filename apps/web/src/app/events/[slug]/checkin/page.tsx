@@ -4,12 +4,11 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import PageError from "@/components/shared/PageError";
 import { Suspense } from "react";
-import { getUserCheckin } from "@/lib/queries";
+import { getUserCheckin } from "@/lib/queries/users";
 import { getUTCDate } from "@/lib/utils";
 
-export default function Page({params}: {params: {slug: string}}){
-
-    const { userId: clerkId } = auth();
+export default function Page({ params }: { params: { slug: string } }) {
+	const { userId: clerkId } = auth();
 	if (!clerkId) {
 		redirect("/sign-in");
 	}

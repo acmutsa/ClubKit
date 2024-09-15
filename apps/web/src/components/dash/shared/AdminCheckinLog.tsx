@@ -1,5 +1,5 @@
 import React from "react";
-import { getCheckinLog } from "@/lib/queries";
+import { getCheckinLog } from "@/lib/queries/checkins";
 import { DataTable } from "@/components/ui/data-table";
 import { checkinLogColumns } from "./CheckinLogColumns";
 

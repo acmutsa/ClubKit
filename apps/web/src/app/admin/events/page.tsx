@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { getEventsWithCheckins } from "@/lib/queries";
+import { getEventsWithCheckins } from "@/lib/queries/events";
 import { CalendarPlus } from "lucide-react";
 import { columns } from "./columns";
 

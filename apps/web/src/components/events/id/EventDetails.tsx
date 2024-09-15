@@ -1,4 +1,4 @@
-import { getEventDetails } from "@/lib/queries";
+import { getEventDetails } from "@/lib/queries/events";
 import PageError from "../../shared/PageError";
 import EventDetailsMobile from "./EventDetailsMobile";
 import EventDetailsDefault from "./EventDetailsDefault";

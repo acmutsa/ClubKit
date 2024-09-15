@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { getUserWithData } from "@/lib/queries";
+import { getUserWithData } from "@/lib/queries/users";
 import { columns } from "./columns";
 
 import { DataTable } from "@/components/ui/data-table";

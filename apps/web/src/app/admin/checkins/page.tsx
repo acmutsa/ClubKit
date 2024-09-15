@@ -4,9 +4,8 @@ import AddCheckinDialogue from "@/components/dash/shared/AddCheckinDialogue";
 import CheckinsStatsSheet from "@/components/dash/shared/CheckinStatsSheet";
 import { Button } from "@/components/ui/button";
 import AdminCheckinLog from "@/components/dash/shared/AdminCheckinLog";
-import { getEventList } from "@/lib/queries";
-import { Dialog,DialogTrigger } from "@/components/ui/dialog";
-
+import { getEventList } from "@/lib/queries/events";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 export default async function Page() {
 	const eventList = await getEventList();

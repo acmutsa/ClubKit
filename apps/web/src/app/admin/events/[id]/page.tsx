@@ -1,4 +1,4 @@
-import { getEventById, getEventCheckins } from "@/lib/queries";
+import { getEventById, getEventCheckins } from "@/lib/queries/events";
 
 export default async function Page({ params }: { params: { slug: string } }) {
 	const event = await getEventById(params.slug);

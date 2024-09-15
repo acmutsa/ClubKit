@@ -2,7 +2,7 @@ import React from "react";
 
 import EditEventForm from "@/components/dash/admin/events/EditEventForm";
 
-import { getCategoryOptions } from "@/lib/queries";
+import { getCategoryOptions } from "@/lib/queries/categories";
 import { iEvent, uEvent } from "@/lib/types/events";
 import { getEventWithCategoriesById } from "@/lib/queries/events";
 import { IDParamProp } from "@/lib/types/shared";

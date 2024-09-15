@@ -1,5 +1,5 @@
 import NewEventForm from "@/components/dash/admin/events/NewEventForm";
-import { getCategoryOptions } from "@/lib/queries";
+import { getCategoryOptions } from "@/lib/queries/categories";
 import { getUTCDate } from "@/lib/utils";
 
 export default async function Page() {

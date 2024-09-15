@@ -1,5 +1,5 @@
 import React from "react";
-import { getEventStatsOverview } from "@/lib/queries";
+import { getEventStatsOverview } from "@/lib/queries/events";
 
 import { Separator } from "@/components/ui/separator";
 

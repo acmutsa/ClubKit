@@ -1,5 +1,5 @@
 import React from "react";
-import { getMemberStatsOverview } from "@/lib/queries";
+import { getMemberStatsOverview } from "@/lib/queries/users";
 
 import { Separator } from "@/components/ui/separator";
 
