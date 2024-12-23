@@ -1,15 +1,20 @@
 import { SignUp } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import c from "config";
+import Link from "next/link";
 
 export default function Page() {
 	return (
-		<main className="h-screen w-screen flex flex-col gap-y-5 items-center justify-center">
-			<div className="max-w-[400px] flex-col flex items-center justify-center gap-y-5">
-				<h1 className="font-black text-4xl">ClubKit</h1>
+		<main className="flex h-screen w-screen flex-col items-center justify-center gap-y-5">
+			<div className="flex max-w-[400px] flex-col items-center justify-center gap-y-5">
+				<h1 className="text-4xl font-black">ClubKit</h1>
 				<SignUp forceRedirectUrl={"/onboarding"} />
 				{/* TODO: Add Explainer For Portal Accounts as a Dialog */}
-				<Button className="w-full">Migrating From A Portal Account?</Button>
+				<Link href="/onboarding" className="w-full">
+					<Button className="w-full">
+						Migrating From A Portal Account?
+					</Button>
+				</Link>
 			</div>
 		</main>
 	);

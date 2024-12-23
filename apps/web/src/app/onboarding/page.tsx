@@ -9,18 +9,23 @@ import { redirect } from "next/navigation";
 
 export default async function Page() {
 	const { userId } = auth();
-
-	if (!userId) return redirect("/sign-up");
-
-	const clerkUser = await currentUser();
-
-	if (!clerkUser) return redirect("/sign-up");
+	console.log("user id", userId);
+	if (!userId) return redirect("/sign-in");
 
 	const dbUser = await db.query.users.findFirst({
 		where: eq(users.clerkID, userId),
 	});
 
-	if (dbUser) return redirect("/dash");
+	if (dbUser){
+		return (
+			<div className="flex flex-col items-center justify-center w-screen h-screen">
+				<h1 className="font-black"></h1>
+			</div>
+		)
+	};
+	const clerkUser = await currentUser();
+
+	if (!clerkUser) return redirect("/sign-in");
 
 	return (
 		<main className="w-screen">
