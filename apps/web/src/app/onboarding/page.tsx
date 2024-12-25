@@ -1,31 +1,16 @@
 import RegisterForm from "@/components/onboarding/registerForm";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { db } from "db";
-import { users } from "db/schema";
-import { eq } from "db/drizzle";
+
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-
+// layout protects this so we do not have to make this db call twice
 export default async function Page() {
-	const { userId } = auth();
-	console.log("user id", userId);
-	if (!userId) return redirect("/sign-in");
-
-	const dbUser = await db.query.users.findFirst({
-		where: eq(users.clerkID, userId),
-	});
-
-	if (dbUser){
-		return (
-			<div className="flex flex-col items-center justify-center w-screen h-screen">
-				<h1 className="font-black"></h1>
-			</div>
-		)
-	};
+	
 	const clerkUser = await currentUser();
 
 	if (!clerkUser) return redirect("/sign-in");
+	const userEmail = clerkUser.emailAddresses[0].emailAddress;
 
 	return (
 		<main className="w-screen">
