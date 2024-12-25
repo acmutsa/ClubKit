@@ -53,6 +53,11 @@ const c = {
 		{ title: "youtube", href: "https://www.youtube.com/@acmutsa/streams" },
 	],
 	maxResumeSizeInBytes: 3670016,
+	acceptedResumeMimeTypes: [
+		"application/msword",
+		"application/pdf",
+		"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+	] as string[],
 	dashPaths: {
 		admin: {
 			Overview: "/admin",

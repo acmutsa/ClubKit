@@ -105,7 +105,6 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 	} | null>(null);
 	const [resume, setResume] = useState<File | null>(null);
 	const router = useRouter();
-
 	const {
 		execute: runCreateRegistration,
 		status: actionStatus,
@@ -210,10 +209,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 			return false;
 		}
 		if (
-			![
-				"application/pdf",
-				"application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-			].includes(file.type)
+			!c.acceptedResumeMimeTypes.includes(file.type)
 		) {
 			form.setError("data.resume", {
 				message: "Resume file must be a .pdf or .docx file.",
@@ -907,7 +903,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 												<Input
 													{...fieldProps}
 													type="file"
-													accept="image/jpeg,image/png,image/gif,image/webp,image/avif,image/svg+xml"
+													accept={c.acceptedResumeMimeTypes.toLocaleString()}
 													onChange={(event) => {
 														const success =
 															validateAndSetResume(
