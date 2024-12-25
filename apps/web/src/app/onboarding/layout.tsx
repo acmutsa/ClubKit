@@ -23,7 +23,6 @@ export default async function OnboardingLayout({
 	if (user) {
 		return redirect("/dash");
 	}
-	// next we would also want to check against the user's email to see if they are already registered
 
 	return (
 		<>

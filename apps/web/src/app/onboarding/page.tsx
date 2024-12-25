@@ -1,9 +1,11 @@
 import RegisterForm from "@/components/onboarding/registerForm";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-
+import { db,eq } from "db";
+import { users } from "db/schema";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import c from "config";
 // layout protects this so we do not have to make this db call twice
 export default async function Page() {
 	
@@ -11,6 +13,45 @@ export default async function Page() {
 
 	if (!clerkUser) return redirect("/sign-in");
 	const userEmail = clerkUser.emailAddresses[0].emailAddress;
+
+	const userByEmail = await db.query.users.findFirst({
+		where:eq(users.email,userEmail)
+	})
+
+	if (userByEmail){
+		return (
+			<div className="flex h-screen w-screen flex-col items-center justify-center space-y-3 px-3">
+				<h1 className="text-4xl font-black">Account Detected</h1>
+				<div className="flex max-w-[30%] flex-col items-center justify-between space-y-5 rounded-xl border-2 border-muted p-6 pb-4">
+					<div className="flex w-full flex-col justify-center space-y-2">
+						<p className="w-full text-center">
+							An account with the email{" "}
+							<span className="font-semibold">{userEmail}</span>{" "}
+							is already in use.
+						</p>
+						<p className="w-full text-center">
+							Please follow the link below to connect the account.
+						</p>
+					</div>
+					<Link href="/onboarding/migrate">
+						<Button> Connect Account</Button>
+					</Link>
+				</div>
+				<p className="w-full max-w-[30%] text-center text-xs">
+					If you believe this is a mistake or have trouble connecting
+					the account, please reach out to{" "}
+					<span>
+						<a
+							className="underline"
+							href={`mailto:${c.contactEmail}`}
+						>
+							{c.contactEmail}.
+						</a>
+					</span>
+				</p>
+			</div>
+		);
+	}
 
 	return (
 		<main className="w-screen">
@@ -37,7 +78,7 @@ export default async function Page() {
 				</div>
 				<RegisterForm
 					defaultEmail={
-						clerkUser.emailAddresses[0]?.emailAddress || ""
+						userEmail
 					}
 				/>
 			</div>
