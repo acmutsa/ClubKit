@@ -1,6 +1,5 @@
 "use client";
 import c, { majors } from "config";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { insertUserWithDataSchemaFormified } from "db/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -241,7 +240,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>
-			<div className="mt-20">
+			<div className="mt-12">
 				{/* <div className="bg-red-500 flex items-center py-3 rounded mb-5 text-white px-4 gap-x-2">
 				<TriangleAlert />
 				<p>Error Creating Registration: </p>
@@ -252,7 +251,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 						onSubmit={form.handleSubmit(onSubmit)}
 					>
 						<FormGroupWrapper title="Basic Info">
-							<div className="grid grid-cols-3 gap-4">
+							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 								<FormField
 									control={form.control}
 									name="firstName"
@@ -286,21 +285,22 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 										<FormItem>
 											<FormLabel>Email</FormLabel>
 											<FormControl>
-												<Input {...field} />
+												<Input {...field} disabled />
 											</FormControl>
+											<p className="text-muted-foreground text-xs">This field is immutable to keep synced with your authentication for the site</p>
 											<FormMessage />
 										</FormItem>
 									)}
 								/>
 							</div>
 						</FormGroupWrapper>
-						<FormGroupWrapper title="College Information">
-							<div className="grid grid-cols-6 gap-4">
+						<FormGroupWrapper title="University Information">
+							<div className="grid grid-cols-3 md:grid-cols-6 gap-4">
 								<FormField
 									control={form.control}
 									name="data.universityID"
 									render={({ field }) => (
-										<FormItem>
+										<FormItem className="col-span-3 md:col-span-2">
 											<FormLabel>
 												{c.universityID.name}
 											</FormLabel>
@@ -315,7 +315,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									control={form.control}
 									name="data.major"
 									render={({ field }) => (
-										<FormItem className="col-span-2">
+										<FormItem className="col-span-3 md:col-span-2">
 											<FormLabel>Major</FormLabel>
 											<Popover>
 												<PopoverTrigger asChild>
@@ -399,7 +399,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									control={form.control}
 									name="data.classification"
 									render={({ field }) => (
-										<FormItem>
+										<FormItem className="col-span-3 md:col-span-2">
 											<FormLabel>
 												Classification
 											</FormLabel>
@@ -447,7 +447,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									control={form.control}
 									name="data.graduationMonth"
 									render={({ field }) => (
-										<FormItem>
+										<FormItem className="col-span-2 md:col-span-3">
 											<FormLabel>
 												Graduation Month
 											</FormLabel>
@@ -543,7 +543,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									control={form.control}
 									name="data.graduationYear"
 									render={({ field }) => (
-										<FormItem>
+										<FormItem className="md:col-span-3">
 											<FormLabel className="w-full">
 												Graduation Year
 											</FormLabel>
@@ -579,7 +579,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 							</div>
 						</FormGroupWrapper>
 						<FormGroupWrapper title="Personal Information">
-							<div className="grid grid-cols-3 gap-4">
+							<div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 								<FormField
 									control={form.control}
 									name="data.birthday"
@@ -799,7 +799,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									control={form.control}
 									name="data.shirtSize"
 									render={({ field }) => (
-										<FormItem>
+										<FormItem className="col-span-3 md:col-span-1">
 											<FormLabel>Shirt Size</FormLabel>
 											<Select
 												onValueChange={field.onChange}
@@ -857,7 +857,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									control={form.control}
 									name="data.shirtType"
 									render={({ field }) => (
-										<FormItem>
+										<FormItem className="col-span-3 md:col-span-1">
 											<FormLabel>Shirt Type</FormLabel>
 											<Select
 												onValueChange={field.onChange}
@@ -897,7 +897,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 											...fieldProps
 										},
 									}) => (
-										<FormItem>
+										<FormItem className="col-span-3 md:col-span-1">
 											<FormLabel>Resume</FormLabel>
 											<FormControl>
 												<Input

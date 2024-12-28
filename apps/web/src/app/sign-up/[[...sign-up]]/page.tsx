@@ -19,7 +19,6 @@ export default function Page() {
 					</Button>
 				</Link>
 				<PortalMigrationExplainer />
-				suated
 			</div>
 		</main>
 	);

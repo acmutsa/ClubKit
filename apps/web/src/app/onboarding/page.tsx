@@ -6,7 +6,7 @@ import { users } from "db/schema";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import c from "config";
-// layout protects this so we do not have to make this db call twice
+
 export default async function Page() {
 	
 	const clerkUser = await currentUser();
@@ -55,9 +55,9 @@ export default async function Page() {
 
 	// the school id / abc123 is also a unique field which would throw if a user signs up with a different email but the same school id. We need to combat that 
 	return (
-		<main className="w-screen">
-			<div className="mx-auto min-h-screen max-w-5xl pt-40">
-				<div className="grid grid-cols-2">
+		<main className="w-screen mb-3 overflow-x-hidden">
+			<div className="mx-auto min-h-screen max-w-5xl pt-20 lg:pt-24 px-3 lg:px-0">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-y-4">
 					<div>
 						<h1 className="text-5xl font-black">Registration</h1>
 						<p className="mt-5 font-medium">
@@ -66,22 +66,18 @@ export default async function Page() {
 							registration.
 						</p>
 					</div>
-					<div className="flex flex-col items-center justify-center gap-y-3 rounded-lg bg-primary text-white">
-						<p className="text-sm font-bold">
-							Had a portal (abc123 & email) account?
+					<div className="flex flex-col items-center justify-center gap-y-3 rounded-lg bg-primary pb-2">
+						<p className="text-sm font-semibold md:font-bold text-white dark:text-black">
+							Had a legacy portal (abc123 & email) account?
 						</p>
 						<Link href="/onboarding/migrate">
-							<Button className="dark w-full">
+							<Button className="w-full dark:bg-black bg-white dark:text-white text-black">
 								Migrate from Portal
 							</Button>
 						</Link>
 					</div>
 				</div>
-				<RegisterForm
-					defaultEmail={
-						userEmail
-					}
-				/>
+				<RegisterForm defaultEmail={userEmail} />
 			</div>
 		</main>
 	);
