@@ -162,7 +162,7 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 								</div>
 							</>
 						) : (
-							<>
+							<div className="flex flex-col items-center justify-center space-y-3">
 								<Link href={"/sign-in"}>
 									<Button
 										variant={"outline"}
@@ -174,7 +174,7 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 								<Link href={"/register"}>
 									<Button>Register</Button>
 								</Link>
-							</>
+							</div>
 						)}
 					</SheetContent>
 				</Sheet>
