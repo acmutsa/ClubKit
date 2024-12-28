@@ -24,7 +24,6 @@ const c = {
 		aboutOrg:
 			"ACM is the premier organization on campus for students interested in technology. ACM is dedicated to providing members with opportunities for professional, academic, and social growth outside the classroom in order to prepare students for their career in tech or fuel their interest in the tech field. Anyone who has an interest in technology can join ACM.",
 	},
-	// TODO: Actually use this instead of hardcoded values in form
 	userIdentityOptions: {
 		ethnicity: [
 			"American Indian or Alaska Native",
@@ -37,10 +36,11 @@ const c = {
 		gender: [
 			"Male",
 			"Female",
-			"Non-binary",
+			"Non-Binary",
 			"Transgender",
 			"Intersex",
-			"Prefer not to say",
+			"Other",
+			"I prefer not to say",
 		],
 	},
 	calendarLinks: [

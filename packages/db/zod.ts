@@ -7,11 +7,12 @@ export const insertUserDataSchema = createInsertSchema(data);
 export const insertUserSchema = createInsertSchema(users);
 
 // Modified For Forms
+export const basicStringSchema = z.string().min(1).max(255);
 
 const userFormified = createInsertSchema(users, {
 	email: z.string().email().min(1),
-	firstName: z.string().min(1),
-	lastName: z.string().min(1),
+	firstName: basicStringSchema,
+	lastName: basicStringSchema,
 }).pick({
 	email: true,
 	firstName: true,
@@ -20,7 +21,7 @@ const userFormified = createInsertSchema(users, {
 
 const userDataFormified = z.object({
 	data: createInsertSchema(data, {
-		classification: z.string().min(1),
+		classification: z.string().min(1, "You must select a classification."),
 		major: z.string().min(1, "You must select a major."),
 		shirtSize: z.string().min(1).max(10),
 		shirtType: z.string().min(1).max(10),
@@ -29,27 +30,12 @@ const userDataFormified = z.object({
 		universityID: z.string().min(1).max(c.universityID.maxLength),
 		gender: z
 			.array(
-				z.enum([
-					"Male",
-					"Female",
-					"Non-Binary",
-					"Transgender",
-					"Intersex",
-					"Other",
-					"I prefer not to say",
-				]),
+				z.enum(c.userIdentityOptions.gender),
 			)
 			.min(1, "Required"),
 		ethnicity: z
 			.array(
-				z.enum([
-					"African American or Black",
-					"Asian",
-					"Native American/Alaskan Native",
-					"Native Hawaiian or Pacific Islander",
-					"Hispanic / Latinx",
-					"White",
-				]),
+				z.enum(c.userIdentityOptions.ethnicity),
 			)
 			.min(1, "Required"),
 		graduationMonth: z
