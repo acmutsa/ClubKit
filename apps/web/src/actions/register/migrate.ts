@@ -5,6 +5,8 @@ import { z } from "zod";
 import { db } from "db";
 import { and, eq, isNull } from "db/drizzle";
 import { users, data } from "db/schema";
+import { currentUser } from "@clerk/nextjs/server";
+import c from "config";
 
 export const doPortalLookupCheck = authenticatedAction(
 	z.object({ universityID: z.string().min(1), email: z.string().min(1) }),
@@ -52,6 +54,7 @@ export const doPortalLookupCheck = authenticatedAction(
 export const doPortalLink = authenticatedAction(
 	z.object({ universityID: z.string().min(1), email: z.string().min(1) }),
 	async ({ universityID, email }, { clerkID }) => {
+		// why we do we care about their inner join data?
 		const lookup = await db
 			.select()
 			.from(users)
@@ -64,11 +67,18 @@ export const doPortalLink = authenticatedAction(
 				),
 			)
 			.limit(1);
-
+		const currUser = await currentUser();
+		if (!currUser) {
+			return {
+				success: false,
+			};
+		}
+		// we set these when connected in order to keep clerk in sync
+		const userEmail = currUser.emailAddresses[0].emailAddress;
 		if (lookup[0]) {
 			await db
 				.update(users)
-				.set({ clerkID: clerkID })
+				.set({ clerkID: clerkID, email: userEmail })
 				.where(eq(users.userID, lookup[0].users.userID));
 			return {
 				success: true,

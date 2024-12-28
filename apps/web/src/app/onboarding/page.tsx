@@ -25,9 +25,9 @@ export default async function Page() {
 				<div className="flex max-w-[30%] flex-col items-center justify-between space-y-5 rounded-xl border-2 border-muted p-6 pb-4">
 					<div className="flex w-full flex-col justify-center space-y-2">
 						<p className="w-full text-center">
-							An account with the email{" "}
+							An unconnected account with the email{" "}
 							<span className="font-semibold">{userEmail}</span>{" "}
-							is already in use.
+							has been found.
 						</p>
 						<p className="w-full text-center">
 							Please follow the link below to connect the account.
@@ -53,6 +53,7 @@ export default async function Page() {
 		);
 	}
 
+	// the school id / abc123 is also a unique field which would throw if a user signs up with a different email but the same school id. We need to combat that 
 	return (
 		<main className="w-screen">
 			<div className="mx-auto min-h-screen max-w-5xl pt-40">

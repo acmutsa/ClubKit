@@ -66,9 +66,9 @@ export default async function ProfileButton({
 						</Link>
 					</DropdownMenuGroup>
 					<DropdownMenuSeparator />
-					<SignOutButton>
+					<SignOutButton redirectUrl="/" >
 						<DropdownMenuItem className="cursor-pointer hover:!bg-destructive">
-							Log out
+							Sign out
 						</DropdownMenuItem>
 					</SignOutButton>
 				</DropdownMenuContent>
@@ -119,9 +119,9 @@ export default async function ProfileButton({
 					</Link>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
-				<SignOutButton>
+				<SignOutButton redirectUrl="/">
 					<DropdownMenuItem className="cursor-pointer hover:!bg-destructive">
-						Log out
+						Sign out
 					</DropdownMenuItem>
 				</SignOutButton>
 			</DropdownMenuContent>
