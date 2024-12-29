@@ -453,7 +453,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									control={form.control}
 									name="data.graduationMonth"
 									render={({ field }) => (
-										<FormItem className="col-span-2 md:col-span-3">
+										<FormItem className="col-span-3">
 											<FormLabel>
 												Graduation Month *
 											</FormLabel>
@@ -549,7 +549,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 									control={form.control}
 									name="data.graduationYear"
 									render={({ field }) => (
-										<FormItem className="md:col-span-3">
+										<FormItem className="col-span-3">
 											<FormLabel className="w-full">
 												Graduation Year *
 											</FormLabel>
