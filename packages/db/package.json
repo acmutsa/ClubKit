@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "Shared drizzle-orm schema for the db",
   "scripts": {
-    "migrations:generate": "drizzle-kit generate:pg",
+    "migrations:generate": "drizzle-kit generate",
     "migrations:apply": "node -r esbuild-register migrate.ts",
     "migrations:drop": "drizzle-kit drop",
     "migrations:check": "drizzle-kit check",
     "snapshot-up": "drizzle-kit up",
-    "db-push": "drizzle-kit push:pg",
+    "db-push": "drizzle-kit push",
     "studio": "drizzle-kit studio"
   },
   "keywords": [],
