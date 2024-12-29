@@ -8,7 +8,7 @@ export default function Page() {
 		<main className="flex h-screen w-screen flex-col items-center justify-center gap-y-5">
 			<div className="flex max-w-[400px] flex-col items-center justify-center gap-y-5">
 				<h1 className="text-4xl font-black">{c.clubName}</h1>
-				<SignIn fallbackRedirectUrl="/onboarding" forceRedirectUrl="/onboarding" />
+				<SignIn />
 				<Link href="/onboarding/migrate" className="w-full">
 					<Button className="w-full">
 						Migrate From Legacy Portal
