@@ -116,7 +116,7 @@ export const checkins = pgTable(
 			.notNull(),
 		time: timestamp("time").defaultNow().notNull(),
 		rating: integer("rating"),
-		adminID: text("admin_id"),
+		adminID: integer("admin_id"),
 		feedback: varchar({ length: 2000 }),
 	},
 	(table) => {

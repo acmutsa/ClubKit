@@ -128,9 +128,11 @@ export default function EditEventForm({
 		result: actionResult,
 		reset: resetAction,
 	} = useAction(updateEvent, {
-		onSuccess: async ({ success, code }) => {
+		onSuccess: async ({ data}) => {
 			toast.dismiss();
-			if (!success) {
+			
+			if (!data?.success) {
+				const code = data?.code || "unknown";
 				switch (code) {
 					case "update_event_failed":
 						setError({

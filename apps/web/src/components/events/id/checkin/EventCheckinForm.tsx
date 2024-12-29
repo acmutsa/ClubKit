@@ -55,9 +55,10 @@ export default function EventCheckinForm({
 		result: checkInUserResult,
 		reset: resetCheckInUser,
 	} = useAction(checkInUserAction, {
-		onSuccess: async ({ success, code }) => {
+		onSuccess: async ({data}) => {
 			toast.dismiss();
-
+			const success = data?.success;
+			const code = data?.code;
 			if (!success) {
 				toast.error(code, {
 					duration: Infinity,
@@ -77,7 +78,7 @@ export default function EventCheckinForm({
 				push("/dash");
 			}, 2500);
 		},
-		onError: async (e) => {
+		onError: async ({error:e}) => {
 			toast.dismiss();
 			if (e.validationErrors) {
 				toast.error(`Please check your input. ${e.validationErrors}`, {

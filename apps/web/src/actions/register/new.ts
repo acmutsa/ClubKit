@@ -7,9 +7,9 @@ import { eq, or} from "db/drizzle";
 import { users, data } from "db/schema";
 import type { UserWithDataSchemaType } from "db/types";
 
-export const createRegistration = authenticatedAction(
-	insertUserWithDataSchemaFormified,
-	async (registerFormInputs: UserWithDataSchemaType, { clerkID }) => {
+export const createRegistration = authenticatedAction.schema(
+	insertUserWithDataSchemaFormified).action(
+	async ({parsedInput:registerFormInputs,ctx:{userId:clerkID}}) => {
 		const { data: dataSchemaInputs, ...usersSchemaInputs } =
 			registerFormInputs;
 		// I think we can stll do db.query on this

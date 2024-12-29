@@ -12,14 +12,15 @@ const nanoid = customAlphabet(
 	c.events.idLength,
 );
 
-export const createEvent = adminAction(
-	insertEventSchemaFormified,
-	async ({ categories, ...e }) => {
+export const createEvent = adminAction.schema(
+	insertEventSchemaFormified).action(
+	async ({ parsedInput }) => {
 		let res = {
 			success: true,
 			code: "success",
 			eventID: "",
 		};
+		const { categories, ...e } = parsedInput;
 		await db.transaction(async (tx) => {
 			const eventIDs = await tx
 				.insert(events)

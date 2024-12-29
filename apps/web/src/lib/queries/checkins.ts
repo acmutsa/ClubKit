@@ -40,7 +40,7 @@ export const checkInUserClient = async (props: CheckInUserClientProps) => {
 export const checkInUserList = async (
 	eventID: string,
 	universityIDs: string[],
-	adminID: string,
+	adminID: number,
 ) => {
 	const userIDs = await db.query.data.findMany({
 		where: (data) => inArray(data.universityID, universityIDs),

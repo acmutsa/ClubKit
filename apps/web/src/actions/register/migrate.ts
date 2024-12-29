@@ -8,21 +8,9 @@ import { users, data } from "db/schema";
 import { currentUser } from "@clerk/nextjs/server";
 import c from "config";
 
-export const doPortalLookupCheck = authenticatedAction(
-	z.object({ universityID: z.string().min(1), email: z.string().min(1) }),
-	async ({ universityID, email }) => {
-		// const lookup = await db
-		// 	.select()
-		// 	.from(users)
-		// 	.innerJoin(data, eq(users.userID, data.userID))
-		// 	.where(
-		// 		and(
-		// 			eq(users.email, email),
-		// 			isNull(users.clerkID),
-		// 			eq(data.interestedEventTypes, universityID)
-		// 		)
-		// 	);
-
+export const doPortalLookupCheck = authenticatedAction.schema(
+	z.object({ universityID: z.string().min(1), email: z.string().min(1) })).action(
+	async ({parsedInput:{email, universityID}}) => {
 		const lookup = await db
 			.select()
 			.from(users)
@@ -51,9 +39,9 @@ export const doPortalLookupCheck = authenticatedAction(
 	},
 );
 
-export const doPortalLink = authenticatedAction(
-	z.object({ universityID: z.string().min(1), email: z.string().min(1) }),
-	async ({ universityID, email }, { clerkID }) => {
+export const doPortalLink = authenticatedAction.schema(
+	z.object({ universityID: z.string().min(1), email: z.string().min(1) })).action(
+	async ({ctx:{userId:clerkID}, parsedInput:{email, universityID}}) => {
 		// why we do we care about their inner join data?
 		const lookup = await db
 			.select()

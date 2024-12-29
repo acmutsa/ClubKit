@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 import React from "react";
-import { AdminCheckin, adminCheckinSchema,  } from "db/zod";
+import { adminCheckinSchema,  } from "db/zod";
 import { adminCheckin } from "@/actions/events/checkin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -34,6 +34,7 @@ import {
 	SelectItem,
 } from "@/components/ui/select";
 import c from "config";
+import z from "zod"
 
 type Props = {
 	eventList: { id: string; name: string }[];
@@ -42,9 +43,10 @@ type Props = {
 		universityIDs?: string;
 	};
 };
+type AdminCheckinProps = z.infer<typeof adminCheckinSchema>;
 
 function AddCheckinDialogue({ eventList, ...props }: Props) {
-	const form = useForm<AdminCheckin>({
+	const form = useForm<AdminCheckinProps>({
 		resolver: zodResolver(adminCheckinSchema),
 		defaultValues: {
 			eventID: props.default?.eventID || eventList[0].id,
@@ -58,8 +60,16 @@ function AddCheckinDialogue({ eventList, ...props }: Props) {
 		result: actionResult,
 		reset: resetAction,
 	} = useAction(adminCheckin, {
-		onSuccess: async ({ success, code, failedIDs }) => {
+		onSuccess: async ({ data }) => {
 			toast.dismiss();
+			if (!data){
+				toast.error(
+					`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
+				);
+				resetAction();
+				return;
+			}
+			const { success, code, failedIDs} = data
 			if (!success) {
 				switch (code) {
 					case CheckinResult.FAILED:
@@ -67,7 +77,7 @@ function AddCheckinDialogue({ eventList, ...props }: Props) {
 						break;
 					case CheckinResult.SOME_FAILED:
 						toast.warning(
-							`The following checkins failed: ${failedIDs.join()}`,
+							`The following checkins failed: ${failedIDs?.join()}`,
 						);
 						break;
 					default:
@@ -91,7 +101,7 @@ function AddCheckinDialogue({ eventList, ...props }: Props) {
 		},
 	});
 
-	async function onSubmit(data: AdminCheckin, evt: any) {
+	async function onSubmit(data: AdminCheckinProps, evt: any) {
 		evt.preventDefault();
 		toast.loading("Creating Checkins...");
 		runAddCheckin(data);

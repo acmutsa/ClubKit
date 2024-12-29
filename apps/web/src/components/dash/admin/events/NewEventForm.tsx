@@ -124,8 +124,17 @@ export default function NewEventForm({
 		result: actionResult,
 		reset: resetAction,
 	} = useAction(createEvent, {
-		onSuccess: async ({ success, code, eventID }) => {
+		onSuccess: async ({data}) => {
+
 			toast.dismiss();
+			if (!data){
+				toast.error(
+					`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
+				);
+				resetAction();
+				return;
+			}
+			const { success, code, eventID } = data;
 			if (!success) {
 				switch (code) {
 					case "insert_event_failed":

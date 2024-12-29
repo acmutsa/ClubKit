@@ -24,9 +24,9 @@ export default function Migrator({ clerkEmail }: { clerkEmail: string }) {
 		status: portalLookupStatus,
 		reset: resetPortalLookupAction,
 	} = useAction(doPortalLookupCheck, {
-		onSuccess({ success }) {
+		onSuccess({ data }) {
 			toast.dismiss();
-			if (success) {
+			if (data?.success) {
 				setStage("confirmation");
 			} else {
 				setLegacyEmail(null);

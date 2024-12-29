@@ -110,9 +110,11 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 		result: actionResult,
 		reset: resetAction,
 	} = useAction(createRegistration, {
-		onSuccess: async ({ success, code }) => {
+		onSuccess: async ({ data }) => {
 			toast.dismiss();
-			if (!success) {
+
+			if (!data?.success) {
+				const code = data?.code || "unknown";
 				switch (code) {
 					case "user_already_exists":
 						setError({
