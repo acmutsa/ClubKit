@@ -171,7 +171,7 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 										Sign In
 									</Button>
 								</Link>
-								<Link href={"/register"}>
+								<Link href={"/sign-up"}>
 									<Button>Register</Button>
 								</Link>
 							</div>
