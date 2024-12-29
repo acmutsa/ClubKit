@@ -129,7 +129,7 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 									href={
 										registrationComplete
 											? "/dash"
-											: "/register"
+											: "/onboarding"
 									}
 								>
 									<Button
