@@ -3,23 +3,26 @@
 import { authenticatedAction } from "@/lib/safe-action";
 import { insertUserWithDataSchemaFormified } from "db/zod";
 import { db } from "db";
-import { eq, or, isNull } from "db/drizzle";
+import { eq, or} from "db/drizzle";
 import { users, data } from "db/schema";
-import { z } from "zod";
+import type { UserWithDataSchemaType } from "db/types";
 
 export const createRegistration = authenticatedAction(
 	insertUserWithDataSchemaFormified,
-	async (u, { clerkID }) => {
+	async (registerFormInputs: UserWithDataSchemaType, { clerkID }) => {
+		const { data: dataSchemaInputs, ...usersSchemaInputs } =
+			registerFormInputs;
+		// I think we can stll do db.query on this
 		const existingUser = await db
 			.select()
 			.from(users)
 			.innerJoin(data, eq(users.userID, data.userID))
 			.where(
 				or(
-					eq(users.email, u.email),
+					eq(users.email, registerFormInputs.email),
 					eq(users.clerkID, clerkID),
-					eq(data.universityID, u.data.universityID)
-				)
+					eq(data.universityID, registerFormInputs.data.universityID),
+				),
 			)
 			.limit(1);
 
@@ -30,12 +33,15 @@ export const createRegistration = authenticatedAction(
 					success: false,
 					code: "user_already_exists",
 				};
-			} else if (foundUser.users.email == u.email) {
+			} else if (foundUser.users.email == registerFormInputs.email) {
 				return {
 					success: false,
 					code: "email_already_exists",
 				};
-			} else if (foundUser.data.universityID == u.data.universityID) {
+			} else if (
+				foundUser.data.universityID ==
+				registerFormInputs.data.universityID
+			) {
 				return {
 					success: false,
 					code: "university_id_already_exists",
@@ -43,14 +49,26 @@ export const createRegistration = authenticatedAction(
 			}
 		}
 
-		await db.insert(users).values({
-			...u,
-			clerkID: clerkID,
+		await db.transaction(async (tx) => {
+			const res = await tx
+				.insert(users)
+				.values({
+					...usersSchemaInputs,
+					clerkID: clerkID,
+				})
+				.returning({ userID: users.userID });
+			const userID = res[0].userID;
+			await tx.insert(data).values({
+				...dataSchemaInputs,
+				userID,
+				// this is a placeholder for now. This isn't super important
+				interestedEventTypes: [],
+			});
 		});
 
 		return {
 			success: true,
 			code: "success",
 		};
-	}
+	},
 );
