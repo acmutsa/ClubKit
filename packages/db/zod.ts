@@ -131,7 +131,6 @@ export const adminCheckinSchema = z.object({
 	}),
 	eventID: z.string().min(c.events.idLength),
 });
-export type AdminCheckin = z.infer<typeof adminCheckinSchema>;
 export const universityIDSplitter = z
 	.string()
 	.transform((val) => val.split(/[,\W]+/));
