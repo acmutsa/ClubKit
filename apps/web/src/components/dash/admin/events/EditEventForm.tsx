@@ -49,6 +49,7 @@ import { useAction } from "next-safe-action/hooks";
 import { upload } from "@vercel/blob/client";
 import { updateEvent } from "@/actions/events/update";
 import { iEvent, uEvent } from "@/lib/types/events";
+import { bucketEventThumbnailBaseUrl } from "config";
 
 type EditEventFormProps = {
 	eventID: string;
@@ -185,7 +186,7 @@ export default function EditEventForm({
 		);
 
 		if (thumbnail) {
-			const thumbnailBlob = await upload(thumbnail.name, thumbnail, {
+			const thumbnailBlob = await upload(`${bucketEventThumbnailBaseUrl}/${thumbnail.name}`, thumbnail, {
 				access: "public",
 				handleUploadUrl: "/api/upload/thumbnail",
 			});

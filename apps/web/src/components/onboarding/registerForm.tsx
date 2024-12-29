@@ -72,6 +72,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
 import FormDisplayName from "../shared/FormDisplayName";
+import { bucketBaseUrl } from "config";
 
 const formSchema = insertUserWithDataSchemaFormified;
 
@@ -168,7 +169,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		toast.loading("Creating Registration...");
 		if (resume) {
-			const resumeBlob = await upload(resume.name, resume, {
+			const resumeBlob = await upload(`${bucketBaseUrl}/${resume.name}`, resume, {
 				access: "public",
 				handleUploadUrl: "/api/upload/resume",
 			});

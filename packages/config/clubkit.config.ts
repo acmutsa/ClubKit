@@ -195,12 +195,13 @@ const majors = [
 	"Other",
 ] as const;
 
-const bucketEventThumbnailBaseUrl = `${c.clubName}-${c.universityName}/event-thumbnails`;
-
+const bucketBaseUrl = `${c.clubName}-${c.universityName}`;
+const bucketEventThumbnailBaseUrl = `${bucketBaseUrl}/event-thumbnails`;
 export default c;
 export {
 	majors,
 	bucketEventThumbnailBaseUrl,
+	bucketBaseUrl
 }
 
 	
