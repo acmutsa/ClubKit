@@ -172,7 +172,7 @@ export default function EditEventForm({
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		console.log("Submit: ", values);
-		toast.loading("Creating Event...");
+		toast.loading("Updating Event...");
 		const checkinStart = hasDifferentCheckinTime
 			? values.checkinStart
 			: values.start;

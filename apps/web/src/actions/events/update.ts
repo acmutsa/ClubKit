@@ -16,7 +16,7 @@ export const updateEvent = adminAction
 		await db.transaction(async (tx) => {
 			const ids = await tx
 				.update(events)
-				.set(e)
+				.set({ ...e, updatedAt: sql`NOW()` })
 				.where(eq(events.id, eventID))
 				.returning({ eventID: events.id });
 
@@ -43,7 +43,9 @@ export const updateEvent = adminAction
 				categoryID: cat,
 			}));
 
-			await tx.insert(eventsToCategories).values(insertVal);
+			if (insertVal.length !== 0) {
+				await tx.insert(eventsToCategories).values(insertVal);
+			}
 
 			await tx
 				.delete(eventsToCategories)
