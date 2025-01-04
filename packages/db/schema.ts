@@ -85,6 +85,8 @@ export const events = pgTable("events", {
 	isUserCheckinable: boolean("is_user_checkinable").notNull().default(true),
 	isHidden: boolean("is_hidden").notNull().default(false),
 	points: integer("points").notNull().default(1),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const eventsRelations = relations(events, ({ many }) => ({
