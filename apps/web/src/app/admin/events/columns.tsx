@@ -100,7 +100,27 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 		},
 	},
 	{
+		accessorKey: "updated_at",
+		header: ({ column }) => {
+			return (
+				<DataTableColumnHeader column={column} title="Last Updated" />
+			);
+		},
+		cell: timeCell,
+	},
+	{
+		accessorKey: "created_at",
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title="Created At" />;
+		},
+		cell: timeCell,
+	},
+	{
 		id: "actions",
+		enablePinning: true,
+		header: ({ column }) => {
+			column.pin("right");
+		},
 		cell: ({ row }) => {
 			const data = row.original;
 			return (
