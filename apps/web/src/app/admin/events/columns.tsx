@@ -121,7 +121,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 		id: "actions",
 		enablePinning: true,
 		header: ({ column }) => {
-			column.pin("right");
+			// column.pin("right");
 		},
 		cell: ({ row }) => {
 			const data = row.original;

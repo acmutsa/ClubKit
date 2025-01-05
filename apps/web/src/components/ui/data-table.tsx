@@ -124,6 +124,11 @@ export function DataTable<TData, TValue>({
 			columnFilters,
 			globalFilter,
 		},
+		initialState: {
+			columnPinning: {
+				right: ["actions"],
+			},
+		},
 		globalFilterFn: "fuzzy",
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
