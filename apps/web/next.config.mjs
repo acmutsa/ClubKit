@@ -15,19 +15,19 @@ const nextConfig = {
 			},
 		],
 	},
-	async headers(){
+	async headers() {
 		return [
 			{
-				source:"/events",
-				headers:[
+				source: "/events",
+				headers: [
 					{
-						key:"x-timezone",
-						value:Intl.DateTimeFormat().resolvedOptions().timeZone
-					}
-				]
-			}
-		]
-	}
+						key: "x-timezone",
+						value: Intl.DateTimeFormat().resolvedOptions().timeZone,
+					},
+				],
+			},
+		];
+	},
 };
 
 export default nextConfig;

@@ -5,7 +5,7 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --write .",
     "format-check": "prettier --check .",
     "migrations:generate": "pnpm --filter=db migrations:generate",
     "migrations:apply": "pnpm --filter=db migrations:apply",
