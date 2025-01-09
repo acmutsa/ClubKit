@@ -267,7 +267,7 @@ export function AccountSettingsForm({
 						/>
 						<Button
 							type="submit"
-							disabled={!form.formState.isDirty}
+							disabled={!form.formState.isDirty || submitting}
 							className="w-full text-lg font-semibold lg:w-32"
 						>
 							{submitting ? (
