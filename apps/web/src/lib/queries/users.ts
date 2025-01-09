@@ -17,7 +17,7 @@ export const getAdminUser = async (clerkId: string) => {
 				inArray(users.role, ["admin", "super_admin"]),
 			),
 	});
-}
+};
 
 export const getUserWithData = async () => {
 	return db

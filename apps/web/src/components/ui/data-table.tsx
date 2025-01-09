@@ -149,11 +149,11 @@ export function DataTable<TData, TValue>({
 		}
 	}, [table.getState().columnFilters[0]?.id]);
 
-	function showLoading(){
+	function showLoading() {
 		toast.dismiss();
-		toast("Exporting. This may take a few seconds...",{
-			duration:2000
-		})
+		toast("Exporting. This may take a few seconds...", {
+			duration: 2000,
+		});
 		toast.dismiss();
 	}
 
