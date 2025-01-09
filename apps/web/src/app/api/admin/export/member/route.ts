@@ -50,19 +50,18 @@ export async function GET() {
 
 	const csv = jsonToCSV(flattenedUsers);
 
-	// 	return new Response(csv, {
-	// 		headers: {
-	// 			"Content-Type": "text/csv",
-	// 			"Content-Disposition": `attachment; filename=${c.clubName}_export_${new Date()
-	// 				.toString()
-	// 				.replaceAll(" ", "_")
-	// 				.replaceAll("(", "")
-	// 				.replaceAll(")", "")
-	// 				.toLowerCase()}.csv`,
-	// 		},
-	// 	}
-	// );
-	return new Response("Hello World");
+		return new Response(csv, {
+			headers: {
+				"Content-Type": "text/csv",
+				"Content-Disposition": `attachment; filename=${c.clubName}_export_${new Date()
+					.toString()
+					.replaceAll(" ", "_")
+					.replaceAll("(", "")
+					.replaceAll(")", "")
+					.toLowerCase()}.csv`,
+			},
+		}
+	);
 }
 
 export const runtime = "edge";
