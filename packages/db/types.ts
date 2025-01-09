@@ -1,4 +1,5 @@
 import z from "zod";
+import { users } from "./schema";
 import {
 	selectCheckinSchema,
 	userCheckinSchemaFormified,

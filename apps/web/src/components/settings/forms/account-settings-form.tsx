@@ -1,0 +1,277 @@
+"use client";
+
+import { Input } from "@/components/ui/input";
+import { editAccountSettings } from "@/actions/settings/edit";
+import { editAccountSettingsSchema } from "@/validators/settings";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { useAction } from "next-safe-action/hooks";
+import { toast } from "sonner";
+import { LoaderCircle } from "lucide-react";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import {
+	MultiSelector,
+	MultiSelectorContent,
+	MultiSelectorInput,
+	MultiSelectorItem,
+	MultiSelectorList,
+	MultiSelectorTrigger,
+} from "@/components/ui/MultiSelect";
+import { PopoverCalendar } from "@/components/settings/patterns/popover-calendar";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import c from "config";
+import { useState } from "react";
+import { Gender, Ethnicity } from "@/lib/types/settings";
+
+interface AccountInfoProps {
+	firstName: string;
+	lastName: string;
+	gender: Gender[];
+	ethnicity: Ethnicity[];
+	birthday: string | undefined;
+}
+
+export function AccountSettingsForm({ firstName, lastName, gender, ethnicity, birthday }: AccountInfoProps) {
+	const [submitting, setSubmitting] = useState(false);
+
+	const form = useForm<z.infer<typeof editAccountSettingsSchema>>({
+		resolver: zodResolver(editAccountSettingsSchema),
+		defaultValues: {
+			firstName,
+			lastName,
+			gender,
+			ethnicity,
+			birthday: birthday ? new Date(birthday) : undefined,
+		}
+	});
+
+	const { execute } = useAction(editAccountSettings, {
+		onExecute: () => setSubmitting(true),
+		onSettled: () => setSubmitting(false),
+		onSuccess: ({ input }) => {
+			toast.success("Account settings updated successfully");
+			form.reset(input);
+		},
+		onError: (error) => {
+			toast.error("Failed to update name");
+			console.error(error);
+		},
+	});
+
+
+	const handleSubmit = (data: z.infer<typeof editAccountSettingsSchema>) => {
+		execute(data);
+	};
+
+	return (
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(handleSubmit)}>
+				<div className="space-y-6">
+					<div>
+						<h1 className="text-4xl font-bold">Account</h1>
+						<p className="text-muted-foreground">
+							View and change your account details
+						</p>
+					</div>
+					<Separator className="my-6" />
+					<div className="space-y-8">
+						<div className="flex lg:flex-row flex-col gap-4 [&>*]:flex-1">
+							<FormField
+								control={form.control}
+								name="firstName"
+								render={({ field }) => (
+									<FormItem className="space-y-2">
+										<FormLabel className="text-lg">
+											First Name
+										</FormLabel>
+										<FormControl>
+											<Input
+												className="text-md"
+												type="text"
+												autoComplete="off"
+												{...field}
+											/>
+										</FormControl>
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="lastName"
+								render={({ field }) => (
+									<FormItem className="space-y-2">
+										<FormLabel className="text-lg">
+											Last Name
+										</FormLabel>
+										<FormControl>
+											<Input
+												className="text-md"
+												type="text"
+												autoComplete="off"
+												{...field}
+											/>
+										</FormControl>
+									</FormItem>
+								)}
+							/>
+						</div>
+						<div className="space-y-2">
+							<FormField
+								control={form.control}
+								name="gender"
+								render={({ field }) => {
+									return (
+										<FormItem className="flex flex-col justify-between gap-y-1">
+											<FormLabel className="text-lg">
+												Gender
+											</FormLabel>
+											<MultiSelector
+												onValuesChange={field.onChange}
+												values={field.value}
+												loop={true}
+											>
+												<MultiSelectorTrigger>
+													<MultiSelectorInput
+														className="text-sm"
+														placeholder="Click to Select"
+													/>
+												</MultiSelectorTrigger>
+												<MultiSelectorContent>
+													<MultiSelectorList>
+														<MultiSelectorItem
+															key="Male"
+															value="Male"
+														>
+															Male
+														</MultiSelectorItem>
+														<MultiSelectorItem
+															key="Female"
+															value="Female"
+														>
+															Female
+														</MultiSelectorItem>
+														<MultiSelectorItem
+															key="Non-Binary"
+															value="Non-Binary"
+														>
+															Non-Binary
+														</MultiSelectorItem>
+														<MultiSelectorItem
+															key="Transgender"
+															value="Transgender"
+														>
+															Transgender
+														</MultiSelectorItem>
+														<MultiSelectorItem
+															key="Intersex"
+															value="Intersex"
+														>
+															Intersex
+														</MultiSelectorItem>
+														<MultiSelectorItem
+															key="Other"
+															value="Other"
+														>
+															Other
+														</MultiSelectorItem>
+														<MultiSelectorItem
+															key="I prefer not to say"
+															value="I prefer not to say"
+														>
+															I prefer not to say
+														</MultiSelectorItem>
+													</MultiSelectorList>
+												</MultiSelectorContent>
+											</MultiSelector>
+											<FormMessage />
+										</FormItem>
+									);
+								}}
+							/>
+						</div>
+						<div className="space-y-2">
+							<FormField
+								control={form.control}
+								name="ethnicity"
+								render={({ field }) => {
+									return (
+										<FormItem className="flex flex-col justify-between gap-y-1">
+											<FormLabel className="text-lg">
+												Ethnicity
+											</FormLabel>
+											<MultiSelector
+												onValuesChange={field.onChange}
+												values={field.value}
+												loop={true}
+											>
+												<MultiSelectorTrigger>
+													<MultiSelectorInput
+														className="text-sm"
+														placeholder="Click to Select"
+													/>
+												</MultiSelectorTrigger>
+												<MultiSelectorContent>
+													<MultiSelectorList>
+														{c.userIdentityOptions.ethnicity.map(
+															(value) => (
+																<MultiSelectorItem
+																	key={value}
+																	value={value}
+																>
+																	{value}
+																</MultiSelectorItem>
+															),
+														)}
+													</MultiSelectorList>
+												</MultiSelectorContent>
+											</MultiSelector>
+											<FormMessage />
+										</FormItem>
+									);
+								}}
+							/>
+						</div>
+						<FormField
+							control={form.control}
+							name="birthday"
+							render={({ field }) => (
+								<FormItem className="max-w-3xl space-y-2">
+									<FormLabel className="text-lg">
+										Birthday
+									</FormLabel>
+									<FormMessage />
+									<FormControl className="flex gap-3">
+										<PopoverCalendar
+											date={field.value}
+											onChange={field.onChange}
+										/>
+									</FormControl>
+								</FormItem>
+							)}
+						/>
+						<Button
+							type="submit"
+							disabled={!form.formState.isDirty}
+							className="lg:w-32 w-full text-lg font-semibold"
+						>
+							{submitting ? (
+								<LoaderCircle className="h-5 w-5 animate-spin" />
+							) : (
+								"Update"
+							)}
+						</Button>
+					</div>
+				</div>
+			</form>
+		</Form>
+	);
+}
