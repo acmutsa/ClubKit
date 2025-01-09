@@ -4,12 +4,12 @@ import { authenticatedAction } from "@/lib/safe-action";
 import { db, eq } from "db";
 import { data, users } from "db/schema";
 import { revalidateTag } from "next/cache";
-import { del } from "@vercel/blob"
+import { del } from "@vercel/blob";
 import {
 	editAccountSettingsSchema,
 	editAcademicSettingsSchema,
 	editClubSettingsSchema,
-	editResumeActionSchema
+	editResumeActionSchema,
 } from "@/validators/settings";
 
 export const editAccountSettings = authenticatedAction
@@ -84,48 +84,56 @@ export const editAcademicSettings = authenticatedAction
 
 export const editResumeUrl = authenticatedAction
 	.schema(editResumeActionSchema)
-	.action(async ({
-		ctx: { userId: clerkID },
-		parsedInput: { resume, oldResume }
-	}) => {
-		try {
-			await db
-				.update(data)
-				.set({ resume })
-				.from(users)
-				.where(eq(users.clerkID, clerkID));
+	.action(
+		async ({
+			ctx: { userId: clerkID },
+			parsedInput: { resume, oldResume },
+		}) => {
+			try {
+				await db
+					.update(data)
+					.set({ resume })
+					.from(users)
+					.where(eq(users.clerkID, clerkID));
 
-			if (oldResume) await del(oldResume);
+				if (oldResume) await del(oldResume);
 
-			revalidateTag("userSettings");
-			return { success: true };
-		} catch (error) { // Failed to update user data to new resume.  Delete the new resume from the blob and make the user try again.
-			console.error(error);
-			await del(resume);
-			return { success: false, error: "Failed to finalize resume upload." };
-		}
-	});
+				revalidateTag("userSettings");
+				return { success: true };
+			} catch (error) {
+				// Failed to update user data to new resume.  Delete the new resume from the blob and make the user try again.
+				console.error(error);
+				await del(resume);
+				return {
+					success: false,
+					error: "Failed to finalize resume upload.",
+				};
+			}
+		},
+	);
 
 export const editClubSettings = authenticatedAction
 	.schema(editClubSettingsSchema)
-	.action(async ({
-		ctx: { userId: clerkID },
-		parsedInput: { shirtSize, shirtType }
-	}) => {
-		try {
-			await db
-				.update(data)
-				.set({ shirtSize, shirtType })
-				.from(users)
-				.where(eq(users.clerkID, clerkID));
-		} catch (error) {
-			console.error(error);
-			return {
-				success: false,
-				error: "Failed to update user settings",
-			};
-		}
+	.action(
+		async ({
+			ctx: { userId: clerkID },
+			parsedInput: { shirtSize, shirtType },
+		}) => {
+			try {
+				await db
+					.update(data)
+					.set({ shirtSize, shirtType })
+					.from(users)
+					.where(eq(users.clerkID, clerkID));
+			} catch (error) {
+				console.error(error);
+				return {
+					success: false,
+					error: "Failed to update user settings",
+				};
+			}
 
-		revalidateTag("userSettings");
-		return { success: true };
-	});
+			revalidateTag("userSettings");
+			return { success: true };
+		},
+	);

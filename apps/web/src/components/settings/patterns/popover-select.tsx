@@ -13,14 +13,14 @@ type PopoverSelectProps = {
 	value: string | undefined;
 	topic: string;
 	onChange: (value: string) => void;
-}
+};
 
 export function PopoverSelect({
 	options,
 	value,
 	topic,
 	optionNames,
-	onChange
+	onChange,
 }: PopoverSelectProps) {
 	const [open, setOpen] = useState(false);
 
@@ -39,7 +39,9 @@ export function PopoverSelect({
 			</SelectTrigger>
 			<SelectContent>
 				{options.map((option, idx) => {
-					const currentOptionName = optionNames ? optionNames[idx] : option;
+					const currentOptionName = optionNames
+						? optionNames[idx]
+						: option;
 
 					return (
 						<SelectItem
@@ -47,11 +49,12 @@ export function PopoverSelect({
 							className="cursor-pointer"
 							value={option}
 						>
-							{currentOptionName[0].toUpperCase() + currentOptionName.slice(1)}
+							{currentOptionName[0].toUpperCase() +
+								currentOptionName.slice(1)}
 						</SelectItem>
-					)
+					);
 				})}
 			</SelectContent>
 		</Select>
-	)
+	);
 }

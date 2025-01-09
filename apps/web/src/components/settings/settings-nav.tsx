@@ -35,7 +35,7 @@ export function SettingsNav({ items, className, ...props }: SettingsNavProps) {
 						pathname === href && "bg-muted"
 							? "bg-muted"
 							: "hover:bg-transparent hover:underline",
-						"lg:justify-start text-sm font-semibold lg:text-lg flex-1",
+						"flex-1 text-sm font-semibold lg:justify-start lg:text-lg",
 					)}
 				>
 					{title}

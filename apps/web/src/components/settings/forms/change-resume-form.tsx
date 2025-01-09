@@ -60,10 +60,14 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 			}
 
 			try {
-				const uploadResult = await upload(`${bucketBaseUrl}/${data.resume.name}`, data.resume, {
-					access: "public",
-					handleUploadUrl: "/api/upload/resume",
-				});
+				const uploadResult = await upload(
+					`${bucketBaseUrl}/${data.resume.name}`,
+					data.resume,
+					{
+						access: "public",
+						handleUploadUrl: "/api/upload/resume",
+					},
+				);
 
 				if (!uploadResult) {
 					toast.error("Failed to upload resume");
@@ -76,7 +80,7 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 				console.error(e);
 			}
 		}
-	}
+	};
 
 	return (
 		<Form {...form}>
@@ -87,21 +91,41 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 					render={() => (
 						<FormItem className="space-y-6">
 							<FormLabel className="text-lg">Resume</FormLabel>
-							<Button variant="ghost" onClick={() => setResumeShown(!resumeShown)} className="hidden h-0 lg:inline hover:bg-background p-0 px-2 underline cursor-pointer text-muted-foreground">
+							<Button
+								variant="ghost"
+								onClick={() => setResumeShown(!resumeShown)}
+								className="hidden h-0 cursor-pointer p-0 px-2 text-muted-foreground underline hover:bg-background lg:inline"
+							>
 								{resumeShown ? "hide" : "show"}
 							</Button>
 							<iframe
 								src={`https://docs.google.com/gview?url=${resume}&embedded=true`}
-								className={cn("lg:w-[400px] lg:h-[560px] w-[315px] h-[430px]", (!resume || !resumeShown) && "hidden")}
+								className={cn(
+									"h-[430px] w-[315px] lg:h-[560px] lg:w-[400px]",
+									(!resume || !resumeShown) && "hidden",
+								)}
 							/>
 							<FormControl>
 								<FileInput
 									showCurrent
-									currentFileName={resume ? formatBlobUrl(resume) : undefined}
+									currentFileName={
+										resume
+											? formatBlobUrl(resume)
+											: undefined
+									}
 									currentLink={resume}
-									fileValue={form.getValues("resume") ?? undefined}
+									fileValue={
+										form.getValues("resume") ?? undefined
+									}
 									accept={c.acceptedResumeMimeTypes.toLocaleString()}
-									onChange={(file) => form.setValue("resume", file, { shouldDirty: file?.name !== (resume && formatBlobUrl(resume)) })}
+									onChange={(file) =>
+										form.setValue("resume", file, {
+											shouldDirty:
+												file?.name !==
+												(resume &&
+													formatBlobUrl(resume)),
+										})
+									}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -111,7 +135,7 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 				<Button
 					type="submit"
 					disabled={!form.formState.isDirty || submitting}
-					className="lg:w-32 h-8 mt-4 w-full text-md font-semibold"
+					className="text-md mt-4 h-8 w-full font-semibold lg:w-32"
 				>
 					{submitting ? (
 						<LoaderCircle className="h-5 w-5 animate-spin" />

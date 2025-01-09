@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import { Settings } from "lucide-react";
 
 interface SettingsDropdownProps {
-	items: { href: string, title: string }[];
+	items: { href: string; title: string }[];
 	className?: string;
 }
 
@@ -18,12 +18,17 @@ export function SettingsDropdown({ items, className }: SettingsDropdownProps) {
 		<Accordion type="single" className={cn(className)} collapsible>
 			<AccordionItem value="menu" className="px-4">
 				<AccordionTrigger className="py-2">
-					<Settings className="w-6 h-6" />
+					<Settings className="h-6 w-6" />
 				</AccordionTrigger>
 				<AccordionContent className="space-y-2">
 					{items.map(({ title, href }) => (
 						<div key={title}>
-							<Link href={href} className="text-lg text-right font-bold">{title}</Link>
+							<Link
+								href={href}
+								className="text-right text-lg font-bold"
+							>
+								{title}
+							</Link>
 						</div>
 					))}
 				</AccordionContent>

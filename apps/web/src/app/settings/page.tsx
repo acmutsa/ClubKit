@@ -13,12 +13,14 @@ export default async function UserSettingsProfilePage() {
 
 	if (!userSettings) return redirect("/onboarding");
 
-	return <AccountSettingsForm
-		firstName={userSettings.firstName}
-		lastName={userSettings.lastName}
-		gender={userSettings.data.gender as Gender[]}
-		ethnicity={userSettings.data.ethnicity as Ethnicity[]}
-		// BUG: Birthday's marked return type is Date but ORM returns string instead, seems like an issue with drizzle.
-		birthday={userSettings.data.birthday as unknown as string}
-	/>;
+	return (
+		<AccountSettingsForm
+			firstName={userSettings.firstName}
+			lastName={userSettings.lastName}
+			gender={userSettings.data.gender as Gender[]}
+			ethnicity={userSettings.data.ethnicity as Ethnicity[]}
+			// BUG: Birthday's marked return type is Date but ORM returns string instead, seems like an issue with drizzle.
+			birthday={userSettings.data.birthday as unknown as string}
+		/>
+	);
 }

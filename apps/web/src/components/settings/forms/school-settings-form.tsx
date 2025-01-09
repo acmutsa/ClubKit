@@ -44,9 +44,14 @@ const months = [
 	"October",
 	"November",
 	"December",
-]
+];
 
-export function SchoolSettingsForm({ graduationMonth, graduationYear, classification, major }: SchoolSettingsFormProps) {
+export function SchoolSettingsForm({
+	graduationMonth,
+	graduationYear,
+	classification,
+	major,
+}: SchoolSettingsFormProps) {
 	const [submitting, setSubmitting] = useState(false);
 
 	const form = useForm<z.infer<typeof editAcademicSettingsSchema>>({
@@ -94,7 +99,9 @@ export function SchoolSettingsForm({ graduationMonth, graduationYear, classifica
 							name="major"
 							render={({ field }) => (
 								<FormItem className="col-span-3 md:col-span-2">
-									<FormLabel className="text-lg">Major</FormLabel>
+									<FormLabel className="text-lg">
+										Major
+									</FormLabel>
 									<FormControl>
 										<PopoverCommand
 											value={field.value}
@@ -117,7 +124,12 @@ export function SchoolSettingsForm({ graduationMonth, graduationYear, classifica
 									</FormLabel>
 									<FormControl>
 										<PopoverSelect
-											options={["freshman", "sophomore", "junior", "senior"]}
+											options={[
+												"freshman",
+												"sophomore",
+												"junior",
+												"senior",
+											]}
 											value={field.value}
 											topic="classification"
 											onChange={field.onChange}
@@ -138,8 +150,14 @@ export function SchoolSettingsForm({ graduationMonth, graduationYear, classifica
 										</FormLabel>
 										<FormControl>
 											<PopoverSelect
-												onChange={(value) => field.onChange(parseInt(value))}
-												options={range(1, 13).map(String)}
+												onChange={(value) =>
+													field.onChange(
+														parseInt(value),
+													)
+												}
+												options={range(1, 13).map(
+													String,
+												)}
 												optionNames={months}
 												topic="month"
 												value={field.value.toString()}
@@ -161,11 +179,18 @@ export function SchoolSettingsForm({ graduationMonth, graduationYear, classifica
 										</FormLabel>
 										<FormControl>
 											<PopoverSelect
-												onChange={(value) => field.onChange(parseInt(value))}
-												options={
-													range(new Date().getFullYear(), new Date().getFullYear() + 5)
-														.map(year => year.toString())
+												onChange={(value) =>
+													field.onChange(
+														parseInt(value),
+													)
 												}
+												options={range(
+													new Date().getFullYear(),
+													new Date().getFullYear() +
+														5,
+												).map((year) =>
+													year.toString(),
+												)}
 												topic="year"
 												value={field.value.toString()}
 											/>
@@ -178,11 +203,13 @@ export function SchoolSettingsForm({ graduationMonth, graduationYear, classifica
 						<Button
 							type="submit"
 							disabled={!form.formState.isDirty}
-							className="lg:w-32 w-full text-lg font-semibold"
+							className="w-full text-lg font-semibold lg:w-32"
 						>
 							{submitting ? (
 								<LoaderCircle className="h-5 w-5 animate-spin" />
-							) : "Update"}
+							) : (
+								"Update"
+							)}
 						</Button>
 					</div>
 				</div>

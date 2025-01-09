@@ -8,11 +8,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-} from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LoaderCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -30,7 +26,9 @@ interface ChangeProfilePictureFormProps {
 	profilePicture?: string;
 }
 
-export function ChangeProfilePictureForm({ profilePicture }: ChangeProfilePictureFormProps) {
+export function ChangeProfilePictureForm({
+	profilePicture,
+}: ChangeProfilePictureFormProps) {
 	const [submitting, setSubmitting] = useState(false);
 	const router = useRouter();
 	const { user, isLoaded } = useUser();
@@ -49,7 +47,9 @@ export function ChangeProfilePictureForm({ profilePicture }: ChangeProfilePictur
 
 		if (data.profilePicture) {
 			try {
-				const setProfileImageResult = await user?.setProfileImage({ file: data.profilePicture });
+				const setProfileImageResult = await user?.setProfileImage({
+					file: data.profilePicture,
+				});
 				if (!setProfileImageResult) {
 					toast.error("Failed to upload profile picture");
 				} else {
@@ -64,7 +64,7 @@ export function ChangeProfilePictureForm({ profilePicture }: ChangeProfilePictur
 			form.reset({ profilePicture: undefined });
 			router.refresh();
 		}
-	}
+	};
 
 	return (
 		<Form {...form}>
@@ -77,8 +77,17 @@ export function ChangeProfilePictureForm({ profilePicture }: ChangeProfilePictur
 							<FormLabel className="text-lg">
 								Profile Picture
 							</FormLabel>
-							<Avatar className="w-28 h-28 cursor-pointer" onClick={() => profilePicture && router.push(profilePicture)}>
-								<AvatarImage src={profilePicture ?? undefined} alt="Profile picture" />
+							<Avatar
+								className="h-28 w-28 cursor-pointer"
+								onClick={() =>
+									profilePicture &&
+									router.push(profilePicture)
+								}
+							>
+								<AvatarImage
+									src={profilePicture ?? undefined}
+									alt="Profile picture"
+								/>
 								<AvatarFallback asChild>
 									<Skeleton />
 								</AvatarFallback>
@@ -86,9 +95,16 @@ export function ChangeProfilePictureForm({ profilePicture }: ChangeProfilePictur
 							<FormControl>
 								<FileInput
 									currentLink={profilePicture}
-									fileValue={form.getValues("profilePicture") ?? undefined}
+									fileValue={
+										form.getValues("profilePicture") ??
+										undefined
+									}
 									accept="image/*"
-									onChange={(file) => form.setValue("profilePicture", file, { shouldDirty: true })}
+									onChange={(file) =>
+										form.setValue("profilePicture", file, {
+											shouldDirty: true,
+										})
+									}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -98,7 +114,7 @@ export function ChangeProfilePictureForm({ profilePicture }: ChangeProfilePictur
 				<Button
 					type="submit"
 					disabled={!form.formState.isDirty || submitting}
-					className="lg:w-32 h-8 mt-4 w-full text-md font-semibold"
+					className="text-md mt-4 h-8 w-full font-semibold lg:w-32"
 				>
 					{submitting ? (
 						<LoaderCircle className="h-5 w-5 animate-spin" />

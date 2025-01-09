@@ -12,10 +12,12 @@ export default async function UserSettingsProfilePage() {
 
 	if (!userSettings) return redirect("/onboarding");
 
-	return <SchoolSettingsForm 
-		major={userSettings.data.major} 
-		classification={userSettings.data.classification}  
-		graduationYear={userSettings.data.graduationYear}
-		graduationMonth={userSettings.data.graduationMonth}
-	/>;
+	return (
+		<SchoolSettingsForm
+			major={userSettings.data.major}
+			classification={userSettings.data.classification}
+			graduationYear={userSettings.data.graduationYear}
+			graduationMonth={userSettings.data.graduationMonth}
+		/>
+	);
 }

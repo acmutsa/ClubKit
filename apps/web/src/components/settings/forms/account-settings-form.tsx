@@ -40,7 +40,13 @@ interface AccountInfoProps {
 	birthday: string | undefined;
 }
 
-export function AccountSettingsForm({ firstName, lastName, gender, ethnicity, birthday }: AccountInfoProps) {
+export function AccountSettingsForm({
+	firstName,
+	lastName,
+	gender,
+	ethnicity,
+	birthday,
+}: AccountInfoProps) {
 	const [submitting, setSubmitting] = useState(false);
 
 	const form = useForm<z.infer<typeof editAccountSettingsSchema>>({
@@ -51,7 +57,7 @@ export function AccountSettingsForm({ firstName, lastName, gender, ethnicity, bi
 			gender,
 			ethnicity,
 			birthday: birthday ? new Date(birthday) : undefined,
-		}
+		},
 	});
 
 	const { execute } = useAction(editAccountSettings, {
@@ -66,7 +72,6 @@ export function AccountSettingsForm({ firstName, lastName, gender, ethnicity, bi
 			console.error(error);
 		},
 	});
-
 
 	const handleSubmit = (data: z.infer<typeof editAccountSettingsSchema>) => {
 		execute(data);
@@ -84,7 +89,7 @@ export function AccountSettingsForm({ firstName, lastName, gender, ethnicity, bi
 					</div>
 					<Separator className="my-6" />
 					<div className="space-y-8">
-						<div className="flex lg:flex-row flex-col gap-4 [&>*]:flex-1">
+						<div className="flex flex-col gap-4 lg:flex-row [&>*]:flex-1">
 							<FormField
 								control={form.control}
 								name="firstName"
@@ -225,7 +230,9 @@ export function AccountSettingsForm({ firstName, lastName, gender, ethnicity, bi
 															(value) => (
 																<MultiSelectorItem
 																	key={value}
-																	value={value}
+																	value={
+																		value
+																	}
 																>
 																	{value}
 																</MultiSelectorItem>
@@ -261,7 +268,7 @@ export function AccountSettingsForm({ firstName, lastName, gender, ethnicity, bi
 						<Button
 							type="submit"
 							disabled={!form.formState.isDirty}
-							className="lg:w-32 w-full text-lg font-semibold"
+							className="w-full text-lg font-semibold lg:w-32"
 						>
 							{submitting ? (
 								<LoaderCircle className="h-5 w-5 animate-spin" />

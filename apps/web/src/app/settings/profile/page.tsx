@@ -19,7 +19,7 @@ export default async function ProfilePage() {
 		height: "112",
 		width: "112",
 		quality: "100",
-		fit: "crop"
+		fit: "crop",
 	});
 
 	return (
@@ -31,15 +31,18 @@ export default async function ProfilePage() {
 				</p>
 			</div>
 			<Separator />
-			<div className="lg:space-y-8 space-y-12">
+			<div className="space-y-12 lg:space-y-8">
 				<ChangeProfilePictureForm
-					profilePicture={user.hasImage ? `${user.imageUrl}?${params.toString()}` : undefined}
+					profilePicture={
+						user.hasImage
+							? `${user.imageUrl}?${params.toString()}`
+							: undefined
+					}
 				/>
 				<ChangeResumeForm
 					resume={userSettings.data.resume ?? undefined}
 				/>
 			</div>
 		</div>
-
-	)
+	);
 }

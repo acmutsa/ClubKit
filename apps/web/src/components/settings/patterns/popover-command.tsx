@@ -39,20 +39,19 @@ export function PopoverCommand({
 					role="combobox"
 					className={cn(
 						"w-full justify-between",
-						!value &&
-						"text-muted-foreground",
+						!value && "text-muted-foreground",
 					)}
 				>
-					{value ? options.find((option) => option === value) : `Select a ${topic}`}
+					{value
+						? options.find((option) => option === value)
+						: `Select a ${topic}`}
 					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="max-h-[400px] w-[250px] p-0 no-scrollbar">
 				<Command>
 					<CommandInput placeholder={`Search ${topic}s...`} />
-					<CommandEmpty>
-						No {topic}s found.
-					</CommandEmpty>
+					<CommandEmpty>No {topic}s found.</CommandEmpty>
 					<CommandList>
 						<CommandGroup>
 							{options.map((option) => {
@@ -67,11 +66,12 @@ export function PopoverCommand({
 										className="cursor-pointer"
 									>
 										<Check
-											className={`mr-2 h-4 w-4 overflow-hidden ${value && option.toLowerCase() ===
-												value
-												? "block"
-												: "hidden"
-												}
+											className={`mr-2 h-4 w-4 overflow-hidden ${
+												value &&
+												option.toLowerCase() === value
+													? "block"
+													: "hidden"
+											}
 											`}
 										/>
 										{option}

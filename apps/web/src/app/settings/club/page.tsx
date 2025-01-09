@@ -13,9 +13,9 @@ export default async function ClubSettingsPage() {
 	if (!userSettings) return redirect("/onboarding");
 
 	return (
-		<ClubSettingsForm 
+		<ClubSettingsForm
 			shirtType={userSettings.data.shirtType}
 			shirtSize={userSettings.data.shirtSize}
 		/>
-	)
+	);
 }

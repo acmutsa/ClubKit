@@ -30,7 +30,10 @@ interface OrganizationSettingsPageProps {
 }
 
 // TODO: Figure out what types of interested events users can select.  Fix padding on interested event types.
-export function ClubSettingsForm({ shirtSize, shirtType }: OrganizationSettingsPageProps) {
+export function ClubSettingsForm({
+	shirtSize,
+	shirtType,
+}: OrganizationSettingsPageProps) {
 	const [submitting, setSubmitting] = useState(false);
 
 	const form = useForm<z.infer<typeof editClubSettingsSchema>>({
@@ -46,7 +49,7 @@ export function ClubSettingsForm({ shirtSize, shirtType }: OrganizationSettingsP
 		onExecute: () => setSubmitting(true),
 		onSuccess: () => {
 			toast.success("Organization settings updated");
-			form.reset(form.getValues())
+			form.reset(form.getValues());
 		},
 		onError: (error) => {
 			toast.error("Failed to update organization settings");
@@ -56,7 +59,7 @@ export function ClubSettingsForm({ shirtSize, shirtType }: OrganizationSettingsP
 
 	const handleSubmit = (data: z.infer<typeof editClubSettingsSchema>) => {
 		execute(data);
-	}
+	};
 
 	return (
 		<Form {...form}>
@@ -95,7 +98,9 @@ export function ClubSettingsForm({ shirtSize, shirtType }: OrganizationSettingsP
 							name="shirtType"
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className="text-lg">Shirt Type</FormLabel>
+									<FormLabel className="text-lg">
+										Shirt Type
+									</FormLabel>
 									<FormControl>
 										<PopoverSelect
 											value={field.value}
@@ -111,7 +116,7 @@ export function ClubSettingsForm({ shirtSize, shirtType }: OrganizationSettingsP
 						<Button
 							type="submit"
 							disabled={submitting || !form.formState.isDirty}
-							className="lg:w-32 w-full text-lg font-semibold"
+							className="w-full text-lg font-semibold lg:w-32"
 						>
 							{submitting ? (
 								<LoaderCircle className="h-5 w-5 animate-spin" />
@@ -123,5 +128,5 @@ export function ClubSettingsForm({ shirtSize, shirtType }: OrganizationSettingsP
 				</div>
 			</form>
 		</Form>
-	)
+	);
 }

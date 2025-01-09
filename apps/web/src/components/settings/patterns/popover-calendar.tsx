@@ -28,26 +28,21 @@ export function PopoverCalendar({
 					className={cn(
 						className,
 						"text-md items-center pl-3 font-normal",
-						!date &&
-						"text-muted-foreground",
+						!date && "text-muted-foreground",
 					)}
 				>
 					{date ? format(date, "PPP") : <span>Pick a Date</span>}
 					<CalendarIcon className="ml-auto h-5 w-5 opacity-50" />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent
-				className="w-auto p-0"
-				align="start"
-			>
+			<PopoverContent className="w-auto p-0" align="start">
 				<CalendarWithYears
 					captionLayout="dropdown-buttons"
 					mode="single"
 					selected={date ?? undefined}
 					onSelect={(value) => onChange(value)}
 					disabled={(date) =>
-						date > new Date() ||
-						date < new Date("1900-01-01")
+						date > new Date() || date < new Date("1900-01-01")
 					}
 					fromYear={new Date().getFullYear() - 100}
 					toYear={new Date().getFullYear()}
@@ -55,5 +50,5 @@ export function PopoverCalendar({
 				/>
 			</PopoverContent>
 		</Popover>
-	)
+	);
 }
