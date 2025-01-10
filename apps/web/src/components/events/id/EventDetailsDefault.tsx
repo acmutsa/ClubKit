@@ -57,15 +57,16 @@ export default function EventDetailsDefault(detailsProps: DetailsProps) {
 			<div className="w-full max-w-[1550px] space-y-4 pl-4 3xl:pl-2">
 				<div className="grid w-[98%] grid-cols-2 pb-6">
 					<div className="relative flex h-auto w-full flex-col justify-center space-y-4 ">
-						<EventImage
-							src={thumbnailUrl}
-							className="rounded-md"
-							width={width}
-							height={height}
-						/>
-						{isEventHappening && (
+							<EventImage
+								src={thumbnailUrl}
+								className="rounded-md"
+								width={width}
+								height={height}
+							/>
+
+						{/* {isEventHappening && (
 							<EventDetailsLiveIndicator className="absolute left-3 top-0 z-50" />
-						)}
+						)} */}
 						<EventCategories
 							event={event}
 							isPast={isEventPassed}

@@ -1,4 +1,4 @@
-import EventDetails from "@/components/events/id/EventDetails";
+import NewEventDetails from "@/components/events/id/NewEventDetails";
 import Navbar from "@/components/shared/navbar";
 import { Suspense } from "react";
 
@@ -7,7 +7,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 		<div className="flex min-h-[100dvh] w-full flex-col">
 			<Navbar showBorder />
 			<Suspense fallback={<h1>Grabbing the event. One sec...</h1>}>
-				<EventDetails id={params.slug} />
+				<NewEventDetails id={params.slug} />
 			</Suspense>
 		</div>
 	);

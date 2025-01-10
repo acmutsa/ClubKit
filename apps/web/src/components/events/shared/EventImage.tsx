@@ -21,7 +21,7 @@ export default function EventImage(props: EventImageProps) {
 
 	return (
 		<>
-			<span className={clsx({ "live-glow": props.isLive })}>
+			<span className={clsx("relative", { "live-glow": props.isLive })}>
 				<Image
 					{...combinedProps}
 					onLoad={() => setLoaded(true)}
