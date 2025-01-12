@@ -6,10 +6,8 @@ import { getClientTimeZone } from "@/lib/utils";
 import { VERCEL_IP_TIMEZONE_HEADER_KEY } from "@/lib/constants";
 import { formatInTimeZone } from "date-fns-tz";
 import { getEventsWithCheckins } from "@/lib/queries/events";
-// checkins
 import { getCheckinLog } from "@/lib/queries/checkins";
 import { getAllCategories } from "@/lib/queries/categories";
-import { checkins } from "db/schema";
 
 const basicDateFormatterString = "eeee, MMMM dd yyyy HH:mm a";
 
@@ -42,7 +40,10 @@ function jsonToCSV(json: any[]): string {
 	return csv.join("\r\n");
 }
 
-async function hanldExportRequest(exportName:ExportNames,tz:string):Promise<any[]> {
+async function hanldExportRequest(
+	exportName: ExportNames,
+	tz: string,
+): Promise<any[]> {
 	switch (exportName as ExportNames) {
 		case "members":
 			const memberTableData =
@@ -51,7 +52,7 @@ async function hanldExportRequest(exportName:ExportNames,tz:string):Promise<any[
 						data: true,
 					},
 				})) ?? [];
-				return memberTableData.map((user) => {
+			return memberTableData.map((user) => {
 				let toRet = {
 					...user,
 					...user.data,
@@ -60,18 +61,20 @@ async function hanldExportRequest(exportName:ExportNames,tz:string):Promise<any[
 						tz,
 						basicDateFormatterString,
 					),
-					birthday: user.data.birthday ? formatInTimeZone(
-						user.data.birthday,
-						tz,
-						'eeee, MMMM dd yyyy',
-					):"Not provided",
+					birthday: user.data.birthday
+						? formatInTimeZone(
+								user.data.birthday,
+								tz,
+								"eeee, MMMM dd yyyy",
+							)
+						: "Not provided",
 				};
 				///@ts-ignore We know this breaks contract, but has been tested.
 				delete toRet?.data;
 				return toRet;
 			});
 		case "events":
-			return (await getEventsWithCheckins()).map((event)=>{
+			return (await getEventsWithCheckins()).map((event) => {
 				return {
 					id: event.id,
 					name: event.name,
@@ -105,13 +108,20 @@ async function hanldExportRequest(exportName:ExportNames,tz:string):Promise<any[
 			return getAllCategories();
 		case "checkins":
 			// need to come back and flatten this one
-			return(await getCheckinLog()).map((checkin)=>{
+			return (await getCheckinLog()).map((checkin) => {
 				return {
-					event_name:checkin.event.name,
-					user:checkin.author.firstName + " " + checkin.author.lastName,
-					checkin_time:formatInTimeZone(checkin.time,tz,basicDateFormatterString),
-					rating:checkin.rating ?? 'No rating',
-					feedback:checkin.feedback || '',
+					event_name: checkin.event.name,
+					user:
+						checkin.author.firstName +
+						" " +
+						checkin.author.lastName,
+					checkin_time: formatInTimeZone(
+						checkin.time,
+						tz,
+						basicDateFormatterString,
+					),
+					rating: checkin.rating ?? "No rating",
+					feedback: checkin.feedback || "",
 				};
 			});
 		case "semesters":
@@ -125,19 +135,25 @@ async function hanldExportRequest(exportName:ExportNames,tz:string):Promise<any[
 export async function GET(request: NextRequest) {
 	const exportName = request.nextUrl.searchParams.get("name");
 	if (!exportName) {
-		return NextResponse.json({ error: "No name provided" }, { status: 400 });
+		return NextResponse.json(
+			{ error: "No name provided" },
+			{ status: 400 },
+		);
 	}
 	const clientTimeZone = getClientTimeZone(
 		request.headers.get(VERCEL_IP_TIMEZONE_HEADER_KEY),
 	);
-	const flattendedResults = await hanldExportRequest(exportName as ExportNames,clientTimeZone);
+	const flattendedResults = await hanldExportRequest(
+		exportName as ExportNames,
+		clientTimeZone,
+	);
 	const csv = jsonToCSV(flattendedResults);
-	
+
 	const formattedDate = formatInTimeZone(
-			new Date(),
-			clientTimeZone,
-			"MMMM_dd_yyyy_HH:mm:ss_a",
-		);
+		new Date(),
+		clientTimeZone,
+		"MMMM_dd_yyyy_HH:mm:ss_a",
+	);
 
 	return new Response(csv, {
 		headers: {

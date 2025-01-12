@@ -12,5 +12,5 @@ export const getAllCategoriesKeyValue = async () => {
 };
 
 export const getAllCategories = async () => {
-	return  db.query.eventCategories.findMany();
-}
+	return db.query.eventCategories.findMany();
+};
