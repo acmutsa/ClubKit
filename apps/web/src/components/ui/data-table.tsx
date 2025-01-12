@@ -58,11 +58,13 @@ import { DataTablePagination } from "../shared/data-table-pagination";
 
 import { FolderInput } from "lucide-react";
 import { toast } from "sonner";
+import { ExportNames } from "@/lib/types/shared";
+
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	viewRoute?: string;
-	tableName?: string;
+	tableName?: ExportNames;
 }
 
 declare module "@tanstack/react-table" {
@@ -169,10 +171,11 @@ export function DataTable<TData, TValue>({
 				<div className="m-2 text-sm text-muted-foreground">
 					Viewing {table.getFilteredRowModel().rows.length} result(s).
 				</div>
-				<div className="flex w-full flex-1 justify-end">
+				{tableName && (
+					<div className="flex w-full flex-1 justify-end">
 					<a
 						download
-						href="/api/admin/export/member"
+						href={`/api/admin/export?name=${tableName}`}
 						onClick={showLoading}
 					>
 						<Button className="flex gap-x-1">
@@ -180,7 +183,7 @@ export function DataTable<TData, TValue>({
 							Export
 						</Button>
 					</a>
-				</div>
+				</div>)}
 			</div>
 			<div className="rounded-md border">
 				<Table>
