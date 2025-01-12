@@ -1,6 +1,6 @@
 import { db } from "db";
 
-export const getCategoryOptions = async () => {
+export const getAllCategoriesKeyValue = async () => {
 	const categories = (await db.query.eventCategories.findMany()).reduce(
 		(acc, cat) => {
 			acc[cat.name] = cat.id;
@@ -10,3 +10,7 @@ export const getCategoryOptions = async () => {
 	);
 	return categories;
 };
+
+export const getAllCategories = async () => {
+	return  db.query.eventCategories.findMany();
+}
