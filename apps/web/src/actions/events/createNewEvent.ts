@@ -62,8 +62,8 @@ export const createEvent = adminAction
 
 			res.eventID = eventID;
 		});
-		revalidatePath("/admin/events")
-		revalidatePath("/events")
+		revalidatePath("/admin/events");
+		revalidatePath("/events");
 
 		return res;
 	});

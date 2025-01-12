@@ -8,7 +8,7 @@ import { DataTable } from "@/components/ui/data-table";
 import EventStatsSheet from "@/components/dash/admin/events/EventStatsSheet";
 import { Button } from "@/components/ui/button";
 import AdminCheckinLog from "@/components/dash/shared/AdminCheckinLog";
-import { unstable_noStore as noStore} from "next/cache"
+import { unstable_noStore as noStore } from "next/cache";
 
 async function Page() {
 	noStore();
