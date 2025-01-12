@@ -6,6 +6,7 @@ import { insertEventSchemaFormified } from "db/zod";
 import { adminAction } from "@/lib/safe-action";
 import { events, eventsToCategories } from "db/schema";
 import c from "config";
+import { revalidatePath } from "next/cache";
 
 const nanoid = customAlphabet(
 	"1234567890abcdefghijklmnopqrstuvwxyz",
@@ -61,6 +62,8 @@ export const createEvent = adminAction
 
 			res.eventID = eventID;
 		});
+		revalidatePath("/admin/events")
+		revalidatePath("/events")
 
 		return res;
 	});
