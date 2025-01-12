@@ -17,7 +17,6 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { CheckinResult } from "@/lib/types/events";
-import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 import React from "react";
@@ -38,6 +37,7 @@ import z from "zod";
 
 type Props = {
 	eventList: { id: string; name: string }[];
+	setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 	default?: {
 		eventID?: string;
 		universityIDs?: string;
@@ -61,6 +61,7 @@ function AddCheckinDialogue({ eventList, ...props }: Props) {
 		reset: resetAction,
 	} = useAction(adminCheckin, {
 		onSuccess: async ({ data }) => {
+			if (props.setOpen) props.setOpen(false);
 			toast.dismiss();
 			if (!data) {
 				toast.error(
@@ -101,7 +102,7 @@ function AddCheckinDialogue({ eventList, ...props }: Props) {
 		},
 	});
 
-	async function onSubmit(data: AdminCheckinProps, evt: any) {
+	function onSubmit(data: AdminCheckinProps, evt: any) {
 		evt.preventDefault();
 		toast.loading("Creating Checkins...");
 		runAddCheckin(data);

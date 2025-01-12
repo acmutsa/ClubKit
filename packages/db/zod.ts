@@ -74,9 +74,14 @@ export const selectUserWithDataSchema = z.object({
 });
 export type UserWithData = z.infer<typeof selectUserWithDataSchema>;
 
-// TODO: tighten insert schema constraints
+export const deleteEventSchema = z.string().min(c.events.idLength);
+
 export const insertEventSchema = createInsertSchema(events);
 export const insertEventSchemaFormified = insertEventSchema
+	.extend({
+		name: basicStringSchema,
+		location: basicStringSchema,
+	})
 	.merge(
 		z.object({
 			categories: z
