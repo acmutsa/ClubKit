@@ -38,11 +38,14 @@ async function Page() {
 					columns={columns}
 					data={events}
 					tableName="events"
-					viewRoute="/events/"
+					viewRoute={undefined}
 				/>
 			</div>
 		</div>
 	);
 }
+
+export const dynamic = "force-dynamic";
+export const runtime = "edge";
 
 export default Page;
