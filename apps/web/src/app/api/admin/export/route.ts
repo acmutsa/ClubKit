@@ -101,6 +101,11 @@ async function hanldExportRequest(
 						tz,
 						basicDateFormatterString,
 					),
+					last_updated: formatInTimeZone(
+						event.updatedAt,
+						tz,
+						basicDateFormatterString,
+					),
 					checkins: event.checkin_count,
 				};
 			});
