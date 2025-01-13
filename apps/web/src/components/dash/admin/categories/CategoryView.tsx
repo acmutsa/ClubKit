@@ -3,10 +3,10 @@ import { DataTable } from "@/components/ui/data-table";
 import CreateCategory from "./CreateCategoryDialogue";
 import { eventCategoryColumns } from "@/app/admin/categories/columns";
 
-export default async function AdminCategoryView(){
-  const categories = await getAllCategories();
+export default async function AdminCategoryView() {
+	const categories = await getAllCategories();
 
-  return (
+	return (
 		<>
 			<div className="mx-5 flex items-center justify-between rounded-lg border p-2">
 				<div className="flex w-fit space-x-4">
@@ -19,15 +19,15 @@ export default async function AdminCategoryView(){
 						</span>
 					</div>
 				</div>
-					<CreateCategory />
+				<CreateCategory />
 			</div>
 			<div className="rounded-xl p-5">
 				<DataTable
-          data={categories}
-          columns={eventCategoryColumns}
-          tableName="categories"
-        />
+					data={categories}
+					columns={eventCategoryColumns}
+					tableName="categories"
+				/>
 			</div>
 		</>
-  );
+	);
 }

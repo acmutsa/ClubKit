@@ -29,11 +29,13 @@ import { Button } from "@/components/ui/button";
 
 type EditCategoryProps = {
 	eventCategory: z.infer<typeof eventCategorySchema>;
-  setOpen:React.Dispatch<SetStateAction<boolean>>;
+	setOpen: React.Dispatch<SetStateAction<boolean>>;
 };
 
-export default function EditCategoryDialogue(editCategoryProps: EditCategoryProps) {
-  const {eventCategory:inputProps,setOpen} = editCategoryProps;
+export default function EditCategoryDialogue(
+	editCategoryProps: EditCategoryProps,
+) {
+	const { eventCategory: inputProps, setOpen } = editCategoryProps;
 	const form = useForm<z.infer<typeof eventCategorySchema>>({
 		resolver: zodResolver(eventCategorySchema),
 		defaultValues: {
@@ -51,14 +53,12 @@ export default function EditCategoryDialogue(editCategoryProps: EditCategoryProp
 						`Event category ${form.getValues("name")} already exists`,
 					);
 				}
-        setOpen(false);
+				setOpen(false);
 				toast.success("Event category created successfully");
 			},
 			onError: (e) => {
 				toast.dismiss();
-				toast.error(
-					`Failed to update ${form.getValues("name")}`,
-				);
+				toast.error(`Failed to update ${form.getValues("name")}`);
 			},
 		},
 	);

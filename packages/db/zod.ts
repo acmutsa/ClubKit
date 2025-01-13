@@ -155,9 +155,9 @@ export const userCheckinSchemaFormified = userCheckInSchema.merge(
 );
 
 export const eventCategorySchema = createSelectSchema(eventCategories).extend({
-	id:z.string().length(c.events.categoryIDLength),
+	id: z.string().length(c.events.categoryIDLength),
 	name: basicStringSchema,
 	color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
 });
 
-export const createEventCategorySchema = eventCategorySchema.omit({id:true});
+export const createEventCategorySchema = eventCategorySchema.omit({ id: true });

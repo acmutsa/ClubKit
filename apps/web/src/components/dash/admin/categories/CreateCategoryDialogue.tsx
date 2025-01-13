@@ -1,50 +1,67 @@
-"use client"
+"use client";
 
-import { DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger } from "@/components/ui/dialog"
-import { createEventCategory } from "@/actions/categories"
-import { useAction } from "next-safe-action/hooks"
-import { Input } from "@/components/ui/input"
-import { useState } from "react"
-import { HexColorPicker} from "react-colorful"
-import { useForm } from "react-hook-form"
-import { createEventCategorySchema } from "db/zod"
-import { Loader2 } from "lucide-react"
-import z from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormField, FormItem, FormLabel,FormMessage } from "@/components/ui/form"
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
-import { Dialog } from "@radix-ui/react-dialog"
+import {
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogFooter,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import { createEventCategory } from "@/actions/categories";
+import { useAction } from "next-safe-action/hooks";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { HexColorPicker } from "react-colorful";
+import { useForm } from "react-hook-form";
+import { createEventCategorySchema } from "db/zod";
+import { Loader2 } from "lucide-react";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Dialog } from "@radix-ui/react-dialog";
 import { Plus } from "lucide-react";
 
+export default function CreateCategoryDialogue() {
+	const [open, setOpen] = useState(false);
+	const form = useForm<z.infer<typeof createEventCategorySchema>>({
+		resolver: zodResolver(createEventCategorySchema),
+		defaultValues: {
+			color: "#000000",
+			name: "",
+		},
+	});
 
-export default function CreateCategoryDialogue(){
-  const [open,setOpen] = useState(false)
-  const form = useForm <z.infer<typeof createEventCategorySchema>>({
-    resolver:zodResolver(createEventCategorySchema),
-    defaultValues:{
-      color: "#000000",
-      name: ""
-    }
-  });
-
-  const { execute:runCreateEventCategory, status} = useAction(createEventCategory,{
-    onSuccess: ({data}) =>{
-      toast.dismiss()
-      if (data?.message == "category_exists"){
-        return toast.error(`Event category ${form.getValues("name")} already exists`)
-      }
-      form.reset()
-      setOpen(false)
-      toast.success("Event category created successfully")
-    },
-    onError: (e) =>{
-      toast.dismiss()
-      toast.error("Failed to create event category")
-    }
-  });
-  const isLoading = status === "executing"
-  return (
+	const { execute: runCreateEventCategory, status } = useAction(
+		createEventCategory,
+		{
+			onSuccess: ({ data }) => {
+				toast.dismiss();
+				if (data?.message == "category_exists") {
+					return toast.error(
+						`Event category ${form.getValues("name")} already exists`,
+					);
+				}
+				form.reset();
+				setOpen(false);
+				toast.success("Event category created successfully");
+			},
+			onError: (e) => {
+				toast.dismiss();
+				toast.error("Failed to create event category");
+			},
+		},
+	);
+	const isLoading = status === "executing";
+	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button className="flex flex-nowrap gap-x-2">
@@ -125,6 +142,5 @@ export default function CreateCategoryDialogue(){
 				</Form>
 			</DialogContent>
 		</Dialog>
-  );
-
+	);
 }

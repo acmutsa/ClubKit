@@ -1,5 +1,5 @@
-"use client"
-import { ColumnDef } from "@tanstack/react-table"
+"use client";
+import { ColumnDef } from "@tanstack/react-table";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,16 +13,16 @@ import { DataTableColumnHeader } from "@/components/ui/data-table";
 import React, { useState, useEffect } from "react";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
-import { 
-  AlertDialog,
-  AlertDialogContent, 
-  AlertDialogTrigger, 
-  AlertDialogFooter, 
-  AlertDialogHeader, 
-  AlertDialogTitle, 
-  AlertDialogDescription,
-  AlertDialogCancel,
-  AlertDialogAction
+import {
+	AlertDialog,
+	AlertDialogContent,
+	AlertDialogTrigger,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogDescription,
+	AlertDialogCancel,
+	AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import EditCategory from "@/components/dash/admin/categories/EditCategoryDialogue";
 import DeleteCategoryDialogue from "@/components/dash/admin/categories/DeleteCategoryDialogue";
@@ -45,53 +45,60 @@ export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title="Color" />;
 		},
-    cell: ({row}) =>{
-      return <div>
-        <div className="flex items-center">
-          <div
-            className="w-4 h-4 rounded-full mr-2"
-            style={{ backgroundColor: row.getValue("color") }}
-          ></div>
-          {row.getValue("color")}
-        </div>
-      </div>
-    },
+		cell: ({ row }) => {
+			return (
+				<div>
+					<div className="flex items-center">
+						<div
+							className="mr-2 h-4 w-4 rounded-full"
+							style={{ backgroundColor: row.getValue("color") }}
+						></div>
+						{row.getValue("color")}
+					</div>
+				</div>
+			);
+		},
 		enableSorting: true,
 	},
 	{
 		id: "actions",
 		enablePinning: true,
-		header: ({  }) => {},
-    cell:({row})=>{
-		const [open, setOpen] = useState(false);
-		const data = row.original;
-		
-    return (
-		<AlertDialog>
-			<Dialog open={open} onOpenChange={setOpen}>
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant="ghost" className="h-8 w-8 p-0">
-							<span className="sr-only">Open menu</span>
-							<MoreHorizontal className="h-4 w-4" />
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						<DropdownMenuItem asChild>
-							<DialogTrigger className="w-full">
-								Edit
-							</DialogTrigger>
-						</DropdownMenuItem>
-						<DropdownMenuItem asChild className="w-full">
-							<AlertDialogTrigger className="text-red-500">Delete</AlertDialogTrigger>
-						</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
-				<EditCategory eventCategory={data} setOpen={setOpen} />
-			</Dialog>
-			<DeleteCategoryDialogue categoryID={data.id} name={data.name} />
-		</AlertDialog>
-	);
-    }
+		header: ({}) => {},
+		cell: ({ row }) => {
+			const [open, setOpen] = useState(false);
+			const data = row.original;
+
+			return (
+				<AlertDialog>
+					<Dialog open={open} onOpenChange={setOpen}>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant="ghost" className="h-8 w-8 p-0">
+									<span className="sr-only">Open menu</span>
+									<MoreHorizontal className="h-4 w-4" />
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end">
+								<DropdownMenuItem asChild>
+									<DialogTrigger className="w-full">
+										Edit
+									</DialogTrigger>
+								</DropdownMenuItem>
+								<DropdownMenuItem asChild className="w-full">
+									<AlertDialogTrigger className="text-red-500">
+										Delete
+									</AlertDialogTrigger>
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+						<EditCategory eventCategory={data} setOpen={setOpen} />
+					</Dialog>
+					<DeleteCategoryDialogue
+						categoryID={data.id}
+						name={data.name}
+					/>
+				</AlertDialog>
+			);
+		},
 	},
 ];
