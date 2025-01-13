@@ -43,7 +43,7 @@ export const createEventCategory = adminAction
     }
   });
 
-export const editEventCategory = adminAction
+export const updateEventCategory = adminAction
   .schema(eventCategorySchema)
   .action(async({parsedInput})=>{
     const {id:categoryID,...inputs} = parsedInput;

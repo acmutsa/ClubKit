@@ -13,8 +13,20 @@ import { DataTableColumnHeader } from "@/components/ui/data-table";
 import React, { useState, useEffect } from "react";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
+import { 
+  AlertDialog,
+  AlertDialogContent, 
+  AlertDialogTrigger, 
+  AlertDialogFooter, 
+  AlertDialogHeader, 
+  AlertDialogTitle, 
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction
+} from "@/components/ui/alert-dialog";
 import EditCategory from "@/components/dash/admin/categories/EditCategoryDialogue";
 import DeleteCategoryDialogue from "@/components/dash/admin/categories/DeleteCategoryDialogue";
+import { DialogTrigger } from "@/components/ui/dialog";
 
 export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 	{
@@ -51,34 +63,35 @@ export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 		enablePinning: true,
 		header: ({  }) => {},
     cell:({row})=>{
-    const [showDelete, setShowDelete] = useState(false);
 		const [open, setOpen] = useState(false);
 		const data = row.original;
 		
-
-
     return (
-				<Dialog open={open} onOpenChange={setOpen}>
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" className="h-8 w-8 p-0">
-								<span className="sr-only">Open menu</span>
-								<MoreHorizontal className="h-4 w-4" />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-              
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </Dialog>
-      );
+		<AlertDialog>
+			<Dialog open={open} onOpenChange={setOpen}>
+				<DropdownMenu>
+					<DropdownMenuTrigger asChild>
+						<Button variant="ghost" className="h-8 w-8 p-0">
+							<span className="sr-only">Open menu</span>
+							<MoreHorizontal className="h-4 w-4" />
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent align="end">
+						<DropdownMenuItem asChild>
+							<DialogTrigger className="w-full">
+								Edit
+							</DialogTrigger>
+						</DropdownMenuItem>
+						<DropdownMenuItem asChild className="w-full">
+							<AlertDialogTrigger className="text-red-500">Delete</AlertDialogTrigger>
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+				<EditCategory eventCategory={data} setOpen={setOpen} />
+			</Dialog>
+			<DeleteCategoryDialogue categoryID={data.id} name={data.name} />
+		</AlertDialog>
+	);
     }
 	},
 ];
-
-function CategoryColumnActions({ setOpen, showDelete, id, name }:{
-  setOpen:React.Dispatch<React.SetStateAction<boolean>>,
-  showDelete:boolean,
-  id:string,
-  name:string
-}) {}
