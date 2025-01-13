@@ -58,7 +58,7 @@ export const data = pgTable("data", {
 
 /* EVENTS */
 export const eventCategories = pgTable("event_categories", {
-	id: text("id").primaryKey(),
+	id: varchar("id",{length:8}).primaryKey(),
 	name: varchar({ length: 255 }).notNull().unique(),
 	color: varchar({ length: 255 }).notNull(),
 });
