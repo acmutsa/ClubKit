@@ -27,6 +27,7 @@ import {
 import EditCategory from "@/components/dash/admin/categories/EditCategoryDialogue";
 import DeleteCategoryDialogue from "@/components/dash/admin/categories/DeleteCategoryDialogue";
 import { DialogTrigger } from "@/components/ui/dialog";
+import { toast } from "sonner";
 
 export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 	{
@@ -79,6 +80,39 @@ export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 								</Button>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent align="end">
+								<DropdownMenuItem
+									onClick={async () =>
+										toast.promise(
+											navigator.clipboard.writeText(
+												data.id,
+											),
+											{
+												loading: "Copying ID...",
+												success: "ID copied",
+												error: "Failed to copy ID",
+											},
+										)
+									}
+								>
+									Copy ID
+								</DropdownMenuItem>
+								<DropdownMenuItem
+									onClick={() =>
+										toast.promise(
+											navigator.clipboard.writeText(
+												data.color,
+											),
+											{
+												loading: "Copying color...",
+												success: "Color copied",
+												error: "Failed to copy color",
+											},
+										)
+									}
+								>
+									Copy color
+								</DropdownMenuItem>
+								<DropdownMenuSeparator />
 								<DropdownMenuItem asChild>
 									<DialogTrigger className="w-full">
 										Edit
