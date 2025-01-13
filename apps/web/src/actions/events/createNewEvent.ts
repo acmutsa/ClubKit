@@ -7,9 +7,10 @@ import { adminAction } from "@/lib/safe-action";
 import { events, eventsToCategories } from "db/schema";
 import c from "config";
 import { revalidatePath } from "next/cache";
+import { LOWER_ALPHANUM_CUSTOM_ALPHABET } from "@/lib/constants";
 
 const nanoid = customAlphabet(
-	"1234567890abcdefghijklmnopqrstuvwxyz",
+	LOWER_ALPHANUM_CUSTOM_ALPHABET,
 	c.events.idLength,
 );
 
