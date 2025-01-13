@@ -21,7 +21,7 @@ import c from "config";
 import React, { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import { toast } from "sonner";
-import { checkInUserAction } from "@/actions/events/checkin";
+import { checkInUserAction } from "@/actions/checkin";
 import { useRouter } from "next/navigation";
 import type { CheckInUserClientProps } from "db/types";
 import RatingStars from "./RatingStars";

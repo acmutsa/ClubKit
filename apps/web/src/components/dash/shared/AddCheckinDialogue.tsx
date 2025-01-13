@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import { useAction } from "next-safe-action/hooks";
 import React from "react";
 import { adminCheckinSchema } from "db/zod";
-import { adminCheckin } from "@/actions/events/checkin";
+import { adminCheckin } from "@/actions/checkin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
