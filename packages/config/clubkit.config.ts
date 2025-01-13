@@ -19,6 +19,7 @@ const c = {
 	},
 	events: {
 		idLength: 6,
+		categoryIDLength: 8,
 		checkingInInfo:
 			"The membership portal is ACM's new method of tracking member check-ins and awarding points. By simply visiting this page during the event and clicking the Check-in button, you can easily garner points towards your membership for the semester.",
 		aboutOrg:
@@ -64,6 +65,7 @@ const c = {
 			Members: "/admin/members",
 			Events: "/admin/events",
 			Checkins: "/admin/checkins",
+			Categories: "/admin/categories",
 		},
 	},
 	maxCheckinDescriptionLength: 400,

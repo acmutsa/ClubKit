@@ -1,5 +1,5 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { data, users, events, checkins } from "./schema";
+import { data, users, events, checkins, eventCategories } from "./schema";
 import { z } from "zod";
 import c from "config";
 
@@ -153,3 +153,11 @@ export const userCheckinSchemaFormified = userCheckInSchema.merge(
 			.max(5, { message: "Rating must be between 1 and 5." }),
 	}),
 );
+
+export const eventCategorySchema = createSelectSchema(eventCategories).extend({
+	id:z.string().length(c.events.categoryIDLength),
+	name: basicStringSchema,
+	color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+});
+
+export const createEventCategorySchema = eventCategorySchema.omit({id:true});
