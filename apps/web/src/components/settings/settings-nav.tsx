@@ -16,6 +16,7 @@ interface SettingsNavProps extends HTMLAttributes<HTMLElement> {
 
 export function SettingsNav({ items, className, ...props }: SettingsNavProps) {
 	const pathname = usePathname();
+	console.log(pathname);
 
 	return (
 		<nav
@@ -32,9 +33,6 @@ export function SettingsNav({ items, className, ...props }: SettingsNavProps) {
 					href={href}
 					className={cn(
 						buttonVariants({ variant: "ghost" }),
-						pathname === href && "bg-muted"
-							? "bg-muted"
-							: "hover:bg-transparent hover:underline",
 						"flex-1 text-sm font-semibold lg:justify-start lg:text-lg",
 					)}
 				>

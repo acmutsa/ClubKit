@@ -135,7 +135,7 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 				<Button
 					type="submit"
 					disabled={!form.formState.isDirty || submitting}
-					className="text-md mt-4 h-8 w-full font-semibold lg:w-32"
+					className="text-md mt-4 w-full font-semibold lg:w-32"
 				>
 					{submitting ? (
 						<LoaderCircle className="h-5 w-5 animate-spin" />

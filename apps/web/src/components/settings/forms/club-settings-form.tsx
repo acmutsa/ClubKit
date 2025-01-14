@@ -2,7 +2,6 @@
 
 import { editClubSettingsSchema } from "@/validators/settings";
 import { editClubSettings } from "@/actions/settings/edit";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
@@ -65,13 +64,6 @@ export function ClubSettingsForm({
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(handleSubmit)}>
 				<div className="space-y-6">
-					<div>
-						<h1 className="text-4xl font-bold">Club</h1>
-						<p className="text-muted-foreground">
-							Edit your club related settings here
-						</p>
-					</div>
-					<Separator className="my-6" />
 					<div className="space-y-10">
 						<FormField
 							control={form.control}

@@ -3,7 +3,6 @@
 import { Input } from "@/components/ui/input";
 import { editAccountSettings } from "@/actions/settings/edit";
 import { editAccountSettingsSchema } from "@/validators/settings";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
@@ -37,7 +36,7 @@ interface AccountInfoProps {
 	lastName: string;
 	gender: Gender[];
 	ethnicity: Ethnicity[];
-	birthday: string | undefined;
+	birthday: Date | undefined;
 }
 
 export function AccountSettingsForm({
@@ -56,7 +55,7 @@ export function AccountSettingsForm({
 			lastName,
 			gender,
 			ethnicity,
-			birthday: birthday ? new Date(birthday) : undefined,
+			birthday,
 		},
 	});
 
@@ -81,13 +80,6 @@ export function AccountSettingsForm({
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(handleSubmit)}>
 				<div className="space-y-6">
-					<div>
-						<h1 className="text-4xl font-bold">Account</h1>
-						<p className="text-muted-foreground">
-							View and change your account details
-						</p>
-					</div>
-					<Separator className="my-6" />
 					<div className="space-y-8">
 						<div className="flex flex-col gap-4 lg:flex-row [&>*]:flex-1">
 							<FormField

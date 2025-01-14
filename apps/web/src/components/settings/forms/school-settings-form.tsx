@@ -2,7 +2,6 @@
 
 import { editAcademicSettings } from "@/actions/settings/edit";
 import { editAcademicSettingsSchema } from "@/validators/settings";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
@@ -76,6 +75,10 @@ export function SchoolSettingsForm({
 			toast.success("Academic information updated successfully");
 			form.reset(form.getValues());
 		},
+		onError: (error) => {
+			toast.error("Failed to update academic information");
+			console.error(error);
+		},
 	});
 
 	const handleSubmit = (data: z.infer<typeof editAcademicSettingsSchema>) => {
@@ -86,13 +89,6 @@ export function SchoolSettingsForm({
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(handleSubmit)}>
 				<div className="space-y-6">
-					<div>
-						<h1 className="text-4xl font-bold">School</h1>
-						<p className="text-muted-foreground">
-							Edit your existing academic information
-						</p>
-					</div>
-					<Separator className="my-6" />
 					<div className="space-y-10">
 						<FormField
 							control={form.control}
