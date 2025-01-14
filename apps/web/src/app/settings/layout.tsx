@@ -19,7 +19,7 @@ export default async function UserSettingsLayout({
 	return (
 		<>
 			<Navbar showBorder siteRegion="Settings" />
-			<main className="w-screen grid-cols-10 justify-center lg:grid lg:gap-12 lg:space-y-0 lg:px-6 lg:pt-6">
+			<main className="grid-cols-10 w-full justify-center lg:grid lg:gap-12 lg:space-y-0 lg:px-6 lg:pt-6">
 				<aside className="col-span-2 hidden lg:block">
 					<SettingsNav items={links} className="sticky top-8" />
 				</aside>
