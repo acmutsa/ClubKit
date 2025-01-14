@@ -43,6 +43,22 @@ const c = {
 			"Other",
 			"I prefer not to say",
 		],
+		classification: [
+			"Freshman",
+			"Sophomore",
+			"Junior",
+			"Senior",
+			"Graduate",
+			"Other"
+		],
+		shirtSize: [
+			"XS",
+			"S",
+			"M",
+			"L",
+			"XL",
+			"XXL",
+		],
 	},
 	calendarLinks: [
 		{ title: "google" },

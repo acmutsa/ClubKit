@@ -21,7 +21,7 @@ const userFormified = createInsertSchema(users, {
 
 const userDataFormified = z.object({
 	data: createInsertSchema(data, {
-		classification: z.string().min(1, "You must select a classification."),
+		classification: z.enum(c.userIdentityOptions.classification),
 		major: z.string().min(1, "You must select a major."),
 		shirtSize: z.string().min(1).max(10),
 		shirtType: z.string().min(1).max(10),
@@ -55,6 +55,7 @@ const userDataFormified = z.object({
 					.int(),
 			),
 		resume: z.string().url().optional(),
+		
 	}).omit({
 		interestedEventTypes: true,
 		userID: true,
