@@ -21,7 +21,7 @@ import { FileInput } from "@/components/settings/patterns/file-input";
 import { Button } from "@/components/ui/button";
 import c, { bucketBaseUrl } from "config";
 import { upload } from "@vercel/blob/client";
-import { cn, formatBlobUrl } from "@/lib/utils";
+import { formatBlobUrl } from "@/lib/utils";
 
 interface ChangeResumeFormProps {
 	resume?: string;
@@ -29,7 +29,6 @@ interface ChangeResumeFormProps {
 
 export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 	const [submitting, setSubmitting] = useState(false);
-	const [resumeShown, setResumeShown] = useState(false);
 
 	const form = useForm<z.infer<typeof editResumeFormSchema>>({
 		resolver: zodResolver(editResumeFormSchema),
@@ -89,22 +88,8 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 					control={form.control}
 					name="resume"
 					render={() => (
-						<FormItem className="space-y-6">
+						<FormItem className="space-y-3">
 							<FormLabel className="text-lg">Resume</FormLabel>
-							<Button
-								variant="ghost"
-								onClick={() => setResumeShown(!resumeShown)}
-								className="hidden h-0 cursor-pointer p-0 px-2 text-muted-foreground underline hover:bg-background lg:inline"
-							>
-								{resumeShown ? "hide" : "show"}
-							</Button>
-							<iframe
-								src={`https://docs.google.com/gview?url=${resume}&embedded=true`}
-								className={cn(
-									"h-[430px] w-[315px] lg:h-[560px] lg:w-[400px]",
-									(!resume || !resumeShown) && "hidden",
-								)}
-							/>
 							<FormControl>
 								<FileInput
 									showCurrent

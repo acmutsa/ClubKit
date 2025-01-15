@@ -70,7 +70,7 @@ export default async function UserSettingsProfilePage() {
 				<div className="mb-5 px-6">
 					<Separator />
 				</div>
-				<CardContent className="space-y-4">
+				<CardContent className="space-y-12">
 					<ChangeProfilePictureForm
 						profilePicture={`${user.imageUrl}?${params.toString()}`}
 					/>
