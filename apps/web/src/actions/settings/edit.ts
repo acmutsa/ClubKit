@@ -1,9 +1,9 @@
 "use server";
 
-import { authenticatedAction } from "@/lib/safe-action";
+import { userAction } from "@/lib/safe-action";
 import { db, eq } from "db";
 import { data, users } from "db/schema";
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { del } from "@vercel/blob";
 import {
 	editAccountSettingsSchema,
@@ -12,21 +12,19 @@ import {
 	editResumeActionSchema,
 } from "@/validators/settings";
 
-export const editAccountSettings = authenticatedAction
+export const editAccountSettings = userAction
 	.schema(editAccountSettingsSchema)
 	.action(
 		async ({
 			parsedInput: { firstName, lastName, ethnicity, gender, birthday },
-			ctx: { userId: clerkID },
+			ctx: { userID, clerkID },
 		}) => {
 			try {
 				await db.transaction(async (tx) => {
-					const userID = await tx
+					await tx
 						.update(users)
 						.set({ firstName, lastName })
-						.where(eq(users.clerkID, clerkID))
-						.returning({ id: users.userID })
-						.then((data) => data[0].id);
+						.where(eq(users.clerkID, clerkID));
 
 					await tx
 						.update(data)
@@ -41,12 +39,12 @@ export const editAccountSettings = authenticatedAction
 				};
 			}
 
-			revalidateTag("userSettings");
+			revalidatePath("/settings");
 			return { success: true };
 		},
 	);
 
-export const editAcademicSettings = authenticatedAction
+export const editAcademicSettings = userAction
 	.schema(editAcademicSettingsSchema)
 	.action(
 		async ({
@@ -56,7 +54,7 @@ export const editAcademicSettings = authenticatedAction
 				graduationYear,
 				graduationMonth,
 			},
-			ctx: { userId: clerkID },
+			ctx: { userID },
 		}) => {
 			try {
 				await db
@@ -67,8 +65,7 @@ export const editAcademicSettings = authenticatedAction
 						graduationYear,
 						graduationMonth,
 					})
-					.from(users)
-					.where(eq(users.clerkID, clerkID));
+					.where(eq(data.userID, userID));
 			} catch (error) {
 				console.error(error);
 				return {
@@ -77,54 +74,44 @@ export const editAcademicSettings = authenticatedAction
 				};
 			}
 
-			revalidateTag("userSettings");
+			revalidatePath("/settings");
 			return { success: true };
 		},
 	);
 
-export const editResumeUrl = authenticatedAction
+export const editResumeUrl = userAction
 	.schema(editResumeActionSchema)
-	.action(
-		async ({
-			ctx: { userId: clerkID },
-			parsedInput: { resume, oldResume },
-		}) => {
-			try {
-				await db
-					.update(data)
-					.set({ resume })
-					.from(users)
-					.where(eq(users.clerkID, clerkID));
+	.action(async ({ ctx: { userID }, parsedInput: { resume, oldResume } }) => {
+		try {
+			await db
+				.update(data)
+				.set({ resume })
+				.where(eq(data.userID, userID));
 
-				if (oldResume) await del(oldResume);
+			if (oldResume) await del(oldResume);
 
-				revalidateTag("userSettings");
-				return { success: true };
-			} catch (error) {
-				// Failed to update user data to new resume.  Delete the new resume from the blob and make the user try again.
-				console.error(error);
-				await del(resume);
-				return {
-					success: false,
-					error: "Failed to finalize resume upload.",
-				};
-			}
-		},
-	);
+			revalidatePath("/settings");
+			return { success: true };
+		} catch (error) {
+			// Failed to update user data to new resume.  Delete the new resume from the blob and make the user try again.
+			console.error(error);
+			await del(resume);
+			return {
+				success: false,
+				error: "Failed to finalize resume upload.",
+			};
+		}
+	});
 
-export const editClubSettings = authenticatedAction
+export const editClubSettings = userAction
 	.schema(editClubSettingsSchema)
 	.action(
-		async ({
-			ctx: { userId: clerkID },
-			parsedInput: { shirtSize, shirtType },
-		}) => {
+		async ({ ctx: { userID }, parsedInput: { shirtSize, shirtType } }) => {
 			try {
 				await db
 					.update(data)
 					.set({ shirtSize, shirtType })
-					.from(users)
-					.where(eq(users.clerkID, clerkID));
+					.where(eq(data.userID, userID));
 			} catch (error) {
 				console.error(error);
 				return {
@@ -133,7 +120,7 @@ export const editClubSettings = authenticatedAction
 				};
 			}
 
-			revalidateTag("userSettings");
+			revalidatePath("/settings");
 			return { success: true };
 		},
 	);
