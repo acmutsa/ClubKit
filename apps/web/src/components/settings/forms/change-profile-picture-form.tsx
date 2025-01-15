@@ -46,6 +46,11 @@ export function ChangeProfilePictureForm({
 		setSubmitting(true);
 
 		if (data.profilePicture) {
+			if (data.profilePicture.size > 10 * 1024 * 1024) {
+				toast.error("Profile picture must be less than 10MB, please upload a smaller image");
+				setSubmitting(false);
+				return;
+			}
 			try {
 				const setProfileImageResult = await user?.setProfileImage({
 					file: data.profilePicture,
