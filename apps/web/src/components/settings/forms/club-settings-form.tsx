@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { PopoverSelect } from "@/components/settings/patterns/popover-select";
+import { PopoverSelect } from "@/components/shared/popover-select";
 
 const shirtSizes = ["XS", "S", "M", "L", "XL", "XXL"] as const;
 const shirtTypes = ["Unisex", "Women's"] as const;

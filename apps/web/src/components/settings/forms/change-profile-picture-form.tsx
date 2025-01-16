@@ -19,7 +19,7 @@ import { editProfilePictureSchema } from "@/validators/settings";
 import { redirect, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FileInput } from "@/components/settings/patterns/file-input";
+import { FileInput } from "@/components/shared/file-input";
 import { Button } from "@/components/ui/button";
 
 interface ChangeProfilePictureFormProps {

@@ -23,7 +23,7 @@ import {
 	MultiSelectorList,
 	MultiSelectorTrigger,
 } from "@/components/ui/MultiSelect";
-import { PopoverCalendar } from "@/components/settings/patterns/popover-calendar";
+import { PopoverCalendar } from "@/components/shared/popover-calendar";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -17,7 +17,7 @@ import { editResumeFormSchema } from "@/validators/settings";
 import { editResumeUrl } from "@/actions/settings/edit";
 import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
-import { FileInput } from "@/components/settings/patterns/file-input";
+import { FileInput } from "@/components/shared/file-input";
 import { Button } from "@/components/ui/button";
 import c, { bucketBaseUrl } from "config";
 import { upload } from "@vercel/blob/client";

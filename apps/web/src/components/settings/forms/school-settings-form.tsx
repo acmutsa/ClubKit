@@ -20,8 +20,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { majors } from "config";
-import { PopoverCommand } from "@/components/settings/patterns/popover-command";
-import { PopoverSelect } from "@/components/settings/patterns/popover-select";
+import { PopoverCommand } from "@/components/shared/popover-command";
+import { PopoverSelect } from "@/components/shared/popover-select";
 
 interface SchoolSettingsFormProps {
 	major: string;
