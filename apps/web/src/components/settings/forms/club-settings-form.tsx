@@ -57,6 +57,15 @@ export function ClubSettingsForm({
 	});
 
 	const handleSubmit = (data: z.infer<typeof editClubSettingsSchema>) => {
+		if (!form.formState.isDirty) {
+			toast.error("No changes detected!", {
+				description:
+					"Try making some changes to your club settings before submitting",
+				classNames: { title: "font-bold text-md" },
+			});
+			return;
+		}
+
 		execute(data);
 	};
 
@@ -107,7 +116,7 @@ export function ClubSettingsForm({
 						/>
 						<Button
 							type="submit"
-							disabled={submitting || !form.formState.isDirty}
+							disabled={submitting}
 							className="w-full text-lg font-semibold lg:w-32"
 						>
 							{submitting ? (

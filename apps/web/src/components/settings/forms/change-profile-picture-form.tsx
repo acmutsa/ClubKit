@@ -45,6 +45,16 @@ export function ChangeProfilePictureForm({
 	const onSubmit = async (data: z.infer<typeof editProfilePictureSchema>) => {
 		setSubmitting(true);
 
+		if (!form.formState.isDirty) {
+			setSubmitting(false);
+			toast.error("No changes detected!", {
+				description:
+					"Try making some changes to your profile picture before submitting",
+				classNames: { title: "font-bold text-md" },
+			});
+			return;
+		}
+
 		if (data.profilePicture) {
 			if (data.profilePicture.size > 10 * 1024 * 1024) {
 				toast.error(
@@ -120,7 +130,7 @@ export function ChangeProfilePictureForm({
 				/>
 				<Button
 					type="submit"
-					disabled={!form.formState.isDirty || submitting}
+					disabled={submitting}
 					className="text-md mt-4 w-full font-semibold lg:w-32"
 				>
 					{submitting ? (

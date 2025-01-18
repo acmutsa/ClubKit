@@ -73,6 +73,15 @@ export function AccountSettingsForm({
 	});
 
 	const handleSubmit = (data: z.infer<typeof editAccountSettingsSchema>) => {
+		if (!form.formState.isDirty) {
+			toast.error("No changes detected!", {
+				description:
+					"Try making some changes to your account settings before submitting",
+				classNames: { title: "font-bold text-md" },
+			});
+			return;
+		}
+
 		execute(data);
 	};
 
@@ -259,7 +268,7 @@ export function AccountSettingsForm({
 						/>
 						<Button
 							type="submit"
-							disabled={!form.formState.isDirty || submitting}
+							disabled={submitting}
 							className="w-full text-lg font-semibold lg:w-32"
 						>
 							{submitting ? (

@@ -51,6 +51,16 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 
 	const onSubmit = async (data: z.infer<typeof editResumeFormSchema>) => {
 		setSubmitting(true);
+		if (!form.formState.isDirty) {
+			setSubmitting(false);
+			toast.error("No changes detected!", {
+				description:
+					"Try making some changes to your resume before submitting",
+				classNames: { title: "font-bold text-md" },
+			});
+			return;
+		}
+
 		if (data.resume) {
 			if (data.resume.size > c.maxResumeSizeInBytes) {
 				toast.error("Resume size is too large");
@@ -125,7 +135,7 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 				/>
 				<Button
 					type="submit"
-					disabled={!form.formState.isDirty || submitting}
+					disabled={submitting}
 					className="text-md mt-4 w-full font-semibold lg:w-32"
 				>
 					{submitting ? (
