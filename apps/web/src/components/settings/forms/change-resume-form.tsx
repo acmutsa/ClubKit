@@ -50,9 +50,8 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 	});
 
 	const onSubmit = async (data: z.infer<typeof editResumeFormSchema>) => {
+		setSubmitting(true);
 		if (data.resume) {
-			setSubmitting(true);
-
 			if (data.resume.size > c.maxResumeSizeInBytes) {
 				toast.error("Resume size is too large");
 				return;
@@ -78,6 +77,10 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 				toast.error("Failed to upload resume");
 				console.error(e);
 			}
+		} else if (data.resume === null) {
+			execute({ resume: "", oldResume: resume });
+		} else {
+			setSubmitting(false);
 		}
 	};
 
@@ -92,6 +95,11 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 							<FormLabel className="text-lg">Resume</FormLabel>
 							<FormControl>
 								<FileInput
+									onRemove={() => {
+										form.setValue("resume", null, {
+											shouldDirty: true,
+										});
+									}}
 									showCurrent
 									currentFileName={
 										resume
@@ -99,9 +107,7 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 											: undefined
 									}
 									currentLink={resume}
-									fileValue={
-										form.getValues("resume") ?? undefined
-									}
+									fileValue={form.getValues("resume")}
 									accept={c.acceptedResumeMimeTypes.toLocaleString()}
 									onChange={(file) =>
 										form.setValue("resume", file, {
