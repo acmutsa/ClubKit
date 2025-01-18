@@ -18,7 +18,7 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState, useCallback } from "react";
 import { majors } from "config";
 import { PopoverCommand } from "@/components/shared/popover-command";
 import { PopoverSelect } from "@/components/shared/popover-select";
@@ -63,11 +63,6 @@ export function SchoolSettingsForm({
 		},
 	});
 
-	useEffect(() => {
-		console.log(typeof form.getValues().graduationMonth);
-		console.log(form.getValues().graduationMonth);
-	}, [form.formState]);
-
 	const { execute } = useAction(editAcademicSettings, {
 		onExecute: () => setSubmitting(true),
 		onSettled: () => setSubmitting(false),
@@ -81,7 +76,7 @@ export function SchoolSettingsForm({
 		},
 	});
 
-	const handleSubmit = (data: z.infer<typeof editAcademicSettingsSchema>) => {
+	const handleSubmit = useCallback((data: z.infer<typeof editAcademicSettingsSchema>) => {
 		if (!form.formState.isDirty) {
 			toast.error("No changes detected!", {
 				description:
@@ -92,7 +87,7 @@ export function SchoolSettingsForm({
 		}
 
 		execute(data);
-	};
+	}, [form.formState.isDirty, execute]);
 
 	return (
 		<Form {...form}>

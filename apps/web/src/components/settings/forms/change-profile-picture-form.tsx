@@ -13,7 +13,7 @@ import { LoaderCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useUser } from "@clerk/nextjs";
 import { editProfilePictureSchema } from "@/validators/settings";
 import { redirect, useRouter } from "next/navigation";
@@ -42,7 +42,7 @@ export function ChangeProfilePictureForm({
 		},
 	});
 
-	const onSubmit = async (data: z.infer<typeof editProfilePictureSchema>) => {
+	const onSubmit = useCallback(async (data: z.infer<typeof editProfilePictureSchema>) => {
 		setSubmitting(true);
 
 		if (!form.formState.isDirty) {
@@ -81,7 +81,7 @@ export function ChangeProfilePictureForm({
 			form.reset({ profilePicture: undefined });
 			router.refresh();
 		}
-	};
+	}, [form.formState.isDirty]);
 
 	return (
 		<Form {...form}>

@@ -28,7 +28,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import c from "config";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Gender, Ethnicity } from "@/lib/types/settings";
 
 interface AccountInfoProps {
@@ -72,7 +72,7 @@ export function AccountSettingsForm({
 		},
 	});
 
-	const handleSubmit = (data: z.infer<typeof editAccountSettingsSchema>) => {
+	const handleSubmit = useCallback((data: z.infer<typeof editAccountSettingsSchema>) => {
 		if (!form.formState.isDirty) {
 			toast.error("No changes detected!", {
 				description:
@@ -83,7 +83,7 @@ export function AccountSettingsForm({
 		}
 
 		execute(data);
-	};
+	}, [form.formState.isDirty, execute]);
 
 	return (
 		<Form {...form}>

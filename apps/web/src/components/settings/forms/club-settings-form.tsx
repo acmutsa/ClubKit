@@ -17,7 +17,7 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { PopoverSelect } from "@/components/shared/popover-select";
 
 const shirtSizes = ["XS", "S", "M", "L", "XL", "XXL"] as const;
@@ -56,7 +56,7 @@ export function ClubSettingsForm({
 		},
 	});
 
-	const handleSubmit = (data: z.infer<typeof editClubSettingsSchema>) => {
+	const handleSubmit = useCallback((data: z.infer<typeof editClubSettingsSchema>) => {
 		if (!form.formState.isDirty) {
 			toast.error("No changes detected!", {
 				description:
@@ -67,7 +67,7 @@ export function ClubSettingsForm({
 		}
 
 		execute(data);
-	};
+	}, [form.formState.isDirty, execute]);
 
 	return (
 		<Form {...form}>

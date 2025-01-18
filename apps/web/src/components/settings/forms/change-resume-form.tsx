@@ -12,7 +12,7 @@ import { LoaderCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { editResumeFormSchema } from "@/validators/settings";
 import { editResumeUrl } from "@/actions/settings/edit";
 import { useAction } from "next-safe-action/hooks";
@@ -49,7 +49,7 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 		},
 	});
 
-	const onSubmit = async (data: z.infer<typeof editResumeFormSchema>) => {
+	const onSubmit = useCallback(async (data: z.infer<typeof editResumeFormSchema>) => {
 		setSubmitting(true);
 		if (!form.formState.isDirty) {
 			setSubmitting(false);
@@ -92,7 +92,7 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 		} else {
 			setSubmitting(false);
 		}
-	};
+	}, [form.formState.isDirty, execute]);
 
 	return (
 		<Form {...form}>
