@@ -13,3 +13,4 @@ export type ClassificationType =
 		(typeof c.userIdentityOptions.classification)[number];
 export type GenderType = (typeof c.userIdentityOptions.gender)[number];
 export type EthnicityType = (typeof c.userIdentityOptions.ethnicity)[number];
+export type MemberType = (typeof c.memberRoles)[number];

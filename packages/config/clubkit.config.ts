@@ -89,6 +89,11 @@ const c = {
 		default: "/img/thumbnails/default.png",
 		maxSizeInBytes: 500000,
 	},
+	memberRoles: [
+		"member",
+		"admin",
+		"super_admin",
+	] as const,
 } as const;
 
 export const defaultTheme = "light";
