@@ -104,12 +104,7 @@ export default async function ProfileButton({
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownSwitcher />
-					{/* TODO: Replace with user.clubTag */}
-					<Link href={`/profile`}>
-						<DropdownMenuItem className="cursor-pointer">
-							Edit Profile
-						</DropdownMenuItem>
-					</Link>
+
 					<Link href={`https://tally.so/r/wbKXN1`} target="_blank">
 						<DropdownMenuItem className="cursor-pointer">
 							Report a Bug

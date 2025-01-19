@@ -11,7 +11,7 @@ export const createRegistration = authenticatedAction
 	.action(
 		async ({
 			parsedInput: registerFormInputs,
-			ctx: { userId: clerkID },
+			ctx: { clerkID },
 		}) => {
 			const { data: dataSchemaInputs, ...usersSchemaInputs } =
 				registerFormInputs;

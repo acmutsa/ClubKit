@@ -78,6 +78,11 @@ export default function EventCheckinForm({
 						onClick: () => {},
 					},
 				});
+				if (code === ALREADY_CHECKED_IN){
+					setTimeout(() => {
+						push(`/events`);
+					}, 2000);
+				}
 				return;
 			}
 			toast.success("Thanks for stopping by. See you next time!", {
@@ -85,7 +90,7 @@ export default function EventCheckinForm({
 				description: "Redirecting to events page...",
 			});
 			setTimeout(() => {
-				push("/dash");
+				push("/events");
 			}, 2500);
 		},
 		onError: async ({ error: e }) => {
