@@ -4,6 +4,7 @@ const c = {
 	universityID: {
 		name: "ABC123",
 		maxLength: 6,
+		universityIDRegex: new RegExp("\\b[a-zA-Z]{3}\\d{3}\\b"),
 	},
 	semesters: {
 		current: {
@@ -43,6 +44,16 @@ const c = {
 			"Other",
 			"I prefer not to say",
 		],
+		classification: [
+			"Freshman",
+			"Sophomore",
+			"Junior",
+			"Senior",
+			"Graduate",
+			"Other",
+		],
+		shirtSize: ["XS", "S", "M", "L", "XL", "XXL"],
+		shirtType: ["Unisex", "Women's"],
 	},
 	calendarLinks: [
 		{ title: "google" },
@@ -81,6 +92,9 @@ const c = {
 } as const;
 
 export const defaultTheme = "light";
+
+const bucketBaseUrl = `${c.clubName}-${c.universityName}`;
+const bucketEventThumbnailBaseUrl = `${bucketBaseUrl}/event-thumbnails`;
 
 const majors = [
 	"Computer Science",
@@ -196,7 +210,6 @@ const majors = [
 	"Other",
 ] as const;
 
-const bucketBaseUrl = `${c.clubName}-${c.universityName}`;
-const bucketEventThumbnailBaseUrl = `${bucketBaseUrl}/event-thumbnails`;
+
 export default c;
 export { majors, bucketEventThumbnailBaseUrl, bucketBaseUrl };

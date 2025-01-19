@@ -1,7 +1,7 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { data, users, events, checkins, eventCategories } from "./schema";
 import { z } from "zod";
-import c from "config";
+import c , {majors} from "config";
 
 export const insertUserDataSchema = createInsertSchema(data);
 export const insertUserSchema = createInsertSchema(users);
@@ -13,6 +13,7 @@ const userFormified = createInsertSchema(users, {
 	email: z.string().email().min(1),
 	firstName: basicStringSchema,
 	lastName: basicStringSchema,
+	
 }).pick({
 	email: true,
 	firstName: true,
@@ -21,13 +22,13 @@ const userFormified = createInsertSchema(users, {
 
 const userDataFormified = z.object({
 	data: createInsertSchema(data, {
-		classification: z.string().min(1, "You must select a classification."),
-		major: z.string().min(1, "You must select a major."),
-		shirtSize: z.string().min(1).max(10),
-		shirtType: z.string().min(1).max(10),
+		classification: z.enum(c.userIdentityOptions.classification),
+		major: z.enum(majors),
+		shirtSize: z.enum(c.userIdentityOptions.shirtSize),
+		shirtType: z.enum(c.userIdentityOptions.shirtType),
 		birthday: z.date().optional(),
 		// Special Values
-		universityID: z.string().min(1).max(c.universityID.maxLength),
+		universityID: z.string().regex(c.universityID.universityIDRegex),
 		gender: z
 			.array(z.enum(c.userIdentityOptions.gender))
 			.min(1, "Required"),
@@ -67,12 +68,11 @@ export const insertUserWithDataSchemaFormified =
 export const selectUserWithDataSchema = z.object({
 	user: createSelectSchema(users),
 	data: createSelectSchema(data, {
-		gender: z.string().array().min(1, "Required"),
-		ethnicity: z.string().array().min(1, "Required"),
+		gender: z.enum(c.userIdentityOptions.gender),
+		ethnicity: z.enum(c.userIdentityOptions.ethnicity),
 		interestedEventTypes: z.string().array(),
 	}),
 });
-export type UserWithData = z.infer<typeof selectUserWithDataSchema>;
 
 export const deleteEventSchema = z.string().min(c.events.idLength);
 
@@ -127,9 +127,11 @@ export const selectEventSchema = createSelectSchema(events);
 export const selectCheckinSchema = createSelectSchema(checkins);
 
 export const adminCheckinSchema = z.object({
-	universityIDs: z.string().regex(new RegExp(`(\\w+[,\\W]*)+`), {
-		message: "Invalid format for ID or list of ID's",
-	}),
+	universityIDs: z
+		.string()
+		.regex(new RegExp(`(${c.universityID.universityIDRegex}[,\\s]*)+`), {
+			message: "Invalid format for ID or list of ID's",
+		}),
 	eventID: z.string().min(c.events.idLength),
 });
 export const universityIDSplitter = z
