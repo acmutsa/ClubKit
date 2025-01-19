@@ -68,8 +68,8 @@ export const insertUserWithDataSchemaFormified =
 export const selectUserWithDataSchema = z.object({
 	user: createSelectSchema(users),
 	data: createSelectSchema(data, {
-		gender: z.enum(c.userIdentityOptions.gender),
-		ethnicity: z.enum(c.userIdentityOptions.ethnicity),
+		gender: z.string().array().min(1),
+		ethnicity: z.string().array().min(1),
 		interestedEventTypes: z.string().array(),
 	}),
 });

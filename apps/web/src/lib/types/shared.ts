@@ -1,3 +1,4 @@
+import c, {majors} from "config"
 export type SearchParams = { [key: string]: string | undefined };
 export type IDParamProp = { params: { id: string } };
 export type ExportNames =
@@ -6,3 +7,9 @@ export type ExportNames =
 	| "members"
 	| "semesters"
 	| "categories";
+
+export type MajorType = (typeof majors)[number];
+export type ClassificationType =
+		(typeof c.userIdentityOptions.classification)[number];
+export type GenderType = (typeof c.userIdentityOptions.gender)[number];
+export type EthnicityType = (typeof c.userIdentityOptions.ethnicity)[number];

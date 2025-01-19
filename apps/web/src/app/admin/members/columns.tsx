@@ -1,21 +1,9 @@
 "use client";
 
 import { ColumnDef, Row } from "@tanstack/react-table";
-import Image from "next/image";
-import Badgenk from "next/link";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { DataTableColumnHeader } from "@/components/ui/data-table";
-import { UserWithData } from "db/zod";
+import { UserWithData } from "db/types";
 import { formatDate } from "date-fns";
 
 const timeFormatString = "eee, MMM dd yyyy HH:mm bb";
@@ -89,7 +77,7 @@ export const columns: ColumnDef<UserWithData>[] = [
 		cell: ({ row }) => {
 			return (
 				<div className="">
-					{row.original.data.ethnicity.map((e) => (
+					{row.original.data.ethnicity.map((e ) => (
 						<Badge
 							className="m-0.5 w-fit whitespace-nowrap"
 							key={e}

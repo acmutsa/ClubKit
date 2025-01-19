@@ -73,6 +73,7 @@ import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
 import FormDisplayName from "../shared/FormDisplayName";
 import { bucketBaseUrl } from "config";
+import { ClassificationType, MajorType } from "@/lib/types/shared";
 
 const formSchema = insertUserWithDataSchemaFormified;
 
@@ -80,8 +81,6 @@ interface RegisterFormProps {
 	defaultEmail: string;
 }
 
-type MajorType = typeof majors[number];
-type classificationType = typeof c.userIdentityOptions.classification[number];
 export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 	const [error, setError] = useState<{
 		title: string;
@@ -98,7 +97,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 			lastName: "",
 			data: {
 				major: "" as MajorType,
-				classification: "" as classificationType,
+				classification: "" as ClassificationType,
 				gender: [],
 				ethnicity: [],
 				universityID: "",
