@@ -49,50 +49,53 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 		},
 	});
 
-	const onSubmit = useCallback(async (data: z.infer<typeof editResumeFormSchema>) => {
-		setSubmitting(true);
-		if (!form.formState.isDirty) {
-			setSubmitting(false);
-			toast.error("No changes detected!", {
-				description:
-					"Try making some changes to your resume before submitting",
-				classNames: { title: "font-bold text-md" },
-			});
-			return;
-		}
-
-		if (data.resume) {
-			if (data.resume.size > c.maxResumeSizeInBytes) {
-				toast.error("Resume size is too large");
+	const onSubmit = useCallback(
+		async (data: z.infer<typeof editResumeFormSchema>) => {
+			setSubmitting(true);
+			if (!form.formState.isDirty) {
+				setSubmitting(false);
+				toast.error("No changes detected!", {
+					description:
+						"Try making some changes to your resume before submitting",
+					classNames: { title: "font-bold text-md" },
+				});
 				return;
 			}
 
-			try {
-				const uploadResult = await upload(
-					`${bucketBaseUrl}/${data.resume.name}`,
-					data.resume,
-					{
-						access: "public",
-						handleUploadUrl: "/api/upload/resume",
-					},
-				);
-
-				if (!uploadResult) {
-					toast.error("Failed to upload resume");
+			if (data.resume) {
+				if (data.resume.size > c.maxResumeSizeInBytes) {
+					toast.error("Resume size is too large");
 					return;
 				}
 
-				execute({ resume: uploadResult.url, oldResume: resume });
-			} catch (e) {
-				toast.error("Failed to upload resume");
-				console.error(e);
+				try {
+					const uploadResult = await upload(
+						`${bucketBaseUrl}/${data.resume.name}`,
+						data.resume,
+						{
+							access: "public",
+							handleUploadUrl: "/api/upload/resume",
+						},
+					);
+
+					if (!uploadResult) {
+						toast.error("Failed to upload resume");
+						return;
+					}
+
+					execute({ resume: uploadResult.url, oldResume: resume });
+				} catch (e) {
+					toast.error("Failed to upload resume");
+					console.error(e);
+				}
+			} else if (data.resume === null) {
+				execute({ resume: "", oldResume: resume });
+			} else {
+				setSubmitting(false);
 			}
-		} else if (data.resume === null) {
-			execute({ resume: "", oldResume: resume });
-		} else {
-			setSubmitting(false);
-		}
-	}, [form.formState.isDirty, execute]);
+		},
+		[form.formState.isDirty, execute],
+	);
 
 	return (
 		<Form {...form}>

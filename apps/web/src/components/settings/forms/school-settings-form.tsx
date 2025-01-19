@@ -76,18 +76,21 @@ export function SchoolSettingsForm({
 		},
 	});
 
-	const handleSubmit = useCallback((data: z.infer<typeof editAcademicSettingsSchema>) => {
-		if (!form.formState.isDirty) {
-			toast.error("No changes detected!", {
-				description:
-					"Try making some changes to your school settings before submitting",
-				classNames: { title: "font-bold text-md" },
-			});
-			return;
-		}
+	const handleSubmit = useCallback(
+		(data: z.infer<typeof editAcademicSettingsSchema>) => {
+			if (!form.formState.isDirty) {
+				toast.error("No changes detected!", {
+					description:
+						"Try making some changes to your school settings before submitting",
+					classNames: { title: "font-bold text-md" },
+				});
+				return;
+			}
 
-		execute(data);
-	}, [form.formState.isDirty, execute]);
+			execute(data);
+		},
+		[form.formState.isDirty, execute],
+	);
 
 	return (
 		<Form {...form}>

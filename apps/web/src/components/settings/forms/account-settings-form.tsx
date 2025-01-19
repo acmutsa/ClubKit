@@ -72,18 +72,21 @@ export function AccountSettingsForm({
 		},
 	});
 
-	const handleSubmit = useCallback((data: z.infer<typeof editAccountSettingsSchema>) => {
-		if (!form.formState.isDirty) {
-			toast.error("No changes detected!", {
-				description:
-					"Try making some changes to your account settings before submitting",
-				classNames: { title: "font-bold text-md" },
-			});
-			return;
-		}
+	const handleSubmit = useCallback(
+		(data: z.infer<typeof editAccountSettingsSchema>) => {
+			if (!form.formState.isDirty) {
+				toast.error("No changes detected!", {
+					description:
+						"Try making some changes to your account settings before submitting",
+					classNames: { title: "font-bold text-md" },
+				});
+				return;
+			}
 
-		execute(data);
-	}, [form.formState.isDirty, execute]);
+			execute(data);
+		},
+		[form.formState.isDirty, execute],
+	);
 
 	return (
 		<Form {...form}>

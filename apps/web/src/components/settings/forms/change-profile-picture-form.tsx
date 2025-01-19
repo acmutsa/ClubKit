@@ -42,46 +42,49 @@ export function ChangeProfilePictureForm({
 		},
 	});
 
-	const onSubmit = useCallback(async (data: z.infer<typeof editProfilePictureSchema>) => {
-		setSubmitting(true);
+	const onSubmit = useCallback(
+		async (data: z.infer<typeof editProfilePictureSchema>) => {
+			setSubmitting(true);
 
-		if (!form.formState.isDirty) {
-			setSubmitting(false);
-			toast.error("No changes detected!", {
-				description:
-					"Try making some changes to your profile picture before submitting",
-				classNames: { title: "font-bold text-md" },
-			});
-			return;
-		}
-
-		if (data.profilePicture) {
-			if (data.profilePicture.size > 10 * 1024 * 1024) {
-				toast.error(
-					"Profile picture must be less than 10MB, please upload a smaller image",
-				);
+			if (!form.formState.isDirty) {
 				setSubmitting(false);
+				toast.error("No changes detected!", {
+					description:
+						"Try making some changes to your profile picture before submitting",
+					classNames: { title: "font-bold text-md" },
+				});
 				return;
 			}
-			try {
-				const setProfileImageResult = await user?.setProfileImage({
-					file: data.profilePicture,
-				});
-				if (!setProfileImageResult) {
-					toast.error("Failed to upload profile picture");
-				} else {
-					toast.success("Profile picture updated successfully");
-				}
-			} catch (e) {
-				toast.error("Failed to upload profile picture");
-				console.error(e);
-			}
 
-			setSubmitting(false);
-			form.reset({ profilePicture: undefined });
-			router.refresh();
-		}
-	}, [form.formState.isDirty]);
+			if (data.profilePicture) {
+				if (data.profilePicture.size > 10 * 1024 * 1024) {
+					toast.error(
+						"Profile picture must be less than 10MB, please upload a smaller image",
+					);
+					setSubmitting(false);
+					return;
+				}
+				try {
+					const setProfileImageResult = await user?.setProfileImage({
+						file: data.profilePicture,
+					});
+					if (!setProfileImageResult) {
+						toast.error("Failed to upload profile picture");
+					} else {
+						toast.success("Profile picture updated successfully");
+					}
+				} catch (e) {
+					toast.error("Failed to upload profile picture");
+					console.error(e);
+				}
+
+				setSubmitting(false);
+				form.reset({ profilePicture: undefined });
+				router.refresh();
+			}
+		},
+		[form.formState.isDirty],
+	);
 
 	return (
 		<Form {...form}>
