@@ -1,9 +1,6 @@
-"use client";
-
 import { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { buttonVariants } from "../ui/button";
 
 interface SettingsNavProps extends HTMLAttributes<HTMLElement> {
@@ -15,9 +12,6 @@ interface SettingsNavProps extends HTMLAttributes<HTMLElement> {
 }
 
 export function SettingsNav({ items, className, ...props }: SettingsNavProps) {
-	const pathname = usePathname();
-	console.log(pathname);
-
 	return (
 		<nav
 			className={cn(
