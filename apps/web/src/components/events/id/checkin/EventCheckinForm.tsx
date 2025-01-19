@@ -50,7 +50,7 @@ export default function EventCheckinForm({
 		},
 	);
 
-	const { ALREADY_CHECKED_IN} = CheckinResult
+	const { ALREADY_CHECKED_IN } = CheckinResult;
 
 	const { push } = useRouter();
 
@@ -64,9 +64,12 @@ export default function EventCheckinForm({
 			toast.dismiss();
 			const success = data?.success;
 			const code = data?.code;
-			
+
 			if (!success) {
-				const msg = code === ALREADY_CHECKED_IN ? "You have already checked in." : "Something went wrong checking in user.";
+				const msg =
+					code === ALREADY_CHECKED_IN
+						? "You have already checked in."
+						: "Something went wrong checking in user.";
 				toast.error(msg, {
 					duration: Infinity,
 					cancel: {

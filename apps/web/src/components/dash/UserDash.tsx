@@ -50,12 +50,11 @@ export default async function UserDash({
 			'start', ${events.start}) ORDER BY ${events.start} DESC) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate})`.as(
 					"attendedEvents",
 				),
-			currentSemesterPoints:
-				sql<
-					number | null
-				>`SUM(${events.points}) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate})`.mapWith(
-					Number,
-				),
+			currentSemesterPoints: sql<
+				number | null
+			>`SUM(${events.points}) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate})`.mapWith(
+				Number,
+			),
 			// totalPoints: sum(events.points),
 			currentSemesterEventsAttended: sql<
 				number | null
@@ -77,7 +76,7 @@ export default async function UserDash({
 	}
 
 	const userDashResult = queryResult[0];
-	console.log(userDashResult.currentSemesterPoints)
+	console.log(userDashResult.currentSemesterPoints);
 	const {
 		user,
 		userData,
@@ -110,7 +109,7 @@ export default async function UserDash({
 			: `Keep attending events to earn more points!`,
 		fill: "#3b82f6",
 	};
-	console.log('attended events',attendedEvents)
+	console.log("attended events", attendedEvents);
 	const slicedEvents = attendedEvents?.slice(0, 5) ?? [];
 
 	return (
@@ -139,10 +138,9 @@ export default async function UserDash({
 								<GraduationCapIcon className="mr-2 h-4 w-4" />
 								{`${userData.major}, ${userData.graduationYear}`}
 							</p>
-							<p className="mt-2 flex items-center text-balance text-base text-muted-foreground">
+							<p className="text-balance mt-2 flex items-center text-base text-muted-foreground">
 								{`Member since ${joinedDate}`}
 							</p>
-							
 						</div>
 					</CardContent>
 				</Card>

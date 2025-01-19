@@ -89,11 +89,7 @@ const c = {
 		default: "/img/thumbnails/default.png",
 		maxSizeInBytes: 500000,
 	},
-	memberRoles: [
-		"member",
-		"admin",
-		"super_admin",
-	] as const,
+	memberRoles: ["member", "admin", "super_admin"] as const,
 } as const;
 
 export const defaultTheme = "light";
@@ -214,7 +210,6 @@ const majors = [
 	"Webpage Design",
 	"Other",
 ] as const;
-
 
 export default c;
 export { majors, bucketEventThumbnailBaseUrl, bucketBaseUrl };

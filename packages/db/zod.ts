@@ -1,7 +1,7 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { data, users, events, checkins, eventCategories } from "./schema";
 import { z } from "zod";
-import c , {majors} from "config";
+import c, { majors } from "config";
 
 export const insertUserDataSchema = createInsertSchema(data);
 export const insertUserSchema = createInsertSchema(users);
@@ -13,7 +13,6 @@ const userFormified = createInsertSchema(users, {
 	email: z.string().email().min(1),
 	firstName: basicStringSchema,
 	lastName: basicStringSchema,
-	
 }).pick({
 	email: true,
 	firstName: true,
@@ -130,9 +129,12 @@ export const selectCheckinSchema = createSelectSchema(checkins);
 export const adminCheckinSchema = z.object({
 	universityIDs: z
 		.string()
-		.regex(new RegExp(`(${c.universityID.universityIDRegex.source}[,\\s]*)+`), {
-			message: "Invalid format for ID or list of ID's",
-		}),
+		.regex(
+			new RegExp(`(${c.universityID.universityIDRegex.source}[,\\s]*)+`),
+			{
+				message: "Invalid format for ID or list of ID's",
+			},
+		),
 	eventID: z.string().min(c.events.idLength),
 });
 export const universityIDSplitter = z

@@ -7,7 +7,13 @@ import { UserWithData } from "db/types";
 import { formatDate } from "date-fns";
 import { Dialog, DialogTrigger, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import {
+	DropdownMenu,
+	DropdownMenuTrigger,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
@@ -84,7 +90,7 @@ export const columns: ColumnDef<UserWithData>[] = [
 		cell: ({ row }) => {
 			return (
 				<div className="">
-					{row.original.data.ethnicity.map((e ) => (
+					{row.original.data.ethnicity.map((e) => (
 						<Badge
 							className="m-0.5 w-fit whitespace-nowrap"
 							key={e}
@@ -119,18 +125,13 @@ export const columns: ColumnDef<UserWithData>[] = [
 			return <DataTableColumnHeader column={column} title="Role" />;
 		},
 	},
-		{
+	{
 		id: "actions",
 		enablePinning: true,
 		header: ({ column }) => {},
 		cell: ({ row }) => {
 			const {
-				user:{
-					userID,
-					clerkID,
-					email,
-					role
-				}
+				user: { userID, clerkID, email, role },
 			} = row.original;
 			const [open, setOpen] = useState(false);
 			return (
@@ -209,11 +210,9 @@ export const columns: ColumnDef<UserWithData>[] = [
 						userID={userID}
 						currentRole={role}
 						setOpen={setOpen}
-						/>
+					/>
 				</Dialog>
 			);
 		},
-	}
+	},
 ];
-
-

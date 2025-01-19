@@ -15,7 +15,7 @@ import c from "config";
 // pieces of this schema need to be revamped as a lot of them are lazily set as text instead of varchar with a hard limit
 /* USERS */
 
-export const userRoles = pgEnum("user_roles",c.memberRoles);
+export const userRoles = pgEnum("user_roles", c.memberRoles);
 
 export const users = pgTable("users", {
 	userID: serial("user_id").primaryKey(),

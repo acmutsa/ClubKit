@@ -539,7 +539,10 @@ export default function EditEventForm({
 														parsedPoints < 1
 															? 1
 															: parsedPoints;
-													form.setValue("points", points);
+													form.setValue(
+														"points",
+														points,
+													);
 												}}
 											/>
 										</FormControl>

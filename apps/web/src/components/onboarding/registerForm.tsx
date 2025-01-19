@@ -425,8 +425,12 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 															index,
 														) => (
 															<SelectItem
-																key={classification}
-																value={classification}
+																key={
+																	classification
+																}
+																value={
+																	classification
+																}
 															>
 																{classification}
 															</SelectItem>
@@ -758,19 +762,17 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													{
-														c.userIdentityOptions.shirtSize.map(
-															(size) => (
-																<SelectItem
-																	className="cursor-pointer"
-																	value={size}
-																	key={size}
-																>
-																	{size}
-																</SelectItem>
-															),
-														)
-													}
+													{c.userIdentityOptions.shirtSize.map(
+														(size) => (
+															<SelectItem
+																className="cursor-pointer"
+																value={size}
+																key={size}
+															>
+																{size}
+															</SelectItem>
+														),
+													)}
 												</SelectContent>
 											</Select>
 											<FormMessage />
@@ -793,19 +795,17 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													{
-														c.userIdentityOptions.shirtType.map(
-															(type) => (
-																<SelectItem
-																	className="cursor-pointer"
-																	value={type}
-																	key={type}
-																>
-																	{type}
-																</SelectItem>
-															),
-														)
-													}
+													{c.userIdentityOptions.shirtType.map(
+														(type) => (
+															<SelectItem
+																className="cursor-pointer"
+																value={type}
+																key={type}
+															>
+																{type}
+															</SelectItem>
+														),
+													)}
 												</SelectContent>
 											</Select>
 											<FormMessage />
