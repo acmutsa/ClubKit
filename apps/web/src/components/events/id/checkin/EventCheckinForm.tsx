@@ -78,7 +78,7 @@ export default function EventCheckinForm({
 						onClick: () => {},
 					},
 				});
-				if (code === ALREADY_CHECKED_IN){
+				if (code === ALREADY_CHECKED_IN) {
 					setTimeout(() => {
 						push(`/events`);
 					}, 2000);

@@ -8,28 +8,21 @@ import { users, data } from "db/schema";
 
 export const createRegistration = authenticatedAction
 	.schema(insertUserWithDataSchemaFormified)
-	.action(
-		async ({
-			parsedInput: registerFormInputs,
-			ctx: { clerkID },
-		}) => {
-			const { data: dataSchemaInputs, ...usersSchemaInputs } =
-				registerFormInputs;
-			const existingUser = await db
-				.select()
-				.from(users)
-				.innerJoin(data, eq(users.userID, data.userID))
-				.where(
-					or(
-						eq(users.email, registerFormInputs.email),
-						eq(users.clerkID, clerkID),
-						eq(
-							data.universityID,
-							registerFormInputs.data.universityID,
-						),
-					),
-				)
-				.limit(1);
+	.action(async ({ parsedInput: registerFormInputs, ctx: { clerkID } }) => {
+		const { data: dataSchemaInputs, ...usersSchemaInputs } =
+			registerFormInputs;
+		const existingUser = await db
+			.select()
+			.from(users)
+			.innerJoin(data, eq(users.userID, data.userID))
+			.where(
+				or(
+					eq(users.email, registerFormInputs.email),
+					eq(users.clerkID, clerkID),
+					eq(data.universityID, registerFormInputs.data.universityID),
+				),
+			)
+			.limit(1);
 
 		if (existingUser.length > 0) {
 			const foundUser = existingUser[0];
