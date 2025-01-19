@@ -126,10 +126,11 @@ export const selectEventSchema = createSelectSchema(events);
 
 export const selectCheckinSchema = createSelectSchema(checkins);
 
+// regex no work rn
 export const adminCheckinSchema = z.object({
 	universityIDs: z
 		.string()
-		.regex(new RegExp(`(${c.universityID.universityIDRegex}[,\\s]*)+`), {
+		.regex(new RegExp(`(${c.universityID.universityIDRegex.source}[,\\s]*)+`), {
 			message: "Invalid format for ID or list of ID's",
 		}),
 	eventID: z.string().min(c.events.idLength),

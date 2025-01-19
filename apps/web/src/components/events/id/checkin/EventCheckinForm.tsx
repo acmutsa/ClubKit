@@ -25,6 +25,7 @@ import { checkInUserAction } from "@/actions/checkin";
 import { useRouter } from "next/navigation";
 import type { CheckInUserClientProps } from "db/types";
 import RatingStars from "./RatingStars";
+import { CheckinResult } from "@/lib/types/events";
 
 export default function EventCheckinForm({
 	eventID,
@@ -49,6 +50,8 @@ export default function EventCheckinForm({
 		},
 	);
 
+	const { ALREADY_CHECKED_IN} = CheckinResult
+
 	const { push } = useRouter();
 
 	const {
@@ -61,8 +64,10 @@ export default function EventCheckinForm({
 			toast.dismiss();
 			const success = data?.success;
 			const code = data?.code;
+			
 			if (!success) {
-				toast.error(code, {
+				const msg = code === ALREADY_CHECKED_IN ? "You have already checked in." : "Something went wrong checking in user.";
+				toast.error(msg, {
 					duration: Infinity,
 					cancel: {
 						label: "Close",
