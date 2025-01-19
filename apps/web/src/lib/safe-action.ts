@@ -24,18 +24,18 @@ export const actionClient = createSafeActionClient({
 });
 
 export const authenticatedAction = actionClient.use(async ({ next }) => {
-	const { userId } = auth();
-	if (!userId)
+	const { userId: clerkID } = auth();
+	if (!clerkID)
 		returnValidationErrors(z.null(), {
 			_errors: ["Unauthorized (No User ID)"],
 		});
-	return next({ ctx: { userId } });
+	return next({ ctx: { clerkID } });
 });
 
 export const userAction = authenticatedAction.use(async ({ next, ctx }) => {
-	const { userId } = ctx;
+	const { clerkID } = ctx;
 	const user = await db.query.users.findFirst({
-		where: eq(users.clerkID, userId),
+		where: eq(users.clerkID, clerkID),
 	});
 
 	if (!user) {
@@ -45,7 +45,7 @@ export const userAction = authenticatedAction.use(async ({ next, ctx }) => {
 	}
 
 	return next({
-		ctx: { userRole: user.role, userID: user.userID, clerkID: userId },
+		ctx: { userRole: user.role, userID: user.userID },
 	});
 });
 

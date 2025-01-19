@@ -13,7 +13,7 @@ const { ALREADY_CHECKED_IN, SUCCESS, FAILED, SOME_FAILED } = CheckinResult;
 
 export const checkInUserAction = userAction
 	.schema(userCheckinSchemaFormified)
-	.action(async ({ parsedInput }) => {
+	.action(async ({ ctx, parsedInput }) => {
 		try {
 			await checkInUserClient(parsedInput);
 		} catch (e) {
