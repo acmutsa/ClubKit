@@ -3,10 +3,9 @@ import {
 	selectCheckinSchema,
 	userCheckinSchemaFormified,
 	insertUserWithDataSchemaFormified,
+	selectUserWithDataSchema,
 } from "./zod";
 
 export type Checkin = z.infer<typeof selectCheckinSchema>;
 export type CheckInUserClientProps = z.infer<typeof userCheckinSchemaFormified>;
-export type UserWithDataSchemaType = z.infer<
-	typeof insertUserWithDataSchemaFormified
->;
+export type UserWithData = z.infer<typeof selectUserWithDataSchema>;

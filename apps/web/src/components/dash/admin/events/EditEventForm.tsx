@@ -67,7 +67,6 @@ export default function EditEventForm({
 		description: string;
 	} | null>(null);
 	const router = useRouter();
-
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -513,6 +512,41 @@ export default function EditEventForm({
 												</MultiSelectorList>
 											</MultiSelectorContent>
 										</MultiSelector>
+									</FormItem>
+								)}
+							/>
+							<FormField
+								name="points"
+								control={form.control}
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Points</FormLabel>
+										<FormControl>
+											<Input
+												type="number"
+												className="max-w-[25%]"
+												min={c.minEventPoints}
+												max={c.maxEventPoints}
+												{...field}
+												value={field.value?.toString()}
+												onChange={(e) => {
+													const parsedPoints =
+														parseInt(
+															e.target.value,
+															10,
+														);
+													const points =
+														parsedPoints < 1
+															? 1
+															: parsedPoints;
+													form.setValue(
+														"points",
+														points,
+													);
+												}}
+											/>
+										</FormControl>
+										<FormMessage />
 									</FormItem>
 								)}
 							/>

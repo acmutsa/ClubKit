@@ -1,0 +1,1 @@
+ALTER TABLE "event_categories" ALTER COLUMN "id" SET DATA TYPE varchar(8);

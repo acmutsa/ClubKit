@@ -73,6 +73,7 @@ import { useRouter } from "next/navigation";
 import { upload } from "@vercel/blob/client";
 import FormDisplayName from "../shared/FormDisplayName";
 import { bucketBaseUrl } from "config";
+import { ClassificationType, MajorType } from "@/lib/types/shared";
 
 const formSchema = insertUserWithDataSchemaFormified;
 
@@ -95,11 +96,11 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 			firstName: "",
 			lastName: "",
 			data: {
-				major: "",
-				classification: "",
-
+				major: "" as MajorType,
+				classification: "" as ClassificationType,
 				gender: [],
 				ethnicity: [],
+				universityID: "",
 			},
 		},
 	});
@@ -209,9 +210,6 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 	return (
 		<>
 			<AlertDialog open={error != null}>
-				{/* <AlertDialogTrigger asChild>
-					<Button variant="outline">Show Dialog</Button>
-				</AlertDialogTrigger> */}
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>{error?.title}</AlertDialogTitle>
@@ -227,10 +225,6 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 				</AlertDialogContent>
 			</AlertDialog>
 			<div className="mt-12">
-				{/* <div className="bg-red-500 flex items-center py-3 rounded mb-5 text-white px-4 gap-x-2">
-				<TriangleAlert />
-				<p>Error Creating Registration: </p>
-			</div> */}
 				<Form {...form}>
 					<form
 						className="space-y-8"
@@ -295,9 +289,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 												<Input {...field} disabled />
 											</FormControl>
 											<p className="text-xs text-muted-foreground">
-												This field is immutable to keep
-												synced with your authentication
-												for the site
+												This field cannot be changed.
 											</p>
 											<FormMessage />
 										</FormItem>
@@ -376,7 +368,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 																				) => {
 																					form.setValue(
 																						"data.major",
-																						value,
+																						value as MajorType,
 																					);
 																					form.clearErrors(
 																						"data.major",
@@ -423,34 +415,27 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 											>
 												<FormControl>
 													<SelectTrigger>
-														<SelectValue placeholder="Classification" />
+														<SelectValue placeholder="Select a classification" />
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													<SelectItem
-														className="cursor-pointer"
-														value="freshman"
-													>
-														Freshman
-													</SelectItem>
-													<SelectItem
-														className="cursor-pointer"
-														value="sophomore"
-													>
-														Sophomore
-													</SelectItem>
-													<SelectItem
-														className="cursor-pointer"
-														value="junior"
-													>
-														Junior
-													</SelectItem>
-													<SelectItem
-														className="cursor-pointer"
-														value="senior"
-													>
-														Senior
-													</SelectItem>
+													{c.userIdentityOptions.classification.map(
+														(
+															classification,
+															index,
+														) => (
+															<SelectItem
+																key={
+																	classification
+																}
+																value={
+																	classification
+																}
+															>
+																{classification}
+															</SelectItem>
+														),
+													)}
 												</SelectContent>
 											</Select>
 											<FormMessage />
@@ -682,49 +667,23 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 													</MultiSelectorTrigger>
 													<MultiSelectorContent>
 														<MultiSelectorList>
-															<MultiSelectorItem
-																key="Male"
-																value="Male"
-															>
-																Male
-															</MultiSelectorItem>
-															<MultiSelectorItem
-																key="Female"
-																value="Female"
-															>
-																Female
-															</MultiSelectorItem>
-															<MultiSelectorItem
-																key="Non-Binary"
-																value="Non-Binary"
-															>
-																Non-Binary
-															</MultiSelectorItem>
-															<MultiSelectorItem
-																key="Transgender"
-																value="Transgender"
-															>
-																Transgender
-															</MultiSelectorItem>
-															<MultiSelectorItem
-																key="Intersex"
-																value="Intersex"
-															>
-																Intersex
-															</MultiSelectorItem>
-															<MultiSelectorItem
-																key="Other"
-																value="Other"
-															>
-																Other
-															</MultiSelectorItem>
-															<MultiSelectorItem
-																key="I prefer not to say"
-																value="I prefer not to say"
-															>
-																I prefer not to
-																say
-															</MultiSelectorItem>
+															{c.userIdentityOptions.gender.map(
+																(
+																	value,
+																	index,
+																) => (
+																	<MultiSelectorItem
+																		key={
+																			value
+																		}
+																		value={
+																			value
+																		}
+																	>
+																		{value}
+																	</MultiSelectorItem>
+																),
+															)}
 														</MultiSelectorList>
 													</MultiSelectorContent>
 												</MultiSelector>
@@ -799,46 +758,21 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 											>
 												<FormControl>
 													<SelectTrigger>
-														<SelectValue placeholder="Shirt Size" />
+														<SelectValue placeholder="Select a size" />
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													<SelectItem
-														className="cursor-pointer"
-														value="xs"
-													>
-														XS
-													</SelectItem>
-													<SelectItem
-														className="cursor-pointer"
-														value="s"
-													>
-														S
-													</SelectItem>
-													<SelectItem
-														className="cursor-pointer"
-														value="m"
-													>
-														M
-													</SelectItem>
-													<SelectItem
-														className="cursor-pointer"
-														value="l"
-													>
-														L
-													</SelectItem>
-													<SelectItem
-														className="cursor-pointer"
-														value="xl"
-													>
-														XL
-													</SelectItem>
-													<SelectItem
-														className="cursor-pointer"
-														value="xxl"
-													>
-														XXL
-													</SelectItem>
+													{c.userIdentityOptions.shirtSize.map(
+														(size) => (
+															<SelectItem
+																className="cursor-pointer"
+																value={size}
+																key={size}
+															>
+																{size}
+															</SelectItem>
+														),
+													)}
 												</SelectContent>
 											</Select>
 											<FormMessage />
@@ -857,22 +791,21 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 											>
 												<FormControl>
 													<SelectTrigger>
-														<SelectValue placeholder="Shirt Type" />
+														<SelectValue placeholder="Select a type" />
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													<SelectItem
-														className="cursor-pointer"
-														value="Unisex"
-													>
-														Unisex
-													</SelectItem>
-													<SelectItem
-														className="cursor-pointer"
-														value="Women's"
-													>
-														Women's
-													</SelectItem>
+													{c.userIdentityOptions.shirtType.map(
+														(type) => (
+															<SelectItem
+																className="cursor-pointer"
+																value={type}
+																key={type}
+															>
+																{type}
+															</SelectItem>
+														),
+													)}
 												</SelectContent>
 											</Select>
 											<FormMessage />

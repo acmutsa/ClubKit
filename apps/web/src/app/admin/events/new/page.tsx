@@ -1,11 +1,11 @@
 import NewEventForm from "@/components/dash/admin/events/NewEventForm";
-import { getCategoryOptions } from "@/lib/queries/categories";
+import { getAllCategoriesKeyValue } from "@/lib/queries/categories";
 import { getUTCDate } from "@/lib/utils";
 
 export default async function Page() {
 	const defaultDate = getUTCDate();
 	defaultDate.setSeconds(0);
-	const categoryOptions = await getCategoryOptions();
+	const categoryOptions = await getAllCategoriesKeyValue();
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
 			<div className="grid grid-cols-2 px-5">

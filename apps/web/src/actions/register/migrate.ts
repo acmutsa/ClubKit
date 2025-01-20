@@ -45,10 +45,7 @@ export const doPortalLink = authenticatedAction
 		z.object({ universityID: z.string().min(1), email: z.string().min(1) }),
 	)
 	.action(
-		async ({
-			ctx: { userId: clerkID },
-			parsedInput: { email, universityID },
-		}) => {
+		async ({ ctx: { clerkID }, parsedInput: { email, universityID } }) => {
 			// why we do we care about their inner join data?
 			const lookup = await db
 				.select()

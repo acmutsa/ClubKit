@@ -1,7 +1,7 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { data, users, events, checkins } from "./schema";
+import { data, users, events, checkins, eventCategories } from "./schema";
 import { z } from "zod";
-import c from "config";
+import c, { majors } from "config";
 
 export const insertUserDataSchema = createInsertSchema(data);
 export const insertUserSchema = createInsertSchema(users);
@@ -21,13 +21,13 @@ const userFormified = createInsertSchema(users, {
 
 const userDataFormified = z.object({
 	data: createInsertSchema(data, {
-		classification: z.string().min(1, "You must select a classification."),
-		major: z.string().min(1, "You must select a major."),
-		shirtSize: z.string().min(1).max(10),
-		shirtType: z.string().min(1).max(10),
+		classification: z.enum(c.userIdentityOptions.classification),
+		major: z.enum(majors),
+		shirtSize: z.enum(c.userIdentityOptions.shirtSize),
+		shirtType: z.enum(c.userIdentityOptions.shirtType),
 		birthday: z.date().optional(),
 		// Special Values
-		universityID: z.string().min(1).max(c.universityID.maxLength),
+		universityID: z.string().regex(c.universityID.universityIDRegex),
 		gender: z
 			.array(z.enum(c.userIdentityOptions.gender))
 			.min(1, "Required"),
@@ -67,16 +67,20 @@ export const insertUserWithDataSchemaFormified =
 export const selectUserWithDataSchema = z.object({
 	user: createSelectSchema(users),
 	data: createSelectSchema(data, {
-		gender: z.string().array().min(1, "Required"),
-		ethnicity: z.string().array().min(1, "Required"),
+		gender: z.string().array().min(1),
+		ethnicity: z.string().array().min(1),
 		interestedEventTypes: z.string().array(),
 	}),
 });
-export type UserWithData = z.infer<typeof selectUserWithDataSchema>;
 
-// TODO: tighten insert schema constraints
+export const deleteEventSchema = z.string().min(c.events.idLength);
+
 export const insertEventSchema = createInsertSchema(events);
 export const insertEventSchemaFormified = insertEventSchema
+	.extend({
+		name: basicStringSchema,
+		location: basicStringSchema,
+	})
 	.merge(
 		z.object({
 			categories: z
@@ -121,10 +125,16 @@ export const selectEventSchema = createSelectSchema(events);
 
 export const selectCheckinSchema = createSelectSchema(checkins);
 
+// regex no work rn
 export const adminCheckinSchema = z.object({
-	universityIDs: z.string().regex(new RegExp(`(\\w+[,\\W]*)+`), {
-		message: "Invalid format for ID or list of ID's",
-	}),
+	universityIDs: z
+		.string()
+		.regex(
+			new RegExp(`(${c.universityID.universityIDRegex.source}[,\\s]*)+`),
+			{
+				message: "Invalid format for ID or list of ID's",
+			},
+		),
 	eventID: z.string().min(c.events.idLength),
 });
 export const universityIDSplitter = z
@@ -148,3 +158,11 @@ export const userCheckinSchemaFormified = userCheckInSchema.merge(
 			.max(5, { message: "Rating must be between 1 and 5." }),
 	}),
 );
+
+export const eventCategorySchema = createSelectSchema(eventCategories).extend({
+	id: z.string().length(c.events.categoryIDLength),
+	name: basicStringSchema,
+	color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+});
+
+export const createEventCategorySchema = eventCategorySchema.omit({ id: true });

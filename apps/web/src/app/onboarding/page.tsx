@@ -52,7 +52,6 @@ export default async function Page() {
 		);
 	}
 
-	// the school id / abc123 is also a unique field which would throw if a user signs up with a different email but the same school id. We need to combat that
 	return (
 		<main className="mb-3 w-screen overflow-x-hidden">
 			<div className="mx-auto min-h-screen max-w-5xl px-3 pt-20 lg:px-0 lg:pt-24">
@@ -65,7 +64,7 @@ export default async function Page() {
 							registration.
 						</p>
 					</div>
-					<div className="flex flex-col items-center justify-center gap-y-3 rounded-lg bg-primary pb-2">
+					<div className="flex flex-col items-center justify-center gap-y-3 rounded-lg bg-primary pb-2 pt-2 md:pt-0">
 						<p className="text-sm font-semibold text-white dark:text-black md:font-bold">
 							Had a legacy portal (abc123 & email) account?
 						</p>

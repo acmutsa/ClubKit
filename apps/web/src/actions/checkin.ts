@@ -1,15 +1,13 @@
 "use server";
 
-import {
-	authenticatedAction,
-	userAction,
-	adminAction,
-} from "@/lib/safe-action";
+import { userAction, adminAction } from "@/lib/safe-action";
 import { userCheckinSchemaFormified } from "db/zod";
 import { UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE } from "@/lib/constants/";
 import { checkInUserClient, checkInUserList } from "@/lib/queries/checkins";
 import { adminCheckinSchema, universityIDSplitter } from "db/zod";
 import { CheckinResult } from "@/lib/types/events";
+import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 
 const { ALREADY_CHECKED_IN, SUCCESS, FAILED, SOME_FAILED } = CheckinResult;
 
@@ -40,9 +38,12 @@ export const adminCheckin = adminAction
 		const { universityIDs, eventID } = parsedInput;
 		const { userID: adminID } = ctx;
 		try {
+			const currentPath = headers().get("referer") ?? "";
+
 			const idList = universityIDSplitter.parse(universityIDs);
 			const failedIDs = await checkInUserList(eventID, idList, adminID);
 
+			revalidatePath(currentPath);
 			if (failedIDs.length == 0) {
 				return {
 					success: true,

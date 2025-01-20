@@ -47,10 +47,18 @@ export const checkinLogColumns: ColumnDef<CheckinLogEntry>[] = [
 		enableSorting: true,
 	},
 	{
+		accessorKey: "author.userID",
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title="User ID" />;
+		},
+
+		enableSorting: true,
+	},
+	{
 		id: "author",
 		accessorFn: (row) => `${row.author.firstName} ${row.author.lastName}`,
 		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title="User" />;
+			return <DataTableColumnHeader column={column} title="Name" />;
 		},
 		cell: ({ row }) => {
 			return (

@@ -8,8 +8,10 @@ import { DataTable } from "@/components/ui/data-table";
 import EventStatsSheet from "@/components/dash/admin/events/EventStatsSheet";
 import { Button } from "@/components/ui/button";
 import AdminCheckinLog from "@/components/dash/shared/AdminCheckinLog";
+import { unstable_noStore as noStore } from "next/cache";
 
 async function Page() {
+	noStore();
 	const events = await getEventsWithCheckins();
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
@@ -38,11 +40,13 @@ async function Page() {
 					columns={columns}
 					data={events}
 					tableName="events"
-					viewRoute="/events/"
+					viewRoute={undefined}
 				/>
 			</div>
 		</div>
 	);
 }
+
+export const runtime = "edge";
 
 export default Page;
