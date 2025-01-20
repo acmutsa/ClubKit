@@ -48,7 +48,7 @@ export function PopoverCommand({
 					<ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent className="max-h-[400px] w-[250px] p-0 no-scrollbar">
+			<PopoverContent className="max-h-[400px] w-[var(--radix-popover-trigger-width)] p-0 no-scrollbar">
 				<Command>
 					<CommandInput placeholder={`Search ${topic}s...`} />
 					<CommandEmpty>No {topic}s found.</CommandEmpty>
