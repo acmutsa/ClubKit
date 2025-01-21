@@ -19,13 +19,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useCallback } from "react";
 import { PopoverSelect } from "@/components/shared/popover-select";
-
-const shirtSizes = ["XS", "S", "M", "L", "XL", "XXL"] as const;
-const shirtTypes = ["Unisex", "Women's"] as const;
+import { ShirtSizeType, ShirtType } from "@/lib/types/shared";
+import c from "config";
 
 interface OrganizationSettingsPageProps {
-	shirtType: string;
-	shirtSize: string;
+	shirtType: ShirtType;
+	shirtSize: ShirtSizeType;
 }
 
 // TODO: Figure out what types of interested events users can select.  Fix padding on interested event types.
@@ -87,7 +86,9 @@ export function ClubSettingsForm({
 									</FormLabel>
 									<FormControl>
 										<PopoverSelect
-											options={shirtSizes}
+											options={
+												c.userIdentityOptions.shirtSize
+											}
 											value={field.value}
 											topic="shirt size"
 											onChange={field.onChange}
@@ -109,7 +110,9 @@ export function ClubSettingsForm({
 										<PopoverSelect
 											value={field.value}
 											onChange={field.onChange}
-											options={shirtTypes}
+											options={
+												c.userIdentityOptions.shirtType
+											}
 											topic="shirt type"
 										/>
 									</FormControl>

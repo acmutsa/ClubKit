@@ -29,13 +29,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import c from "config";
 import { useState, useCallback } from "react";
-import { Gender, Ethnicity } from "@/lib/types/settings";
+import { GenderType, EthnicityType } from "@/lib/types/shared";
 
 interface AccountInfoProps {
 	firstName: string;
 	lastName: string;
-	gender: Gender[];
-	ethnicity: Ethnicity[];
+	gender: GenderType[];
+	ethnicity: EthnicityType[];
 	birthday: Date | undefined;
 }
 

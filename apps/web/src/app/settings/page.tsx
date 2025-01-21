@@ -4,7 +4,14 @@ import { ChangeResumeForm } from "@/components/settings/forms/change-resume-form
 import { ClubSettingsForm } from "@/components/settings/forms/club-settings-form";
 import { SchoolSettingsForm } from "@/components/settings/forms/school-settings-form";
 import { getUserSettings } from "@/lib/queries/user-settings";
-import { Gender, Ethnicity } from "@/lib/types/settings";
+import {
+	GenderType,
+	EthnicityType,
+	ShirtSizeType,
+	ShirtType,
+	ClassificationType,
+	MajorType,
+} from "@/lib/types/shared";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { clerkClient } from "@clerk/nextjs/server";
@@ -52,8 +59,10 @@ export default async function UserSettingsProfilePage() {
 					<AccountSettingsForm
 						firstName={userSettings.firstName}
 						lastName={userSettings.lastName}
-						gender={userSettings.data.gender as Gender[]}
-						ethnicity={userSettings.data.ethnicity as Ethnicity[]}
+						gender={userSettings.data.gender as GenderType[]}
+						ethnicity={
+							userSettings.data.ethnicity as EthnicityType[]
+						}
 						birthday={userSettings.data.birthday ?? undefined}
 					/>
 				</CardContent>
@@ -93,8 +102,8 @@ export default async function UserSettingsProfilePage() {
 				</div>
 				<CardContent>
 					<ClubSettingsForm
-						shirtSize={userSettings.data.shirtSize}
-						shirtType={userSettings.data.shirtType}
+						shirtSize={userSettings.data.shirtSize as ShirtSizeType}
+						shirtType={userSettings.data.shirtType as ShirtType}
 					/>
 				</CardContent>
 				<CardFooter />
@@ -112,10 +121,13 @@ export default async function UserSettingsProfilePage() {
 				</div>
 				<CardContent>
 					<SchoolSettingsForm
-						classification={userSettings.data.classification}
+						classification={
+							userSettings.data
+								.classification as ClassificationType
+						}
 						graduationMonth={userSettings.data.graduationMonth}
 						graduationYear={userSettings.data.graduationYear}
-						major={userSettings.data.major}
+						major={userSettings.data.major as MajorType}
 					/>
 				</CardContent>
 				<CardFooter />

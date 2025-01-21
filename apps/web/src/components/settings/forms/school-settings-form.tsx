@@ -22,10 +22,12 @@ import { useState, useCallback } from "react";
 import { majors } from "config";
 import { PopoverCommand } from "@/components/shared/popover-command";
 import { PopoverSelect } from "@/components/shared/popover-select";
+import { MajorType, ClassificationType } from "@/lib/types/shared";
+import c from "config";
 
 interface SchoolSettingsFormProps {
-	major: string;
-	classification: string;
+	major: MajorType;
+	classification: ClassificationType;
 	graduationMonth: number;
 	graduationYear: number;
 }
@@ -127,12 +129,7 @@ export function SchoolSettingsForm({
 									</FormLabel>
 									<FormControl>
 										<PopoverSelect
-											options={[
-												"freshman",
-												"sophomore",
-												"junior",
-												"senior",
-											]}
+											options={c.userIdentityOptions.classification}
 											value={field.value}
 											topic="classification"
 											onChange={field.onChange}
