@@ -129,7 +129,10 @@ export function SchoolSettingsForm({
 									</FormLabel>
 									<FormControl>
 										<PopoverSelect
-											options={c.userIdentityOptions.classification}
+											options={
+												c.userIdentityOptions
+													.classification
+											}
 											value={field.value}
 											topic="classification"
 											onChange={field.onChange}
