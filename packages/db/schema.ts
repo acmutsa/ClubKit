@@ -15,11 +15,7 @@ import c from "config";
 // pieces of this schema need to be revamped as a lot of them are lazily set as text instead of varchar with a hard limit
 /* USERS */
 
-export const userRoles = pgEnum("user_roles", [
-	"member",
-	"admin",
-	"super_admin",
-]);
+export const userRoles = pgEnum("user_roles", c.memberRoles);
 
 export const users = pgTable("users", {
 	userID: serial("user_id").primaryKey(),
@@ -58,7 +54,7 @@ export const data = pgTable("data", {
 
 /* EVENTS */
 export const eventCategories = pgTable("event_categories", {
-	id: text("id").primaryKey(),
+	id: varchar("id", { length: 8 }).primaryKey(),
 	name: varchar({ length: 255 }).notNull().unique(),
 	color: varchar({ length: 255 }).notNull(),
 });

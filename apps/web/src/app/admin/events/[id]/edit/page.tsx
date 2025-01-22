@@ -2,7 +2,7 @@ import React from "react";
 
 import EditEventForm from "@/components/dash/admin/events/EditEventForm";
 
-import { getCategoryOptions } from "@/lib/queries/categories";
+import { getAllCategoriesKeyValue } from "@/lib/queries/categories";
 import { iEvent, uEvent } from "@/lib/types/events";
 import { getEventWithCategoriesById } from "@/lib/queries/events";
 import { IDParamProp } from "@/lib/types/shared";
@@ -11,7 +11,7 @@ import FullScreenMessage from "@/components/shared/fullscreen-message";
 import c from "config";
 
 export default async function Page({ params: { id } }: IDParamProp) {
-	const categoryOptions = await getCategoryOptions();
+	const categoryOptions = await getAllCategoriesKeyValue();
 	const oldValues: uEvent | undefined = await getEventWithCategoriesById(id);
 	if (oldValues === undefined) {
 		return (

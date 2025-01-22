@@ -7,9 +7,9 @@ import { getClientTimeZone } from "@/lib/utils";
 import { Suspense } from "react";
 import { LoaderCircle } from "lucide-react";
 export default function Page() {
-	const { userId } = auth();
+	const { userId: clerkID } = auth();
 
-	if (!userId) return redirect("/sign-in");
+	if (!clerkID) return redirect("/sign-in");
 
 	const clientTimeZoneValue = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
 	const clientTimeZone = getClientTimeZone(clientTimeZoneValue);
@@ -24,7 +24,7 @@ export default function Page() {
 					</div>
 				}
 			>
-				<UserDash userId={userId} clientTimeZone={clientTimeZone} />
+				<UserDash clerkID={clerkID} clientTimeZone={clientTimeZone} />
 			</Suspense>
 		</main>
 	);

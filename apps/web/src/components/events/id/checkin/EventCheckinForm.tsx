@@ -21,10 +21,11 @@ import c from "config";
 import React, { useEffect, useState } from "react";
 import { X, Check } from "lucide-react";
 import { toast } from "sonner";
-import { checkInUserAction } from "@/actions/events/checkin";
+import { checkInUserAction } from "@/actions/checkin";
 import { useRouter } from "next/navigation";
 import type { CheckInUserClientProps } from "db/types";
 import RatingStars from "./RatingStars";
+import { CheckinResult } from "@/lib/types/events";
 
 export default function EventCheckinForm({
 	eventID,
@@ -49,6 +50,8 @@ export default function EventCheckinForm({
 		},
 	);
 
+	const { ALREADY_CHECKED_IN } = CheckinResult;
+
 	const { push } = useRouter();
 
 	const {
@@ -61,8 +64,13 @@ export default function EventCheckinForm({
 			toast.dismiss();
 			const success = data?.success;
 			const code = data?.code;
+
 			if (!success) {
-				toast.error(code, {
+				const msg =
+					code === ALREADY_CHECKED_IN
+						? "You have already checked in."
+						: "Something went wrong checking in user.";
+				toast.error(msg, {
 					duration: Infinity,
 					cancel: {
 						label: "Close",
@@ -70,6 +78,11 @@ export default function EventCheckinForm({
 						onClick: () => {},
 					},
 				});
+				if (code === ALREADY_CHECKED_IN) {
+					setTimeout(() => {
+						push(`/events`);
+					}, 2000);
+				}
 				return;
 			}
 			toast.success("Thanks for stopping by. See you next time!", {
@@ -77,7 +90,7 @@ export default function EventCheckinForm({
 				description: "Redirecting to events page...",
 			});
 			setTimeout(() => {
-				push("/dash");
+				push("/events");
 			}, 2500);
 		},
 		onError: async ({ error: e }) => {

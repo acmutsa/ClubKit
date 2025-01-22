@@ -9,6 +9,16 @@ import {
 	users,
 } from "db/schema";
 
+export const getAdminUser = async (clerkId: string) => {
+	return db.query.users.findFirst({
+		where: (users, { eq, and, inArray }) =>
+			and(
+				eq(users.clerkID, clerkId),
+				inArray(users.role, ["admin", "super_admin"]),
+			),
+	});
+};
+
 export const getUserWithData = async () => {
 	return db
 		.select({

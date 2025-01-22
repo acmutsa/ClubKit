@@ -95,7 +95,7 @@ export default function EventCardComponent({
 					<h1
 						className={clsx("text-blue-400 dark:text-sky-300", {
 							"line-through": isPast,
-							"opacity-40": !isEventCurrentlyHappening,
+							"opacity-40": !isEventCheckinAllowed,
 						})}
 					>
 						Check-In

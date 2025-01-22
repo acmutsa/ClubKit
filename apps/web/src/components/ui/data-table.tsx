@@ -56,11 +56,15 @@ import { Column } from "@tanstack/react-table";
 import { cn } from "@/lib/utils";
 import { DataTablePagination } from "../shared/data-table-pagination";
 
+import { FolderInput } from "lucide-react";
+import { toast } from "sonner";
+import { ExportNames } from "@/lib/types/shared";
+
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	viewRoute?: string;
-	tableName?: string;
+	tableName?: ExportNames;
 }
 
 declare module "@tanstack/react-table" {
@@ -147,6 +151,14 @@ export function DataTable<TData, TValue>({
 		}
 	}, [table.getState().columnFilters[0]?.id]);
 
+	function showLoading() {
+		toast.dismiss();
+		toast("Exporting. This may take a few seconds...", {
+			duration: 2000,
+		});
+		toast.dismiss();
+	}
+
 	return (
 		<div>
 			<div className="flex w-full items-center py-4">
@@ -159,6 +171,20 @@ export function DataTable<TData, TValue>({
 				<div className="m-2 text-sm text-muted-foreground">
 					Viewing {table.getFilteredRowModel().rows.length} result(s).
 				</div>
+				{tableName && (
+					<div className="flex w-full flex-1 justify-end">
+						<a
+							download
+							href={`/api/admin/export?name=${tableName}`}
+							onClick={showLoading}
+						>
+							<Button className="flex gap-x-1">
+								<FolderInput />
+								Export
+							</Button>
+						</a>
+					</div>
+				)}
 			</div>
 			<div className="rounded-md border">
 				<Table>
