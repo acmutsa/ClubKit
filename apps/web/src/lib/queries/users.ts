@@ -74,3 +74,45 @@ export const getUserDataAndCheckin = async (
 		},
 	});
 };
+
+interface AttendedEvents {
+	id: string;
+	name: string;
+	points: number;
+	start: typeof events.start;
+}
+
+export const getRichUserData = async (clerkID: string) => {
+	return db
+		.select({
+			user: users,
+			userData: data,
+			attendedEvents:
+				sql<Array<AttendedEvents> | null>`JSONB_AGG(JSONB_BUILD_OBJECT(
+			'id', ${events.id},
+			'name', ${events.name},
+			'points', ${events.points},
+			'start', ${events.start}) ORDER BY ${events.start} DESC) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate})`.as(
+					"attendedEvents",
+				),
+			currentSemesterPoints: sql<
+				number | null
+			>`SUM(${events.points}) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate})`.mapWith(
+				Number,
+			),
+			// totalPoints: sum(events.points),
+			currentSemesterEventsAttended: sql<
+				number | null
+			>`COUNT(${events.id}) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate})`.mapWith(
+				Number,
+			),
+			totalEventsAttended: count(checkins.userID),
+			// userCheckins: sql`ARRAY_AGG(${checkins.eventID})`,
+		})
+		.from(users)
+		.innerJoin(data, eq(users.userID, data.userID))
+		.leftJoin(checkins, eq(users.userID, checkins.userID))
+		.leftJoin(events, eq(events.id, checkins.eventID))
+		.groupBy(users.userID, data.userID)
+		.where(eq(users.clerkID, clerkID));
+};

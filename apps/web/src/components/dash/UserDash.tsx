@@ -115,8 +115,8 @@ export default async function UserDash({
 	return (
 		<div className="flex flex-col">
 			<div>
-				<h2 className="text-xl font-bold">Welcome,</h2>
-				<h1 className="pb-5 text-5xl font-black">{user.firstName}</h1>
+				<h2 className="text-xl font-bold">Welcome back,</h2>
+				<h1 className="pb-5 text-7xl font-black">{user.firstName}</h1>
 			</div>
 			<div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
 				<Card className="md:col-span-1">
@@ -138,7 +138,7 @@ export default async function UserDash({
 								<GraduationCapIcon className="mr-2 h-4 w-4" />
 								{`${userData.major}, ${userData.graduationYear}`}
 							</p>
-							<p className="text-balance mt-2 flex items-center text-base text-muted-foreground">
+							<p className="mt-2 flex items-center text-balance text-base text-muted-foreground">
 								{`Member since ${joinedDate}`}
 							</p>
 						</div>

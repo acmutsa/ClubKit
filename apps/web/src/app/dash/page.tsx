@@ -15,7 +15,7 @@ export default function Page() {
 	const clientTimeZone = getClientTimeZone(clientTimeZoneValue);
 
 	return (
-		<main className="flex min-h-[calc(100vh-4rem)] w-screen items-center justify-center overflow-x-hidden px-4 py-4 md:px-5 ">
+		<main className="mx-auto flex min-h-[calc(100vh-4rem)] w-screen max-w-7xl flex-col items-center justify-center overflow-x-hidden px-4 py-4 md:px-5">
 			<Suspense
 				fallback={
 					<div className="flex flex-col items-center space-y-2">
@@ -26,6 +26,7 @@ export default function Page() {
 			>
 				<UserDash clerkID={clerkID} clientTimeZone={clientTimeZone} />
 			</Suspense>
+			<div className="my-10 w-full border-b-2 border-muted"></div>
 		</main>
 	);
 }
