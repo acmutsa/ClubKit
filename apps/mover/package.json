@@ -14,6 +14,7 @@
     "bun-promptx": "^0.2.0",
     "db": "workspace:*",
     "nanoid": "^5.0.6",
-    "zod": "^3.22.4"
+    "web": "workspace:^",
+    "zod": "^3.23.8"
   }
 }

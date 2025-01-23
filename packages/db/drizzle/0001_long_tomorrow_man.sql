@@ -1,0 +1,1 @@
+ALTER TABLE "events" ADD COLUMN "thumbnail_Url" text DEFAULT '/img/thumbnails/default.png' NOT NULL;

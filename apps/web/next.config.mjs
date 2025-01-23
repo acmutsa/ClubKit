@@ -6,6 +6,28 @@ const jiti = createJiti(fileURLToPath(import.meta.url));
 jiti("./src/env");
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+	images: {
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "itlxdtyrc4ggxyuw.public.blob.vercel-storage.com",
+			},
+		],
+	},
+	async headers() {
+		return [
+			{
+				source: "/events",
+				headers: [
+					{
+						key: "x-timezone",
+						value: Intl.DateTimeFormat().resolvedOptions().timeZone,
+					},
+				],
+			},
+		];
+	},
+};
 
 export default nextConfig;

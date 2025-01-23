@@ -1,9 +1,14 @@
-import Image from "next/image";
-
+import Navbar from "@/components/shared/navbar";
 export default function Home() {
 	return (
-		<main className="h-screen w-screen flex items-center justify-center">
-			<h1 className="font-black text-4xl">ClubKit</h1>
-		</main>
+		// bg-[var(--my-var,var(--my-background,pink))]
+		<div className=" flex h-[100dvh] w-screen flex-col">
+			<header>
+				<Navbar showBorder />
+			</header>
+			<main className="flex w-full flex-1 items-center justify-center">
+				<h1 className="text-4xl font-black">ClubKit</h1>
+			</main>
+		</div>
 	);
 }

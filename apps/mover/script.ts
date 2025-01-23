@@ -39,7 +39,7 @@ async function move() {
 		id: z.string(),
 		email: z.string().email(),
 		name: z.string(),
-		joinDate: z.string(),
+		joinDate: z.string().pipe(z.coerce.date()),
 		data: z.object({
 			memberID: z.string(),
 			major: z.string(),
@@ -77,7 +77,7 @@ async function move() {
 		if (validatedMember.success) {
 			console.log(
 				"Processing member: ",
-				validatedMember.data.email + " | " + validatedMember.data.name
+				validatedMember.data.email + " | " + validatedMember.data.name,
 			);
 			const m = validatedMember.data;
 			await db.transaction(async (tx) => {
@@ -85,13 +85,25 @@ async function move() {
 					.insert(users)
 					.values({
 						email: m.email,
-						firstName: m.name.split(" ").slice(0, -1).join(" ").trim(),
-						lastName: m.name.split(" ")[m.name.split(" ").length - 1].trim(),
+						joinDate: m.joinDate,
+						firstName: m.name
+							.split(" ")
+							.slice(0, -1)
+							.join(" ")
+							.trim(),
+						lastName: m.name
+							.split(" ")
+							[m.name.split(" ").length - 1].trim(),
 					})
 					.returning({ id: users.userID });
-				if (newUserRecordResult.length !== 1 || !newUserRecordResult[0]) {
+				if (
+					newUserRecordResult.length !== 1 ||
+					!newUserRecordResult[0]
+				) {
 					await tx.rollback();
-					console.error(`User creation failed for user (${m.id} / ${m.email})`);
+					console.error(
+						`User creation failed for user (${m.id} / ${m.email})`,
+					);
 					return;
 				}
 				const newUserRecord = newUserRecordResult[0];
@@ -109,7 +121,9 @@ async function move() {
 					m.data.isBlackorAA ? "Black or African American" : null,
 					m.data.isAsian ? "Asian" : null,
 					m.data.isNAorAN ? "American Indian or Alaska Native" : null,
-					m.data.isNHorPI ? "Native Hawaiian or Other Pacific Islander" : null,
+					m.data.isNHorPI
+						? "Native Hawaiian or Other Pacific Islander"
+						: null,
 					m.data.isHispanicorLatinx ? "Hispanic or Latino" : null,
 					m.data.isWhite ? "White" : null,
 				].filter((x) => x !== null) as string[];
@@ -132,7 +146,9 @@ async function move() {
 					classification: m.data.classification,
 					graduationMonth: gradMonth,
 					graduationYear: gradYear,
-					birthday: m.data.Birthday ? new Date(m.data.Birthday) : null,
+					birthday: m.data.Birthday
+						? new Date(m.data.Birthday)
+						: null,
 					gender: gender,
 					ethnicity: ethnicity,
 					resume: null,

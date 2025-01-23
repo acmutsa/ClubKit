@@ -5,16 +5,19 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --write .",
+    "format-check": "prettier --check .",
     "migrations:generate": "pnpm --filter=db migrations:generate",
     "migrations:apply": "pnpm --filter=db migrations:apply",
     "migrations:drop": "pnpm --filter=db migrations:drop",
     "studio": "pnpm --filter=db studio",
     "db-push": "pnpm --filter=db db-push",
-    "move": "pnpm --filter=mover move"
+    "move": "pnpm --filter=mover move",
+    "shadcnadd":"cd apps/web && pnpm dlx shadcn-ui@latest add"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.14",
     "turbo": "latest"
   },
   "packageManager": "pnpm@8.9.0",
@@ -22,7 +25,6 @@
     "node": ">=20"
   },
   "dependencies": {
-    "next-safe-action": "^6.2.0",
     "web": "workspace:^"
   }
 }
