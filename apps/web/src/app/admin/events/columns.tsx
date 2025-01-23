@@ -144,7 +144,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 								</Link>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
-								<ViewQRCode data={data}/>
+								<ViewQRCode data={data} />
 							</DropdownMenuItem>
 							<DropdownMenuItem>
 								<div
