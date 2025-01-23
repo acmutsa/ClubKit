@@ -54,6 +54,7 @@
     "react-day-picker": "^8.10.1",
     "react-dom": "^18",
     "react-hook-form": "^7.51.3",
+    "react-qr-code": "^2.0.15",
     "react-stately": "^3.31.1",
     "recharts": "^2.12.7",
     "sonner": "^1.4.41",

@@ -22,6 +22,7 @@ import { DialogTrigger } from "@/components/ui/dialog";
 import DeleteEventDialog from "@/components/dash/admin/events/DeleteEventDialogue";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
+import ViewQRCode from "@/components/dash/admin/events/ViewQRCode";
 
 type EventWithCheckins = Partial<EventType> & { checkin_count: number };
 
@@ -141,6 +142,9 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 								>
 									View
 								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem>
+								<ViewQRCode data={data}/>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
 								<div
