@@ -25,14 +25,8 @@ export default function ViewQRCode({ data }: any) {
 			canvas.height = img.height;
 			ctx.drawImage(img, 0, 0);
 			canvas.toBlob((blob) => {
-				/*
-                TS2322: Type Blob | null is not assignable to type string | Blob | PromiseLike<string | Blob>
-Type null is not assignable to type string | Blob | PromiseLike<string | Blob>
-                    - Unsure how to go about this error with 'image/png'
-                 */
-				// @ts-ignore
 				navigator.clipboard
-					.write([new ClipboardItem({ "image/png": blob })])
+					.write([new ClipboardItem({ "image/png": blob! })])
 					.then(() => console.log("PNG copied to clipboard"))
 					.catch((err) => console.error("Failed to copy:", err));
 			});
