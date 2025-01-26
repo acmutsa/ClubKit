@@ -8,7 +8,7 @@ const c = {
 	},
 	semesters: {
 		current: {
-			title: "Spring 2025",
+			name: "Spring 2025",
 			startDate: new Date("2025-01-24"),
 			endDate: new Date("2025-05-31"),
 			pointsRequired: 7,
@@ -77,6 +77,7 @@ const c = {
 			Events: "/admin/events",
 			Checkins: "/admin/checkins",
 			Categories: "/admin/categories",
+			Semesters: "/admin/semesters",
 		},
 	},
 	maxCheckinDescriptionLength: 400,
