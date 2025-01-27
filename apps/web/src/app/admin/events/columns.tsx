@@ -120,7 +120,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 			const [open, setOpen] = useState(false);
 			const data = row.original;
 			const [basePath, setBasePath] = useState("");
-			
+
 			useEffect(() => {
 				setBasePath(window.location.host);
 			}, []);

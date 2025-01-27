@@ -45,7 +45,6 @@ export default function ViewQRCode(props: ViewQRCodeProps) {
 			btoa(new XMLSerializer().serializeToString(svg));
 	};
 	const download = (fileName: string) => {
-
 		toast.loading("Downloading QR Code...");
 		try {
 			const svg = document.getElementById(qrCodeID);
