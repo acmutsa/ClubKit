@@ -74,6 +74,11 @@ export default function CreateSemesterDialogue() {
 			},
 		},
 	);
+
+  useEffect(()=>{
+    console.log(form.formState.errors)
+    console.log(form.getValues())
+  },[form.formState.errors])
   
 	const isLoading = status === "executing";
 	return (
@@ -122,10 +127,10 @@ export default function CreateSemesterDialogue() {
                     end={form.getValues("endDate")}
                     onRangeChange={(range)=>{
                       if(range){
-                        form.setValue("startDate", range.to ?? new Date());
+                        form.setValue("startDate", range.from ?? new Date());
 						            form.setValue(
 										"endDate",
-										range.from ??
+										range.to ??
 											new Date(
 												Date.now() + semesterOffset,
 											),);

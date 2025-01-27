@@ -1,10 +1,9 @@
 "use client";
 
-import * as React from "react";
 import { addDays,subDays, format, isAfter,isBefore } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -24,12 +23,16 @@ type DatePickerWithRangeProps = {
 
 export function DatePickerWithRange(props: DatePickerWithRangeProps) {
 	const { start, end, className, onRangeChange } = props;
-	const [date, setDate] = React.useState<DateRange | undefined>({
+	const [date, setDate] = useState<DateRange | undefined>({
 		from: start,
 		to: end,
 	});
 
 	const [cnt,setCnt] = useState(0);
+
+	useEffect(()=>{
+		onRangeChange(date);
+	},[date]);
 
 	return (
 		<div className={cn("grid gap-2", className)}>
