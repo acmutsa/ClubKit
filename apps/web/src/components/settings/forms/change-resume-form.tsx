@@ -70,7 +70,7 @@ export function ChangeResumeForm({ resume }: ChangeResumeFormProps) {
 
 				try {
 					const uploadResult = await upload(
-						`${bucketBaseUrl}/${data.resume.name}`,
+						`${bucketBaseUrl}/resume/${data.resume.name}`,
 						data.resume,
 						{
 							access: "public",
