@@ -44,24 +44,13 @@ export default function EventCardComponent({
 		<Card
 			className={`group relative flex h-full w-full flex-col transition duration-300 ease-in-out hover:shadow-lg hover:shadow-slate-400 md:hover:scale-105`}
 		>
-			{isEventCurrentlyHappening && (
-				<Link
-					href={eventDetailsLink}
-					className="absolute top-0 z-50 animate-pulse "
-				>
-					<Badge className="flex flex-row items-center justify-between gap-3 rounded-sm border-transparent bg-inherit bg-red-600 hover:bg-red-400">
-						<h3 className="text-lg font-bold text-white">
-							Happening Now
-						</h3>
-					</Badge>
-				</Link>
-			)}
 			<CardHeader className="flex h-full justify-center p-0 pb-4">
 				<EventImage
 					src={thumbnailUrl}
 					className={clsx("w-full rounded-md", {
 						"h-auto grayscale group-hover:grayscale-0": isPast,
 					})}
+					isLive={isEventCurrentlyHappening}
 				/>
 			</CardHeader>
 			<CardContent className="flex w-full flex-1 flex-col justify-end p-0 pb-4">

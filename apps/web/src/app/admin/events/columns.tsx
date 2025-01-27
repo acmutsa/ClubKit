@@ -114,7 +114,6 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 	{
 		id: "actions",
 		enablePinning: true,
-		header: ({ column }) => {},
 		cell: ({ row }) => {
 			const [showDelete, setShowDelete] = useState(false);
 			const [open, setOpen] = useState(false);

@@ -109,3 +109,23 @@
 .rdp-vhidden {
 	@apply hidden;
 }
+
+.live-glow::after {
+	@apply rounded-md;
+	content: "";
+	position: absolute;
+	inset: 0; /* Covers the entire div */
+	box-shadow: inset 0 0 10px 1px #0295ff;
+	z-index: 1; /* Ensures it's above the content */
+	animation: glow 1s infinite ease-in-out alternate;
+	pointer-events: none; /* Prevent interaction with the pseudo-element */
+}
+
+@keyframes glow {
+	0% {
+		box-shadow: inset 0 0 15px 2px #0295ff;
+	}
+	100% {
+		box-shadow: inset 0 0 25px 5px #0295ff;
+	}
+}
