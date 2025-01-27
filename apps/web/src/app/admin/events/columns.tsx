@@ -143,7 +143,12 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 								</Link>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
-								<ViewQRCode data={data} />
+								<ViewQRCode
+									id={data.id}
+									name={data.name}
+									description={data.description}
+									basePath={basePath}
+								/>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
 								<div

@@ -12,47 +12,66 @@ import QRCode from "react-qr-code";
 import { useRef } from "react";
 import { toast } from "sonner";
 
-export default function ViewQRCode({ data }: any) {
-	const svgRef = useRef(null);
-	const svgElement = svgRef.current!;
+type ViewQRCodeProps = {
+	id?: string;
+	name?: string;
+	description?: string;
+	basePath?: string;
+};
+
+export default function ViewQRCode(props: ViewQRCodeProps) {
+	const { id, name, description, basePath } = props;
+	const qrCodeID = `${name}-QRCode`;
 	const canvas = document.createElement("canvas");
 	const ctx = canvas.getContext("2d")!;
 	const img = new Image();
 
 	const copyToClipboard = async () => {
+		const svg = document.getElementById(qrCodeID);
+		if (!svg) throw new Error("QR Code not found");
 		img.onload = () => {
 			canvas.width = img.width;
 			canvas.height = img.height;
 			ctx.drawImage(img, 0, 0);
-			canvas.toBlob((blob) => {
-				navigator.clipboard
-					.write([new ClipboardItem({ "image/png": blob! })])
-					.then(() => console.log("PNG copied to clipboard"))
-					.catch((err) => console.error("Failed to copy:", err));
+			canvas.toBlob(async (blob) => {
+				console.log(blob);
+				await navigator.clipboard.write([
+					new ClipboardItem({ "image/png": blob! }),
+				]);
 			});
 		};
 		img.src =
 			"data:image/svg+xml;base64," +
-			btoa(new XMLSerializer().serializeToString(svgElement));
+			btoa(new XMLSerializer().serializeToString(svg));
 	};
 
-	const download = async (fileName: string) => {
-		img.onload = () => {
-			canvas.width = img.width;
-			canvas.height = img.height;
-			ctx.drawImage(img, 0, 0);
-			const pngUrl = canvas.toDataURL("image/png");
-
-			const downloadLink = document.createElement("a");
-			downloadLink.href = pngUrl;
-			downloadLink.download = fileName;
-			document.body.appendChild(downloadLink);
-			downloadLink.click();
-			document.body.removeChild(downloadLink);
-		};
-
-		const svgData = new XMLSerializer().serializeToString(svgElement);
-		img.src = "data:image/svg+xml;base64," + btoa(svgData);
+	const download = (fileName: string) => {
+		toast.loading("Downloading QR Code...");
+		try {
+			const svg = document.getElementById(qrCodeID);
+			if (!svg) return toast.error("QR Code not found");
+			const svgData = new XMLSerializer().serializeToString(svg);
+			const canvas = document.createElement("canvas");
+			const ctx = canvas.getContext("2d");
+			if (!ctx) return toast.error("Failed to create canvas context");
+			img.onload = () => {
+				canvas.width = img.width;
+				canvas.height = img.height;
+				ctx.drawImage(img, 0, 0);
+				const pngFile = canvas.toDataURL("image/png");
+				const downloadLink = document.createElement("a");
+				downloadLink.download = fileName;
+				downloadLink.href = `${pngFile}`;
+				downloadLink.click();
+			};
+			img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
+			toast.dismiss();
+			toast.success("QR Code downloaded");
+		} catch (e) {
+			toast.dismiss();
+			console.log(e);
+			toast.error("Failed to download QR Code");
+		}
 	};
 
 	return (
@@ -63,17 +82,14 @@ export default function ViewQRCode({ data }: any) {
 				</DialogTrigger>
 				<DialogContent className="sm:max-w-[425px]">
 					<DialogHeader>
-						<DialogTitle>{data.name}</DialogTitle>
-						<DialogDescription>
-							{data.description}
-						</DialogDescription>
+						<DialogTitle>{name}</DialogTitle>
+						<DialogDescription>{description}</DialogDescription>
 					</DialogHeader>
-					<div>
+					<div className="flex w-full items-center justify-center">
 						<QRCode
-							ref={svgRef}
+							id={qrCodeID}
 							size={256}
-							//TODO: Change to be dynamic with website address
-							value={`https://localhost:3000/events/${data.id}`}
+							value={`${basePath}/${id}`}
 						/>
 					</div>
 					<DialogFooter>
@@ -92,11 +108,7 @@ export default function ViewQRCode({ data }: any) {
 						<Button
 							type="submit"
 							onClick={() => {
-								toast.promise(download(data.id), {
-									loading: "Downloading QR Code...",
-									success: "QR Code downloaded",
-									error: "Failed to download QR Code",
-								});
+								download(qrCodeID);
 							}}
 						>
 							Download
