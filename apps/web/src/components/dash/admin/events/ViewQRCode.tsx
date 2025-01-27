@@ -63,10 +63,10 @@ export default function ViewQRCode(props: ViewQRCodeProps) {
 				downloadLink.download = fileName;
 				downloadLink.href = `${pngFile}`;
 				downloadLink.click();
+				toast.dismiss();
+				toast.success("QR Code downloaded");
 			};
 			img.src = `data:image/svg+xml;base64,${btoa(svgData)}`;
-			toast.dismiss();
-			toast.success("QR Code downloaded");
 		} catch (e) {
 			toast.dismiss();
 			console.log(e);
