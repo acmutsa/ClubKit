@@ -16,12 +16,11 @@ export const doPortalLookupCheck = authenticatedAction
 		const lookup = await db
 			.select()
 			.from(users)
-			.innerJoin(data, eq(users.userID, data.userID))
 			.where(
 				and(
 					eq(users.email, email),
 					isNull(users.clerkID),
-					eq(data.universityID, universityID),
+					eq(users.universityID, universityID),
 				),
 			)
 			.limit(1);
@@ -30,7 +29,7 @@ export const doPortalLookupCheck = authenticatedAction
 			return {
 				success: true,
 				name:
-					lookup[0].users.firstName + " " + lookup[0].users.lastName,
+					lookup[0].firstName + " " + lookup[0].lastName,
 			};
 		} else {
 			return {
@@ -50,12 +49,11 @@ export const doPortalLink = authenticatedAction
 			const lookup = await db
 				.select()
 				.from(users)
-				.innerJoin(data, eq(users.userID, data.userID))
 				.where(
 					and(
 						eq(users.email, email),
 						isNull(users.clerkID),
-						eq(data.universityID, universityID),
+						eq(users.universityID, universityID),
 					),
 				)
 				.limit(1);
@@ -71,7 +69,7 @@ export const doPortalLink = authenticatedAction
 				await db
 					.update(users)
 					.set({ clerkID: clerkID, email: userEmail })
-					.where(eq(users.userID, lookup[0].users.userID));
+					.where(eq(users.userID, lookup[0].userID));
 				return {
 					success: true,
 				};

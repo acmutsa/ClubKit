@@ -66,7 +66,7 @@ export const columns: ColumnDef<UserWithData>[] = [
 	},
 
 	{
-		accessorKey: "data.universityID",
+		accessorKey: "user.universityID",
 		id: "universityID",
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title="ABC123" />;

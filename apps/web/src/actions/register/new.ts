@@ -19,7 +19,7 @@ export const createRegistration = authenticatedAction
 				or(
 					eq(users.email, registerFormInputs.email),
 					eq(users.clerkID, clerkID),
-					eq(data.universityID, registerFormInputs.data.universityID),
+					eq(users.universityID, registerFormInputs.universityID),
 				),
 			)
 			.limit(1);
@@ -37,8 +37,8 @@ export const createRegistration = authenticatedAction
 					code: "email_already_exists",
 				};
 			} else if (
-				foundUser.data.universityID ==
-				registerFormInputs.data.universityID
+				foundUser.users.universityID ==
+				registerFormInputs.universityID
 			) {
 				return {
 					success: false,

@@ -95,12 +95,12 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 			email: defaultEmail,
 			firstName: "",
 			lastName: "",
+			universityID: "",
 			data: {
 				major: "" as MajorType,
 				classification: "" as ClassificationType,
 				gender: [],
 				ethnicity: [],
-				universityID: "",
 			},
 		},
 	});
@@ -132,7 +132,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 					case "university_id_already_exists":
 						setError({
 							title: `${c.universityID.name} Already Exists`,
-							description: `There is already an account with the ${c.universityID.name} of ${form.getValues().data.universityID}. This could mean you have already registered, or that you have a legacy portal account that needs to be connected. If you belive this is an error, please contact ${c.contactEmail}.`,
+							description: `There is already an account with the ${c.universityID.name} of ${form.getValues().universityID}. This could mean you have already registered, or that you have a legacy portal account that needs to be connected. If you belive this is an error, please contact ${c.contactEmail}.`,
 						});
 						break;
 					default:
@@ -301,7 +301,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 							<div className="grid grid-cols-3 gap-4 md:grid-cols-6">
 								<FormField
 									control={form.control}
-									name="data.universityID"
+									name="universityID"
 									render={({ field }) => (
 										<FormItem className="col-span-3 md:col-span-2">
 											<FormLabel>

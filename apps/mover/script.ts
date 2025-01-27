@@ -86,6 +86,7 @@ async function move() {
 					.values({
 						email: m.email,
 						joinDate: m.joinDate,
+						universityID: m.id,
 						firstName: m.name
 							.split(" ")
 							.slice(0, -1)
@@ -142,7 +143,7 @@ async function move() {
 				await tx.insert(data).values({
 					userID: newUserRecord.id,
 					major: m.data.major,
-					universityID: m.id,
+					
 					classification: m.data.classification,
 					graduationMonth: gradMonth,
 					graduationYear: gradYear,

@@ -11,12 +11,9 @@ export const basicStringSchema = z.string().min(1).max(255);
 
 const userFormified = createInsertSchema(users, {
 	email: z.string().email().min(1),
+	universityID: z.string().regex(c.universityID.universityIDRegex),
 	firstName: basicStringSchema,
 	lastName: basicStringSchema,
-}).pick({
-	email: true,
-	firstName: true,
-	lastName: true,
 });
 
 const userDataFormified = z.object({
@@ -27,7 +24,7 @@ const userDataFormified = z.object({
 		shirtType: z.enum(c.userIdentityOptions.shirtType),
 		birthday: z.date().optional(),
 		// Special Values
-		universityID: z.string().regex(c.universityID.universityIDRegex),
+
 		gender: z
 			.array(z.enum(c.userIdentityOptions.gender))
 			.min(1, "Required"),

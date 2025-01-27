@@ -42,8 +42,8 @@ export const checkInUserList = async (
 	universityIDs: string[],
 	adminID: number,
 ) => {
-	const userIDs = await db.query.data.findMany({
-		where: (data) => inArray(data.universityID, universityIDs),
+	const userIDs = await db.query.users.findMany({
+		where: (users) => inArray(users.universityID, universityIDs),
 		columns: { userID: true, universityID: true },
 	});
 
