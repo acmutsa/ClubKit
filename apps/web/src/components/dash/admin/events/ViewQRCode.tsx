@@ -44,8 +44,8 @@ export default function ViewQRCode(props: ViewQRCodeProps) {
 			"data:image/svg+xml;base64," +
 			btoa(new XMLSerializer().serializeToString(svg));
 	};
-
 	const download = (fileName: string) => {
+
 		toast.loading("Downloading QR Code...");
 		try {
 			const svg = document.getElementById(qrCodeID);
@@ -89,7 +89,7 @@ export default function ViewQRCode(props: ViewQRCodeProps) {
 						<QRCode
 							id={qrCodeID}
 							size={256}
-							value={`${basePath}/${id}`}
+							value={`${basePath}/events/${id}`}
 						/>
 					</div>
 					<DialogFooter>

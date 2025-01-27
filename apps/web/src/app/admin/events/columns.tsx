@@ -120,6 +120,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 			const [open, setOpen] = useState(false);
 			const data = row.original;
 			const [basePath, setBasePath] = useState("");
+			
 			useEffect(() => {
 				setBasePath(window.location.host);
 			}, []);
@@ -157,7 +158,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 										e.stopPropagation();
 										toast.promise(
 											navigator.clipboard.writeText(
-												`${basePath}/${data.id}`,
+												`${basePath}/events/${data.id}`,
 											),
 											{
 												loading: "Copying...",
