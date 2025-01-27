@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import type { EventImageProps } from "@/lib/types/events";
+import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -20,11 +21,14 @@ export default function EventImage(props: EventImageProps) {
 
 	return (
 		<>
-			<Image
-				{...combinedProps}
-				onLoad={() => setLoaded(true)}
-				hidden={!loaded}
-			/>
+			<span className={clsx("relative", { "live-glow": props.isLive })}>
+				<Image
+					{...combinedProps}
+					onLoad={() => setLoaded(true)}
+					hidden={!loaded}
+				/>
+			</span>
+
 			<Skeleton
 				className={`${loaded ? "hidden" : `h-[${props.width || "300"}px] w-full`}`}
 				hidden={loaded}

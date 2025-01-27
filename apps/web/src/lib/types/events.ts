@@ -75,6 +75,7 @@ export type sEvent = z.infer<typeof selectEventSchema>;
 
 export type EventImageProps = Omit<ImageProps, "alt"> & {
 	alt?: string;
+	isLive?: boolean;
 };
 
 export type RatingFormAttributes = {
