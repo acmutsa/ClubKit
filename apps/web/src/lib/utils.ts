@@ -58,3 +58,16 @@ export function isEventCheckinAllowed(
 ) {
 	return currentDateUTC >= checkinStart && currentDateUTC <= checkinEnd;
 }
+
+export function formatBlobUrl(blobUrl: string) {
+	const end = blobUrl.split("/").at(-1);
+	if (!end) return blobUrl;
+
+	const extension = end.split(".").at(-1);
+	if (!extension) return end;
+
+	const name = end.split("-").slice(0, -1).join("-");
+	if (!name) return end;
+
+	return `${decodeURIComponent(name)}.${extension}`;
+}
