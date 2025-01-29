@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { ColumnDef } from "@tanstack/react-table";
 import {
 	DropdownMenu,
@@ -24,7 +24,7 @@ import {
 	AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import EditCategory from "@/components/dash/admin/categories/EditCategoryDialogue";
-import DeleteCategoryDialogue from "@/components/dash/admin/categories/DeleteCategoryDialogue";
+import DeleteCategoryDialogue from "@/components/dash/admin/semesters/DeleteSemesterDialogue";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Semester } from "db/types";
@@ -33,6 +33,8 @@ import { useOptimisticAction } from "next-safe-action/hooks";
 import { toggleCurrentSemester } from "@/actions/semester";
 import { formatInTimeZone } from "date-fns-tz";
 import { getClientTimeZone } from "@/lib/utils";
+import DeleteSemesterDialogue from "@/components/dash/admin/semesters/DeleteSemesterDialogue";
+import UpdateSemesterDialogue from "@/components/dash/admin/semesters/UpdateSemesterDialogue";
 
 export const semesterColumns: ColumnDef<Semester>[] = [
 	{
@@ -47,67 +49,92 @@ export const semesterColumns: ColumnDef<Semester>[] = [
 		enableSorting: true,
 	},
 	{
-		accessorKey: "term",
+		accessorKey: "Duration",
 		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title="Term" className="flex w-full justify-center" />;
+			return (
+				<DataTableColumnHeader
+					column={column}
+					title="Duration"
+					className="flex w-full justify-center"
+				/>
+			);
 		},
-    cell:({row}) =>{
-      const clientTimeZone = getClientTimeZone();
-      const {startDate, endDate} = row.original;
-      const startDateFormatted = formatInTimeZone(startDate, clientTimeZone,'eeee, MMMM dd yyyy');
-      const endDateFormatted = formatInTimeZone(endDate, clientTimeZone,'eeee, MMMM dd yyyy');
-      return (
-        <div>{`${startDateFormatted} - ${endDateFormatted}`}</div>
-      )
-    },
+		cell: ({ row }) => {
+			const clientTimeZone = getClientTimeZone();
+			const { startDate, endDate } = row.original;
+			const startDateFormatted = formatInTimeZone(
+				startDate,
+				clientTimeZone,
+				"eeee, MMMM dd yyyy",
+			);
+			const endDateFormatted = formatInTimeZone(
+				endDate,
+				clientTimeZone,
+				"eeee, MMMM dd yyyy",
+			);
+			return <div>{`${startDateFormatted} - ${endDateFormatted}`}</div>;
+		},
 		enableSorting: true,
 	},
-  {
-    accessorKey:"isCurrent",
-    header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title="Current Semester" />;
+	{
+		accessorKey: "isCurrent",
+		header: ({ column }) => {
+			return (
+				<DataTableColumnHeader
+					column={column}
+					title="Current Semester"
+				/>
+			);
 		},
-    cell:({row}) =>{
-      const {isCurrent, semesterID} = row.original;
-      const {execute:runToggleSemester, result, optimisticState} = useOptimisticAction(toggleCurrentSemester,{
-        currentState: {isCurrent},
-        updateFn:(_,newChecked) =>{
-        return {
-          isCurrent: newChecked.isCurrent
-        }
-       },
-       onError:({}) =>{
-        toast.dismiss();
-        toast.error("Failed to update current semester");
-       },
-       onExecute:({})=>{
-        toast.dismiss()
-        toast.success("Semester toggled.",
-          {
-            duration:1500
-          }
-        )
-       },
-      })
-      return (
-        <Switch id={semesterID.toString()}
-        checked={optimisticState.isCurrent}
-        onCheckedChange={(checked_value)=>{
-          runToggleSemester({
-				semesterID,
-				isCurrent: checked_value,
+		cell: ({ row }) => {
+			const { isCurrent, semesterID } = row.original;
+			const {
+				execute: runToggleSemester,
+				result,
+				optimisticState,
+			} = useOptimisticAction(toggleCurrentSemester, {
+				currentState: { isCurrent },
+				updateFn: (_, newChecked) => {
+					return {
+						isCurrent: newChecked.isCurrent,
+					};
+				},
+				onError: ({}) => {
+					toast.dismiss();
+					toast.error("Failed to update current semester");
+				},
+				onExecute: ({}) => {
+					toast.dismiss();
+					toast.success("Semester toggled.", {
+						duration: 1500,
+					});
+				},
 			});
-        }}
-        />
-      )
-    }
-  },
-  {
-    accessorKey:"pointsRequired",
-    header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Points Required" />;
-    }
-  },
+			return (
+				<Switch
+					id={semesterID.toString()}
+					checked={optimisticState.isCurrent}
+					onCheckedChange={(checked_value) => {
+						runToggleSemester({
+							semesterID,
+							isCurrent: checked_value,
+						});
+					}}
+				/>
+			);
+		},
+	},
+	{
+		accessorKey: "pointsRequired",
+		header: ({ column }) => {
+			return (
+				<DataTableColumnHeader
+					column={column}
+					title="Points Required"
+				/>
+			);
+		},
+	},
 	{
 		id: "actions",
 		enablePinning: true,
@@ -143,7 +170,7 @@ export const semesterColumns: ColumnDef<Semester>[] = [
 								>
 									Copy ID
 								</DropdownMenuItem>
-								
+
 								<DropdownMenuSeparator />
 								<DropdownMenuItem asChild>
 									<DialogTrigger className="w-full">
@@ -157,16 +184,16 @@ export const semesterColumns: ColumnDef<Semester>[] = [
 								</DropdownMenuItem>
 							</DropdownMenuContent>
 						</DropdownMenu>
-						{/* <EditCategory
-							eventCategory={data}
+						<UpdateSemesterDialogue
+							semesterData={data}
 							open={open}
 							setOpen={setOpen}
-						/> */}
+						/>
 					</Dialog>
-					{/* <DeleteCategoryDialogue
-						categoryID={data.id}
+					<DeleteSemesterDialogue
+						semesterID={data.semesterID}
 						name={data.name}
-					/> */}
+					/>
 				</AlertDialog>
 			);
 		},

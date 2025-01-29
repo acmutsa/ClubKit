@@ -1,11 +1,21 @@
 import NewEventForm from "@/components/dash/admin/events/NewEventForm";
 import { getAllCategoriesKeyValue } from "@/lib/queries/categories";
 import { getUTCDate } from "@/lib/utils";
+import { getAllSemesters } from "@/lib/queries/semesters";
+import { db, desc } from "db";
+import { semesters } from "db/schema";
 
 export default async function Page() {
 	const defaultDate = getUTCDate();
 	defaultDate.setSeconds(0);
-	const categoryOptions = await getAllCategoriesKeyValue();
+	const categoryOptionsAsync = getAllCategoriesKeyValue();
+	const semesterOptionsAsync = db.query.semesters.findMany({
+		orderBy: desc(semesters.isCurrent),
+	});
+	const [categoryOptions, semesterOptions] = await Promise.all([
+		categoryOptionsAsync,
+		semesterOptionsAsync,
+	]);
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
 			<div className="grid grid-cols-2 px-5">
@@ -17,6 +27,7 @@ export default async function Page() {
 				<NewEventForm
 					defaultDate={defaultDate}
 					categoryOptions={categoryOptions}
+					semesterOptions={semesterOptions}
 				/>
 			</div>
 		</div>
