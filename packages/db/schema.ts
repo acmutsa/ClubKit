@@ -84,7 +84,9 @@ export const events = pgTable("events", {
 	points: integer("points").notNull().default(1),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
-	semesterID: integer("semester_id"),
+	semesterID: integer("semester_id").references(() => semesters.semesterID, {
+		onDelete: "set null",
+	}),
 });
 
 export const eventsRelations = relations(events, ({ many, one }) => ({

@@ -1,4 +1,4 @@
-import { db, eq, or, between, and, ne } from "db";
+import { db, eq, or, between, and, ne, desc } from "db";
 import { semesters } from "db/schema";
 import c from "config";
 
@@ -32,5 +32,11 @@ export async function getExistingSemester(startDate: Date, endDate: Date) {
 			between(semesters.startDate, startDate, endDate),
 			between(semesters.endDate, startDate, endDate),
 		),
+	});
+}
+
+export async function getAllSemestersDesc() {
+	return db.query.semesters.findMany({
+		orderBy: desc(semesters.isCurrent),
 	});
 }
