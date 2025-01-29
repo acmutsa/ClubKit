@@ -38,6 +38,7 @@ export default async function UserDash({
 	clerkID: string;
 	clientTimeZone: string;
 }) {
+	//TODO: can probably add a conditional check here to either compare by the event ID or use the between clause if it is pulling from the config
 	const currentSemester = (await getCurrentSemester()) ?? c.semesters.current;
 
 	const queryResult = await db
