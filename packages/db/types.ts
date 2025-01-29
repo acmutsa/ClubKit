@@ -3,7 +3,7 @@ import {
 	selectCheckinSchema,
 	userCheckinSchemaFormified,
 	selectUserWithDataSchema,
-	selectSemesterSchema
+	selectSemesterSchema,
 } from "./zod";
 
 export type Checkin = z.infer<typeof selectCheckinSchema>;

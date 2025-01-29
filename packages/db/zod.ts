@@ -1,5 +1,12 @@
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
-import { data, users, events, checkins, eventCategories,semesters } from "./schema";
+import {
+	data,
+	users,
+	events,
+	checkins,
+	eventCategories,
+	semesters,
+} from "./schema";
 import { z } from "zod";
 import c, { majors } from "config";
 
@@ -170,18 +177,21 @@ export const createEventCategorySchema = eventCategorySchema.omit({ id: true });
 export const selectSemesterSchema = createSelectSchema(semesters);
 
 export const createSemesterSchema = createInsertSchema(semesters)
-.extend({
-	name:basicStringSchema,
-})
-.refine((val)=>val.startDate<val.endDate,{
-	message:"Start Date must be before End Date"}); 
-
-export const updateSemesterSchema = createSelectSchema(semesters)
+	.extend({
+		name: basicStringSchema,
+	})
 	.refine((val) => val.startDate < val.endDate, {
 		message: "Start Date must be before End Date",
 	});
 
+export const updateSemesterSchema = createSelectSchema(semesters).refine(
+	(val) => val.startDate < val.endDate,
+	{
+		message: "Start Date must be before End Date",
+	},
+);
+
 export const toggleCurrentSemesterSchema = z.object({
-	semesterID:z.number().int(),
-	isCurrent:z.boolean()
-})
+	semesterID: z.number().int(),
+	isCurrent: z.boolean(),
+});

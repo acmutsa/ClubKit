@@ -38,7 +38,7 @@ export default async function UserDash({
 	clerkID: string;
 	clientTimeZone: string;
 }) {
-	const currentSemester = await getCurrentSemester() ?? c.semesters.current;
+	const currentSemester = (await getCurrentSemester()) ?? c.semesters.current;
 
 	const queryResult = await db
 		.select({
@@ -78,7 +78,6 @@ export default async function UserDash({
 	}
 
 	const userDashResult = queryResult[0];
-	console.log(userDashResult.currentSemesterPoints);
 	const {
 		user,
 		userData,
@@ -111,7 +110,6 @@ export default async function UserDash({
 			: `Keep attending events to earn more points!`,
 		fill: "#3b82f6",
 	};
-	console.log("attended events", attendedEvents);
 	const slicedEvents = attendedEvents?.slice(0, 5) ?? [];
 
 	return (

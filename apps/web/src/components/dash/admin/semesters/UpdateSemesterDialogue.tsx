@@ -7,12 +7,12 @@ import {
 	DialogFooter,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import { createNewSemester } from "@/actions/semester";
+import { updateSemester } from "@/actions/semester";
 import { useAction } from "next-safe-action/hooks";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { createSemesterSchema } from "db/zod";
+import { updateSemesterSchema } from "db/zod";
 import { Loader2 } from "lucide-react";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,73 +29,74 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Plus } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
-import { SEMESTER_DAYS_OFFSET } from "@/lib/constants/semesters";
 import {
 	SEMESTER_DATE_RANGE_EXISTS,
 	SEMESTER_NAME_EXISTS,
 } from "@/lib/constants/semesters";
 import { DatePickerWithRange } from "@/components/ui/date-time-picker/date-picker-with-range";
 import { addDays } from "date-fns";
+import { SEMESTER_DAYS_OFFSET } from "@/lib/constants/semesters";
+import { Semester } from "db/types";
 
-export default function CreateSemesterDialogue() {
-	const [open, setOpen] = useState(false);
-	const form = useForm<z.infer<typeof createSemesterSchema>>({
-		resolver: zodResolver(createSemesterSchema),
+type UpdateSemesterProps = {
+	semesterData: Semester;
+	open: boolean;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function UpdateSemesterDialogue(props: UpdateSemesterProps) {
+	const { semesterData: semesterProps, setOpen, open } = props;
+	const form = useForm<z.infer<typeof updateSemesterSchema>>({
+		resolver: zodResolver(updateSemesterSchema),
 		defaultValues: {
-			name: "",
-			startDate: new Date(),
-			endDate: addDays(new Date(), SEMESTER_DAYS_OFFSET),
-			isCurrent: false,
-			pointsRequired: 0,
+			...semesterProps,
 		},
 	});
 
-	const { execute: runCreateSemester, status } = useAction(
-		createNewSemester,
-		{
-			onSuccess: ({ data }) => {
-				toast.dismiss();
-				if (data?.code == SEMESTER_DATE_RANGE_EXISTS) {
-					return toast.error(
-						`${data?.semesterName} has dates that overlap with the new semester`,
-					);
-				} else if (data?.code == SEMESTER_NAME_EXISTS) {
-					return toast.error(
-						`${data?.semesterName} already exists. Please choose a different name`,
-					);
-				}
-				form.reset();
-				setOpen(false);
-				toast.success("Semester created successfully");
-			},
-			onError: () => {
-				toast.dismiss();
-				toast.error("Failed to create semester");
-			},
+	const { execute: runUpdateSemester, status } = useAction(updateSemester, {
+		onSuccess: ({ data }) => {
+			toast.dismiss();
+			if (data?.code == SEMESTER_DATE_RANGE_EXISTS) {
+				return toast.error(
+					`${data?.semesterName} has dates that overlap with the new semester`,
+				);
+			} else if (data?.code == SEMESTER_NAME_EXISTS) {
+				return toast.error(
+					`${data?.semesterName} already exists. Please choose a different name`,
+				);
+			}
+			setOpen(false);
+			form.reset();
+			toast.success("Semester updated successfully");
 		},
-	);
+		onError: () => {
+			toast.dismiss();
+			toast.error("Failed to update semester");
+		},
+	});
 
 	useEffect(() => {
-		console.log(form.formState.errors);
-		console.log(form.getValues());
-	}, [form.formState.errors]);
+		console.log("form dirty", form.formState.isDirty);
+	}, [form.formState.isDirty]);
+
+	function onSubmit(data: z.infer<typeof updateSemesterSchema>) {
+		if (!form.formState.isDirty) {
+			return toast.error("No changes made");
+		}
+		runUpdateSemester(data);
+	}
 
 	const isLoading = status === "executing";
+
 	return (
-		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogTrigger asChild>
-				<Button className="flex flex-nowrap gap-x-2">
-					<Plus />
-					Add Semester
-				</Button>
-			</DialogTrigger>
+		<>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Create Event Category</DialogTitle>
+					<DialogTitle>Update Event Category</DialogTitle>
 				</DialogHeader>
 				<Form {...form}>
 					<form
-						onSubmit={form.handleSubmit(runCreateSemester)}
+						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-4"
 					>
 						<FormField
@@ -130,6 +131,9 @@ export default function CreateSemesterDialogue() {
 														"startDate",
 														range.from ??
 															new Date(),
+														{
+															shouldDirty: true,
+														},
 													);
 													form.setValue(
 														"endDate",
@@ -138,6 +142,9 @@ export default function CreateSemesterDialogue() {
 																Date.now() +
 																	SEMESTER_DAYS_OFFSET,
 															),
+														{
+															shouldDirty: true,
+														},
 													);
 												}
 											}}
@@ -147,22 +154,6 @@ export default function CreateSemesterDialogue() {
 								)}
 							/>
 						</div>
-						<FormField
-							control={form.control}
-							name="isCurrent"
-							render={({ field }) => (
-								<FormItem className="flex flex-row items-center gap-x-3 space-y-0">
-									<FormLabel>Current Semester?</FormLabel>
-									<FormControl>
-										<Switch
-											checked={field.value}
-											onCheckedChange={field.onChange}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
 						<FormField
 							control={form.control}
 							name="pointsRequired"
@@ -194,13 +185,13 @@ export default function CreateSemesterDialogue() {
 								{isLoading ? (
 									<Loader2 className="h-4 w-4 animate-spin" />
 								) : (
-									"Create"
+									"Update"
 								)}
 							</Button>
 						</div>
 					</form>
 				</Form>
 			</DialogContent>
-		</Dialog>
+		</>
 	);
 }

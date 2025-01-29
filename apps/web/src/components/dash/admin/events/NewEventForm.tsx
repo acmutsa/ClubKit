@@ -53,6 +53,7 @@ const formSchema = insertEventSchemaFormified;
 export default function NewEventForm({
 	defaultDate,
 	categoryOptions,
+	semesterOptions,
 }: NewEventFormProps) {
 	const [error, setError] = useState<{
 		title: string;

@@ -11,6 +11,8 @@ import type { Noop, RefCallBack } from "react-hook-form";
 
 import type { ImageProps } from "next/image";
 
+import type { Semester } from "db/types";
+
 export type EventToCategoriesType = typeof eventsToCategories.$inferSelect;
 
 export type EventCategoryType = typeof eventCategories.$inferSelect;
@@ -89,4 +91,5 @@ export type RatingFormAttributes = {
 export type NewEventFormProps = {
 	defaultDate: Date;
 	categoryOptions: { [key: string]: string };
+	semesterOptions: Semester[];
 };

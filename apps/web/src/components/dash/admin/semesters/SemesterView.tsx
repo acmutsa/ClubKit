@@ -1,12 +1,12 @@
 import { DataTable } from "@/components/ui/data-table";
 import { getAllSemesters } from "@/lib/queries/semesters";
 import { semesterColumns } from "@/app/admin/semesters/columns";
-import CreateSemesterDialogue from "./CreateSemesterDialogue"
+import CreateSemesterDialogue from "./CreateSemesterDialogue";
 
 export default async function AdminSemesterView() {
-  const semesters = await getAllSemesters();
+	const semesters = await getAllSemesters();
 
-  return (
+	return (
 		<>
 			<div className="mx-5 flex items-center justify-between rounded-lg border p-2">
 				<div className="flex w-fit space-x-4">
@@ -29,5 +29,5 @@ export default async function AdminSemesterView() {
 				/>
 			</div>
 		</>
-  );
+	);
 }

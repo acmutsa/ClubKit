@@ -84,13 +84,13 @@ export const events = pgTable("events", {
 	points: integer("points").notNull().default(1),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().notNull(),
-	semesterID: integer("semester_id")
+	semesterID: integer("semester_id"),
 });
 
-export const eventsRelations = relations(events, ({ many,one }) => ({
+export const eventsRelations = relations(events, ({ many, one }) => ({
 	eventsToCategories: many(eventsToCategories),
 	checkins: many(checkins),
-	semester: one(semesters,{
+	semester: one(semesters, {
 		fields: [events.semesterID],
 		references: [semesters.semesterID],
 	}),
@@ -154,8 +154,8 @@ export const checkinRelations = relations(checkins, ({ one }) => ({
 }));
 
 export const semesters = pgTable("semesters", {
-	semesterID:serial("semester_id").primaryKey(),
-	name: varchar("name",{ length: 255 }).notNull().unique(),
+	semesterID: serial("semester_id").primaryKey(),
+	name: varchar("name", { length: 255 }).notNull().unique(),
 	startDate: timestamp("start_date").notNull(),
 	endDate: timestamp("end_date").notNull(),
 	pointsRequired: integer("points_required").notNull(),
