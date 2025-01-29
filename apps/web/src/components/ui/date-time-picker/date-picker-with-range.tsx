@@ -1,9 +1,9 @@
 "use client";
 
-import { addDays,subDays, format, isAfter,isBefore } from "date-fns";
+import { addDays, subDays, format, isAfter, isBefore } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -18,8 +18,7 @@ type DatePickerWithRangeProps = {
 	end: Date;
 	onRangeChange: (date?: DateRange) => void;
 	className?: string;
-}
-
+};
 
 export function DatePickerWithRange(props: DatePickerWithRangeProps) {
 	const { start, end, className, onRangeChange } = props;
@@ -28,11 +27,11 @@ export function DatePickerWithRange(props: DatePickerWithRangeProps) {
 		to: end,
 	});
 
-	const [cnt,setCnt] = useState(0);
+	const [cnt, setCnt] = useState(0);
 
-	useEffect(()=>{
+	useEffect(() => {
 		onRangeChange(date);
-	},[date]);
+	}, [date]);
 
 	return (
 		<div className={cn("grid gap-2", className)}>
@@ -73,20 +72,28 @@ export function DatePickerWithRange(props: DatePickerWithRangeProps) {
 						}}
 						numberOfMonths={2}
 						min={2}
-						onDayClick={(day) =>{
-							const dateRange = {from:date?.from ?? start,to:date?.to ?? end};
-							if(cnt%2==0){
-								setDate(
-										{
-											from:(
-												isAfter(day,dateRange.to) ? subDays(dateRange.to,2):day
-											),to:dateRange.to});
-							}else{
-								setDate({from:dateRange.from,to:(isBefore(day,dateRange.from) ? addDays(dateRange.from,2):day)});
+						onDayClick={(day) => {
+							const dateRange = {
+								from: date?.from ?? start,
+								to: date?.to ?? end,
+							};
+							if (cnt % 2 == 0) {
+								setDate({
+									from: isAfter(day, dateRange.to)
+										? subDays(dateRange.to, 2)
+										: day,
+									to: dateRange.to,
+								});
+							} else {
+								setDate({
+									from: dateRange.from,
+									to: isBefore(day, dateRange.from)
+										? addDays(dateRange.from, 2)
+										: day,
+								});
 							}
 							setCnt((cnt + 1) % 2);
-						}
-						}
+						}}
 					/>
 				</PopoverContent>
 			</Popover>
