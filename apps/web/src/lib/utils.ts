@@ -25,13 +25,14 @@ export function createCalendarLink(
 	calendarLinkName: string,
 	eventCalendarLink: CalendarDetails,
 ) {
+	
 	const lowerLinkName = calendarLinkName.toLocaleLowerCase();
 	const calendarFunction = linksAsObject[lowerLinkName] as Function;
-	if (calendarFunction && typeof calendarFunction === "function") {
-		return calendarFunction(eventCalendarLink);
-	}
+	// if (calendarFunction && typeof calendarFunction === "function") {
+	// 	return calendarFunction(eventCalendarLink);
+	// }
 	// We will default to a google calendar link if the calendar link name is not found
-	return CalendarLinks.google(eventCalendarLink);
+	return CalendarLinks.office365Mobile(eventCalendarLink);
 }
 
 export function getClientTimeZone(vercelIPTimeZone?: string | null) {
