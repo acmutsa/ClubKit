@@ -58,7 +58,7 @@ const c = {
 	calendarLinks: [
 		{ title: "Google", functionKey: "google" },
 		{ title: "Outlook", functionKey: "outlookMobile" },
-		{ title: "iCal", functionKey: "ics" },
+		// { title: "iCal", functionKey: "ics" },
 	],
 	streamingLinks: [
 		{ title: "twitch", href: "https://www.twitch.tv/acmutsa" },

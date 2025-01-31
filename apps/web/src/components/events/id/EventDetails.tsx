@@ -45,13 +45,14 @@ import {
 	AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
-import clsx from "clsx";
 
 const {
 	streamingLinks,
 	calendarLinks,
 	events: { checkingInInfo, aboutOrg },
 } = c;
+import iCalIcon from "../../../../public/img/logos/ical-icon.svg";
+import Image from "next/image";
 
 export default async function EventDetails({ id }: { id: string }) {
 	const headerTimeZone = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
@@ -149,7 +150,7 @@ export default async function EventDetails({ id }: { id: string }) {
 									Description
 								</h2>
 								<p
-									className={`text-pretty w-full text-lg 2xl:text-2xl `}
+									className={`w-full text-pretty text-lg 2xl:text-2xl `}
 								>
 									{description}
 								</p>
@@ -215,7 +216,6 @@ export default async function EventDetails({ id }: { id: string }) {
 										))}
 									</DropdownMenuContent>
 								</DropdownMenu>
-
 								<DropdownMenu>
 									<DropdownMenuTrigger asChild>
 										<Button
@@ -238,6 +238,23 @@ export default async function EventDetails({ id }: { id: string }) {
 												key={cal.title}
 											/>
 										))}
+										<a
+											href={`/api/ics-calendar?event_id=${id}`}
+											target="_blank"
+											className="flex w-auto justify-between gap-3 rounded-md px-3 py-2 text-primary-foreground md:max-w-[7.5rem] lg:max-w-none"
+											download={`${event.name}.ics`}
+										>
+											<Image
+												src={iCalIcon}
+												alt="Calendar Icon"
+												height={25}
+												width={25}
+												
+											/>
+											<p className="text-primary md:text-base lg:text-lg 2xl:text-2xl">
+												{"iCal"}
+											</p>
+										</a>
 									</DropdownMenuContent>
 								</DropdownMenu>
 								<Link href={checkInUrl} legacyBehavior>
