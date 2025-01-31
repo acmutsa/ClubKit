@@ -1,14 +1,12 @@
 import EventDetails from "@/components/events/id/EventDetails";
 import Navbar from "@/components/shared/navbar";
 import { Suspense } from "react";
-import { userAgent } from "next/server";
 import { headers } from "next/headers";
 
 export default function Page({ params }: { params: { slug: string } }) {
 	const userAgent = headers().get("user-agent")?.toLowerCase();
-	console.log(userAgent);
 	const isBroswerSafari =
-		(userAgent?.includes("safari") && !userAgent?.includes("chrome")) ||
+		(userAgent?.includes("safari") && !userAgent?.includes("crios") && !userAgent.includes("chrome")) ||
 		false;
 	
 	return (
