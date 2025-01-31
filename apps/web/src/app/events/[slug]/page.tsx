@@ -5,12 +5,19 @@ import { userAgent } from "next/server";
 import { headers } from "next/headers";
 
 export default function Page({ params }: { params: { slug: string } }) {
-	console.log(headers())
+	const userAgent = headers().get("user-agent")?.toLowerCase();
+	const isBroswerSafari =
+		(userAgent?.includes("safari") && !userAgent?.includes("chrome")) ||
+		false;
+	
 	return (
 		<div className="flex min-h-[100dvh] w-full flex-col">
 			<Navbar showBorder />
 			<Suspense fallback={<h1>Grabbing the event. One sec...</h1>}>
-				<EventDetails id={params.slug} />
+				<EventDetails
+					id={params.slug}
+					isBroswerSafari={isBroswerSafari || false}
+				/>
 			</Suspense>
 		</div>
 	);

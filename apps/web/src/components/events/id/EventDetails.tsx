@@ -53,12 +53,12 @@ const {
 } = c;
 import iCalIcon from "../../../../public/img/logos/ical-icon.svg";
 import Image from "next/image";
+import {ics} from "calendar-link"
 
-export default async function EventDetails({ id }: { id: string }) {
+export default async function EventDetails({ id, isBroswerSafari }: { id: string, isBroswerSafari: boolean }) {
 	const headerTimeZone = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
 	const clientTimeZone = getClientTimeZone(headerTimeZone);
 	const event = await getEventDetails(id);
-
 
 	if (!event) {
 		return <PageError message="Event Not Found" href="/events" />;
@@ -151,7 +151,7 @@ export default async function EventDetails({ id }: { id: string }) {
 									Description
 								</h2>
 								<p
-									className={`text-pretty w-full text-lg 2xl:text-2xl `}
+									className={`w-full text-pretty text-lg 2xl:text-2xl `}
 								>
 									{description}
 								</p>
@@ -239,6 +239,25 @@ export default async function EventDetails({ id }: { id: string }) {
 												key={cal.title}
 											/>
 										))}
+										{
+											isBroswerSafari ? (
+												<Link
+			href={ics(eventCalendarLink)}
+			target="_blank"
+			className="flex w-auto justify-between gap-3 rounded-md px-3 py-2 text-primary-foreground md:max-w-[7.5rem] lg:max-w-none"
+		>
+			<Image
+				src={iCalIcon}
+				alt="Calendar Icon"
+				height={25}
+				width={25}
+				/>
+			<p className="text-primary md:text-base lg:text-lg 2xl:text-2xl">
+				{"iCal"}
+			</p>
+		</Link>
+											):
+										
 										<a
 											href={`/api/ics-calendar?event_id=${id}`}
 											target="_blank"
@@ -255,6 +274,7 @@ export default async function EventDetails({ id }: { id: string }) {
 												{"iCal"}
 											</p>
 										</a>
+}
 									</DropdownMenuContent>
 								</DropdownMenu>
 								<Link href={checkInUrl} legacyBehavior>

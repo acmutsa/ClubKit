@@ -19,13 +19,10 @@ export async function GET(request: NextRequest, res:NextResponse) {
 		location: event.location,
 	});
 
-  
-	return new Response(Buffer.from(cal, "utf-8"), {
+	return new Response(cal, {
 		headers: {
 			"Content-Type": "text/calendar; charset=utf-8",
-			"Content-Disposition": `attachment; filename="event_${event.id}.ics"`,
-      "Content-Length": Buffer.byteLength(cal, "utf-8").toString(),
-			"Access-Control-Allow-Origin": "*",
+			"Content-Disposition": `attachment; filename="event_${event.name}.ics"`,
 		},
 	});
 }
