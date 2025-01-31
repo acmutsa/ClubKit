@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 
 export default function Page({ params }: { params: { slug: string } }) {
 	const userAgent = headers().get("user-agent")?.toLowerCase();
+	console.log(userAgent);
 	const isBroswerSafari =
 		(userAgent?.includes("safari") && !userAgent?.includes("chrome")) ||
 		false;
