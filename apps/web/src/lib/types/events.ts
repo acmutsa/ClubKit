@@ -16,6 +16,7 @@ import type { Semester } from "db/types";
 export type EventToCategoriesType = typeof eventsToCategories.$inferSelect;
 
 export type EventCategoryType = typeof eventCategories.$inferSelect;
+import c from "config";
 
 export type EventsToCategoriesWithCategoryType = EventToCategoriesType & {
 	category: {
@@ -38,10 +39,7 @@ export interface EventCalendarLink {
 	location: string;
 }
 
-export interface EventCalendarName {
-	title: string;
-	titleOverride?: string;
-}
+export type EventCalendarName = typeof c.calendarLinks[number]
 
 export interface DetailsProps {
 	event: EventAndCategoriesType;

@@ -56,9 +56,9 @@ const c = {
 		shirtType: ["Unisex", "Women's"],
 	},
 	calendarLinks: [
-		{ title: "google" },
-		{ title: "outlook" },
-		{ title: "ics", titleOverride: "iCal" },
+		{ title: "Google", functionKey: "google" },
+		{ title: "Outlook", functionKey: "outlookMobile" },
+		{ title: "iCal", functionKey: "ics" },
 	],
 	streamingLinks: [
 		{ title: "twitch", href: "https://www.twitch.tv/acmutsa" },
