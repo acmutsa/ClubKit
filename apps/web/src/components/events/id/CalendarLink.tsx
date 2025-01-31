@@ -21,7 +21,7 @@ export default function CalendarLink({
 
 	const fallBackSrc = "/img/logos/calendar.svg";
 	const calendarLink = createCalendarLink(functionKey, calendarDetails);
-	console.log('Calendar link is: ',calendarLink);
+	console.log("Calendar link is: ", calendarLink);
 	return (
 		<Link
 			href={calendarLink}

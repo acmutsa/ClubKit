@@ -25,7 +25,6 @@ export function createCalendarLink(
 	functionKey: string,
 	eventCalendarLink: CalendarDetails,
 ) {
-	
 	const lowerLinkName = functionKey.toLocaleLowerCase();
 	const calendarFunction = linksAsObject[lowerLinkName] as Function;
 	if (calendarFunction && typeof calendarFunction === "function") {

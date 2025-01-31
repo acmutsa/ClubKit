@@ -39,7 +39,7 @@ export interface EventCalendarLink {
 	location: string;
 }
 
-export type EventCalendarName = typeof c.calendarLinks[number]
+export type EventCalendarName = (typeof c.calendarLinks)[number];
 
 export interface DetailsProps {
 	event: EventAndCategoriesType;

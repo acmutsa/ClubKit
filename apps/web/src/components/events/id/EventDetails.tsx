@@ -150,7 +150,7 @@ export default async function EventDetails({ id }: { id: string }) {
 									Description
 								</h2>
 								<p
-									className={`w-full text-pretty text-lg 2xl:text-2xl `}
+									className={`text-pretty w-full text-lg 2xl:text-2xl `}
 								>
 									{description}
 								</p>
@@ -249,7 +249,6 @@ export default async function EventDetails({ id }: { id: string }) {
 												alt="Calendar Icon"
 												height={25}
 												width={25}
-												
 											/>
 											<p className="text-primary md:text-base lg:text-lg 2xl:text-2xl">
 												{"iCal"}
