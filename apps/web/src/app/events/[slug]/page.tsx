@@ -6,9 +6,11 @@ import { headers } from "next/headers";
 export default function Page({ params }: { params: { slug: string } }) {
 	const userAgent = headers().get("user-agent")?.toLowerCase();
 	const isBroswerSafari =
-		(userAgent?.includes("safari") && !userAgent?.includes("crios") && !userAgent.includes("chrome")) ||
+		(userAgent?.includes("safari") &&
+			!userAgent?.includes("crios") &&
+			!userAgent.includes("chrome")) ||
 		false;
-	
+
 	return (
 		<div className="flex min-h-[100dvh] w-full flex-col">
 			<Navbar showBorder />

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getEventById } from "@/lib/queries/events";
 import { ics } from "calendar-link";
 
-export async function GET(request: NextRequest, res:NextResponse) {
+export async function GET(request: NextRequest, res: NextResponse) {
 	const eventID = request.nextUrl.searchParams.get("event_id");
 	if (!eventID) {
 		return new Response("Missing event_id", { status: 400 });

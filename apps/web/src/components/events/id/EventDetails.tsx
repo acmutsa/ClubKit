@@ -53,9 +53,15 @@ const {
 } = c;
 import iCalIcon from "../../../../public/img/logos/ical-icon.svg";
 import Image from "next/image";
-import {ics} from "calendar-link"
+import { ics } from "calendar-link";
 
-export default async function EventDetails({ id, isBroswerSafari }: { id: string, isBroswerSafari: boolean }) {
+export default async function EventDetails({
+	id,
+	isBroswerSafari,
+}: {
+	id: string;
+	isBroswerSafari: boolean;
+}) {
 	const headerTimeZone = headers().get(VERCEL_IP_TIMEZONE_HEADER_KEY);
 	const clientTimeZone = getClientTimeZone(headerTimeZone);
 	const event = await getEventDetails(id);
@@ -151,7 +157,7 @@ export default async function EventDetails({ id, isBroswerSafari }: { id: string
 									Description
 								</h2>
 								<p
-									className={`w-full text-pretty text-lg 2xl:text-2xl `}
+									className={`text-pretty w-full text-lg 2xl:text-2xl `}
 								>
 									{description}
 								</p>
@@ -239,42 +245,40 @@ export default async function EventDetails({ id, isBroswerSafari }: { id: string
 												key={cal.title}
 											/>
 										))}
-										{
-											isBroswerSafari ? (
-												<Link
-			href={ics(eventCalendarLink)}
-			target="_blank"
-			className="flex w-auto justify-between gap-3 rounded-md px-3 py-2 text-primary-foreground md:max-w-[7.5rem] lg:max-w-none"
-		>
-			<Image
-				src={iCalIcon}
-				alt="Calendar Icon"
-				height={25}
-				width={25}
-				/>
-			<p className="text-primary md:text-base lg:text-lg 2xl:text-2xl">
-				{"iCal"}
-			</p>
-		</Link>
-											):
-										
-										<a
-											href={`/api/ics-calendar?event_id=${id}`}
-											target="_blank"
-											className="flex w-auto justify-between gap-3 rounded-md px-3 py-2 text-primary-foreground md:max-w-[7.5rem] lg:max-w-none"
-											download={`event_${event.id}.ics`}
-										>
-											<Image
-												src={iCalIcon}
-												alt="Calendar Icon"
-												height={25}
-												width={25}
-											/>
-											<p className="text-primary md:text-base lg:text-lg 2xl:text-2xl">
-												{"iCal"}
-											</p>
-										</a>
-}
+										{isBroswerSafari ? (
+											<Link
+												href={ics(eventCalendarLink)}
+												target="_blank"
+												className="flex w-auto justify-between gap-3 rounded-md px-3 py-2 text-primary-foreground md:max-w-[7.5rem] lg:max-w-none"
+											>
+												<Image
+													src={iCalIcon}
+													alt="Calendar Icon"
+													height={25}
+													width={25}
+												/>
+												<p className="text-primary md:text-base lg:text-lg 2xl:text-2xl">
+													{"iCal"}
+												</p>
+											</Link>
+										) : (
+											<a
+												href={`/api/ics-calendar?event_id=${id}`}
+												target="_blank"
+												className="flex w-auto justify-between gap-3 rounded-md px-3 py-2 text-primary-foreground md:max-w-[7.5rem] lg:max-w-none"
+												download={`event_${event.id}.ics`}
+											>
+												<Image
+													src={iCalIcon}
+													alt="Calendar Icon"
+													height={25}
+													width={25}
+												/>
+												<p className="text-primary md:text-base lg:text-lg 2xl:text-2xl">
+													{"iCal"}
+												</p>
+											</a>
+										)}
 									</DropdownMenuContent>
 								</DropdownMenu>
 								<Link href={checkInUrl} legacyBehavior>
