@@ -18,11 +18,13 @@ export async function GET(request: NextRequest, res:NextResponse) {
 		end: event.end,
 		location: event.location,
 	});
-  // add extra headers for safari to not block the download
-	return new Response(cal, {
+
+  
+	return new Response(Buffer.from(cal, "utf-8"), {
 		headers: {
 			"Content-Type": "text/calendar; charset=utf-8",
-			"Content-Disposition": `inline; filename="event_${event.id}.ics"`,
+			"Content-Disposition": `attachment; filename="event_${event.id}.ics"`,
+      "Content-Length": Buffer.byteLength(cal, "utf-8").toString(),
 			"Access-Control-Allow-Origin": "*",
 		},
 	});
