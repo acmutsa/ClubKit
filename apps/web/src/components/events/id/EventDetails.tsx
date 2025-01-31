@@ -59,6 +59,7 @@ export default async function EventDetails({ id }: { id: string }) {
 	const clientTimeZone = getClientTimeZone(headerTimeZone);
 	const event = await getEventDetails(id);
 
+
 	if (!event) {
 		return <PageError message="Event Not Found" href="/events" />;
 	}
@@ -242,7 +243,7 @@ export default async function EventDetails({ id }: { id: string }) {
 											href={`/api/ics-calendar?event_id=${id}`}
 											target="_blank"
 											className="flex w-auto justify-between gap-3 rounded-md px-3 py-2 text-primary-foreground md:max-w-[7.5rem] lg:max-w-none"
-											download={`${event.name}.ics`}
+											download={`event_${event.id}.ics`}
 										>
 											<Image
 												src={iCalIcon}

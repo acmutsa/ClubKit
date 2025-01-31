@@ -1,8 +1,11 @@
 import EventDetails from "@/components/events/id/EventDetails";
 import Navbar from "@/components/shared/navbar";
 import { Suspense } from "react";
+import { userAgent } from "next/server";
+import { headers } from "next/headers";
 
 export default function Page({ params }: { params: { slug: string } }) {
+	console.log(headers())
 	return (
 		<div className="flex min-h-[100dvh] w-full flex-col">
 			<Navbar showBorder />
