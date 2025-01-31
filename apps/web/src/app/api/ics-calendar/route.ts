@@ -22,7 +22,7 @@ export async function GET(request: NextRequest, res:NextResponse) {
 	return new Response(cal, {
 		headers: {
 			"Content-Type": "text/calendar; charset=utf-8",
-			"Content-Disposition": `attachment; filename="event_${event.id}.ics"`,
+			"Content-Disposition": `inline; filename="event_${event.id}.ics"`,
 			"Access-Control-Allow-Origin": "*",
 		},
 	});
