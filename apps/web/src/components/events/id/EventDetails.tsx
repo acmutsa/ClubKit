@@ -157,7 +157,7 @@ export default async function EventDetails({
 									Description
 								</h2>
 								<p
-									className={`w-full text-pretty text-lg 2xl:text-2xl `}
+									className={`text-pretty w-full text-lg 2xl:text-2xl `}
 								>
 									{description}
 								</p>
