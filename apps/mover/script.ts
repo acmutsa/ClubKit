@@ -143,7 +143,7 @@ async function move() {
 				await tx.insert(data).values({
 					userID: newUserRecord.id,
 					major: m.data.major,
-					
+
 					classification: m.data.classification,
 					graduationMonth: gradMonth,
 					graduationYear: gradYear,

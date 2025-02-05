@@ -37,8 +37,7 @@ export const createRegistration = authenticatedAction
 					code: "email_already_exists",
 				};
 			} else if (
-				foundUser.users.universityID ==
-				registerFormInputs.universityID
+				foundUser.users.universityID == registerFormInputs.universityID
 			) {
 				return {
 					success: false,

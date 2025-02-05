@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
 export function useBasePath() {
-  const [basePath, setBasePath] = useState("");
+	const [basePath, setBasePath] = useState("");
 
-  useEffect(() => {
+	useEffect(() => {
 		setBasePath(window.location.host);
-  }, []);
-      
-  return basePath;
+	}, []);
+
+	return basePath;
 }

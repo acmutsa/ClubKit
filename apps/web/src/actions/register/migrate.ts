@@ -28,8 +28,7 @@ export const doPortalLookupCheck = authenticatedAction
 		if (lookup[0]) {
 			return {
 				success: true,
-				name:
-					lookup[0].firstName + " " + lookup[0].lastName,
+				name: lookup[0].firstName + " " + lookup[0].lastName,
 			};
 		} else {
 			return {
