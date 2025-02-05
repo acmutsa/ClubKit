@@ -1,0 +1,1 @@
+ALTER TABLE "events" ADD CONSTRAINT "events_semester_id_semesters_semester_id_fk" FOREIGN KEY ("semester_id") REFERENCES "public"."semesters"("semester_id") ON DELETE set null ON UPDATE no action;

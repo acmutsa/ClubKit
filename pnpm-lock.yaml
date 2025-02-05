@@ -19,7 +19,7 @@ importers:
         specifier: ^0.5.14
         version: 0.5.14(prettier@3.2.5)
       turbo:
-        specifier: latest
+        specifier: 1.12.5
         version: 1.12.5
 
   apps/mover:
@@ -174,6 +174,9 @@ importers:
       react-hook-form:
         specifier: ^7.51.3
         version: 7.51.3(react@18.2.0)
+      react-qr-code:
+        specifier: ^2.0.15
+        version: 2.0.15(react@18.2.0)
       react-stately:
         specifier: ^3.31.1
         version: 3.31.1(react@18.2.0)
@@ -6605,6 +6608,10 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
+  /qr.js@0.0.0:
+    resolution: {integrity: sha512-c4iYnWb+k2E+vYpRimHqSu575b1/wKl4XFeJGpFmrJQz5I88v9aY2czh7s0w36srfCM1sXgC/xpoJz5dJfq+OQ==}
+    dev: false
+
   /query-string@6.14.1:
     resolution: {integrity: sha512-XDxAeVmpfu1/6IjyT/gXHOl+S0vQ9owggJ30hhWKdHAsNPOcasn5o9BW0eejZqL2e4vMjhAxoW3jVHcD6mbcYw==}
     engines: {node: '>=6'}
@@ -6710,6 +6717,16 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: false
+
+  /react-qr-code@2.0.15(react@18.2.0):
+    resolution: {integrity: sha512-MkZcjEXqVKqXEIMVE0mbcGgDpkfSdd8zhuzXEl9QzYeNcw8Hq2oVIzDLWuZN2PQBwM5PWjc2S31K8Q1UbcFMfw==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      prop-types: 15.8.1
+      qr.js: 0.0.0
+      react: 18.2.0
     dev: false
 
   /react-remove-scroll-bar@2.3.6(@types/react@18.2.61)(react@18.2.0):

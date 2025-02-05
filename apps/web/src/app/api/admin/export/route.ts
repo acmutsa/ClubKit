@@ -8,6 +8,7 @@ import { formatInTimeZone } from "date-fns-tz";
 import { getEventsWithCheckins } from "@/lib/queries/events";
 import { getCheckinLog } from "@/lib/queries/checkins";
 import { getAllCategories } from "@/lib/queries/categories";
+import { getAllSemesters } from "@/lib/queries/semesters";
 
 const basicDateFormatterString = "eeee, MMMM dd yyyy HH:mm a";
 
@@ -130,8 +131,7 @@ async function hanldExportRequest(
 				};
 			});
 		case "semesters":
-			// come back and finish later
-			return [];
+			return await getAllSemesters();
 		default:
 			return [];
 	}

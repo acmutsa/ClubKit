@@ -22,6 +22,8 @@ import { DialogTrigger } from "@/components/ui/dialog";
 import DeleteEventDialog from "@/components/dash/admin/events/DeleteEventDialogue";
 import { toast } from "sonner";
 import { usePathname } from "next/navigation";
+import ViewQRCode from "@/components/dash/admin/events/ViewQRCode";
+import { useBasePath } from "@/lib/hooks/useBasePath";
 
 type EventWithCheckins = Partial<EventType> & { checkin_count: number };
 
@@ -118,10 +120,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 			const [showDelete, setShowDelete] = useState(false);
 			const [open, setOpen] = useState(false);
 			const data = row.original;
-			const [basePath, setBasePath] = useState("");
-			useEffect(() => {
-				setBasePath(window.location.host);
-			}, []);
+			const basePath = useBasePath();
 
 			return (
 				<Dialog open={open} onOpenChange={setOpen}>
@@ -142,13 +141,21 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 								</Link>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
+								<ViewQRCode
+									id={data.id}
+									name={data.name}
+									description={data.description}
+									basePath={basePath}
+								/>
+							</DropdownMenuItem>
+							<DropdownMenuItem>
 								<div
 									className="h-full w-full cursor-pointer"
 									onClick={async (e) => {
 										e.stopPropagation();
 										toast.promise(
 											navigator.clipboard.writeText(
-												`${basePath}/${data.id}`,
+												`${basePath}/events/${data.id}`,
 											),
 											{
 												loading: "Copying...",

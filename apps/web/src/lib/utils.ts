@@ -22,16 +22,16 @@ export function capitalizeFirstLetter(string: string) {
 }
 
 export function createCalendarLink(
-	calendarLinkName: string,
+	functionKey: string,
 	eventCalendarLink: CalendarDetails,
 ) {
-	const lowerLinkName = calendarLinkName.toLocaleLowerCase();
+	const lowerLinkName = functionKey.toLocaleLowerCase();
 	const calendarFunction = linksAsObject[lowerLinkName] as Function;
 	if (calendarFunction && typeof calendarFunction === "function") {
 		return calendarFunction(eventCalendarLink);
 	}
 	// We will default to a google calendar link if the calendar link name is not found
-	return CalendarLinks.google(eventCalendarLink);
+	return CalendarLinks.office365Mobile(eventCalendarLink);
 }
 
 export function getClientTimeZone(vercelIPTimeZone?: string | null) {
@@ -57,4 +57,17 @@ export function isEventCheckinAllowed(
 	checkinEnd: Date,
 ) {
 	return currentDateUTC >= checkinStart && currentDateUTC <= checkinEnd;
+}
+
+export function formatBlobUrl(blobUrl: string) {
+	const end = blobUrl.split("/").at(-1);
+	if (!end) return blobUrl;
+
+	const extension = end.split(".").at(-1);
+	if (!extension) return end;
+
+	const name = end.split("-").slice(0, -1).join("-");
+	if (!name) return end;
+
+	return `${decodeURIComponent(name)}.${extension}`;
 }

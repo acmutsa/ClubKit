@@ -13,15 +13,15 @@ export default function CalendarLink({
 	calendarName: EventCalendarName;
 	calendarDetails: CalendarDetails;
 }) {
-	const { title, titleOverride } = calendarName;
+	const { title, functionKey } = calendarName;
 
 	const [src, setSrc] = useState(
 		`/img/logos/${title.toLocaleLowerCase()}-icon.svg`,
 	);
 
 	const fallBackSrc = "/img/logos/calendar.svg";
-	const calendarLink = createCalendarLink(title, calendarDetails);
-
+	const calendarLink = createCalendarLink(functionKey, calendarDetails);
+	console.log("Calendar link is: ", calendarLink);
 	return (
 		<Link
 			href={calendarLink}
@@ -38,8 +38,10 @@ export default function CalendarLink({
 				}}
 			/>
 			<p className="text-primary md:text-base lg:text-lg 2xl:text-2xl">
-				{titleOverride ? titleOverride : capitalizeFirstLetter(title)}
+				{title}
 			</p>
 		</Link>
 	);
 }
+// data:text/calendar;charset=utf8,BEGIN:VCALENDAR%0D%0AVERSION:2.0%0D%0APRODID:Forever%20Event%3A%20Part%202%0D%0ABEGIN:VEVENT%0D%0ADTSTART:20250106T200500Z%0D%0ADTEND:20250623T200500Z%0D%0ADTSTAMP:20250130T214058Z%0D%0ASUMMARY:Forever%20Event%3A%20Part%202%0D%0ADESCRIPTION:this%20event%20should%20always%20be%20live%0D%0ALOCATION:Da%20room%20with%20the%20stuff%20for%20th%0D%0AUID:9710%0D%0AEND:VEVENT%0D%0AEND:VCALENDAR%0D%0A
+// https://careercenter.utsa.edu/events/2025/01/21/career-labs-drop-ins-check-handshake-for-specifics.ics/

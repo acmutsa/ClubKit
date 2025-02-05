@@ -6,7 +6,11 @@ import {
 import { getAdminUser } from "./lib/queries/users";
 import { NextResponse } from "next/server";
 
-const isProtectedRoute = createRouteMatcher(["/dash(.*)", "/admin(.*)"]);
+const isProtectedRoute = createRouteMatcher([
+	"/dash(.*)",
+	"/admin(.*)",
+	"/settings(.*)",
+]);
 const isAdminAPIRoute = createRouteMatcher(["/api/admin(.*)"]);
 
 // come back and check if this is valid

@@ -27,7 +27,7 @@ import {
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getLocalTimeZone, parseAbsolute } from "@internationalized/date";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,12 +47,20 @@ import { createEvent } from "@/actions/events/createNewEvent";
 import { ONE_HOUR_IN_MILLISECONDS } from "@/lib/constants";
 import { bucketEventThumbnailBaseUrl } from "config";
 import type { NewEventFormProps } from "@/lib/types/events";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = insertEventSchemaFormified;
 
 export default function NewEventForm({
 	defaultDate,
 	categoryOptions,
+	semesterOptions,
 }: NewEventFormProps) {
 	const [error, setError] = useState<{
 		title: string;
@@ -469,6 +477,49 @@ export default function NewEventForm({
 							/>
 						</FormGroupWrapper>
 						<FormGroupWrapper title="Additional">
+							{semesterOptions.length > 0 && (
+								<FormField
+									name="semesterID"
+									control={form.control}
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Semester</FormLabel>
+											<FormControl>
+												<Select
+													onValueChange={(value) => {
+														console.log(value);
+														field.onChange(
+															parseInt(value, 10),
+														);
+													}}
+												>
+													<SelectTrigger>
+														<SelectValue placeholder="Select a Semester" />
+													</SelectTrigger>
+													<SelectContent>
+														{semesterOptions.map(
+															({
+																name,
+																semesterID,
+															}) => (
+																<SelectItem
+																	key={
+																		semesterID
+																	}
+																	value={semesterID.toString()}
+																>
+																	{name}
+																</SelectItem>
+															),
+														)}
+													</SelectContent>
+												</Select>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							)}
 							<FormField
 								name="categories"
 								control={form.control}

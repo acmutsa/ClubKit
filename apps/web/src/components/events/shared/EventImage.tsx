@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function EventImage(props: EventImageProps) {
 	const [loaded, setLoaded] = useState(false);
-
+	const { isLive, ...imageProps } = props;
 	const combinedProps = {
 		alt: "Event Image",
 		priority: true,
@@ -16,12 +16,12 @@ export default function EventImage(props: EventImageProps) {
 		height: 0,
 		quality: 100,
 		sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
-		...props,
+		...imageProps,
 	};
 
 	return (
 		<>
-			<span className={clsx("relative", { "live-glow": props.isLive })}>
+			<span className={clsx("relative", { "live-glow": isLive })}>
 				<Image
 					{...combinedProps}
 					onLoad={() => setLoaded(true)}

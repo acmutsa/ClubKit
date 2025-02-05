@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, GraduationCapIcon, MapPinIcon } from "lucide-react";
 import Link from "next/link";
 import { formatInTimeZone } from "date-fns-tz";
+import { getCurrentSemester } from "@/lib/queries/semesters";
 
 interface AttendedEvents {
 	id: string;
@@ -37,7 +38,9 @@ export default async function UserDash({
 	clerkID: string;
 	clientTimeZone: string;
 }) {
-	// the logic of this query will change a lot once we have semesters implimented
+	//TODO: can probably add a conditional check here to either compare by the event ID or use the between clause if it is pulling from the config
+	const currentSemester = (await getCurrentSemester()) ?? c.semesters.current;
+
 	const queryResult = await db
 		.select({
 			user: users,
@@ -47,18 +50,18 @@ export default async function UserDash({
 			'id', ${events.id},
 			'name', ${events.name},
 			'points', ${events.points},
-			'start', ${events.start}) ORDER BY ${events.start} DESC) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate})`.as(
+			'start', ${events.start}) ORDER BY ${events.start} DESC) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate})`.as(
 					"attendedEvents",
 				),
 			currentSemesterPoints: sql<
 				number | null
-			>`SUM(${events.points}) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate})`.mapWith(
+			>`SUM(${events.points}) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate})`.mapWith(
 				Number,
 			),
 			// totalPoints: sum(events.points),
 			currentSemesterEventsAttended: sql<
 				number | null
-			>`COUNT(${events.id}) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${c.semesters.current.startDate} AND ${c.semesters.current.endDate})`.mapWith(
+			>`COUNT(${events.id}) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate})`.mapWith(
 				Number,
 			),
 			totalEventsAttended: count(checkins.userID),
@@ -76,7 +79,6 @@ export default async function UserDash({
 	}
 
 	const userDashResult = queryResult[0];
-	console.log(userDashResult.currentSemesterPoints);
 	const {
 		user,
 		userData,
@@ -97,19 +99,18 @@ export default async function UserDash({
 	);
 
 	const hasUserMetRequiredPoints =
-		currentSemesterPoints >= c.semesters.current.pointsRequired;
+		currentSemesterPoints >= currentSemester.pointsRequired;
 
 	const radialChartProgressProps = {
 		titleText: "Attendance Points",
-		descriptionText: c.semesters.current.title,
+		descriptionText: currentSemester.name,
 		current: currentSemesterPoints ?? 0,
-		total: c.semesters.current.pointsRequired,
+		total: currentSemester.pointsRequired,
 		footerText: hasUserMetRequiredPoints
-			? `Way to go! You have gained enough points to attend our ${c.semesters.current.title} banquet 🎉`
+			? `Way to go! You have gained enough points to attend our ${currentSemester.name} banquet 🎉`
 			: `Keep attending events to earn more points!`,
 		fill: "#3b82f6",
 	};
-	console.log("attended events", attendedEvents);
 	const slicedEvents = attendedEvents?.slice(0, 5) ?? [];
 
 	return (

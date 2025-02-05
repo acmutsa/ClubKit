@@ -8,7 +8,7 @@ const c = {
 	},
 	semesters: {
 		current: {
-			title: "Spring 2025",
+			name: "Spring 2025",
 			startDate: new Date("2025-01-24"),
 			endDate: new Date("2025-05-31"),
 			pointsRequired: 7,
@@ -56,9 +56,9 @@ const c = {
 		shirtType: ["Unisex", "Women's"],
 	},
 	calendarLinks: [
-		{ title: "google" },
-		{ title: "outlook" },
-		{ title: "ics", titleOverride: "iCal" },
+		{ title: "Google", functionKey: "google" },
+		{ title: "Outlook", functionKey: "outlookMobile" },
+		// { title: "iCal", functionKey: "ics" },
 	],
 	streamingLinks: [
 		{ title: "twitch", href: "https://www.twitch.tv/acmutsa" },
@@ -77,6 +77,7 @@ const c = {
 			Events: "/admin/events",
 			Checkins: "/admin/checkins",
 			Categories: "/admin/categories",
+			Semesters: "/admin/semesters",
 		},
 	},
 	maxCheckinDescriptionLength: 400,

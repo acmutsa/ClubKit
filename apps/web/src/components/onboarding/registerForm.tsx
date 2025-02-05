@@ -171,7 +171,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 		toast.loading("Creating Registration...");
 		if (resume) {
 			const resumeBlob = await upload(
-				`${bucketBaseUrl}/${resume.name}`,
+				`${bucketBaseUrl}/resume/${resume.name}`,
 				resume,
 				{
 					access: "public",

@@ -7,12 +7,17 @@ import { iEvent, uEvent } from "@/lib/types/events";
 import { getEventWithCategoriesById } from "@/lib/queries/events";
 import { IDParamProp } from "@/lib/types/shared";
 import FullScreenMessage from "@/components/shared/fullscreen-message";
-
 import c from "config";
-
+import { getAllSemestersDesc } from "@/lib/queries/semesters";
 export default async function Page({ params: { id } }: IDParamProp) {
-	const categoryOptions = await getAllCategoriesKeyValue();
-	const oldValues: uEvent | undefined = await getEventWithCategoriesById(id);
+	const categoryOptionsAsync = getAllCategoriesKeyValue();
+	const oldValuesAsync = getEventWithCategoriesById(id);
+	const getAllSemestersDescAsync = getAllSemestersDesc();
+	const [categoryOptions, oldValues, semesterOptions] = await Promise.all([
+		categoryOptionsAsync,
+		oldValuesAsync,
+		getAllSemestersDescAsync,
+	]);
 	if (oldValues === undefined) {
 		return (
 			<FullScreenMessage
@@ -33,6 +38,7 @@ export default async function Page({ params: { id } }: IDParamProp) {
 					eventID={id}
 					oldValues={oldValues}
 					categoryOptions={categoryOptions}
+					semesterOptions={semesterOptions}
 				/>
 			</div>
 		</div>
