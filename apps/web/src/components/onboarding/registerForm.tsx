@@ -132,7 +132,7 @@ export default function RegisterForm({ defaultEmail }: RegisterFormProps) {
 					case "university_id_already_exists":
 						setError({
 							title: `${c.universityID.name} Already Exists`,
-							description: `There is already an account with the ${c.universityID.name} of ${form.getValues().universityID}. This could mean you have already registered, or that you have a legacy portal account that needs to be connected. If you belive this is an error, please contact ${c.contactEmail}.`,
+							description: `There is already an account with the ${c.universityID.name} of ${form.getValues().universityID.toLowerCase()}. This could mean you have already registered, or that you have a legacy portal account that needs to be connected. If you belive this is an error, please contact ${c.contactEmail}.`,
 						});
 						break;
 					default:
