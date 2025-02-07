@@ -21,7 +21,7 @@ export default async function Page() {
 		return (
 			<div className="flex h-screen w-screen flex-col items-center justify-center space-y-3 px-3">
 				<h1 className="text-4xl font-black">Account Detected</h1>
-				<div className="flex max-w-[30%] flex-col items-center justify-between space-y-5 rounded-xl border-2 border-muted p-6 pb-4">
+				<div className="flex flex-col items-center justify-between space-y-5 rounded-xl border-2 border-muted p-6 pb-4 sm:max-w-[75%] md:max-w-[60%] lg:max-w-[40%] 2xl:max-w-[30%]">
 					<div className="flex w-full flex-col justify-center space-y-2">
 						<p className="w-full text-center">
 							An unconnected account with the email{" "}
@@ -36,7 +36,7 @@ export default async function Page() {
 						<Button> Connect Account</Button>
 					</Link>
 				</div>
-				<p className="w-full max-w-[30%] text-center text-xs">
+				<p className="w-full text-center text-xs sm:max-w-[75%] md:max-w-[60%] lg:max-w-[40%] 2xl:max-w-[30%]">
 					If you believe this is a mistake or have trouble connecting
 					the account, please reach out to{" "}
 					<span>

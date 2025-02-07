@@ -159,7 +159,7 @@ export default function Migrator({ clerkEmail }: { clerkEmail: string }) {
 					>
 						Migrate Account
 					</Button>
-					{clerkEmail !== legacyEmail && (
+					{clerkEmail !== legacyEmail?.toLowerCase() && (
 						<p className="w-full text-center text-xs">
 							⚠️The new email you signed in with (
 							<span className="font-semibold">{clerkEmail}</span>)
