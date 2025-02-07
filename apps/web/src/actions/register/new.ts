@@ -11,34 +11,34 @@ export const createRegistration = authenticatedAction
 	.action(async ({ parsedInput: registerFormInputs, ctx: { clerkID } }) => {
 		const { data: dataSchemaInputs, ...usersSchemaInputs } =
 			registerFormInputs;
+		const lowerCasedEmail = registerFormInputs.email.toLowerCase();
+		const lowerCasedUniversityID =
+			registerFormInputs.universityID.toLowerCase();
 		const existingUser = await db
 			.select()
 			.from(users)
-			.innerJoin(data, eq(users.userID, data.userID))
 			.where(
 				or(
-					eq(users.email, registerFormInputs.email),
+					eq(users.email, lowerCasedEmail),
 					eq(users.clerkID, clerkID),
-					eq(users.universityID, registerFormInputs.universityID),
+					eq(users.universityID, lowerCasedUniversityID),
 				),
 			)
 			.limit(1);
 
 		if (existingUser.length > 0) {
 			const foundUser = existingUser[0];
-			if (foundUser.users.clerkID == clerkID) {
+			if (foundUser.clerkID == clerkID) {
 				return {
 					success: false,
 					code: "user_already_exists",
 				};
-			} else if (foundUser.users.email == registerFormInputs.email) {
+			} else if (foundUser.email == lowerCasedEmail) {
 				return {
 					success: false,
 					code: "email_already_exists",
 				};
-			} else if (
-				foundUser.users.universityID == registerFormInputs.universityID
-			) {
+			} else if (foundUser.universityID == lowerCasedUniversityID) {
 				return {
 					success: false,
 					code: "university_id_already_exists",
@@ -51,7 +51,9 @@ export const createRegistration = authenticatedAction
 				.insert(users)
 				.values({
 					...usersSchemaInputs,
-					clerkID: clerkID,
+					email: lowerCasedEmail,
+					universityID: lowerCasedUniversityID,
+					clerkID,
 				})
 				.returning({ userID: users.userID });
 			const userID = res[0].userID;
