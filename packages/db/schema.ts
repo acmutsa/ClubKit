@@ -1,32 +1,39 @@
 import {
 	text,
-	varchar,
-	boolean,
-	timestamp,
 	integer,
-	pgEnum,
+	sqliteTable,
 	primaryKey,
-	pgTable,
-	serial,
-	date,
-} from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+	 customType,
+} from "drizzle-orm/sqlite-core";
+import { relations, sql } from "drizzle-orm";
 import c from "config";
 
-// pieces of this schema need to be revamped as a lot of them are lazily set as text instead of varchar with a hard limit
 /* USERS */
 
-export const userRoles = pgEnum("user_roles", c.memberRoles);
+export const userRoles = customType<{
+	data: (typeof c.memberRoles)[number];
+	notNull: true;
+	default: true;
+}>({
+	dataType() {
+		return "text";
+	},
+	toDriver(value) {
+		return value;
+	},
+});
 
-export const users = pgTable("users", {
-	userID: serial("user_id").primaryKey(),
-	clerkID: varchar("clerk_id", { length: 255 }).unique(),
-	firstName: varchar("first_name", { length: 255 }).notNull(),
-	lastName: varchar("last_name", { length: 255 }).notNull(),
-	email: varchar({ length: 255 }).notNull().unique(),
+export const users = sqliteTable("users", {
+	userID: integer("user_id").primaryKey(),
+	clerkID: text("clerk_id", { length: 255 }).unique(),
+	firstName: text("first_name", { length: 255 }).notNull(),
+	lastName: text("last_name", { length: 255 }).notNull(),
+	email: text({ length: 255 }).notNull().unique(),
 	role: userRoles().default("member").notNull(),
-	joinDate: timestamp("join_date").defaultNow().notNull(),
-	universityID: varchar("university_id", { length: 255 }).notNull().unique(),
+	joinDate: integer("join_date", { mode: "timestamp_ms" })
+		.notNull()
+		.default(sql`(current_timestamp)`),
+	universityID: text("university_id", { length: 255 }).notNull().unique(),
 });
 
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -34,30 +41,30 @@ export const usersRelations = relations(users, ({ one, many }) => ({
 	checkins: many(checkins),
 }));
 
-export const data = pgTable("data", {
+export const data = sqliteTable("data", {
 	userID: integer("user_id")
 		.primaryKey()
 		.references(() => users.userID, { onDelete: "cascade" }),
-	major: varchar({ length: 255 }).notNull(),
-	classification: varchar({ length: 255 }).notNull(),
+	major: text({ length: 255 }).notNull(),
+	classification: text({ length: 255 }).notNull(),
 	graduationMonth: integer("graduation_month").notNull(),
 	graduationYear: integer("graduation_year").notNull(),
-	birthday: timestamp("birthday"),
-	gender: varchar({ length: 255 }).array().notNull(),
-	ethnicity: varchar({ length: 255 }).array().notNull(),
-	resume: varchar({ length: 255 }),
-	shirtType: varchar("shirt_type", { length: 255 }).notNull(),
-	shirtSize: varchar("shirt_size", { length: 255 }).notNull(),
-	interestedEventTypes: varchar("interested_event_types", { length: 255 })
-		.array()
-		.notNull(),
+	birthday: integer("birthday", { mode: "timestamp_ms" }),
+	gender: text("gender", { mode: "json" }).notNull().$type<string[]>(),
+	ethnicity: text("ethnicity", { mode: "json" }).notNull().$type<string[]>(),
+	resume: text({ length: 255 }),
+	shirtType: text("shirt_type", { length: 255 }).notNull(),
+	shirtSize: text("shirt_size", { length: 255 }).notNull(),
+	interestedEventTypes: text("interested_event_types", {
+		mode: "json",
+	}).notNull().$type<string[]>(),
 });
 
 /* EVENTS */
-export const eventCategories = pgTable("event_categories", {
-	id: varchar("id", { length: 8 }).primaryKey(),
-	name: varchar({ length: 255 }).notNull().unique(),
-	color: varchar({ length: 255 }).notNull(),
+export const eventCategories = sqliteTable("event_categories", {
+	id: text("id", { length: 8 }).primaryKey(),
+	name: text({ length: 255 }).notNull().unique(),
+	color: text({ length: 255 }).notNull(),
 });
 
 export const eventCategoriesRelations = relations(
@@ -67,23 +74,31 @@ export const eventCategoriesRelations = relations(
 	}),
 );
 
-export const events = pgTable("events", {
-	id: varchar({ length: 100 }).primaryKey(),
-	name: varchar({ length: 100 }).notNull(),
+export const events = sqliteTable("events", {
+	id: text({ length: 100 }).primaryKey(),
+	name: text({ length: 100 }).notNull(),
 	description: text("description").notNull(),
-	thumbnailUrl: varchar("thumbnail_url", { length: 255 })
+	thumbnailUrl: text("thumbnail_url", { length: 255 })
 		.default(c.thumbnails.default)
 		.notNull(),
-	start: timestamp("start").notNull(),
-	end: timestamp("end").notNull(),
-	checkinStart: timestamp("checkin_start").notNull(),
-	checkinEnd: timestamp("checkin_end").notNull(),
-	location: varchar({ length: 255 }).notNull(),
-	isUserCheckinable: boolean("is_user_checkinable").notNull().default(true),
-	isHidden: boolean("is_hidden").notNull().default(false),
+	start: integer("start", { mode: "timestamp_ms" }).notNull(),
+	end: integer("end", { mode: "timestamp_ms" }).notNull(),
+	checkinStart: integer("checkin_start", { mode: "timestamp_ms" }).notNull(),
+	checkinEnd: integer("checkin_end", { mode: "timestamp_ms" }).notNull(),
+	location: text({ length: 255 }).notNull(),
+	isUserCheckinable: integer("is_user_checkinable", { mode: "boolean" })
+		.notNull()
+		.default(true),
+	isHidden: integer("is_hidden", { mode: "boolean" })
+		.notNull()
+		.default(false),
 	points: integer("points").notNull().default(1),
-	createdAt: timestamp("created_at").defaultNow().notNull(),
-	updatedAt: timestamp("updated_at").defaultNow().notNull(),
+	createdAt: integer("created_at", { mode: "timestamp_ms" })
+		.default(sql`(current_timestamp)`)
+		.notNull(),
+	updatedAt: integer("updated_at")
+		.default(sql`(current_timestamp)`)
+		.notNull(),
 	semesterID: integer("semester_id").references(() => semesters.semesterID, {
 		onDelete: "set null",
 	}),
@@ -98,11 +113,11 @@ export const eventsRelations = relations(events, ({ many, one }) => ({
 	}),
 }));
 
-export const eventsToCategories = pgTable("events_to_categories", {
-	eventID: varchar("event_id", { length: 100 })
+export const eventsToCategories = sqliteTable("events_to_categories", {
+	eventID: text("event_id", { length: 100 })
 		.notNull()
 		.references(() => events.id, { onDelete: "cascade" }),
-	categoryID: varchar("category_id", { length: 100 })
+	categoryID: text("category_id", { length: 100 })
 		.notNull()
 		.references(() => eventCategories.id, { onDelete: "cascade" }),
 });
@@ -121,27 +136,21 @@ export const eventsToCategoriesRelations = relations(
 	}),
 );
 
-export const checkins = pgTable(
+export const checkins = sqliteTable(
 	"checkins",
 	{
-		eventID: varchar("event_id", { length: 100 })
+		eventID: text("event_id", { length: 100, mode: "text" })
 			.references(() => events.id, { onDelete: "cascade" })
 			.notNull(),
 		userID: integer("user_id")
 			.references(() => users.userID, { onDelete: "cascade" })
 			.notNull(),
-		time: timestamp("time").defaultNow().notNull(),
+		time: integer("time", { mode: "timestamp_ms" }).defaultNow().notNull(),
 		rating: integer("rating"),
 		adminID: integer("admin_id"),
-		feedback: varchar({ length: 2000 }),
+		feedback: text({ length: 2000 }),
 	},
-	(table) => {
-		return [
-			{
-				id: primaryKey({ columns: [table.eventID, table.userID] }),
-			},
-		];
-	},
+	(table) => [primaryKey({ columns: [table.userID, table.eventID] })],
 );
 
 export const checkinRelations = relations(checkins, ({ one }) => ({
@@ -155,13 +164,13 @@ export const checkinRelations = relations(checkins, ({ one }) => ({
 	}),
 }));
 
-export const semesters = pgTable("semesters", {
-	semesterID: serial("semester_id").primaryKey(),
-	name: varchar("name", { length: 255 }).notNull().unique(),
-	startDate: timestamp("start_date").notNull(),
-	endDate: timestamp("end_date").notNull(),
+export const semesters = sqliteTable("semesters", {
+	semesterID: integer("semester_id").primaryKey(),
+	name: text("name", { length: 255 }).notNull().unique(),
+	startDate: integer("start_date", {mode:"timestamp_ms"}).notNull(),
+	endDate: integer("end_date", {mode:"timestamp_ms"}).notNull(),
 	pointsRequired: integer("points_required").notNull(),
-	isCurrent: boolean("is_current").notNull().default(false),
+	isCurrent: integer("is_current", {mode:"boolean"}).notNull().default(false),
 });
 
 export const semestersRelations = relations(semesters, ({ many }) => ({

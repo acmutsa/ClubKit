@@ -59,8 +59,8 @@ export const updateEvent = adminAction
 					),
 				);
 		});
-
-		await db.execute(sql`VACUUM events_to_categories`);
+		// Ensure this works properly
+		await db.run(sql`VACUUM events_to_categories`);
 
 		return res;
 	});
