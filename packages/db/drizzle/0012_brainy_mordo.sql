@@ -1,1 +1,0 @@
-ALTER TABLE "data" ADD CONSTRAINT "data_user_id_users_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("user_id") ON DELETE cascade ON UPDATE no action;

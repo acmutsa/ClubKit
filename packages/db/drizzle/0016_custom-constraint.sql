@@ -1,1 +1,0 @@
-ALTER TABLE "checkins" ADD CONSTRAINT "checkins_event_id_user_id_pk" PRIMARY KEY("event_id","user_id");

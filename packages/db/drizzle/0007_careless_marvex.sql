@@ -1,1 +1,0 @@
-ALTER TABLE "events" ADD COLUMN "points" integer DEFAULT 1 NOT NULL;

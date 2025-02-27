@@ -1,1 +1,0 @@
-ALTER TABLE "checkins" ALTER COLUMN "user_id" TYPE INTEGER USING ("user_id"::INTEGER);
