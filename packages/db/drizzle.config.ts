@@ -7,10 +7,11 @@ dotenv.config({
 
 export default defineConfig({
 	schema: "./schema.ts",
-	dialect: "postgresql",
 	out: "./drizzle",
+	dialect: "turso",
 	dbCredentials: {
-		url: `${process.env.POSTGRES_URL as string}?sslmode=require`,
+		url: process.env.TURSO_DATABASE_URL!,
+		authToken: process.env.TURSO_AUTH_TOKEN,
 	},
 	breakpoints: true,
 });

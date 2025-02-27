@@ -3,7 +3,7 @@ import {
 	integer,
 	sqliteTable,
 	primaryKey,
-	 customType,
+	customType,
 } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
 import c from "config";
@@ -57,7 +57,9 @@ export const data = sqliteTable("data", {
 	shirtSize: text("shirt_size", { length: 255 }).notNull(),
 	interestedEventTypes: text("interested_event_types", {
 		mode: "json",
-	}).notNull().$type<string[]>(),
+	})
+		.notNull()
+		.$type<string[]>(),
 });
 
 /* EVENTS */
@@ -167,10 +169,12 @@ export const checkinRelations = relations(checkins, ({ one }) => ({
 export const semesters = sqliteTable("semesters", {
 	semesterID: integer("semester_id").primaryKey(),
 	name: text("name", { length: 255 }).notNull().unique(),
-	startDate: integer("start_date", {mode:"timestamp_ms"}).notNull(),
-	endDate: integer("end_date", {mode:"timestamp_ms"}).notNull(),
+	startDate: integer("start_date", { mode: "timestamp_ms" }).notNull(),
+	endDate: integer("end_date", { mode: "timestamp_ms" }).notNull(),
 	pointsRequired: integer("points_required").notNull(),
-	isCurrent: integer("is_current", {mode:"boolean"}).notNull().default(false),
+	isCurrent: integer("is_current", { mode: "boolean" })
+		.notNull()
+		.default(false),
 });
 
 export const semestersRelations = relations(semesters, ({ many }) => ({
