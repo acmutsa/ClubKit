@@ -104,16 +104,7 @@ export default function NewEventForm({
 			setThumbnail(null);
 			return false;
 		}
-		if (
-			![
-				"image/jpeg",
-				"image/png",
-				"image/gif",
-				"image/webp",
-				"image/svg+xml",
-				"image/bmp",
-			].includes(file.type)
-		) {
+		if (!c.thumbnails.acceptedFiles.includes(file.type as any)) {
 			form.setError("thumbnailUrl", {
 				message:
 					"Invalid image format. Only jpeg, png, gif, webp, svg+xml, bmp.",
@@ -279,7 +270,9 @@ export default function NewEventForm({
 											<Input
 												{...fieldProps}
 												type="file"
-												accept="image"
+												accept={`${c.thumbnails.acceptedFiles.join(
+													",",
+												)}`}
 												onChange={(event) => {
 													const success =
 														validateAndSetThumbnail(

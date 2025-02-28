@@ -24,7 +24,15 @@ export default function DeleteSemesterDialogue({
 			toast.dismiss();
 			toast.success("Semester deleted successfully");
 		},
-		onError: () => {
+		onError: (err) => {
+			if (
+				err.error.validationErrors?._errors?.[0] ===
+				"Unauthorized (Not a super admin)"
+			) {
+				return toast.error(
+					"You need super admin permissions to update roles",
+				);
+			}
 			toast.dismiss();
 			toast.error("Failed to delete semester");
 		},

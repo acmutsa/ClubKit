@@ -4,15 +4,15 @@ import { data, users } from "db/schema";
 export async function getRegistrationsByMonth() {
 	return await db
 		.select({
-			month: sql`EXTRACT(MONTH FROM ${users.joinDate})`.mapWith(Number),
+			month: sql`strftime('%m', ${users.joinDate})`.mapWith(Number),
 			count: count(),
 		})
 		.from(users)
 		.where(
-			sql`${users.joinDate} > NOW() - INTERVAL '1 year' AND ${users.joinDate} < NOW()`,
+			sql`${users.joinDate} > datetime('now', '-1 year') AND ${users.joinDate} < datetime('now')`,
 		)
-		.groupBy(sql`EXTRACT(MONTH FROM ${users.joinDate})`)
-		.orderBy(sql`EXTRACT(MONTH FROM ${users.joinDate})`);
+		.groupBy(sql`strftime('%m', ${users.joinDate})`)
+		.orderBy(sql`strftime('%m', ${users.joinDate})`);
 }
 
 export async function getUserClassifications() {

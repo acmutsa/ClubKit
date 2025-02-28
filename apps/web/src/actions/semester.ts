@@ -45,12 +45,14 @@ export const createNewSemester = executiveAction
 		} catch (e) {
 			/// @ts-expect-error could not find the type of the error and the status code is the next most accurate way of telling an issue
 			if (e.code === UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE) {
+				console.log(e);
 				return {
 					success: false,
 					code: SEMESTER_NAME_EXISTS,
 					semesterName: parsedInput.name,
 				};
 			}
+			console.log(e);
 			throw e;
 		}
 		revalidatePath("/admin/semesters");

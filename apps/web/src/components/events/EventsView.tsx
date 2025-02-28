@@ -15,11 +15,11 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 		EVENT_FILTERS;
 
 	const cardViewSelected = params[EVENT_FILTERS.VIEW]
-		? CARD === params[VIEW] ?? CARD
+		? CARD === (params[VIEW] ?? CARD)
 		: true;
 
 	const showUpcomingEvents = params[SHOW_EVENTS]
-		? SHOW_UPCOMING_EVENTS === params[SHOW_EVENTS] ?? SHOW_UPCOMING_EVENTS
+		? SHOW_UPCOMING_EVENTS === (params[SHOW_EVENTS] ?? SHOW_UPCOMING_EVENTS)
 		: true;
 
 	const currentDateUTC = getUTCDate();

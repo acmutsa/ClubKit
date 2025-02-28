@@ -89,6 +89,14 @@ const c = {
 	thumbnails: {
 		default: "/img/thumbnails/default.png",
 		maxSizeInBytes: 500000,
+		acceptedFiles: [
+			"image/jpeg",
+			"image/png",
+			"image/gif",
+			"image/webp",
+			"image/svg+xml",
+			"image/bmp",
+		],
 	},
 	memberRoles: ["member", "admin", "super_admin"] as const,
 } as const;

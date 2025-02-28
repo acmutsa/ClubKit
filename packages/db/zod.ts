@@ -7,7 +7,7 @@ import {
 	eventCategories,
 	semesters,
 } from "./schema";
-import { z } from "zod";
+import { string, z } from "zod";
 import c, { majors } from "config";
 
 export const insertUserDataSchema = createInsertSchema(data);
@@ -126,6 +126,18 @@ export const updateEventSchema = insertEventSchema.merge(
 );
 
 export const selectEventSchema = createSelectSchema(events);
+
+export const dashEventSchema = z.array(
+	z.object({
+		id: string(),
+		name: string(),
+		points: z.number(),
+		start: z
+			.number()
+			.positive()
+			.transform((val) => new Date(val)),
+	}),
+);
 
 export const selectCheckinSchema = createSelectSchema(checkins);
 

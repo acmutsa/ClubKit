@@ -49,7 +49,10 @@ function AddCheckinDialogue({ eventList, ...props }: Props) {
 	const form = useForm<AdminCheckinProps>({
 		resolver: zodResolver(adminCheckinSchema),
 		defaultValues: {
-			eventID: props.default?.eventID || eventList[0].id,
+			// do a check here to ensure that there is more than one on the event list
+			eventID:
+				props.default?.eventID ||
+				(eventList.length > 0 ? eventList[0].id : ""),
 			universityIDs: props.default?.universityIDs || "",
 		},
 	});
@@ -181,10 +184,13 @@ function AddCheckinDialogue({ eventList, ...props }: Props) {
 									disabled={
 										actionStatus == "executing" ||
 										(actionStatus == "hasSucceeded" &&
-											actionResult.data?.success)
+											actionResult.data?.success) ||
+										eventList.length < 1
 									}
 								>
-									Submit
+									{eventList.length < 1
+										? "No Events"
+										: "Submit"}
 								</Button>
 							</DialogFooter>
 						</form>

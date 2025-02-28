@@ -69,7 +69,15 @@ export default function UpdateSemesterDialogue(props: UpdateSemesterProps) {
 			form.reset();
 			toast.success("Semester updated successfully");
 		},
-		onError: () => {
+		onError: (err) => {
+			if (
+				err.error.validationErrors?._errors?.[0] ===
+				"Unauthorized (Not a super admin)"
+			) {
+				return toast.error(
+					"You need super admin permissions to update roles",
+				);
+			}
 			toast.dismiss();
 			toast.error("Failed to update semester");
 		},

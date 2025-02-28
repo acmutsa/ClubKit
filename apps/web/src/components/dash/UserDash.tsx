@@ -23,13 +23,8 @@ import { CalendarIcon, GraduationCapIcon, MapPinIcon } from "lucide-react";
 import Link from "next/link";
 import { formatInTimeZone } from "date-fns-tz";
 import { getCurrentSemester } from "@/lib/queries/semesters";
-
-interface AttendedEvents {
-	id: string;
-	name: string;
-	points: number;
-	start: typeof events.start;
-}
+import { dashEventSchema } from "db/zod";
+import z from "zod";
 
 export default async function UserDash({
 	clerkID,
@@ -38,34 +33,36 @@ export default async function UserDash({
 	clerkID: string;
 	clientTimeZone: string;
 }) {
-	//TODO: can probably add a conditional check here to either compare by the event ID or use the between clause if it is pulling from the config
 	const currentSemester = (await getCurrentSemester()) ?? c.semesters.current;
 
 	const queryResult = await db
 		.select({
 			user: users,
 			userData: data,
-			attendedEvents:
-				sql<Array<AttendedEvents> | null>`JSONB_AGG(JSONB_BUILD_OBJECT(
-			'id', ${events.id},
-			'name', ${events.name},
-			'points', ${events.points},
-			'start', ${events.start}) ORDER BY ${events.start} DESC) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate})`.as(
-					"attendedEvents",
-				),
+			attendedEvents: sql<string | null>`
+  		CASE 
+    WHEN COUNT(${events.id}) = 0 THEN NULL
+    ELSE json_group_array(json_object(
+      'id', ${events.id},
+      'name', ${events.name},
+      'points', ${events.points},
+      'start', ${events.start}
+    ))
+  END
+`.as("attendedEvents"),
 			currentSemesterPoints: sql<
 				number | null
-			>`SUM(${events.points}) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate})`.mapWith(
+			>`SUM(${events.points}) FILTER (WHERE ${events.start} BETWEEN ${currentSemester.startDate} AND ${currentSemester.endDate} OR ${events.checkinStart} BETWEEN ${currentSemester.startDate} AND ${currentSemester.endDate})`.mapWith(
 				Number,
 			),
-			// totalPoints: sum(events.points),
 			currentSemesterEventsAttended: sql<
 				number | null
-			>`COUNT(${events.id}) FILTER (WHERE ${events.start} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate} OR ${events.checkinStart} BETWEEN SYMMETRIC ${currentSemester.startDate} AND ${currentSemester.endDate})`.mapWith(
+			>`COUNT(${events.id}) FILTER (WHERE ${events.start} BETWEEN ${currentSemester.startDate} AND ${currentSemester.endDate} OR ${events.checkinStart} BETWEEN ${currentSemester.startDate} AND ${currentSemester.endDate})`.mapWith(
 				Number,
 			),
-			totalEventsAttended: count(checkins.userID),
-			// userCheckins: sql`ARRAY_AGG(${checkins.eventID})`,
+			totalEventsAttended: sql<
+				number | null
+			>`COUNT(${checkins.userID})`.mapWith(Number),
 		})
 		.from(users)
 		.innerJoin(data, eq(users.userID, data.userID))
@@ -87,6 +84,16 @@ export default async function UserDash({
 		totalEventsAttended,
 		attendedEvents,
 	} = userDashResult;
+
+	let userEvents: z.infer<typeof dashEventSchema> = [];
+	const userEventsParseResult = dashEventSchema.safeParse(
+		JSON.parse(attendedEvents ?? "[]"),
+	);
+	if (!userEventsParseResult.success) {
+		console.error(userEventsParseResult.error);
+	} else {
+		userEvents = userEventsParseResult.data;
+	}
 
 	const clientHeaderTimezoneValue = headers().get(
 		VERCEL_IP_TIMEZONE_HEADER_KEY,
@@ -111,7 +118,7 @@ export default async function UserDash({
 			: `Keep attending events to earn more points!`,
 		fill: "#3b82f6",
 	};
-	const slicedEvents = attendedEvents?.slice(0, 5) ?? [];
+	const slicedEvents = userEvents?.slice(0, 5) ?? [];
 
 	return (
 		<div className="flex flex-col">

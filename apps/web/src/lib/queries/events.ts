@@ -56,11 +56,11 @@ export const getEventStatsOverview = async () => {
 		.select({
 			totalEvents: count(),
 			thisWeek:
-				sql`COUNT(*) FILTER (WHERE ${events.start} BETWEEN CURRENT_TIMESTAMP AND CURRENT_TIMESTAMP + INTERVAL '7 days')`.mapWith(
+				sql`COUNT(*) FILTER (WHERE ${events.start} BETWEEN datetime('now') AND datetime('now', '+7 days'))`.mapWith(
 					Number,
 				),
 			pastEvents:
-				sql`COUNT(*) FILTER (WHERE ${events.end} <= CURRENT_TIMESTAMP)`.mapWith(
+				sql`COUNT(*) FILTER (WHERE ${events.end} <= datetime('now'))`.mapWith(
 					Number,
 				),
 		})

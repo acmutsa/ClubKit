@@ -68,7 +68,16 @@ export default function CreateSemesterDialogue() {
 				setOpen(false);
 				toast.success("Semester created successfully");
 			},
-			onError: () => {
+			onError: (err) => {
+				if (
+					err.error.validationErrors?._errors?.[0] ===
+					"Unauthorized (Not a super admin)"
+				) {
+					return toast.error(
+						"You need super admin permissions to create semesters",
+					);
+				}
+				console.log("error: ", err);
 				toast.dismiss();
 				toast.error("Failed to create semester");
 			},
@@ -76,8 +85,8 @@ export default function CreateSemesterDialogue() {
 	);
 
 	useEffect(() => {
-		console.log(form.formState.errors);
-		console.log(form.getValues());
+		console.log("create semester form errors", form.formState.errors);
+		console.log("create semester form values", form.getValues());
 	}, [form.formState.errors]);
 
 	const isLoading = status === "executing";
