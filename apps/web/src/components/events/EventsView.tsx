@@ -1,6 +1,6 @@
 import EventsCardView from "./EventsCardView";
 import EventsCalendarView from "./EventsCalendarView";
-import { db, ilike, gte, and, lt } from "db";
+import { db, like, gte, and, lt } from "db";
 import { events } from "db/schema";
 import type { SearchParams } from "@/lib/types/shared";
 import { EVENT_FILTERS } from "@/lib/constants/events";
@@ -29,7 +29,7 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 		: lt(events.end, currentDateUTC);
 
 	const eventSearch = params[QUERY] ?? "";
-	const eventSearchQuery = ilike(events.name, `%${eventSearch}%`);
+	const eventSearchQuery = like(events.name, `%${eventSearch}%`);
 	const categories = new Set(params[CATEGORIES]?.split(",") ?? []);
 
 	// Currently written like this because of weirdness with the 'where' clause where it cannot be nested far down the 'with' clauses

@@ -1,0 +1,24 @@
+{
+  "name": "infrastructure-migrator",
+  "version": "1.0.0",
+  "description": "Helper to migrate from postgres to sqlite",
+  "main": "driver.ts",
+  "scripts": {
+    "migrate": "node -r esbuild-register driver.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "@vercel/postgres": "^0.10.0",
+    "config": "workspace:*",
+    "db": "workspace:*",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.38.4",
+    "esbuild-register": "^3.4.2",
+    "web": "workspace:*"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.30.5"
+  }
+}
