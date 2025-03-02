@@ -6,7 +6,6 @@ import * as schema from "./schema";
 export * from "drizzle-orm";
 export * as zod from "./zod";
 
-
 const tursoEdge = createClientEdge({
 	url: process.env.TURSO_DATABASE_URL!,
 	authToken: process.env.TURSO_AUTH_TOKEN,
