@@ -22,25 +22,7 @@ importers:
         specifier: 1.12.5
         version: 1.12.5
 
-  apps/mover:
-    dependencies:
-      bun-promptx:
-        specifier: ^0.2.0
-        version: 0.2.0
-      db:
-        specifier: workspace:*
-        version: link:../../packages/db
-      nanoid:
-        specifier: ^5.0.6
-        version: 5.0.6
-      web:
-        specifier: workspace:^
-        version: link:../web
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
-
-  apps/pg-sqlite-mover:
+  apps/infrastructure-migrator:
     dependencies:
       '@libsql/client':
         specifier: ^0.14.0
@@ -70,6 +52,24 @@ importers:
       drizzle-kit:
         specifier: ^0.30.5
         version: 0.30.5
+
+  apps/mover:
+    dependencies:
+      bun-promptx:
+        specifier: ^0.2.0
+        version: 0.2.0
+      db:
+        specifier: workspace:*
+        version: link:../../packages/db
+      nanoid:
+        specifier: ^5.0.6
+        version: 5.0.6
+      web:
+        specifier: workspace:^
+        version: link:../web
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
 
   apps/web:
     dependencies:
