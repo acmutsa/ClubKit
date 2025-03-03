@@ -18,10 +18,13 @@ export type userType = NonNullable<Awaited<ReturnType<typeof getUser>>>;
 
 interface MemberPageProps {
 	user: userType;
-	clerkUserImage?: string
+	clerkUserImage?: string;
 }
 
-export default async function MemberPage({user, clerkUserImage}: MemberPageProps) {
+export default async function MemberPage({
+	user,
+	clerkUserImage,
+}: MemberPageProps) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -52,9 +55,18 @@ export default async function MemberPage({user, clerkUserImage}: MemberPageProps
 			<div className="mt-20 grid min-h-[500px] w-full grid-cols-3">
 				<div className="flex h-full w-full max-w-[250px] flex-col items-center">
 					<div className="relative aspect-square h-min w-full rounded-full">
-						<Avatar className="object-cover object-center h-full w-full">
-							<AvatarImage src={clerkUserImage ? clerkUserImage : "/img/logos/acm.svg"}/>
-							<AvatarFallback>Profile Photo for ${user.firstName} ${user.lastName}</AvatarFallback>
+						<Avatar className="h-full w-full object-cover object-center">
+							<AvatarImage
+								src={
+									clerkUserImage
+										? clerkUserImage
+										: "/img/logos/acm.svg"
+								}
+							/>
+							<AvatarFallback>
+								Profile Photo for ${user.firstName} $
+								{user.lastName}
+							</AvatarFallback>
 						</Avatar>
 					</div>
 					<h1 className="mt-4 text-3xl font-semibold">
@@ -63,18 +75,14 @@ export default async function MemberPage({user, clerkUserImage}: MemberPageProps
 					<h2 className="font-mono text-muted-foreground">
 						{user.universityID}
 					</h2>
-					<Badge className={"mt-4 no-select"}>
-						{user.role}
-					</Badge>
-					<Badge className="mt-4 no-select">
+					<Badge className={"no-select mt-4"}>{user.role}</Badge>
+					<Badge className="no-select mt-4">
 						Joined{" "}
-						{
-							user.joinDate
+						{user.joinDate
 							.toDateString()
 							.split(" ")
 							.slice(1)
-							.join(" ")
-						}
+							.join(" ")}
 					</Badge>
 				</div>
 				<div className="col-span-2 overflow-x-hidden">

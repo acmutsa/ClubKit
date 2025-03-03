@@ -28,13 +28,45 @@ export function PersonalInfo({ user }: PersonalInfoProps) {
 							: "N/A"
 					}
 				/>
-				<Cell title={"Major"} value={user.data.major}/>
-				<Cell title={"Classification"} value={user.data.classification}/>
-				<Cell title={"Graduation"} value={user.data.graduationMonth + "/" + user.data.graduationYear}/>
-				<Cell title={"Birthday"} value={user.data.birthday ? user.data.birthday.toDateString().split(" ").slice(1).join(" ") : "N/A"}/>
+				<Cell title={"Major"} value={user.data.major} />
+				<Cell
+					title={"Classification"}
+					value={user.data.classification}
+				/>
+				<Cell
+					title={"Graduation"}
+					value={
+						user.data.graduationMonth +
+						"/" +
+						user.data.graduationYear
+					}
+				/>
+				<Cell
+					title={"Birthday"}
+					value={
+						user.data.birthday
+							? user.data.birthday
+									.toDateString()
+									.split(" ")
+									.slice(1)
+									.join(" ")
+							: "N/A"
+					}
+				/>
 				<div>
 					<p className={"whitespace-nowrap font-bold"}>Resume</p>
-					{user.data.resume ? <Link className={"whitespace-nowrap text-blue-400 underline"} href={user.data.resume}>Click here!</Link> : <p className={"whitespace-nowrap"}>N/A</p>}
+					{user.data.resume ? (
+						<Link
+							className={
+								"whitespace-nowrap text-blue-400 underline"
+							}
+							href={user.data.resume}
+						>
+							Click here!
+						</Link>
+					) : (
+						<p className={"whitespace-nowrap"}>N/A</p>
+					)}
 				</div>
 			</div>
 		</UserInfoSection>
@@ -45,8 +77,7 @@ interface AccountInfoProps {
 	user: userType;
 }
 
-export function AccountInfo({user}: AccountInfoProps) {
-
+export function AccountInfo({ user }: AccountInfoProps) {
 	return (
 		<UserInfoSection title="Account Info">
 			<div className="flex flex-wrap gap-x-10 gap-y-5">

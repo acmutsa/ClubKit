@@ -147,9 +147,11 @@ export const columns: ColumnDef<UserWithData>[] = [
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
 							<DropdownMenuItem>
-								<Link href={`/admin/members/${userID}`}>View Member</Link>
+								<Link href={`/admin/members/${userID}`}>
+									View Member
+								</Link>
 							</DropdownMenuItem>
-							<DropdownMenuSeparator/>
+							<DropdownMenuSeparator />
 							<DropdownMenuItem>
 								<div
 									className="h-full w-full cursor-pointer"
