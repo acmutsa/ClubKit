@@ -18,6 +18,8 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import UpdateRoleDialogue from "@/components/dash/shared/UpdateRoleDialogue";
+import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const timeFormatString = "eee, MMM dd yyyy HH:mm bb";
 
@@ -144,6 +146,10 @@ export const columns: ColumnDef<UserWithData>[] = [
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
+							<DropdownMenuItem>
+								<Link href={`/admin/members/${userID}`}>View Member</Link>
+							</DropdownMenuItem>
+							<DropdownMenuSeparator/>
 							<DropdownMenuItem>
 								<div
 									className="h-full w-full cursor-pointer"
