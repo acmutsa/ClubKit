@@ -28,16 +28,6 @@ const allSemestersPromise = dbPostgres.query.semesters.findMany();
 const allEventsToCategoriesPromise =
 	dbPostgres.query.eventsToCategories.findMany();
 
-const queriesToRun = [
-	allUsersPromise,
-	allDataPromise,
-	allEventsPromise,
-	allCheckinsPromise,
-	allEventCategoriesPromise,
-	allSemestersPromise,
-	allEventsToCategoriesPromise,
-];
-
 async function migratePostgresSqLite() {
 	console.log("Starting Migration 🚀");
 	console.log("Fetching Postgres Data 🐘");
