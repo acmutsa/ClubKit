@@ -58,11 +58,11 @@ export function PersonalInfo({ user }: PersonalInfoProps) {
 					{user.data.resume ? (
 						<Link
 							className={
-								"whitespace-nowrap text-blue-400 underline"
+								"whitespace-nowrap underline hover:text-blue-400"
 							}
 							href={user.data.resume}
 						>
-							Click here!
+							View User Resume
 						</Link>
 					) : (
 						<p className={"whitespace-nowrap"}>N/A</p>
@@ -81,16 +81,12 @@ export function AccountInfo({ user }: AccountInfoProps) {
 	return (
 		<UserInfoSection title="Account Info">
 			<div className="flex flex-wrap gap-x-10 gap-y-5">
-				{user.clerkID ? (
-					<>
-						<Cell title="Email" value={user.email} />
-						<Cell title="Clerk ID" value={user.clerkID!} />
-					</>
-				) : (
-					<div className="text-yellow-500">
-						Failed to find Clerk authentication data.
-					</div>
-				)}
+				<Cell title="Email" value={user.email} />
+				<Cell title="User ID" value={user.userID} />
+				<Cell
+					title="Clerk ID"
+					value={user.clerkID ?? "Account not connected."}
+				/>
 			</div>
 		</UserInfoSection>
 	);

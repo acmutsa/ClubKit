@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import UpdateRoleDialogue from "@/components/dash/shared/UpdateRoleDialogue";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 
 const timeFormatString = "eee, MMM dd yyyy HH:mm bb";
@@ -152,7 +151,7 @@ export const columns: ColumnDef<UserWithData>[] = [
 								</Link>
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem>
+							<DropdownMenuItem disabled={clerkID == null}>
 								<div
 									className="h-full w-full cursor-pointer"
 									onClick={async (e) => {
@@ -171,7 +170,7 @@ export const columns: ColumnDef<UserWithData>[] = [
 										);
 									}}
 								>
-									Copy Clerk ID
+									{clerkID ? "Copy Clerk ID" : "No Clerk ID"}
 								</div>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
