@@ -64,14 +64,19 @@ export default async function MemberPage({
 								}
 							/>
 							<AvatarFallback>
-								Profile Photo for ${user.firstName} $
+								Profile Photo for {user.firstName}
 								{user.lastName}
 							</AvatarFallback>
 						</Avatar>
 					</div>
-					<h1 className="mt-4 text-3xl font-semibold">
-						{user.firstName} {user.lastName}
-					</h1>
+					<div className="mt-4 flex flex-row items-center gap-x-2">
+						<h1 className="text-3xl font-semibold">
+							{user.firstName}
+						</h1>
+						<h1 className="text-3xl font-semibold">
+							{user.lastName}
+						</h1>
+					</div>
 					<h2 className="font-mono text-muted-foreground">
 						{user.universityID}
 					</h2>
