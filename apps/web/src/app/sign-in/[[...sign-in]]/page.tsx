@@ -1,3 +1,4 @@
+// "use client"
 import { SignIn } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import c from "config";

@@ -12,7 +12,7 @@ export async function POST(request: Request): Promise<NextResponse> {
 	try {
 		const body: RequestBody = (await request.json()) as RequestBody;
 
-		const { userId } = auth();
+		const { userId } = await auth();
 		if (!userId) {
 			return new NextResponse(
 				"You do not have permission to upload files",
