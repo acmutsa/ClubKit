@@ -20,8 +20,7 @@ export default function DeleteEventDialog({
 	name: string;
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-
-	const {refresh} = useRouter();
+	const { refresh } = useRouter();
 	const { status: deleteEventStatus, execute: runDeleteEvent } = useAction(
 		deleteEventAction,
 		{
@@ -30,7 +29,7 @@ export default function DeleteEventDialog({
 				toast.dismiss();
 				toast.success(`"${name}"Event deleted.`);
 				refresh();
-				console.log("refreshed")
+				console.log("refreshed");
 			},
 			onError: () => {
 				setOpen(false);

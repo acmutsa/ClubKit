@@ -33,7 +33,7 @@ export default async function UserSettingsProfilePage() {
 	const userSettings = await getUserSettings(userId);
 
 	if (!userSettings) return redirect("/onboarding");
-	const authClient = await clerkClient();	
+	const authClient = await clerkClient();
 	const user = await authClient.users.getUser(userId);
 
 	const params = new URLSearchParams({

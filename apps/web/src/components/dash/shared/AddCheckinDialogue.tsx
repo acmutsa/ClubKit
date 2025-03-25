@@ -56,7 +56,7 @@ function AddCheckinDialogue({ eventList, ...props }: Props) {
 			universityIDs: props.default?.universityIDs || "",
 		},
 	});
-	const {refresh} = useRouter();
+	const { refresh } = useRouter();
 	const {
 		execute: runAddCheckin,
 		status: actionStatus,

@@ -1,7 +1,4 @@
-import {
-	clerkMiddleware,
-	createRouteMatcher,
-} from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { getAdminUser } from "./lib/queries/users";
 import { NextResponse } from "next/server";
 
@@ -14,9 +11,7 @@ const isAdminAPIRoute = createRouteMatcher(["/api/admin(.*)"]);
 
 // come back and check if this is valid
 export default clerkMiddleware(async (auth, req) => {
-	const {
-        userId
-    } = await auth();
+	const { userId } = await auth();
 
 	if (isProtectedRoute(req)) {
 		await auth.protect();
