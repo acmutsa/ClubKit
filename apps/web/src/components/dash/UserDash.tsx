@@ -7,7 +7,7 @@ import c from "config";
 import { RadialChartProgress } from "@/components/shared/circular-progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
- import { headers } from "next/headers";
+import { headers } from "next/headers";
 import {
 	Card,
 	CardContent,

@@ -32,7 +32,7 @@ export default function UpdateRoleDialogue({
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
 	const [role, setRole] = useState(currentRole);
-	const {refresh} = useRouter();
+	const { refresh } = useRouter();
 	const { execute: runUpdateMemberRole, status } = useAction(
 		updateMemberRole,
 		{

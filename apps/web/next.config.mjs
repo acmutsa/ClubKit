@@ -9,7 +9,7 @@ jiti("./src/env");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
-		// fix image optmization 
+		// fix image optmization
 		unoptimized: true,
 		remotePatterns: [
 			{

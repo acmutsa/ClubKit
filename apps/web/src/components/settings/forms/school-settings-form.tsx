@@ -55,7 +55,7 @@ export function SchoolSettingsForm({
 	major,
 }: SchoolSettingsFormProps) {
 	const [submitting, setSubmitting] = useState(false);
-	const {refresh} = useRouter();
+	const { refresh } = useRouter();
 	const form = useForm<z.infer<typeof editAcademicSettingsSchema>>({
 		resolver: zodResolver(editAcademicSettingsSchema),
 		defaultValues: {

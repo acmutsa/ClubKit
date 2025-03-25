@@ -89,7 +89,7 @@ export const semesterColumns: ColumnDef<Semester>[] = [
 		},
 		cell: ({ row }) => {
 			const { isCurrent, semesterID } = row.original;
-			const {refresh} = useRouter();
+			const { refresh } = useRouter();
 			const {
 				execute: runToggleSemester,
 				result,
@@ -113,7 +113,7 @@ export const semesterColumns: ColumnDef<Semester>[] = [
 				},
 				onSuccess: () => {
 					refresh();
-				}
+				},
 			});
 			return (
 				<Switch
