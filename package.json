@@ -2,7 +2,7 @@
   "name": "clubkit",
   "private": true,
   "scripts": {
-    "build": "turbo build",
+    "build": "cd apps/web && pnpm dlx @cloudflare/next-on-pages@1 && cd ../../",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write .",
