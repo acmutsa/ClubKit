@@ -2,7 +2,7 @@ import { count, db, eq, inArray, sql } from "db";
 import { checkins } from "db/schema";
 import { CheckInUserClientProps } from "db/types";
 
-export const getCheckinLog = async () => {
+export const getCheckinLog = async (eventID?: string) => {
 	return await db.query.checkins.findMany({
 		columns: {
 			time: true,
@@ -23,11 +23,15 @@ export const getCheckinLog = async () => {
 				},
 			},
 		},
+		where: eventID != null ? eq(checkins.eventID, eventID) : undefined,
 	});
 };
 
-export const getCheckinStatsOverview = async () => {
-	const [res] = await db.select({ total_checkins: count() }).from(checkins);
+export const getCheckinStatsOverview = async (eventID?: string) => {
+	const [res] = await db
+		.select({ total_checkins: count() })
+		.from(checkins)
+		.where(eventID != null ? eq(checkins.eventID, eventID) : undefined);
 	return res;
 };
 

@@ -1,18 +1,6 @@
 "use client";
 
 import { ColumnDef, Row } from "@tanstack/react-table";
-import Image from "next/image";
-import Link from "next/link";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { DataTableColumnHeader } from "@/components/ui/data-table";
 import { formatDate } from "date-fns";
 
