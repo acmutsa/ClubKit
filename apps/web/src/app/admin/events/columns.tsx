@@ -157,7 +157,15 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 									href={`/events/${data.id}`}
 									className="h-full w-full"
 								>
-									View
+									View Details
+								</Link>
+							</DropdownMenuItem>
+							<DropdownMenuItem>
+								<Link
+									href={`/admin/events/${data.id}/checkins`}
+									className="h-full w-full"
+								>
+									View Checkins
 								</Link>
 							</DropdownMenuItem>
 							<DropdownMenuItem>
