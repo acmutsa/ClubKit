@@ -25,7 +25,9 @@ export default async function AdminCategoryView() {
 				<DataTable
 					data={categories}
 					columns={eventCategoryColumns}
-					tableName="categories"
+					options={{
+						tableName: "categories",
+					}}
 				/>
 			</div>
 		</>
