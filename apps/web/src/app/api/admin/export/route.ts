@@ -8,6 +8,7 @@ import { getEventsWithCheckins } from "@/lib/queries/events";
 import { getCheckinLog } from "@/lib/queries/checkins";
 import { getAllCategories } from "@/lib/queries/categories";
 import { getAllSemesters } from "@/lib/queries/semesters";
+import getBanquetQualifiers from "@/lib/queries/users";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 
 const basicDateFormatterString = "eeee, MMMM dd yyyy HH:mm a";
@@ -151,7 +152,9 @@ async function hanldExportRequest(
 				};
 			});
 		case "semesters":
-			return await getAllSemesters();
+			return getAllSemesters();
+		case "banquet qualifiers":
+			return getBanquetQualifiers();
 		default:
 			return [];
 	}

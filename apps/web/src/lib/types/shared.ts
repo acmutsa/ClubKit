@@ -7,7 +7,9 @@ export type ExportNames =
 	| "members"
 	| "semesters"
 	| "categories"
-	| "event checkins";
+	| "event checkins"
+	| "banquet qualifiers"
+	;
 
 export type MajorType = (typeof majors)[number];
 export type ClassificationType =
