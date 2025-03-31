@@ -1,6 +1,7 @@
 import getBanquetQualifiers from "@/lib/queries/users";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
+import Link from "next/link";
 export default async function BanquetQualifiersPage() {
 	const data = await getBanquetQualifiers();
 	console.log(data);
@@ -16,10 +17,15 @@ export default async function BanquetQualifiersPage() {
 					columns={columns}
 					data={data}
 					options={{
-						tableName:"banquet qualifiers",
+						tableName: "banquet qualifiers",
 					}}
 				/>
 			</div>
+			<Link href="/admin/members">
+				<p className="w-full pt-10 text-end text-sm underline hover:cursor-pointer">
+					Back to Members
+				</p>
+			</Link>
 		</div>
 	);
 }

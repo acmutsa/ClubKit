@@ -25,21 +25,18 @@ async function MemberStatsSheet() {
 					{stats.activeMembers}
 				</span>
 			</div>
-			
-		<div className="flex flex-col p-1 hover:cursor-pointer">
+
+			<Link
+				href="/admin/members/banquet"
+				className="flex flex-col p-1 hover:cursor-pointer"
+			>
 				<span className="text-xs text-muted-foreground hover:cursor-pointer">
 					Banquet Qualifiers
 				</span>
-				<span className="text-lg font-semibold hover:cursor-pointer">
+				<span className="text-lg font-semibold underline hover:cursor-pointer">
 					{stats.banquetQualifiers}
 				</span>
-				<Link
-					href="/admin/members/banquet"
-					className="text-sm text-muted-foreground underline"
-				>
-					See all
-				</Link>
-				</div>
+			</Link>
 		</div>
 	);
 }

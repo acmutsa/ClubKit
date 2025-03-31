@@ -1,5 +1,7 @@
 export default function BanquetQualifiersLoading() {
 	return (
-		<div className="">Loading checkins for requested event. One sec...</div>
+		<div className="">
+			Loading Banquet Qualifiers for requested event. One sec...
+		</div>
 	);
 }

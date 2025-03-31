@@ -51,13 +51,16 @@ export const getMemberStatsOverview = async () => {
 		.from(users);
 
 	const checkin_counts = await db
-		.select({ user_id: checkins.userID, totalPoints: sum(events.points).mapWith(Number) })
+		.select({
+			user_id: checkins.userID,
+			totalPoints: sum(events.points).mapWith(Number),
+		})
 		.from(checkins)
 		.innerJoin(events, eq(checkins.eventID, events.id))
-		.groupBy(checkins.userID)
+		.groupBy(checkins.userID);
 
-	let activeMembers = checkin_counts.length
-	let banquetQualifiers = 0
+	let activeMembers = checkin_counts.length;
+	let banquetQualifiers = 0;
 	checkin_counts.forEach((checkin) => {
 		if (
 			checkin.totalPoints >=
@@ -67,7 +70,7 @@ export const getMemberStatsOverview = async () => {
 			banquetQualifiers++;
 		}
 	});
-		
+
 	return { totalMembers, activeMembers, banquetQualifiers };
 };
 
@@ -92,8 +95,7 @@ export const getUserDataAndCheckin = async (
 	});
 };
 
-
-export default async function getBanquetQualifiers(){
+export default async function getBanquetQualifiers() {
 	const currentSemester = await getCurrentSemester();
 	return db
 		.select({
@@ -118,5 +120,4 @@ export default async function getBanquetQualifiers(){
 					c.semesters.current.pointsRequired,
 			),
 		);
-	
 }
