@@ -1,5 +1,5 @@
 import c from "config";
-import { count, db, eq, gte, inArray, sql } from "db";
+import { count, db, eq, gte, desc, sum } from "db";
 import {
 	checkins,
 	data,
@@ -8,6 +8,7 @@ import {
 	eventsToCategories,
 	users,
 } from "db/schema";
+import { getCurrentSemester } from "./semesters";
 
 export const getAdminUser = async (clerkId: string) => {
 	return db.query.users.findFirst({
@@ -42,25 +43,32 @@ export const getUserWithData = async () => {
 };
 
 export const getMemberStatsOverview = async () => {
+	const currentSemester = await getCurrentSemester();
 	const [{ totalMembers }] = await db
 		.select({
 			totalMembers: count(),
 		})
-		.from(events);
+		.from(users);
 
-	const checkin_counts = db
-		.select({ user_id: checkins.userID, count: count(checkins.eventID) })
+	const checkin_counts = await db
+		.select({ user_id: checkins.userID, totalPoints: sum(events.points).mapWith(Number) })
 		.from(checkins)
+		.innerJoin(events, eq(checkins.eventID, events.id))
 		.groupBy(checkins.userID)
-		.having(({ count }) => gte(count, c.membership.activeThreshold))
-		.as("checkin_counts");
-	const [{ activeMembers }] = await db
-		.select({
-			activeMembers: count(checkin_counts.user_id),
-		})
-		.from(checkin_counts);
 
-	return { totalMembers, activeMembers };
+	let activeMembers = checkin_counts.length
+	let banquetQualifiers = 0
+	checkin_counts.forEach((checkin) => {
+		if (
+			checkin.totalPoints >=
+			(currentSemester?.pointsRequired ??
+				c.semesters.current.pointsRequired)
+		) {
+			banquetQualifiers++;
+		}
+	});
+		
+	return { totalMembers, activeMembers, banquetQualifiers };
 };
 
 export const getUserCheckin = async (eventID: string, userID: number) => {
@@ -83,3 +91,32 @@ export const getUserDataAndCheckin = async (
 		},
 	});
 };
+
+
+export default async function getBanquetQualifiers(){
+	const currentSemester = await getCurrentSemester();
+	return db
+		.select({
+			clerkID: users.clerkID,
+			userID: checkins.userID,
+			firstName: users.firstName,
+			lastName: users.lastName,
+			email: users.email,
+			totalCheckins: count(checkins.userID),
+			totalPoints: sum(events.points).mapWith(Number),
+			universityID: users.universityID,
+		})
+		.from(checkins)
+		.innerJoin(users, eq(checkins.userID, users.userID))
+		.innerJoin(events, eq(checkins.eventID, events.id))
+		.groupBy(checkins.userID)
+		.orderBy(desc(sum(events.points).mapWith(Number)))
+		.having(
+			gte(
+				sum(events.points).mapWith(Number),
+				currentSemester?.pointsRequired ??
+					c.semesters.current.pointsRequired,
+			),
+		);
+	
+}

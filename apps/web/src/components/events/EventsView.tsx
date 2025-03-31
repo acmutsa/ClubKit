@@ -1,6 +1,6 @@
 import EventsCardView from "./EventsCardView";
 import EventsCalendarView from "./EventsCalendarView";
-import { db, like, gte, and, lt } from "db";
+import { db, like, gte, and, lt, eq } from "db";
 import { events } from "db/schema";
 import type { SearchParams } from "@/lib/types/shared";
 import { EVENT_FILTERS } from "@/lib/constants/events";
@@ -48,7 +48,7 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 					},
 				},
 			},
-			where: and(eventSearchQuery, dateComparison),
+			where: and(eventSearchQuery, dateComparison,eq(events.isHidden, false)),
 			orderBy: events.start,
 		})
 		.then((events) => {
