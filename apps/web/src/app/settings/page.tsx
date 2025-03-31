@@ -36,13 +36,6 @@ export default async function UserSettingsProfilePage() {
 	const authClient = await clerkClient();
 	const user = await authClient.users.getUser(userId);
 
-	const params = new URLSearchParams({
-		height: "112",
-		width: "112",
-		quality: "100",
-		fit: "crop",
-	});
-
 	return (
 		<div className="flex flex-col gap-10">
 			<Card id="account">
@@ -80,9 +73,7 @@ export default async function UserSettingsProfilePage() {
 					<Separator />
 				</div>
 				<CardContent className="space-y-12">
-					<ChangeProfilePictureForm
-						profilePicture={`${user.imageUrl}?${params.toString()}`}
-					/>
+					<ChangeProfilePictureForm profilePicture={user.imageUrl} />
 					<ChangeResumeForm
 						resume={userSettings.data.resume ?? undefined}
 					/>
