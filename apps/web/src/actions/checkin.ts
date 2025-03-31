@@ -40,7 +40,10 @@ export const adminCheckin = adminAction
 		try {
 			const currentPath = headers().get("referer") ?? "";
 
-			const idList = universityIDSplitter.parse(universityIDs);
+			const parsedIds = universityIDSplitter.parse(universityIDs);
+			// clean all of them by converting to lowercase
+			const idList = parsedIds.map((id) => id.trim().toLowerCase());
+
 			const failedIDs = await checkInUserList(eventID, idList, adminID);
 
 			// revalidatePath(currentPath);
