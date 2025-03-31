@@ -4,7 +4,7 @@ import { getAdminUser, getUser } from "@/lib/queries/users";
 import MemberPage from "@/components/dash/admin/members/MemberPage";
 
 export default async function Page({ params }: { params: { slug: string } }) {
-	const { userId } = auth();
+	const { userId } = await auth();
 
 	if (!userId) return notFound();
 
@@ -19,7 +19,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
 	let clerkUser = undefined;
 	let imageUrl: string | undefined = undefined;
-	if (user.clerkID) clerkUser = await clerkClient.users.getUser(user.clerkID);
+	if (user.clerkID) {
+		const client = await clerkClient();
+		clerkUser = await client.users.getUser(user.clerkID);
+	}
 	if (clerkUser) imageUrl = clerkUser.imageUrl;
 
 	return (

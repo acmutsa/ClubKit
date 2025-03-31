@@ -24,7 +24,7 @@ type NavbarProps = {
 };
 
 export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
-	const clerkAuth = auth();
+	const clerkAuth = await auth();
 	const clerkUser = await currentUser();
 	const { userId } = clerkAuth;
 	const user = userId

@@ -7,8 +7,8 @@ import { Suspense } from "react";
 import { LoaderCircle } from "lucide-react";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 
-export default function Page() {
-	const { userId: clerkID } = auth();
+export default async function Page() {
+	const { userId: clerkID } = await auth();
 
 	if (!clerkID) return redirect("/sign-in");
 

@@ -44,6 +44,7 @@ function jsonToCSV(json: any[]): string {
 async function hanldExportRequest(
 	exportName: ExportNames,
 	tz: string,
+	request: NextRequest,
 ): Promise<any[]> {
 	switch (exportName as ExportNames) {
 		case "members":
@@ -112,8 +113,7 @@ async function hanldExportRequest(
 			});
 		case "categories":
 			return getAllCategories();
-		case "checkins":
-			// need to come back and flatten this one
+		case "all checkins":
 			return (await getCheckinLog()).map((checkin) => {
 				return {
 					event_name: checkin.event.name,
@@ -126,7 +126,27 @@ async function hanldExportRequest(
 						tz,
 						basicDateFormatterString,
 					),
-					rating: checkin.rating ?? "No rating",
+					rating: checkin.rating ?? "unrated",
+					feedback: checkin.feedback || "",
+				};
+			});
+		case "event checkins":
+			const eventID = request.nextUrl.searchParams.get("event_id");
+			if (!eventID) {
+				return [];
+			}
+			return (await getCheckinLog(eventID)).map((checkin) => {
+				return {
+					user:
+						checkin.author.firstName +
+						" " +
+						checkin.author.lastName,
+					checkin_time: formatInTimeZone(
+						checkin.time,
+						tz,
+						basicDateFormatterString,
+					),
+					rating: checkin.rating ?? "unrated",
 					feedback: checkin.feedback || "",
 				};
 			});
@@ -152,6 +172,7 @@ export async function GET(request: NextRequest) {
 	const flattendedResults = await hanldExportRequest(
 		exportName as ExportNames,
 		clientTimeZone,
+		request,
 	);
 	const csv = jsonToCSV(flattendedResults);
 

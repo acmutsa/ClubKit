@@ -24,7 +24,7 @@ export const actionClient = createSafeActionClient({
 });
 
 export const authenticatedAction = actionClient.use(async ({ next }) => {
-	const { userId: clerkID } = auth();
+	const { userId: clerkID } = await auth();
 	if (!clerkID)
 		returnValidationErrors(z.null(), {
 			_errors: ["Unauthorized (No User ID)"],

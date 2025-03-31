@@ -6,12 +6,9 @@ import { formatDate } from "date-fns";
 
 const timeFormatString = "eee, MMM dd yyyy HH:mm bb";
 
-type CheckinLogEntry = {
+type EventCheckinEntry = {
 	time: Date;
 	feedback: string | null;
-	event: {
-		name: string;
-	};
 	author: {
 		userID: number;
 		firstName: string;
@@ -20,20 +17,12 @@ type CheckinLogEntry = {
 	rating: number | null;
 };
 
-const timeCell = ({ row }: { row: Row<CheckinLogEntry> }) => {
+const timeCell = ({ row }: { row: Row<EventCheckinEntry> }) => {
 	const formattedDate = formatDate(row.getValue("time"), timeFormatString);
 	return <div>{formattedDate}</div>;
 };
 
-export const checkinLogColumns: ColumnDef<CheckinLogEntry>[] = [
-	{
-		accessorKey: "event.name",
-		header: ({ column }) => {
-			return <DataTableColumnHeader column={column} title="Event" />;
-		},
-
-		enableSorting: true,
-	},
+export const eventCheckinColumns: ColumnDef<EventCheckinEntry>[] = [
 	{
 		accessorKey: "author.userID",
 		header: ({ column }) => {

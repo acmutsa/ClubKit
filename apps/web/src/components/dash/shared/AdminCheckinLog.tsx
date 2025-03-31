@@ -3,9 +3,7 @@ import { getCheckinLog } from "@/lib/queries/checkins";
 import { DataTable } from "@/components/ui/data-table";
 import { checkinLogColumns } from "./CheckinLogColumns";
 
-type Props = {};
-
-async function AdminCheckinLog({}: Props) {
+async function AdminCheckinLog() {
 	const data = await getCheckinLog();
 	return (
 		<div>
@@ -13,7 +11,9 @@ async function AdminCheckinLog({}: Props) {
 				<DataTable
 					data={data}
 					columns={checkinLogColumns}
-					tableName="checkins"
+					options={{
+						tableName: "all checkins",
+					}}
 				/>
 			</div>
 		</div>

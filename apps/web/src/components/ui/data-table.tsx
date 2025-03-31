@@ -63,8 +63,11 @@ import { ExportNames } from "@/lib/types/shared";
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
-	viewRoute?: string;
-	tableName?: ExportNames;
+	options?: {
+		tableName?: ExportNames;
+		// if not provided and tableName is provided, will default to /api/admin/export?name=tableName
+		downloadRoute?: string;
+	};
 }
 
 declare module "@tanstack/react-table" {
@@ -110,8 +113,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 export function DataTable<TData, TValue>({
 	columns,
 	data,
-	viewRoute,
-	tableName,
+	options,
 }: DataTableProps<TData, TValue>) {
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -163,7 +165,7 @@ export function DataTable<TData, TValue>({
 		<div>
 			<div className="flex w-full items-center py-4">
 				<Input
-					placeholder={`Search ${tableName}...`}
+					placeholder={`Search ${options?.tableName ?? "table"}...`}
 					value={(globalFilter as string) ?? ""}
 					onChange={(e) => setGlobalFilter(e.target.value)}
 					className="max-w-sm"
@@ -171,11 +173,11 @@ export function DataTable<TData, TValue>({
 				<div className="m-2 text-sm text-muted-foreground">
 					Viewing {table.getFilteredRowModel().rows.length} result(s).
 				</div>
-				{tableName && (
+				{(options?.tableName || options?.downloadRoute) && (
 					<div className="flex w-full flex-1 justify-end">
 						<a
 							download
-							href={`/api/admin/export?name=${tableName}`}
+							href={`${options?.downloadRoute ?? `/api/admin/export?name=${options?.tableName}`}`}
 							onClick={showLoading}
 						>
 							<Button className="flex gap-x-1">
@@ -209,83 +211,36 @@ export function DataTable<TData, TValue>({
 					</TableHeader>
 					<TableBody>
 						{table.getRowModel().rows?.length ? (
-							viewRoute ? (
-								table.getRowModel().rows.map((row) => (
-									// Row with Link
-									<Link
-										legacyBehavior
-										href={`${viewRoute ?? ""}${row.getValue("id")}`}
-										key={row.id}
-									>
-										<TableRow
-											key={row.id}
-											data-state={
-												row.getIsSelected() &&
-												"selected"
+							table.getRowModel().rows.map((row) => (
+								<TableRow
+									key={row.id}
+									data-state={
+										row.getIsSelected() && "selected"
+									}
+								>
+									{row.getVisibleCells().map((cell) => (
+										<TableCell
+											key={cell.id}
+											className="bg-background"
+											style={
+												cell.column.getIsPinned()
+													? {
+															right: `${cell.column.getAfter("right")}px`,
+															position: "sticky",
+															width: cell.column.getSize(),
+															zIndex: 1,
+														}
+													: undefined
 											}
 										>
-											{row
-												.getVisibleCells()
-												.map((cell) => (
-													<TableCell
-														key={cell.id}
-														className="bg-background"
-														style={
-															cell.column.getIsPinned()
-																? {
-																		right: `${cell.column.getAfter("right")}px`,
-																		position:
-																			"sticky",
-																		width: cell.column.getSize(),
-																		zIndex: 1,
-																	}
-																: undefined
-														}
-													>
-														{flexRender(
-															cell.column
-																.columnDef.cell,
-															cell.getContext(),
-														)}
-													</TableCell>
-												))}
-										</TableRow>
-									</Link>
-								))
-							) : (
-								table.getRowModel().rows.map((row) => (
-									// Row without Link
-									<TableRow
-										key={row.id}
-										data-state={
-											row.getIsSelected() && "selected"
-										}
-									>
-										{row.getVisibleCells().map((cell) => (
-											<TableCell
-												key={cell.id}
-												className="bg-background"
-												style={
-													cell.column.getIsPinned()
-														? {
-																right: `${cell.column.getAfter("right")}px`,
-																position:
-																	"sticky",
-																width: cell.column.getSize(),
-																zIndex: 1,
-															}
-														: undefined
-												}
-											>
-												{flexRender(
-													cell.column.columnDef.cell,
-													cell.getContext(),
-												)}
-											</TableCell>
-										))}
-									</TableRow>
-								))
-							)
+											{flexRender(
+												cell.column.columnDef.cell,
+												cell.getContext(),
+											)}
+										</TableCell>
+									))}
+								</TableRow>
+							))
 						) : (
 							<TableRow>
 								<TableCell

@@ -26,15 +26,15 @@ import {
 } from "@/components/ui/card";
 
 export default async function UserSettingsProfilePage() {
-	const { userId } = auth();
+	const { userId } = await auth();
 
 	if (!userId) return redirect("/sign-up");
 
 	const userSettings = await getUserSettings(userId);
 
 	if (!userSettings) return redirect("/onboarding");
-
-	const user = await clerkClient.users.getUser(userId);
+	const authClient = await clerkClient();
+	const user = await authClient.users.getUser(userId);
 
 	const params = new URLSearchParams({
 		height: "112",
