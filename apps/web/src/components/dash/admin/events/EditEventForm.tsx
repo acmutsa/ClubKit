@@ -29,8 +29,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { isAfter, isBefore, addHours } from "date-fns";
 import { getLocalTimeZone, parseAbsolute } from "@internationalized/date";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,7 +48,6 @@ import { useAction } from "next-safe-action/hooks";
 import { put } from "@/lib/client/file-upload";
 import { updateEvent } from "@/actions/events/update";
 import { iEvent, uEvent } from "@/lib/types/events";
-import { bucketEventThumbnailBaseUrl } from "config";
 import {
 	Select,
 	SelectContent,
@@ -125,6 +123,28 @@ export default function EditEventForm({
 		setThumbnail(file);
 		return true;
 	}
+	const eventStartTime = form.watch("start");
+	const eventEndTime = form.watch("end");
+	const checkinStartTime = form.watch("checkinStart");
+	const checkinEndTime = form.watch("checkinEnd");
+
+	useEffect(() => {
+		if (isAfter(eventStartTime, eventEndTime)) {
+			form.setValue("end", addHours(eventStartTime, 1));
+		}
+	}, [eventStartTime]);
+
+	useEffect(() => {
+		if (isAfter(checkinStartTime, checkinEndTime)) {
+			form.setValue("checkinEnd", addHours(checkinStartTime, 1));
+		}
+	}, [checkinStartTime]);
+
+	useEffect(() => {
+		if (isBefore(checkinEndTime, eventEndTime)) {
+			form.setValue("checkinEnd", eventEndTime);
+		}
+	}, [eventEndTime]);
 
 	useEffect(() => {
 		if (Object.keys(form.formState.errors).length > 0) {
