@@ -6,7 +6,7 @@ installation_options=(
   "3) windows" 
   "4) aliple"
   )
-echo "Welcome to Infisical CLI setup ✨"
+echo "Welcome to Enviorment CLI setup for Infisical ✨"
 echo "Please select a method to install the Infisical CLI"
 printf "%s\n" "${installation_options[@]}"
 read -r -p "Please select an option: " installation_option
@@ -41,7 +41,6 @@ esac
 
 printf "Infisical CLI installed successfully!\n\n"
 echo "Next, log in to the Infisical CLI. When prompted, please select custom 'Self-Hosting or Dedicated Instance'"
-echo "For the domain, please input 'https://env.acmutsa.org'"
 infisical login
 printf "\n\nNow, we are going to initialize the Infisical enviorment\n"
 infisical init
