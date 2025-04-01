@@ -3,9 +3,7 @@ import { count, db, eq, gte, desc, sum } from "db";
 import {
 	checkins,
 	data,
-	eventCategories,
 	events,
-	eventsToCategories,
 	users,
 } from "db/schema";
 import { getCurrentSemester } from "./semesters";

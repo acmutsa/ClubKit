@@ -27,9 +27,9 @@ export default async function EventCheckinsPage({
 
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
-			<div className="mb-5 grid grid-cols-2 px-5">
+			<div className="mb-5 px-5">
 				<h1 className="font-foreground text-3xl font-bold tracking-tight">
-					{`Checkins for ${event.name}`}
+					{`Checkins for: ${event.name}`}
 				</h1>
 			</div>
 			<div className="mx-5 flex items-center justify-between rounded-lg border p-2">
