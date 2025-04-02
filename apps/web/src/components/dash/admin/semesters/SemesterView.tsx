@@ -3,6 +3,8 @@ import { getAllSemesters } from "@/lib/queries/semesters";
 import { semesterColumns } from "@/app/admin/semesters/columns";
 import CreateSemesterDialogue from "./CreateSemesterDialogue";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminSemesterView() {
 	const semesters = await getAllSemesters();
 

@@ -140,7 +140,7 @@ export default async function UserDash({
 								<GraduationCapIcon className="mr-2 h-4 w-4" />
 								{`${userData.major}, ${userData.graduationYear}`}
 							</p>
-							<p className="text-balance mt-2 flex items-center text-base text-muted-foreground">
+							<p className="mt-2 flex items-center text-balance text-base text-muted-foreground">
 								{`Member since ${joinedDate}`}
 							</p>
 							{/* come back and configure wrangler json */}

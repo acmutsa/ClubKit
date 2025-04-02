@@ -1,5 +1,7 @@
 import { Suspense } from "react";
 import AdminSemesterView from "@/components/dash/admin/semesters/SemesterView";
+import { AdminPageSkeletonContent } from "@/components/dash/shared/AdminPageSkeleton";
+
 export default function Page() {
 	return (
 		<div className="mx-auto max-w-6xl pt-4 text-foreground">
@@ -8,7 +10,7 @@ export default function Page() {
 					Semesters
 				</h1>
 			</div>
-			<Suspense fallback={<div>Grabbing checkin stats. One sec...</div>}>
+			<Suspense fallback={<AdminPageSkeletonContent rows={8} />}>
 				<AdminSemesterView />
 			</Suspense>
 		</div>

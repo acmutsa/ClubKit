@@ -7,7 +7,6 @@ import FullScreenMessage from "@/components/shared/fullscreen-message";
 import Navbar from "@/components/shared/navbar";
 import DashNavItem from "@/components/dash/shared/DashNavItem";
 import ClientToast from "@/components/shared/client-toast";
-import { Suspense } from "react";
 import c from "config";
 
 export default async function AdminLayout({
@@ -43,7 +42,7 @@ export default async function AdminLayout({
 					return <DashNavItem key={name} name={name} path={path} />;
 				})}
 			</div>
-			<Suspense fallback={<p>Loading...</p>}>{children}</Suspense>
+			{children}
 		</>
 	);
 }

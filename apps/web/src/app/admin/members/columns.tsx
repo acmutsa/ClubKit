@@ -23,7 +23,10 @@ import Link from "next/link";
 const timeFormatString = "eee, MMM dd yyyy HH:mm bb";
 
 const timeCell = ({ row }: { row: Row<UserWithData> }) => {
-	const formattedDate = formatDate(row.getValue(""), timeFormatString);
+	const formattedDate = formatDate(
+		row.getValue("joinDate"),
+		timeFormatString,
+	);
 	return <div>{formattedDate}</div>;
 };
 
@@ -125,6 +128,14 @@ export const columns: ColumnDef<UserWithData>[] = [
 		header: ({ column }) => {
 			return <DataTableColumnHeader column={column} title="Role" />;
 		},
+	},
+	{
+		accessorKey: "user.joinDate",
+		id: "joinDate",
+		header: ({ column }) => {
+			return <DataTableColumnHeader column={column} title="Join Date" />;
+		},
+		cell: ({ row }) => timeCell({ row }),
 	},
 	{
 		id: "actions",
