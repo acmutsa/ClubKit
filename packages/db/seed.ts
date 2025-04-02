@@ -1,7 +1,12 @@
+import * as dotenv from "dotenv";
 import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./schema";
 import { seed } from "drizzle-seed";
 import { createClient } from "@libsql/client";
+
+dotenv.config({
+	path: "../../.env",
+});
 
 async function main() {
 	const db = drizzle(

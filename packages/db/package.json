@@ -5,14 +5,14 @@
   "scripts": {
     "migrations:generate": "drizzle-kit generate",
     "migrations:apply": "drizzle-kit migrate",
-		"migrations:drop": "drizzle-kit drop",
-		"migrations:check": "drizzle-kit check",
-		"snapshot-up": "drizzle-kit up",
-		"db-push": "drizzle-kit push",
-		"seed": "tsx seed.ts",
-		"studio": "drizzle-kit studio"
-	},
-	"keywords": [],
+    "migrations:drop": "drizzle-kit drop",
+    "migrations:check": "drizzle-kit check",
+    "snapshot-up": "drizzle-kit up",
+    "db-push": "drizzle-kit push",
+    "seed": "tsx seed.ts",
+    "studio": "drizzle-kit studio"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "main": "./index.ts",
@@ -27,5 +27,8 @@
     "drizzle-seed": "^0.3.1",
     "drizzle-zod": "^0.5.1",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.3"
   }
 }
