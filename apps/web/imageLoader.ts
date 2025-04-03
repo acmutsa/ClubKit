@@ -28,5 +28,5 @@ export default function cloudflareLoader({
 		baseURI = baseURI.slice(0, -1);
 	}
 
-	return `https://${process.env.ZONE_URI}/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`;
+	return `https://${process.env.NEXT_PUBLIC_ZONE_URI}/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`;
 }
