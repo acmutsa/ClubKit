@@ -40,3 +40,6 @@ yarn-error.log*
 # vscode
 .vscode
 .env*.local
+
+# enviorment stuff
+.infisical.json

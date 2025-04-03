@@ -9,12 +9,22 @@ jiti("./src/env");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
-		// fix image optmization
-		unoptimized: true,
+		loader: "custom",
+		loaderFile: "./imageLoader.ts",
 		remotePatterns: [
 			{
 				protocol: "https",
-				hostname: "itlxdtyrc4ggxyuw.public.blob.vercel-storage.com",
+				hostname: "img.clerk.com",
+			},
+			{
+				protocol: "https",
+				hostname: "images.clerk.dev",
+			},
+			// Reccomended: add whatever bucket that you use for storing thumbnails and resumes to this list
+			{
+				protocol: "https",
+				hostname:
+					"cdc7630e53b468f56a4453af71a58ade.r2.cloudflarestorage.com",
 			},
 		],
 	},
