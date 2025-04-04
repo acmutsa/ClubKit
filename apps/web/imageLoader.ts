@@ -23,10 +23,10 @@ export default function cloudflareLoader({
 	}
 
 	const paramsString = params.join(",");
-	let baseURI = process.env.NEXT_ZONE_URI;
+	let baseURI = process.env.NEXT_PUBLIC_ZONE_URI;
 	if (baseURI != null && baseURI!.endsWith("/")) {
 		baseURI = baseURI.slice(0, -1);
 	}
-	// https://${process.env.NEXT_PUBLIC_ZONE_URI}
-	return `/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`;
+
+	return `https://${baseURI}/cdn-cgi/image/${paramsString}/${normalizeSrc(src)}`;
 }
