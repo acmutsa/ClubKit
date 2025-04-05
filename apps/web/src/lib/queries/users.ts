@@ -1,11 +1,6 @@
 import c from "config";
 import { count, db, eq, sum } from "db";
-import {
-	checkins,
-	data,
-	events,
-	users,
-} from "db/schema";
+import { checkins, data, events, users } from "db/schema";
 import { getCurrentSemester } from "./semesters";
 
 export const getAdminUser = async (clerkId: string) => {
