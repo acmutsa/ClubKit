@@ -1,6 +1,7 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { Separator } from "@/components/ui/separator";
 import StatItem, { StatItemProps } from "./StatItem";
+
 
 type StatsSheetProps = {
 	items: StatItemProps[];
@@ -16,7 +17,7 @@ function StatsSheet({ items, className = "" }: StatsSheetProps) {
 			className={`flex w-fit space-x-4 rounded-lg border p-2 ${className}`}
 		>
 			{items.map((stat, index) => (
-				<React.Fragment key={stat.label}>
+				<React.Fragment key={stat.label}>	
 					<StatItem {...stat} />
 					{index < items.length - 1 && (
 						<Separator orientation="vertical" />
