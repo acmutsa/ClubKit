@@ -16,6 +16,7 @@ async function MemberStatsSheet({}: Props) {
 		{
 			label: "Active Members",
 			value: stats.activeMembers,
+			description:"An active member is defined as a member who has checked in at least once this semester.",
 		},
 	];
 
