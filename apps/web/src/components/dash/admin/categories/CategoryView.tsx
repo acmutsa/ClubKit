@@ -2,22 +2,19 @@ import { getAllCategories } from "@/lib/queries/categories";
 import { DataTable } from "@/components/ui/data-table";
 import CreateCategory from "./CreateCategoryDialogue";
 import { eventCategoryColumns } from "@/app/admin/categories/columns";
+import StatItem from "../../shared/StatItem";
 
 export default async function AdminCategoryView() {
 	const categories = await getAllCategories();
 
 	return (
 		<>
-			<div className="mx-5 flex items-center justify-between rounded-lg border p-2">
+			<div className="mx-5 flex items-center justify-between rounded-lg">
 				<div className="flex w-fit space-x-4">
-					<div className="flex flex-col p-1">
-						<span className="text-xs text-muted-foreground">
-							Total Categories
-						</span>
-						<span className="text-lg font-semibold">
-							{categories.length}
-						</span>
-					</div>
+					<StatItem
+						label="Total Categories"
+						value={categories.length}
+					/>
 				</div>
 				<CreateCategory />
 			</div>

@@ -2,14 +2,11 @@
 
 import React from "react";
 
-import { getRegistrationsByMonth } from "@/lib/queries/charts";
-
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
@@ -21,16 +18,16 @@ import {
 } from "@/components/ui/chart";
 
 type Props = {
-	registrations: {
+	checkins: {
 		month: number;
 		count: number;
 	}[];
 };
 
 const chartConfig = {
-	numRegistered: {
-		label: "Registrations",
-		color: "hsl(var(--chart-1))",
+	numCheckins: {
+		label: "Check-ins",
+		color: "hsl(var(--chart-2))",
 	},
 } satisfies ChartConfig;
 
@@ -49,21 +46,18 @@ const monthList = [
 	"December",
 ];
 
-async function MonthlyRegistrationChart({ registrations }: Props) {
+function MonthlyCheckinChart({ checkins }: Props) {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Registrations by Month</CardTitle>
+				<CardTitle>Check-ins by Month</CardTitle>
 				<CardDescription>
-					Showing registration trends over the last year
+					Showing check-in activity over the last year
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<ChartContainer config={chartConfig}>
-					<AreaChart
-						accessibilityLayer
-						data={registrations.slice(0, 6)}
-					>
+					<AreaChart accessibilityLayer data={checkins.slice(0, 6)}>
 						<CartesianGrid vertical={false} />
 						<XAxis
 							dataKey="month"
@@ -82,9 +76,9 @@ async function MonthlyRegistrationChart({ registrations }: Props) {
 						<Area
 							dataKey="count"
 							type="linear"
-							fill="var(--color-numRegistered)"
+							fill="var(--color-numCheckins)"
 							fillOpacity={0.4}
-							stroke="var(--color-numRegistered)"
+							stroke="var(--color-numCheckins)"
 						/>
 					</AreaChart>
 				</ChartContainer>
@@ -93,4 +87,4 @@ async function MonthlyRegistrationChart({ registrations }: Props) {
 	);
 }
 
-export default MonthlyRegistrationChart;
+export default MonthlyCheckinChart;

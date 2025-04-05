@@ -61,37 +61,34 @@ function DemographicsStats({ classifications }: Props) {
 	return (
 		<div className="col-span-4">
 			<div>
-				<Card>
-					<CardHeader>
-						<CardTitle>Classifications</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<ChartContainer
-							config={classChartConfig}
-							className="mx-auto aspect-square max-h-[250px]"
-						>
-							<PieChart>
-								<ChartTooltip
-									cursor={false}
-									content={<ChartTooltipContent hideLabel />}
-								/>
-								<Pie
-									data={classifications}
-									dataKey="count"
-									nameKey="classification"
-									innerRadius={48}
-									strokeWidth={5}
-								></Pie>
-								<ChartLegend
-									content={
-										<ChartLegendContent nameKey="classification" />
-									}
-									className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
-								/>
-							</PieChart>
-						</ChartContainer>
-					</CardContent>
-				</Card>
+				<ChartContainer
+					config={classChartConfig}
+					className="mx-auto aspect-square max-h-[250px]"
+				>
+					<PieChart>
+						<ChartTooltip
+							cursor={false}
+							content={<ChartTooltipContent hideLabel />}
+						/>
+						<Pie
+							data={classifications}
+							dataKey="count"
+							nameKey="classification"
+							outerRadius={100}
+							innerRadius={48}
+							strokeWidth={5}
+						></Pie>
+						<ChartTooltip content={<ChartTooltipContent />} />
+						<ChartLegend
+							content={
+								<ChartLegendContent className="flex-wrap justify-center" />
+							}
+							layout="horizontal"
+							verticalAlign="bottom"
+							align="center"
+						/>
+					</PieChart>
+				</ChartContainer>
 			</div>
 		</div>
 	);

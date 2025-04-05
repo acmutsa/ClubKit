@@ -36,7 +36,7 @@ export default async function EventCheckinsPage({
 				<Suspense
 					fallback={<div>Grabbing checkin stats. One sec...</div>}
 				>
-					<CheckinsStatsSheet eventID={id} />
+					<CheckinsStatsSheet />
 				</Suspense>
 				<div>
 					<Dialog>

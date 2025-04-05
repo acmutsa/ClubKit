@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import AdminCheckinLog from "@/components/dash/shared/AdminCheckinLog";
 import { getEventList } from "@/lib/queries/events";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { AdminPageSkeletonContent } from "@/components/dash/shared/AdminPageSkeleton";
+import { TableSkeleton } from "@/components/ui/skeleton-loaders";
 
 export default async function Page() {
 	const eventList = await getEventList();
@@ -16,9 +18,9 @@ export default async function Page() {
 					Checkins
 				</h1>
 			</div>
-			<div className="mx-5 flex items-center justify-between rounded-lg border p-2">
+			<div className="mx-5 flex items-center justify-between">
 				<Suspense
-					fallback={<div>Grabbing checkin stats. One sec...</div>}
+					fallback={<div className="w-full">Loading stats...</div>}
 				>
 					<CheckinsStatsSheet />
 				</Suspense>
@@ -37,9 +39,7 @@ export default async function Page() {
 			{/* <div className="border-muted">{events?.[0].name}</div> */}
 			<div className="rounded-xl p-5">
 				<div>
-					<Suspense
-						fallback={<div>Grabbing checkin log. One sec...</div>}
-					>
+					<Suspense fallback={<TableSkeleton rows={10} />}>
 						<AdminCheckinLog />
 					</Suspense>
 				</div>

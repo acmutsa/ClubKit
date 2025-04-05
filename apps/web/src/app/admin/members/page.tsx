@@ -1,7 +1,5 @@
-import { Suspense } from "react";
 import { getUserWithData } from "@/lib/queries/users";
 import { columns } from "./columns";
-
 import { DataTable } from "@/components/ui/data-table";
 import MemberStatsSheet from "@/components/dash/admin/members/MemberStatsSheet";
 
@@ -15,9 +13,7 @@ async function Page() {
 				</h1>
 			</div>
 			<div className="px-5">
-				<Suspense fallback={<div>...loading</div>}>
-					<MemberStatsSheet />
-				</Suspense>
+				<MemberStatsSheet />
 			</div>
 			<div className="rounded-xl p-5">
 				<DataTable

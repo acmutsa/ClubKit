@@ -1,21 +1,21 @@
 import React from "react";
-import { Separator } from "@/components/ui/separator";
 import { getCheckinStatsOverview } from "@/lib/queries/checkins";
+import { StatItemProps } from "@/components/dash/shared/StatItem";
+import StatsSheet from "@/components/dash/shared/StatsSheet";
 
-async function CheckinStatsSheet({ eventID }: { eventID?: string }) {
-	const stats = await getCheckinStatsOverview(eventID);
-	return (
-		<div className="flex w-fit space-x-4">
-			<div className="flex flex-col p-1">
-				<span className="text-xs text-muted-foreground">
-					Total Checkins
-				</span>
-				<span className="text-lg font-semibold">
-					{stats.total_checkins}
-				</span>
-			</div>
-		</div>
-	);
+type Props = {};
+
+async function CheckinStatsSheet({}: Props) {
+	const stats = await getCheckinStatsOverview();
+
+	const statItems: StatItemProps[] = [
+		{
+			label: "Total Checkins",
+			value: stats.total_checkins,
+		},
+	];
+
+	return <StatsSheet items={statItems} />;
 }
 
 export default CheckinStatsSheet;
