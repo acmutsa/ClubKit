@@ -1,8 +1,7 @@
 import type { EventAndCategoriesType } from "@/lib/types/events";
 import EventCardComponent from "./EventCardComponent";
 import { ScrollArea } from "../ui/scroll-area";
-import { isAfter } from "date-fns";
-import { isEventCurrentlyHappening, isEventCheckinAllowed } from "@/lib/utils";
+import {isAfter, isWithinInterval } from "date-fns";
 export default function EventsCardView({
 	events,
 	clientTimeZone,
@@ -21,16 +20,16 @@ export default function EventsCardView({
 							key={event.id}
 							event={event}
 							isPast={isAfter(currentDateUTC, event.end)}
-							isEventCurrentlyHappening={isEventCurrentlyHappening(
-								currentDateUTC,
-								event.start,
-								event.end,
+							isEventCurrentlyHappening={isWithinInterval(currentDateUTC, {
+								start: event.start,
+								end: event.end,
+							}
 							)}
-							isEventCheckinAllowed={isEventCheckinAllowed(
-								currentDateUTC,
-								event.checkinStart,
-								event.checkinEnd,
-							)}
+							isEventCheckinAllowed={isWithinInterval(currentDateUTC,{
+								start: event.checkinStart,
+								end: event.checkinEnd,
+							},
+						)}
 							clientTimezone={clientTimeZone}
 						/>
 					))}

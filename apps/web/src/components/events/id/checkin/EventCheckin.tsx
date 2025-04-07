@@ -5,7 +5,7 @@ import EventCheckinForm from "./EventCheckinForm";
 import { getClientTimeZone } from "@/lib/utils";
 import { headers } from "next/headers";
 import { formatInTimeZone } from "date-fns-tz";
-import { isAfter } from "date-fns";
+import { isWithinInterval } from "date-fns";
 import {
 	EVENT_TIME_FORMAT_STRING,
 	EVENT_DATE_FORMAT_STRING,
@@ -30,11 +30,6 @@ export default async function EventCheckin({
 
 	const href = `/events/${event.id}`;
 
-	const isPassed = isAfter(currentDateUTC, event.end);
-
-	if (isPassed) {
-		return <PageError message="Event has already passed" href={href} />;
-	}
 	const userEventData = await getUserDataAndCheckin(eventID, clerkId);
 
 	if (!userEventData) {
@@ -52,9 +47,11 @@ export default async function EventCheckin({
 		return <PageError message="You have already checked in" href={href} />;
 	}
 
-	const isCheckinAvailable =
-		event.checkinStart <= currentDateUTC &&
-		currentDateUTC <= event.checkinEnd;
+	const isCheckinAvailable = isWithinInterval(currentDateUTC, {
+		start: event.checkinStart,
+		end: event.checkinEnd,
+	});
+		
 	if (!isCheckinAvailable) {
 		return (
 			<PageError

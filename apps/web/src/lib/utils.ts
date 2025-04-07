@@ -43,22 +43,6 @@ export function getUTCDate() {
 	return new Date(currentDate.toUTCString());
 }
 
-export function isEventCurrentlyHappening(
-	currentDateUTC: Date,
-	eventStart: Date,
-	eventEnd: Date,
-) {
-	return currentDateUTC >= eventStart && currentDateUTC <= eventEnd;
-}
-
-export function isEventCheckinAllowed(
-	currentDateUTC: Date,
-	checkinStart: Date,
-	checkinEnd: Date,
-) {
-	return currentDateUTC >= checkinStart && currentDateUTC <= checkinEnd;
-}
-
 export function formatBlobUrl(blobUrl: string) {
 	const end = blobUrl.split("/").at(-1);
 	if (!end) return blobUrl;

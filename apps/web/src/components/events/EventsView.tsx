@@ -1,12 +1,11 @@
 import EventsCardView from "./EventsCardView";
 import EventsCalendarView from "./EventsCalendarView";
-import { db, like, gte, and, lt } from "db";
+import { db, like, gte, and, lt, eq } from "db";
 import { events } from "db/schema";
 import type { SearchParams } from "@/lib/types/shared";
 import { EVENT_FILTERS } from "@/lib/constants/events";
 import { unstable_noStore as noStore } from "next/cache";
 import PageError from "../shared/PageError";
-import { headers } from "next/headers";
 import { getClientTimeZone, getUTCDate } from "@/lib/utils";
 import { getRequestContext } from "@cloudflare/next-on-pages";
 
@@ -48,7 +47,7 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 					},
 				},
 			},
-			where: and(eventSearchQuery, dateComparison),
+			where: and(eventSearchQuery, dateComparison, eq(events.isHidden, false)),
 			orderBy: events.start,
 		})
 		.then((events) => {
