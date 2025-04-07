@@ -199,9 +199,9 @@ export async function getGrowthRate() {
 			sql`${users.joinDate} >= date(datetime('now', '-1 month', 'start of month')) AND ${users.joinDate} < date(datetime('now', 'start of month'))`,
 		);
 
-	const currentMonthCount =  currentMonthResult[0]?.count || 1;
+	const currentMonthCount = currentMonthResult[0]?.count || 1;
 	const previousMonthCount = previousMonthResult[0]?.count || 1; // Avoid division by zero
-	
+
 	const growthRate = (
 		((currentMonthCount - previousMonthCount) / previousMonthCount) *
 		100

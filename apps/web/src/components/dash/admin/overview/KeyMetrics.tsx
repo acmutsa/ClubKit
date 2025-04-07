@@ -118,15 +118,11 @@ export default async function KeyMetrics() {
 						<div className="text-xl font-bold sm:text-2xl">
 							{growthRate}%
 						</div>
-						{
-							growthRate > 0 ? (
-								<ArrowUpIcon className="h-4 w-4 text-green-500" />
-							) : growthRate < 0 ? (
-								<ArrowDownIcon className="h-4 w-4 text-red-500" />
-							) : (
-								null
-							)
-						}
+						{growthRate > 0 ? (
+							<ArrowUpIcon className="h-4 w-4 text-green-500" />
+						) : growthRate < 0 ? (
+							<ArrowDownIcon className="h-4 w-4 text-red-500" />
+						) : null}
 					</div>
 					<p className="text-xs text-muted-foreground">
 						vs last month
