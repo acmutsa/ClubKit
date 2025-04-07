@@ -47,7 +47,11 @@ export default async function EventsView({ params }: { params: SearchParams }) {
 					},
 				},
 			},
-			where: and(eventSearchQuery, dateComparison, eq(events.isHidden, false)),
+			where: and(
+				eventSearchQuery,
+				dateComparison,
+				eq(events.isHidden, false),
+			),
 			orderBy: events.start,
 		})
 		.then((events) => {

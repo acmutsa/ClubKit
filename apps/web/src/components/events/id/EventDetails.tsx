@@ -3,10 +3,7 @@ import PageError from "../../shared/PageError";
 import EventImage from "../shared/EventImage";
 import { TWENTY_FOUR_HOURS, ONE_HOUR_IN_MILLISECONDS } from "@/lib/constants";
 import c from "config";
-import {
-	getClientTimeZone,
-	getUTCDate,
-} from "@/lib/utils";
+import { getClientTimeZone, getUTCDate } from "@/lib/utils";
 import { isAfter, isWithinInterval } from "date-fns";
 import { formatInTimeZone } from "date-fns-tz";
 import {
@@ -63,7 +60,7 @@ export default async function EventDetails({
 	if (!event) {
 		return <PageError message="Event Not Found" href="/events" />;
 	}
-	const { start, end, } = event;
+	const { start, end } = event;
 	const currentDateUTC = getUTCDate();
 	const isEventPassed = isAfter(currentDateUTC, end);
 	const isEventHappening = isWithinInterval(currentDateUTC, {
@@ -100,7 +97,6 @@ export default async function EventDetails({
 		end: event.end.toISOString(),
 		location: event.location,
 	};
-
 
 	const { thumbnailUrl, location, description, points } = event;
 	const width = 500;
