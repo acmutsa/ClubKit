@@ -10,6 +10,7 @@ import {
 	CheckCircleIcon,
 	BarChart,
 	ArrowUpIcon,
+	ArrowDownIcon,
 	UsersIcon,
 	TrendingUpIcon,
 } from "lucide-react";
@@ -117,7 +118,15 @@ export default async function KeyMetrics() {
 						<div className="text-xl font-bold sm:text-2xl">
 							{growthRate}%
 						</div>
-						<ArrowUpIcon className="h-3 w-3 text-green-500 sm:h-4 sm:w-4" />
+						{
+							growthRate > 0 ? (
+								<ArrowUpIcon className="h-4 w-4 text-green-500" />
+							) : growthRate < 0 ? (
+								<ArrowDownIcon className="h-4 w-4 text-red-500" />
+							) : (
+								null
+							)
+						}
 					</div>
 					<p className="text-xs text-muted-foreground">
 						vs last month

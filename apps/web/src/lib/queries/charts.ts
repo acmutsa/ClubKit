@@ -199,15 +199,14 @@ export async function getGrowthRate() {
 			sql`${users.joinDate} >= date(datetime('now', '-1 month', 'start of month')) AND ${users.joinDate} < date(datetime('now', 'start of month'))`,
 		);
 
-	const currentMonthCount = currentMonthResult[0]?.count || 0;
+	const currentMonthCount =  currentMonthResult[0]?.count || 1;
 	const previousMonthCount = previousMonthResult[0]?.count || 1; // Avoid division by zero
-
-	return parseFloat(
-		(
-			((currentMonthCount - previousMonthCount) / previousMonthCount) *
-			100
-		).toFixed(1),
-	);
+	
+	const growthRate = (
+		((currentMonthCount - previousMonthCount) / previousMonthCount) *
+		100
+	).toFixed(1);
+	return parseFloat(growthRate);
 }
 
 // Get activity by day of week
