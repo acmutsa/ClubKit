@@ -117,28 +117,31 @@ export default function NewEventForm({
 	}
 
 	const eventStartTime = form.watch("start");
-		const eventEndTime = form.watch("end");
-		const checkinStartTime = form.watch("checkinStart");
-		const checkinEndTime = form.watch("checkinEnd");
-	
-		useEffect(() => {
-			if (isAfter(eventStartTime, eventEndTime)) {
-				form.setValue("end", addHours(eventStartTime, 1));
-			}
-		}, [eventStartTime]);
-	
-		useEffect(() => {
-			if (isAfter(checkinStartTime, checkinEndTime) && hasDifferentCheckinTime) {
-				form.setValue("checkinEnd", addHours(checkinStartTime, 1));
-			}
-		}, [checkinStartTime]);
-	
-		useEffect(() => {
-			if (isBefore(checkinEndTime, eventEndTime) && hasDifferentCheckinTime) {
-				form.setValue("checkinStart",eventStartTime);
-				form.setValue("checkinEnd", eventEndTime);
-			}
-		}, [eventEndTime]);
+	const eventEndTime = form.watch("end");
+	const checkinStartTime = form.watch("checkinStart");
+	const checkinEndTime = form.watch("checkinEnd");
+
+	useEffect(() => {
+		if (isAfter(eventStartTime, eventEndTime)) {
+			form.setValue("end", addHours(eventStartTime, 1));
+		}
+	}, [eventStartTime]);
+
+	useEffect(() => {
+		if (
+			isAfter(checkinStartTime, checkinEndTime) &&
+			hasDifferentCheckinTime
+		) {
+			form.setValue("checkinEnd", addHours(checkinStartTime, 1));
+		}
+	}, [checkinStartTime]);
+
+	useEffect(() => {
+		if (isBefore(checkinEndTime, eventEndTime) && hasDifferentCheckinTime) {
+			form.setValue("checkinStart", eventStartTime);
+			form.setValue("checkinEnd", eventEndTime);
+		}
+	}, [eventEndTime]);
 
 	const {
 		execute: runCreateEvent,

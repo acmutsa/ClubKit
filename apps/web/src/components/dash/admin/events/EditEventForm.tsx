@@ -144,7 +144,7 @@ export default function EditEventForm({
 
 	useEffect(() => {
 		if (isBefore(checkinEndTime, eventEndTime)) {
-			form.setValue("checkinStart",eventStartTime);
+			form.setValue("checkinStart", eventStartTime);
 			form.setValue("checkinEnd", eventEndTime);
 		}
 	}, [eventEndTime]);
