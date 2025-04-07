@@ -45,7 +45,6 @@ import { useAction } from "next-safe-action/hooks";
 import { put } from "@/lib/client/file-upload";
 import { createEvent } from "@/actions/events/createNewEvent";
 import { ONE_HOUR_IN_MILLISECONDS } from "@/lib/constants";
-import { bucketEventThumbnailBaseUrl } from "config";
 import type { NewEventFormProps } from "@/lib/types/events";
 import {
 	Select,
@@ -54,6 +53,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { isAfter, isBefore, addHours } from "date-fns";
 
 const formSchema = insertEventSchemaFormified;
 
@@ -115,6 +115,30 @@ export default function NewEventForm({
 		setThumbnail(file);
 		return true;
 	}
+
+	const eventStartTime = form.watch("start");
+		const eventEndTime = form.watch("end");
+		const checkinStartTime = form.watch("checkinStart");
+		const checkinEndTime = form.watch("checkinEnd");
+	
+		useEffect(() => {
+			if (isAfter(eventStartTime, eventEndTime)) {
+				form.setValue("end", addHours(eventStartTime, 1));
+			}
+		}, [eventStartTime]);
+	
+		useEffect(() => {
+			if (isAfter(checkinStartTime, checkinEndTime) && hasDifferentCheckinTime) {
+				form.setValue("checkinEnd", addHours(checkinStartTime, 1));
+			}
+		}, [checkinStartTime]);
+	
+		useEffect(() => {
+			if (isBefore(checkinEndTime, eventEndTime) && hasDifferentCheckinTime) {
+				form.setValue("checkinStart",eventStartTime);
+				form.setValue("checkinEnd", eventEndTime);
+			}
+		}, [eventEndTime]);
 
 	const {
 		execute: runCreateEvent,
