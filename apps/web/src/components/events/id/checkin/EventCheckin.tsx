@@ -51,7 +51,7 @@ export default async function EventCheckin({
 		start: event.checkinStart,
 		end: event.checkinEnd,
 	});
-		
+
 	if (!isCheckinAvailable) {
 		return (
 			<PageError

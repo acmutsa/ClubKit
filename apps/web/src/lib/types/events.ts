@@ -67,6 +67,8 @@ export enum CheckinResult {
 	ALREADY_CHECKED_IN = "already_checked_in",
 	SOME_FAILED = "some_failed",
 	FAILED = "failed",
+	EVENT_NOT_FOUND = "event_not_found",
+	CHECKIN_NOT_AVAILABLE = "checkin_not_available",
 }
 
 export type iEvent = z.infer<typeof insertEventSchemaFormified>;

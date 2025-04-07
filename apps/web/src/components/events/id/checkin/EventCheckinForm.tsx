@@ -50,7 +50,8 @@ export default function EventCheckinForm({
 		},
 	);
 
-	const { ALREADY_CHECKED_IN } = CheckinResult;
+	const { ALREADY_CHECKED_IN, EVENT_NOT_FOUND, CHECKIN_NOT_AVAILABLE } =
+		CheckinResult;
 
 	const { push } = useRouter();
 
@@ -61,6 +62,7 @@ export default function EventCheckinForm({
 		reset: resetCheckInUser,
 	} = useAction(checkInUserAction, {
 		onSuccess: async ({ data }) => {
+			console.log("Checkin success", data);
 			toast.dismiss();
 			const success = data?.success;
 			const code = data?.code;
@@ -95,7 +97,33 @@ export default function EventCheckinForm({
 		},
 		onError: async ({ error: e }) => {
 			toast.dismiss();
-			if (e.validationErrors) {
+			if (e.validationErrors != null) {
+				if (e.validationErrors?._errors?.[0] === EVENT_NOT_FOUND) {
+					return toast.error(
+						`Event not found. Please check the event ID.`,
+						{
+							duration: Infinity,
+							cancel: {
+								label: "Close",
+								onClick: () => {},
+							},
+						},
+					);
+				}
+				if (
+					e.validationErrors?._errors?.[0] === CHECKIN_NOT_AVAILABLE
+				) {
+					return toast.error(
+						`Check-in is not available at this time.`,
+						{
+							duration: Infinity,
+							cancel: {
+								label: "Close",
+								onClick: () => {},
+							},
+						},
+					);
+				}
 				toast.error(`Please check your input. ${e.validationErrors}`, {
 					duration: Infinity,
 					cancel: {

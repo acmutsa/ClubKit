@@ -9,10 +9,17 @@ import { CheckinResult } from "@/lib/types/events";
 import { headers } from "next/headers";
 import { getEventById } from "@/lib/queries/events";
 import { returnValidationErrors } from "next-safe-action";
-import z from "zod"
+import z from "zod";
 import { isWithinInterval } from "date-fns";
 
-const { ALREADY_CHECKED_IN, SUCCESS, FAILED, SOME_FAILED } = CheckinResult;
+const {
+	ALREADY_CHECKED_IN,
+	SUCCESS,
+	FAILED,
+	SOME_FAILED,
+	EVENT_NOT_FOUND,
+	CHECKIN_NOT_AVAILABLE,
+} = CheckinResult;
 
 export const checkInUserAction = userAction
 	.schema(userCheckinSchemaFormified)
@@ -20,9 +27,9 @@ export const checkInUserAction = userAction
 		const { eventID } = parsedInput;
 		const event = await getEventById(eventID);
 		if (!event) {
-			returnValidationErrors(z.null(),{
-				_errors: ["Event does not exist"],
-			})
+			returnValidationErrors(z.null(), {
+				_errors: [EVENT_NOT_FOUND],
+			});
 		}
 
 		const currentDateUTC = new Date();
@@ -31,11 +38,9 @@ export const checkInUserAction = userAction
 			end: event.checkinEnd,
 		});
 		if (!isCheckinAvailable) {
-			returnValidationErrors(z.null(),{
-				_errors: [
-					`Check-in not available until ${event.checkinStart.toLocaleString()}`,
-				],
-			})
+			returnValidationErrors(z.null(), {
+				_errors: [CHECKIN_NOT_AVAILABLE],
+			});
 		}
 
 		try {
