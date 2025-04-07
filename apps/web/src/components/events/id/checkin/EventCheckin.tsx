@@ -5,7 +5,7 @@ import EventCheckinForm from "./EventCheckinForm";
 import { getClientTimeZone } from "@/lib/utils";
 import { headers } from "next/headers";
 import { formatInTimeZone } from "date-fns-tz";
-import { isWithinInterval } from "date-fns";
+import { isBefore, isWithinInterval } from "date-fns";
 import {
 	EVENT_TIME_FORMAT_STRING,
 	EVENT_DATE_FORMAT_STRING,
@@ -53,9 +53,14 @@ export default async function EventCheckin({
 	});
 
 	if (!isCheckinAvailable) {
+		const isDateBeforeCheckinStart = isBefore(
+			currentDateUTC,
+			event.checkinStart
+		);
+		const errorMessage = isDateBeforeCheckinStart ? `Check-in does not start until ${formatInTimeZone(event.checkinStart, clientTimeZone, `${EVENT_TIME_FORMAT_STRING} @ ${EVENT_DATE_FORMAT_STRING}`)}` : `Check-in for this event ended on ${formatInTimeZone(event.checkinEnd, clientTimeZone, `${EVENT_TIME_FORMAT_STRING} @ ${EVENT_DATE_FORMAT_STRING}`)}`;
 		return (
 			<PageError
-				message={`Check-in does not start until ${formatInTimeZone(event.checkinStart, clientTimeZone, `${EVENT_TIME_FORMAT_STRING} @ ${EVENT_DATE_FORMAT_STRING}`)}`}
+				message={errorMessage}
 				href={href}
 				className="text-base md:px-12 lg:px-16"
 			/>
