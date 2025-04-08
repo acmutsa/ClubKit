@@ -39,7 +39,7 @@ export const editAccountSettings = userAction
 				};
 			}
 
-			revalidatePath("/settings");
+			// revalidatePath("/settings");
 			return { success: true };
 		},
 	);
@@ -74,7 +74,7 @@ export const editAcademicSettings = userAction
 				};
 			}
 
-			revalidatePath("/settings");
+			// revalidatePath("/settings");
 			return { success: true };
 		},
 	);
@@ -90,7 +90,7 @@ export const editResumeUrl = userAction
 
 			if (oldResume) await del(oldResume);
 
-			revalidatePath("/settings");
+			// revalidatePath("/settings");
 			return { success: true };
 		} catch (error) {
 			// Failed to update user data to new resume.  Delete the new resume from the blob and make the user try again.
@@ -120,7 +120,7 @@ export const editClubSettings = userAction
 				};
 			}
 
-			revalidatePath("/settings");
+			// revalidatePath("/settings");
 			return { success: true };
 		},
 	);
