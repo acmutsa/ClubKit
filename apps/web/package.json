@@ -10,7 +10,8 @@
     "with-env": "dotenv -e ../../.env --",
     "pages:build": "pnpm dlx @cloudflare/next-on-pages",
     "preview": "pnpm run pages:build && wrangler pages dev",
-    "deploy": "pnpm run pages:build && wrangler pages deploy"
+    "deploy": "pnpm run pages:build && wrangler pages deploy",
+    "email-dev": "email dev --dir ./src/components/emails --port 3001"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.758.0",
@@ -19,6 +20,7 @@
     "@clerk/nextjs": "^6.12.9",
     "@hookform/resolvers": "^3.3.4",
     "@internationalized/date": "^3.5.4",
+    "@plunk/node": "^3.0.3",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -35,6 +37,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-tabs": "^1.1.0",
+    "@react-email/components": "0.0.36",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/match-sorter-utils": "^8.15.1",
     "@tanstack/react-table": "^8.17.3",
@@ -78,6 +81,7 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
+    "react-email": "4.0.4",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
