@@ -19,7 +19,7 @@ import c, { emailsConfig } from "config";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
 
-export default function AccountConnected({firstName}: { firstName: string }) {
+export default function AccountConnected({ firstName }: { firstName: string }) {
 	return (
 		<Html>
 			<Head />
@@ -66,12 +66,12 @@ export default function AccountConnected({firstName}: { firstName: string }) {
 									updates and enhancements that we hope you
 									will enjoy.
 								</Text>
-								<Text className="text-base mt-4">
+								<Text className="mt-4 text-base">
 									Here's how to get started:
 								</Text>
 							</Row>
 						</Section>
-						<ul className="pt-0 mt-0">
+						<ul className="mt-0 pt-0">
 							<li className="mb-20">
 								<strong>
 									Go update your account information.{" "}
@@ -83,9 +83,7 @@ export default function AccountConnected({firstName}: { firstName: string }) {
 								</Link>
 							</li>
 							<li className="mb-20">
-								<strong>
-									Check out our upcoming events!{" "}
-								</strong>
+								<strong>Check out our upcoming events! </strong>
 								{`${c.clubName} is always hosting cool events that give you an opportunity to come learn, have snacks, and meet new people so be sure to `}
 								<Link href={`${baseUrl}/events`}>
 									check out what is happening soon.
@@ -95,7 +93,8 @@ export default function AccountConnected({firstName}: { firstName: string }) {
 								<strong>
 									Check out how we bring our websites to life.{" "}
 								</strong>
-								All of our source code for the things we build are open source.{" "} 
+								All of our source code for the things we build
+								are open source.{" "}
 								<Link href={`${c.sourceCodeLink}`}>
 									Stop by our Github for more.
 								</Link>
@@ -103,7 +102,10 @@ export default function AccountConnected({firstName}: { firstName: string }) {
 						</ul>
 
 						<Section className="text-center">
-							<Button className="bg-brand rounded-lg px-[18px] py-3 text-white" href={`${baseUrl}/dash`}>
+							<Button
+								className="bg-brand rounded-lg px-[18px] py-3 text-white"
+								href={`${baseUrl}/dash`}
+							>
 								Go to your dashboard
 							</Button>
 						</Section>
@@ -132,5 +134,4 @@ export default function AccountConnected({firstName}: { firstName: string }) {
 			</Tailwind>
 		</Html>
 	);
-};
-
+}

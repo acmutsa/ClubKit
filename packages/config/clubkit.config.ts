@@ -250,4 +250,10 @@ const staticUploads = {
 } as const;
 
 export default c;
-export { majors, staticUploads, bucketEventThumbnailBaseUrl, bucketBaseUrl, emailsConfig };
+export {
+	majors,
+	staticUploads,
+	bucketEventThumbnailBaseUrl,
+	bucketBaseUrl,
+	emailsConfig,
+};

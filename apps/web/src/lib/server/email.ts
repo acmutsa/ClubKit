@@ -1,6 +1,6 @@
 import { render } from "@react-email/components";
 import { ReactElement } from "react";
-import {emailsConfig} from "config";
+import { emailsConfig } from "config";
 
 export interface SendEmailProps {
 	to: string | Array<string>;

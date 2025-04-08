@@ -7,7 +7,7 @@ export const env = createEnv({
 	},
 	client: {
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
-		NEXT_PUBLIC_BASE_URL:z.string(),
+		NEXT_PUBLIC_BASE_URL: z.string(),
 	},
 	// If you're using Next.js < 13.4.4, you'll need to specify the runtimeEnv manually
 	//   runtimeEnv: {

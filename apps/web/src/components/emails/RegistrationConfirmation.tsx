@@ -19,7 +19,11 @@ import c, { emailsConfig } from "config";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
 
-export default function RegistrationConfirmation({ firstName }: { firstName: string }) {
+export default function RegistrationConfirmation({
+	firstName,
+}: {
+	firstName: string;
+}) {
 	return (
 		<Html>
 			<Head />
@@ -61,7 +65,10 @@ export default function RegistrationConfirmation({ firstName }: { firstName: str
 								</Text>
 								<Text className="text-base">
 									Thanks for registering with us and we are
-									happy to have you as one of our members. As you might know, ACM is always dedicated to our members and we want to help you get familiar with us and our membership portal.
+									happy to have you as one of our members. As
+									you might know, ACM is always dedicated to
+									our members and we want to help you get
+									familiar with us and our membership portal.
 								</Text>
 								<Text className="mt-4 text-base">
 									Here's how to get started:
