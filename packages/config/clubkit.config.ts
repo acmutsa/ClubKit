@@ -1,6 +1,7 @@
 const c = {
 	clubName: "ClubKit",
 	universityName: "UTSA",
+	sourceCodeLink: "https://github.com/acmutsa",
 	universityID: {
 		name: "ABC123",
 		maxLength: 6,
@@ -100,6 +101,27 @@ const c = {
 	},
 	memberRoles: ["member", "admin", "super_admin"] as const,
 } as const;
+
+const emailsConfig = {
+	useEmailService: true,
+	rightsReservedString: `© Association of Computing Machinery at UTSA 2015 -
+							${new Date().getFullYear()}. All Rights Reserved.`,
+	footerLinks: [
+		{
+			name: "Discord",
+			href: "https://go.acmutsa.org/discord",
+		},
+		{
+			name: "Help",
+			href: `mailto:${c.contactEmail}`,
+		},
+		{
+			name: "About ACM",
+			href: "https://acmutsa.org",
+		},
+	],
+	publicLogoLink: "https://static.acmutsa.org/acm-logo.png",
+};
 
 export const defaultTheme = "light";
 
@@ -228,4 +250,4 @@ const staticUploads = {
 } as const;
 
 export default c;
-export { majors, staticUploads, bucketEventThumbnailBaseUrl, bucketBaseUrl };
+export { majors, staticUploads, bucketEventThumbnailBaseUrl, bucketBaseUrl, emailsConfig };
