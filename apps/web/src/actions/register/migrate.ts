@@ -6,6 +6,8 @@ import { db } from "db";
 import { and, eq, isNull } from "db/drizzle";
 import { users, data } from "db/schema";
 import { currentUser } from "@clerk/nextjs/server";
+import AccountConnected from "@/components/emails/AccountConnected";
+import { sendEmail } from "@/lib/server/email";
 import c from "config";
 
 export const doPortalLookupCheck = authenticatedAction
@@ -67,6 +69,12 @@ export const doPortalLink = authenticatedAction
 					.update(users)
 					.set({ clerkID, email: userEmail })
 					.where(eq(users.userID, lookup[0].userID));
+				await sendEmail({
+					to: userEmail,
+					subject: `Welcome back to ${c.clubName}!`,
+					name: `${c.universityName} ${c.clubName}`,
+					body: AccountConnected({ firstName: lookup[0].firstName }),
+				});
 				return {
 					success: true,
 				};
