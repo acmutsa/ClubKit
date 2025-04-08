@@ -12,7 +12,7 @@ import c from "config";
 
 export const doPortalLookupCheck = authenticatedAction
 	.schema(
-		z.object({ universityID: z.string().min(1), email: z.string().min(1) }),
+		z.object({ universityID: z.string().min(1).max(255), email: z.string().min(1).max(255) }),
 	)
 	.action(async ({ parsedInput: { email, universityID } }) => {
 		const lookup = await db
@@ -42,18 +42,20 @@ export const doPortalLookupCheck = authenticatedAction
 
 export const doPortalLink = authenticatedAction
 	.schema(
-		z.object({ universityID: z.string().min(1), email: z.string().min(1) }),
+		z.object({ universityID: z.string().min(1).max(255), email: z.string().min(1).max(255) }),
 	)
 	.action(
 		async ({ ctx: { clerkID }, parsedInput: { email, universityID } }) => {
+			const emailLower = email.toLowerCase();
+			const universityIDLower = universityID.toLowerCase();
 			const lookup = await db
 				.select()
 				.from(users)
 				.where(
 					and(
-						eq(users.email, email.toLowerCase()),
+						eq(users.email, emailLower),
 						isNull(users.clerkID),
-						eq(users.universityID, universityID.toLowerCase()),
+						eq(users.universityID, universityIDLower),
 					),
 				)
 				.limit(1);
@@ -67,7 +69,7 @@ export const doPortalLink = authenticatedAction
 			if (lookup[0]) {
 				await db
 					.update(users)
-					.set({ clerkID, email: userEmail })
+					.set({ clerkID, email: userEmail, universityID: universityIDLower })
 					.where(eq(users.userID, lookup[0].userID));
 				await sendEmail({
 					to: userEmail,
