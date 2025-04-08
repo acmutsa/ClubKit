@@ -40,7 +40,11 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 					},
 				}}
 			>
-				<Preview>{`${c.universityName} ${c.clubName} Welcome`}</Preview>
+				<Preview>{`Welcome back to ${c.universityName} ${c.clubName}. Thanks for connecting your account. We are
+									glad to have you back with us. Things have
+									changed since you were last here. Lots of
+									updates and enhancements that we hope you
+									will enjoy.`}</Preview>
 				<Body className="bg-offwhite font-sans text-base">
 					<Img
 						src={emailsConfig.publicLogoLink}
@@ -49,7 +53,7 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 						alt="Logo"
 						className="mx-auto my-20"
 					/>
-					<div className="p-45 flex flex-col items-center justify-center bg-white">
+					<Container className="p-45 bg-white">
 						<Heading className="my-0 text-center leading-8">
 							{`Welcome back to ${c.universityName} ${c.clubName}`}
 						</Heading>
@@ -84,10 +88,8 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 							</li>
 							<li className="mb-20">
 								<strong>Check out our upcoming events! </strong>
-								{`${c.clubName} is always hosting cool events that give you an opportunity to come learn, have snacks, and meet new people so be sure to `}
-								<Link href={`${baseUrl}/events`}>
-									check out what is happening soon.
-								</Link>
+								{`${c.clubName} is always hosting cool events that give you an opportunity to come learn, have snacks, and meet new people so be sure to check out the upcoming `}
+								<Link href={`${baseUrl}/events`}>events.</Link>
 							</li>
 							<li className="mb-20">
 								<strong>
@@ -123,7 +125,7 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 								</div>
 							))}
 						</div>
-					</div>
+					</Container>
 
 					<Container className="mt-20">
 						<Text className="mb-45 text-center text-gray-400">

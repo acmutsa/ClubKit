@@ -44,7 +44,11 @@ export default function RegistrationConfirmation({
 					},
 				}}
 			>
-				<Preview>{`${c.universityName} ${c.clubName} Welcome`}</Preview>
+				<Preview>{`Welcome to ${c.universityName} ${c.clubName}. Thanks for registering with us and we are
+									happy to have you as one of our members. As
+									you might know, ACM is always dedicated to
+									our members and we want to help you get
+									familiar with us and our membership portal.`}</Preview>
 				<Body className="bg-offwhite font-sans text-base">
 					<Img
 						src={emailsConfig.publicLogoLink}
@@ -53,7 +57,7 @@ export default function RegistrationConfirmation({
 						alt="Logo"
 						className="mx-auto my-20"
 					/>
-					<div className="p-45 flex flex-col items-center justify-center bg-white">
+					<Container className="p-45 bg-white">
 						<Heading className="my-0 text-center leading-8">
 							{`Welcome to ${c.universityName} ${c.clubName}`}
 						</Heading>
@@ -127,7 +131,7 @@ export default function RegistrationConfirmation({
 								</div>
 							))}
 						</div>
-					</div>
+					</Container>
 
 					<Container className="mt-20">
 						<Text className="mb-45 text-center text-gray-400">
