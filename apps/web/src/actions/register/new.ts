@@ -5,8 +5,8 @@ import { insertUserWithDataSchemaFormified } from "db/zod";
 import { db } from "db";
 import { eq, or } from "db/drizzle";
 import { users, data } from "db/schema";
-import RegistrationConfirmation from "@/components/emails/RegistrationConfirmation";
-import { sendEmail } from "@/lib/server/email";
+import { RegistrationConfirmation } from "emails/components";
+import { sendEmail } from "emails/utils";
 import c from "config";
 
 export const createRegistration = authenticatedAction

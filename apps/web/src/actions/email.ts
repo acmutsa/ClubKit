@@ -1,7 +1,7 @@
 "use server";
 import { authenticatedAction } from "@/lib/safe-action";
 import z from "zod";
-import { sendEmail } from "@/lib/server/email";
+import { sendEmail } from "emails/utils";
 
 const emailSchema = z
 	.string({
