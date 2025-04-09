@@ -16,7 +16,7 @@ import {
 } from "@react-email/components";
 import type * as React from "react";
 import c, { emailsConfig } from "config";
-import { DefaultFooter, DefaultHeader } from "./shared";
+import { DefaultFooter, DefaultHeader, RowLinks } from "./shared";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
 
@@ -113,23 +113,9 @@ export default function RegistrationConfirmation({
 							</Button>
 						</Section>
 
-						<Row className="mt-45 max-w-xs gap-x-10">
-													{emailsConfig.footerLinks.map((link) => (
-														<Column key={link.name} className="text-center">
-																<Link
-																	className="font-bold text-black underline "
-																	href={link.href}
-																>
-																	{link.name}
-																</Link>{" "}
-																<span className="text-green-500">
-																	→
-																</span>
-														</Column>
-													))}
-												</Row>
+						<RowLinks />
 					</Container>
-					<DefaultFooter/>
+					<DefaultFooter />
 				</Body>
 			</Tailwind>
 		</Html>

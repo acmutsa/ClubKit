@@ -16,7 +16,7 @@ import {
 } from "@react-email/components";
 import type * as React from "react";
 import c, { emailsConfig } from "config";
-import { DefaultFooter, DefaultHeader } from "./shared";
+import { DefaultFooter, DefaultHeader, RowLinks } from "./shared";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
 
@@ -107,23 +107,7 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 							</Button>
 						</Section>
 
-						<Section className="mt-45 flex w-full items-center justify-center ">
-							<Row className="">
-								{emailsConfig.footerLinks.map((link) => (
-									<Column key={link.name}>
-										<Link
-											className="font-bold text-black underline"
-											href={link.href}
-										>
-											{link.name}
-										</Link>{" "}
-										<span className="text-green-500">
-											→
-										</span>
-									</Column>
-								))}
-							</Row>
-						</Section>
+						<RowLinks />
 					</Container>
 					<DefaultFooter />
 				</Body>
