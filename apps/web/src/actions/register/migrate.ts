@@ -6,13 +6,16 @@ import { db } from "db";
 import { and, eq, isNull } from "db/drizzle";
 import { users, data } from "db/schema";
 import { currentUser } from "@clerk/nextjs/server";
-import {AccountConnected} from "emails/components"
+import { AccountConnected } from "emails/components";
 import { sendEmail } from "emails/utils";
 import c from "config";
 
 export const doPortalLookupCheck = authenticatedAction
 	.schema(
-		z.object({ universityID: z.string().min(1).max(255), email: z.string().min(1).max(255) }),
+		z.object({
+			universityID: z.string().min(1).max(255),
+			email: z.string().min(1).max(255),
+		}),
 	)
 	.action(async ({ parsedInput: { email, universityID } }) => {
 		const lookup = await db
@@ -42,7 +45,10 @@ export const doPortalLookupCheck = authenticatedAction
 
 export const doPortalLink = authenticatedAction
 	.schema(
-		z.object({ universityID: z.string().min(1).max(255), email: z.string().min(1).max(255) }),
+		z.object({
+			universityID: z.string().min(1).max(255),
+			email: z.string().min(1).max(255),
+		}),
 	)
 	.action(
 		async ({ ctx: { clerkID }, parsedInput: { email, universityID } }) => {
@@ -69,7 +75,11 @@ export const doPortalLink = authenticatedAction
 			if (lookup[0]) {
 				await db
 					.update(users)
-					.set({ clerkID, email: userEmail, universityID: universityIDLower })
+					.set({
+						clerkID,
+						email: userEmail,
+						universityID: universityIDLower,
+					})
 					.where(eq(users.userID, lookup[0].userID));
 				await sendEmail({
 					to: userEmail,

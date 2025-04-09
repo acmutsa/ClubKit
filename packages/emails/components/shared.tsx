@@ -1,17 +1,25 @@
-import { Container, Text, Img } from "@react-email/components"
-import { emailsConfig } from "config"
+import {
+	Container,
+	Text,
+	Img,
+	Section,
+	Row,
+	Link,
+	Column,
+} from "@react-email/components";
+import { emailsConfig } from "config";
 
-function DefaultFooter(){
-  return (
-    <Container className="mt-20">
-						<Text className="mb-45 text-center text-gray-400">
+function DefaultFooter() {
+	return (
+		<Container className="mt-20">
+			<Text className="mb-45 text-center text-gray-400">
 				{`${emailsConfig.rightsReservedString}`}
-		</Text>
+			</Text>
 		</Container>
-  )
+	);
 }
 
-function DefaultHeader(){
+function DefaultHeader() {
 	return (
 		<Img
 			src={emailsConfig.publicLogoLink}
@@ -23,4 +31,23 @@ function DefaultHeader(){
 	);
 }
 
-export {DefaultFooter, DefaultHeader}
+function RowLinks() {
+	return (
+		<Section className="mt-45 flex w-full items-center justify-center ">
+			<Row>
+				{emailsConfig.footerLinks.map((link) => (
+					<Column key={link.name} className="p-4">
+						<Link
+							className="font-bold text-black underline"
+							href={link.href}
+						>
+							{link.name}
+						</Link>{" "}
+					</Column>
+				))}
+			</Row>
+		</Section>
+	);
+}
+
+export { DefaultFooter, DefaultHeader, RowLinks };
