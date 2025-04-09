@@ -6,8 +6,8 @@ import { db } from "db";
 import { and, eq, isNull } from "db/drizzle";
 import { users, data } from "db/schema";
 import { currentUser } from "@clerk/nextjs/server";
-import AccountConnected from "@/components/emails/AccountConnected";
-import { sendEmail } from "@/lib/server/email";
+import {AccountConnected} from "emails/components"
+import { sendEmail } from "emails/utils";
 import c from "config";
 
 export const doPortalLookupCheck = authenticatedAction
