@@ -33,7 +33,15 @@ function DefaultHeader() {
 
 function RowLinks() {
 	return (
-		<Section className="mt-45 flex w-full items-center justify-center ">
+		<Section
+			className="mt-45"
+			style={{
+				width: "100%",
+				justifyContent: "center",
+				alignItems: "center",
+				display: "flex",
+			}}
+		>
 			<Row>
 				{emailsConfig.footerLinks.map((link) => (
 					<Column key={link.name} className="p-4">

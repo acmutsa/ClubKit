@@ -113,7 +113,28 @@ export default function RegistrationConfirmation({
 							</Button>
 						</Section>
 
-						<RowLinks />
+						<Section
+							className="mt-45"
+							style={{
+								width: "100%",
+								justifyContent: "center",
+								alignItems: "center",
+								display: "flex",
+							}}
+						>
+							<Row>
+								{emailsConfig.footerLinks.map((link) => (
+									<Column key={link.name} className="p-4">
+										<Link
+											className="font-bold text-black underline"
+											href={link.href}
+										>
+											{link.name}
+										</Link>{" "}
+									</Column>
+								))}
+							</Row>
+						</Section>
 					</Container>
 					<DefaultFooter />
 				</Body>

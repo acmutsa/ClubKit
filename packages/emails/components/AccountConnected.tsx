@@ -53,7 +53,7 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 							{`Welcome back to ${c.universityName} ${c.clubName}`}
 						</Heading>
 
-						<Section className="">
+						<Section className="pt-5">
 							<Row>
 								<Text className="text-base">
 									{`Hi ${firstName},`}
@@ -107,7 +107,28 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 							</Button>
 						</Section>
 
-						<RowLinks />
+						<Section
+							className="mt-45"
+							style={{
+								width: "100%",
+								justifyContent: "center",
+								alignItems: "center",
+								display: "flex",
+							}}
+						>
+							<Row>
+								{emailsConfig.footerLinks.map((link) => (
+									<Column key={link.name} className="p-4">
+										<Link
+											className="font-bold text-black underline"
+											href={link.href}
+										>
+											{link.name}
+										</Link>{" "}
+									</Column>
+								))}
+							</Row>
+						</Section>
 					</Container>
 					<DefaultFooter />
 				</Body>
