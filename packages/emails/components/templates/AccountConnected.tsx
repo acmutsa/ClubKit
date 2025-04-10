@@ -16,12 +16,7 @@ import {
 } from "@react-email/components";
 import type * as React from "react";
 import c, { emailsConfig } from "config";
-import {
-	DefaultFooter,
-	DefaultHeader,
-	GetStartedList,
-	baseUrl,
-} from "./shared";
+import { DefaultFooter, DefaultHeader, baseUrl } from "./shared";
 
 export default function AccountConnected({ firstName }: { firstName: string }) {
 	return (
@@ -73,8 +68,36 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 								</Text>
 							</Row>
 						</Section>
-						<GetStartedList />
-						<Section className="text-center">
+						<ul className="mt-0 pt-0">
+							<li className="mb-20">
+								<strong>
+									Go update your account information.{" "}
+								</strong>
+								Things might have changed since you were last
+								here so be sure to{" "}
+								<Link href={`${baseUrl}/settings`}>
+									update your settings.
+								</Link>
+							</li>
+							<li className="mb-20">
+								<strong>Check out our upcoming events. </strong>
+								{`${c.clubName} is always hosting cool events that give you an opportunity to come learn, have snacks, and meet new people so be sure to `}
+								<Link href={`${baseUrl}/events`}>
+									check out what is happening soon.
+								</Link>
+							</li>
+							<li className="mb-20">
+								<strong>Join our discord. </strong>
+								We are always chatting and sharing cool stuff
+								there. You can also talk with our officers and
+								ask any questions you may have.{" "}
+								<Link href={`${c.discordLink}`}>
+									{" "}
+									Click the here to join.
+								</Link>
+							</li>
+						</ul>
+						<Section className="mt-10 text-center">
 							<Button
 								className="bg-brand rounded-lg px-[18px] py-3 text-white"
 								href={`${baseUrl}/dash`}
