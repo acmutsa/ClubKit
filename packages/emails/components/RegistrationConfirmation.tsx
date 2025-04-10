@@ -113,16 +113,8 @@ export default function RegistrationConfirmation({
 							</Button>
 						</Section>
 
-						<Section
-							className="mt-45"
-							style={{
-								width: "100%",
-								justifyContent: "center",
-								alignItems: "center",
-								display: "flex",
-							}}
-						>
-							<Row>
+						<Section className="mt-45 flex w-full items-center justify-center">
+							<Row className="w-full">
 								{emailsConfig.footerLinks.map((link) => (
 									<Column key={link.name} className="p-4">
 										<Link

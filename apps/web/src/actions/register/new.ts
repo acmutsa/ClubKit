@@ -81,7 +81,7 @@ export const createRegistration = authenticatedAction
 		} catch (e) {
 			console.log("Error sending email: ", e);
 		}
-		
+
 		return {
 			success: true,
 			code: "success",
