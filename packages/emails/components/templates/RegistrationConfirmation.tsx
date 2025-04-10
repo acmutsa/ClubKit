@@ -13,8 +13,12 @@ import {
 } from "@react-email/components";
 import type * as React from "react";
 import c, { emailsConfig } from "config";
-import { DefaultFooter, DefaultHeader, GetStartedList, baseUrl } from "./shared";
-
+import {
+	DefaultFooter,
+	DefaultHeader,
+	GetStartedList,
+	baseUrl,
+} from "./shared";
 
 export default function RegistrationConfirmation({
 	firstName,
@@ -71,7 +75,7 @@ export default function RegistrationConfirmation({
 							</Row>
 						</Section>
 						<GetStartedList />
-						<Section className="text-center mt-10">
+						<Section className="mt-10 text-center">
 							<Button
 								className="bg-brand rounded-lg px-[18px] py-3 text-white"
 								href={`${baseUrl}/dash`}
@@ -79,7 +83,6 @@ export default function RegistrationConfirmation({
 								Go to your dashboard
 							</Button>
 						</Section>
-						
 					</Container>
 					<DefaultFooter />
 				</Body>

@@ -9,8 +9,8 @@ import {
 } from "@react-email/components";
 import c, { emailsConfig } from "config";
 
-export default function PlaceHolderShared(){
-	<></>
+export default function PlaceHolderShared() {
+	<></>;
 }
 
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
@@ -36,7 +36,7 @@ function DefaultHeader() {
 	);
 }
 
-function GetStartedList(){
+function GetStartedList() {
 	return (
 		<ul className="mt-0 pt-0">
 			<li className="mb-20">
@@ -54,7 +54,7 @@ function GetStartedList(){
 			<li className="mb-20">
 				<strong>Join our discord. </strong>
 				We are always chatting and sharing cool stuff there. You can
-				also talk with our officers and ask any questions you may have. {" "}
+				also talk with our officers and ask any questions you may have.{" "}
 				<Link href={`${c.discordLink}`}> Click the here to join.</Link>
 			</li>
 		</ul>

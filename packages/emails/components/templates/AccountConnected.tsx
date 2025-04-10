@@ -15,8 +15,13 @@ import {
 	Text,
 } from "@react-email/components";
 import type * as React from "react";
-import c, { emailsConfig } from "config"; 
-import { DefaultFooter, DefaultHeader, GetStartedList, baseUrl } from "./shared";
+import c, { emailsConfig } from "config";
+import {
+	DefaultFooter,
+	DefaultHeader,
+	GetStartedList,
+	baseUrl,
+} from "./shared";
 
 export default function AccountConnected({ firstName }: { firstName: string }) {
 	return (
@@ -68,7 +73,7 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 								</Text>
 							</Row>
 						</Section>
-					<GetStartedList />
+						<GetStartedList />
 						<Section className="text-center">
 							<Button
 								className="bg-brand rounded-lg px-[18px] py-3 text-white"
