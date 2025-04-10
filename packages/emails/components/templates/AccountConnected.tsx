@@ -73,7 +73,10 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 								<strong>
 									Go update your account information.{" "}
 								</strong>
-								We know it might have been a bit difficult to update all of your information in the previous iteration, but we have made it much easier for you to do so now. Click the link to {" "}
+								We know it might have been a bit difficult to
+								update all of your information in the previous
+								iteration, but we have made it much easier for
+								you to do so now. Click the link to{" "}
 								<Link href={`${baseUrl}/settings`}>
 									update your settings.
 								</Link>
