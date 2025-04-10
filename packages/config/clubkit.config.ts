@@ -1,7 +1,7 @@
 const c = {
 	clubName: "ClubKit",
 	universityName: "UTSA",
-	sourceCodeLink: "https://github.com/acmutsa",
+	discordLink: "https://go.acmutsa.org/discord",
 	universityID: {
 		name: "ABC123",
 		maxLength: 6,
@@ -106,20 +106,6 @@ const emailsConfig = {
 	useEmailService: true,
 	rightsReservedString: `© Association of Computing Machinery at UTSA 2015 -
 							${new Date().getFullYear()}. All Rights Reserved.`,
-	footerLinks: [
-		{
-			name: "Discord",
-			href: "https://go.acmutsa.org/discord",
-		},
-		{
-			name: "Help",
-			href: `mailto:${c.contactEmail}`,
-		},
-		{
-			name: "About ACM",
-			href: "https://acmutsa.org",
-		},
-	],
 	publicLogoLink: "https://static.acmutsa.org/acm-logo.png",
 };
 
