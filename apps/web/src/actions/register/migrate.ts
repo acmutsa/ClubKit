@@ -81,12 +81,18 @@ export const doPortalLink = authenticatedAction
 						universityID: universityIDLower,
 					})
 					.where(eq(users.userID, lookup[0].userID));
-				await sendEmail({
-					to: userEmail,
-					subject: `Welcome back to ${c.clubName}!`,
-					name: `${c.universityName} ${c.clubName}`,
-					body: AccountConnected({ firstName: lookup[0].firstName }),
-				});
+				try {
+					await sendEmail({
+						to: userEmail,
+						subject: `Welcome back to ${c.clubName}!`,
+						name: `${c.universityName} ${c.clubName}`,
+						body: AccountConnected({
+							firstName: lookup[0].firstName,
+						}),
+					});
+				} catch (e) {
+					console.error("Error sending email:", e);
+				}
 				return {
 					success: true,
 				};
