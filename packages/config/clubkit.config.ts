@@ -104,6 +104,8 @@ const c = {
 
 const emailsConfig = {
 	useEmailService: true,
+	//If self hosted, the api route should look like: https://base_url_hosted/api/v1/ - Do NOT omit the final forward slash or it will not be included
+	isSelfHosted: true,
 	rightsReservedString: `© Association of Computing Machinery at UTSA 2015 -
 							${new Date().getFullYear()}. All Rights Reserved.`,
 	publicLogoLink: "https://static.acmutsa.org/acm-logo.png",
