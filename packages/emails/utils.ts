@@ -1,38 +1,34 @@
 import { render } from "@react-email/components";
 import { ReactElement } from "react";
 import { emailsConfig } from "config";
+import Plunk from "@plunk/node";
+import { SendParams } from "@plunk/node/dist/types/emails";
 
-export interface SendEmailProps {
-	to: string | Array<string>;
-	subject: string;
+const plunk = new Plunk(process.env.PLUNK_API_KEY!, {
+	baseUrl: emailsConfig.isSelfHosted
+		? process.env.PLUNK_BASE_URL
+		: "https://api.useplunk.com/v1/",
+});
+
+export interface SendEmailProps extends Omit<SendParams, "body"> {
 	body: string | ReactElement;
-	subscribed?: boolean;
-	name?: string;
-	from?: string;
-	reply?: string;
-	headers?: Record<string, string>;
 }
 
 export async function sendEmail(sendEmailProps: SendEmailProps) {
 	if (!emailsConfig.useEmailService) {
 		return;
 	}
-	sendEmailProps.body =
+	const emailBody =
 		typeof sendEmailProps.body === "string"
 			? sendEmailProps.body
 			: await render(sendEmailProps.body);
-	const options = {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${process.env.PLUNK_API_KEY}`,
-		},
-		body: JSON.stringify(sendEmailProps),
-	};
+	const success = await plunk.emails.send({
+		...sendEmailProps,
+		body: emailBody,
+	});
 
-	const res = await fetch(`${process.env.PLUNK_BASE_URL}/send`, options);
-	if (!res.ok) {
-		console.error(res);
+	if (!success) {
+		console.error(success);
 		throw new Error("Failed to send email");
 	}
 }

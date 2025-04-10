@@ -94,9 +94,6 @@ importers:
       '@internationalized/date':
         specifier: ^3.5.4
         version: 3.5.4
-      '@plunk/node':
-        specifier: ^3.0.3
-        version: 3.0.3
       '@radix-ui/react-accordion':
         specifier: ^1.2.0
         version: 1.2.0(@types/react-dom@18.2.19)(@types/react@18.2.61)(react-dom@18.2.0)(react@18.2.0)
@@ -313,6 +310,9 @@ importers:
 
   packages/emails:
     dependencies:
+      '@plunk/node':
+        specifier: ^3.0.3
+        version: 3.0.3
       '@react-email/components':
         specifier: 0.0.36
         version: 0.0.36(react-dom@18.2.0)(react@18.2.0)
@@ -6663,7 +6663,7 @@ packages:
     resolution: {integrity: sha512-O0yuUDnZeQDL+ncNGlJ78BiO4jnYI3bvMsD5prT0/nsgijG/LpNBIr63gTjVTNsiGkgQhiyCShTgxt8oXOrklA==}
     engines: {node: '>=4'}
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.8.1
     dev: true
 
   /async-listen@1.2.0:
@@ -10280,6 +10280,7 @@ packages:
 
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
+    dev: false
 
   /tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}

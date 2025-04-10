@@ -20,7 +20,6 @@
     "@clerk/nextjs": "^6.12.9",
     "@hookform/resolvers": "^3.3.4",
     "@internationalized/date": "^3.5.4",
-    "@plunk/node": "^3.0.3",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -51,6 +50,7 @@
     "db": "workspace:*",
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.4.1",
+    "emails": "workspace:*",
     "jiti": "^1.21.0",
     "lucide-react": "^0.377.0",
     "nanoid": "^5.0.6",
@@ -70,8 +70,7 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.1",
-    "zod": "^3.23.8",
-    "emails": "workspace:*"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.13.10",
