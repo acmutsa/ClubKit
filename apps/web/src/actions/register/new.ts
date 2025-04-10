@@ -67,14 +67,21 @@ export const createRegistration = authenticatedAction
 				interestedEventTypes: [],
 			});
 		});
-		await sendEmail({
-			to: lowerCasedEmail,
-			subject: `Welcome to ${c.clubName}!`,
-			name: `${c.universityName} <${c.clubName}>`,
-			body: RegistrationConfirmation({
-				firstName: usersSchemaInputs.firstName,
-			}),
-		});
+
+		try {
+			console.log("Sending email to: ", lowerCasedEmail);
+			await sendEmail({
+				to: lowerCasedEmail,
+				subject: `Welcome to ${c.clubName}!`,
+				name: `${c.universityName} ${c.clubName}`,
+				body: RegistrationConfirmation({
+					firstName: usersSchemaInputs.firstName,
+				}),
+			});
+		} catch (e) {
+			console.log("Error sending email: ", e);
+		}
+		
 		return {
 			success: true,
 			code: "success",
