@@ -1,13 +1,10 @@
 import {
 	Body,
 	Button,
-	Column,
 	Container,
 	Head,
 	Heading,
 	Html,
-	Img,
-	Link,
 	Preview,
 	Row,
 	Section,
@@ -16,9 +13,8 @@ import {
 } from "@react-email/components";
 import type * as React from "react";
 import c, { emailsConfig } from "config";
-import { DefaultFooter, DefaultHeader, RowLinks } from "./shared";
+import { DefaultFooter, DefaultHeader, GetStartedList, baseUrl } from "./shared";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL!;
 
 export default function RegistrationConfirmation({
 	firstName,
@@ -74,37 +70,8 @@ export default function RegistrationConfirmation({
 								</Text>
 							</Row>
 						</Section>
-						<ul className="mt-0 pt-0">
-							<li className="mb-20">
-								<strong>
-									Go update your account information.{" "}
-								</strong>
-								Things might have changed since you were last
-								here so be sure to{" "}
-								<Link href={`${baseUrl}/settings`}>
-									update your settings.
-								</Link>
-							</li>
-							<li className="mb-20">
-								<strong>Check out our upcoming events! </strong>
-								{`${c.clubName} is always hosting cool events that give you an opportunity to come learn, have snacks, and meet new people so be sure to `}
-								<Link href={`${baseUrl}/events`}>
-									check out what is happening soon.
-								</Link>
-							</li>
-							<li className="mb-20">
-								<strong>
-									Check out how we bring our websites to life.{" "}
-								</strong>
-								All of our source code for the things we build
-								are open source.{" "}
-								<Link href={`${c.sourceCodeLink}`}>
-									Stop by our Github for more.
-								</Link>
-							</li>
-						</ul>
-
-						<Section className="text-center">
+						<GetStartedList />
+						<Section className="text-center mt-10">
 							<Button
 								className="bg-brand rounded-lg px-[18px] py-3 text-white"
 								href={`${baseUrl}/dash`}
@@ -112,21 +79,7 @@ export default function RegistrationConfirmation({
 								Go to your dashboard
 							</Button>
 						</Section>
-
-						<Section className="mt-45 flex w-full items-center justify-center">
-							<Row className="w-full">
-								{emailsConfig.footerLinks.map((link) => (
-									<Column key={link.name} className="p-4">
-										<Link
-											className="font-bold text-black underline"
-											href={link.href}
-										>
-											{link.name}
-										</Link>{" "}
-									</Column>
-								))}
-							</Row>
-						</Section>
+						
 					</Container>
 					<DefaultFooter />
 				</Body>
