@@ -73,15 +73,14 @@ export default function AccountConnected({ firstName }: { firstName: string }) {
 								<strong>
 									Go update your account information.{" "}
 								</strong>
-								Things might have changed since you were last
-								here so be sure to{" "}
+								We know it might have been a bit difficult to update all of your information in the previous iteration, but we have made it much easier for you to do so now. Click the link to {" "}
 								<Link href={`${baseUrl}/settings`}>
 									update your settings.
 								</Link>
 							</li>
 							<li className="mb-20">
 								<strong>Check out our upcoming events. </strong>
-								{`${c.clubName} is always hosting cool events that give you an opportunity to come learn, have snacks, and meet new people so be sure to `}
+								{`${c.clubName} is always hosting cool events that give you an opportunity to come learn, eat snacks, and meet new people so be sure to `}
 								<Link href={`${baseUrl}/events`}>
 									check out what is happening soon.
 								</Link>
