@@ -5,6 +5,9 @@ import { insertUserWithDataSchemaFormified } from "db/zod";
 import { db } from "db";
 import { eq, or } from "db/drizzle";
 import { users, data } from "db/schema";
+import { RegistrationConfirmation } from "emails/components";
+import { sendEmail } from "emails/utils";
+import c from "config";
 
 export const createRegistration = authenticatedAction
 	.schema(insertUserWithDataSchemaFormified)
@@ -64,6 +67,20 @@ export const createRegistration = authenticatedAction
 				interestedEventTypes: [],
 			});
 		});
+
+		try {
+			console.log("Sending email to: ", lowerCasedEmail);
+			await sendEmail({
+				to: lowerCasedEmail,
+				subject: `Welcome to ${c.clubName}!`,
+				name: `${c.universityName} ${c.clubName}`,
+				body: RegistrationConfirmation({
+					firstName: usersSchemaInputs.firstName,
+				}),
+			});
+		} catch (e) {
+			console.log("Error sending email: ", e);
+		}
 
 		return {
 			success: true,

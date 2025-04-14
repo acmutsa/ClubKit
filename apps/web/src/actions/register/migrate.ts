@@ -6,11 +6,16 @@ import { db } from "db";
 import { and, eq, isNull } from "db/drizzle";
 import { users, data } from "db/schema";
 import { currentUser } from "@clerk/nextjs/server";
+import { AccountConnected } from "emails/components";
+import { sendEmail } from "emails/utils";
 import c from "config";
 
 export const doPortalLookupCheck = authenticatedAction
 	.schema(
-		z.object({ universityID: z.string().min(1), email: z.string().min(1) }),
+		z.object({
+			universityID: z.string().min(1).max(255),
+			email: z.string().min(1).max(255),
+		}),
 	)
 	.action(async ({ parsedInput: { email, universityID } }) => {
 		const lookup = await db
@@ -40,18 +45,23 @@ export const doPortalLookupCheck = authenticatedAction
 
 export const doPortalLink = authenticatedAction
 	.schema(
-		z.object({ universityID: z.string().min(1), email: z.string().min(1) }),
+		z.object({
+			universityID: z.string().min(1).max(255),
+			email: z.string().min(1).max(255),
+		}),
 	)
 	.action(
 		async ({ ctx: { clerkID }, parsedInput: { email, universityID } }) => {
+			const emailLower = email.toLowerCase();
+			const universityIDLower = universityID.toLowerCase();
 			const lookup = await db
 				.select()
 				.from(users)
 				.where(
 					and(
-						eq(users.email, email.toLowerCase()),
+						eq(users.email, emailLower),
 						isNull(users.clerkID),
-						eq(users.universityID, universityID.toLowerCase()),
+						eq(users.universityID, universityIDLower),
 					),
 				)
 				.limit(1);
@@ -65,8 +75,24 @@ export const doPortalLink = authenticatedAction
 			if (lookup[0]) {
 				await db
 					.update(users)
-					.set({ clerkID, email: userEmail })
+					.set({
+						clerkID,
+						email: userEmail,
+						universityID: universityIDLower,
+					})
 					.where(eq(users.userID, lookup[0].userID));
+				try {
+					await sendEmail({
+						to: userEmail,
+						subject: `Welcome back to ${c.clubName}!`,
+						name: `${c.universityName} ${c.clubName}`,
+						body: AccountConnected({
+							firstName: lookup[0].firstName,
+						}),
+					});
+				} catch (e) {
+					console.error("Error sending email:", e);
+				}
 				return {
 					success: true,
 				};

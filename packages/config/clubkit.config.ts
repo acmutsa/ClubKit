@@ -1,6 +1,7 @@
 const c = {
 	clubName: "ClubKit",
 	universityName: "UTSA",
+	discordLink: "https://go.acmutsa.org/discord",
 	universityID: {
 		name: "ABC123",
 		maxLength: 6,
@@ -100,6 +101,15 @@ const c = {
 	},
 	memberRoles: ["member", "admin", "super_admin"] as const,
 } as const;
+
+const emailsConfig = {
+	useEmailService: true,
+	//If self hosted, the api route should look like: https://base_url_hosted/api/v1/ - Do NOT omit the final forward slash or it will not be included
+	isSelfHosted: true,
+	rightsReservedString: `© Association of Computing Machinery at UTSA 2015 -
+							${new Date().getFullYear()}. All Rights Reserved.`,
+	publicLogoLink: "https://static.acmutsa.org/acm-logo.png",
+};
 
 export const defaultTheme = "light";
 
@@ -228,4 +238,10 @@ const staticUploads = {
 } as const;
 
 export default c;
-export { majors, staticUploads, bucketEventThumbnailBaseUrl, bucketBaseUrl };
+export {
+	majors,
+	staticUploads,
+	bucketEventThumbnailBaseUrl,
+	bucketBaseUrl,
+	emailsConfig,
+};
