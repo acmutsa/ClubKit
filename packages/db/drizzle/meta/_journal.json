@@ -15,6 +15,13 @@
       "when": 1741067145855,
       "tag": "0001_crazy_the_anarchist",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1744398320920,
+      "tag": "0002_common_zzzax",
+      "breakpoints": true
     }
   ]
 }

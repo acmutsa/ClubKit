@@ -1,0 +1,1 @@
+ALTER TABLE `event_categories` ADD `thumnail_url` text DEFAULT '/img/thumbnails/default.png';

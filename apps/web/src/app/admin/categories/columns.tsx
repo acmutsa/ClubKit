@@ -10,24 +10,18 @@ import {
 import { MoreHorizontal } from "lucide-react";
 import { EventCategoryType } from "@/lib/types/events";
 import { DataTableColumnHeader } from "@/components/ui/data-table";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
 import {
 	AlertDialog,
-	AlertDialogContent,
 	AlertDialogTrigger,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogDescription,
-	AlertDialogCancel,
-	AlertDialogAction,
 } from "@/components/ui/alert-dialog";
 import EditCategory from "@/components/dash/admin/categories/EditCategoryDialogue";
 import DeleteCategoryDialogue from "@/components/dash/admin/categories/DeleteCategoryDialogue";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 	{
@@ -61,6 +55,28 @@ export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 		},
 		enableSorting: true,
 	},
+	{
+			accessorKey: "thumbnailUrl",
+			header: "Thumbnail",
+			cell: ({ row }) => {
+				return (
+					<div className="relative max-w-xs">
+						<Image
+							style={{
+								objectFit: "contain",
+								height: "auto",
+								margin: "auto",
+							}}
+							src={row.getValue("thumbnailUrl")}
+							alt={`Thumbnail for event ${row.getValue("name")}`}
+							width={50}
+							height={32}
+							// quality={5}
+						/>
+					</div>
+				);
+			},
+		},
 	{
 		id: "actions",
 		enablePinning: true,
