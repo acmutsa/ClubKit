@@ -240,6 +240,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 						showDelete={showDelete}
 						id={row.original.id!}
 						name={row.original.name!}
+						start={row.original.start!}
 					/>
 				</Dialog>
 			);
@@ -252,11 +253,13 @@ function EventColumnActions({
 	showDelete,
 	id,
 	name,
+	start
 }: {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	showDelete: boolean;
 	id: string;
 	name: string;
+	start: Date;
 }) {
 	if (showDelete) {
 		return <DeleteEventDialog id={id} name={name} setOpen={setOpen} />;
