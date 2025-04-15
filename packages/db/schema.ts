@@ -67,7 +67,7 @@ export const eventCategories = sqliteTable("event_categories", {
 	id: text("id", { length: 8 }).primaryKey(),
 	name: text({ length: 255 }).notNull().unique(),
 	color: text({ length: 255 }).notNull(),
-	thumbnailUrl:text("thumnail_url").default(c.thumbnails.default)
+	thumbnailUrl: text("thumnail_url").notNull().default(c.thumbnails.default),
 });
 
 export const eventCategoriesRelations = relations(
