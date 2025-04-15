@@ -13,10 +13,7 @@ import { DataTableColumnHeader } from "@/components/ui/data-table";
 import React, { useState } from "react";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
-import {
-	AlertDialog,
-	AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import EditCategory from "@/components/dash/admin/categories/EditCategoryDialogue";
 import DeleteCategoryDialogue from "@/components/dash/admin/categories/DeleteCategoryDialogue";
 import { DialogTrigger } from "@/components/ui/dialog";
@@ -56,27 +53,19 @@ export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 		enableSorting: true,
 	},
 	{
-			accessorKey: "thumbnailUrl",
-			header: "Thumbnail",
-			cell: ({ row }) => {
-				return (
-					<div className="relative max-w-xs">
-						<Image
-							style={{
-								objectFit: "contain",
-								height: "auto",
-								margin: "auto",
-							}}
-							src={row.getValue("thumbnailUrl")}
-							alt={`Thumbnail for event ${row.getValue("name")}`}
-							width={50}
-							height={32}
-							// quality={5}
-						/>
-					</div>
-				);
-			},
+		accessorKey: "thumbnailUrl",
+		header: "Thumbnail",
+		cell: ({ row }) => {
+			return (
+				<Image
+					src={row.getValue("thumbnailUrl")}
+					alt={`Thumbnail for event ${row.getValue("name")}`}
+					width={50}
+					height={32}
+				/>
+			);
 		},
+	},
 	{
 		id: "actions",
 		enablePinning: true,
@@ -150,6 +139,7 @@ export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 					<DeleteCategoryDialogue
 						categoryID={data.id}
 						name={data.name}
+						thumbnailUrl={data.thumbnailUrl}
 					/>
 				</AlertDialog>
 			);

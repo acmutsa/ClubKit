@@ -10,7 +10,7 @@ export default async function AdminCategoryView() {
 	return (
 		<>
 			<div className="mx-5 flex items-center justify-between rounded-lg">
-				<div className="flex w-fit space-x-4">
+				<div className="flex w-fit space-x-4 rounded-lg border p-2">
 					<StatItem
 						label="Total Categories"
 						value={categories.length}

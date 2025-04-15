@@ -55,3 +55,7 @@ export function formatBlobUrl(blobUrl: string) {
 
 	return `${decodeURIComponent(name)}.${extension}`;
 }
+
+export function getSizeInMB(bytes: number) {
+	return (bytes / 1024 / 1024).toFixed(2);
+}

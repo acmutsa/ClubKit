@@ -10,9 +10,9 @@ export default async function AdminSemesterView() {
 
 	return (
 		<>
-			<div className="mx-5 flex items-center justify-between rounded-lg border p-2">
+			<div className="mx-5 flex items-center justify-between ">
 				<div className="flex w-fit space-x-4">
-					<div className="flex flex-col p-1">
+					<div className="flex flex-col rounded-lg border p-2">
 						<span className="text-xs text-muted-foreground">
 							Total Semesters
 						</span>

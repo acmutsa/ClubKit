@@ -15,9 +15,11 @@ import { useRouter } from "next/navigation";
 export default function DeleteCategoryDialogue({
 	name,
 	categoryID,
+	thumbnailUrl,
 }: {
 	name: string;
 	categoryID: string;
+	thumbnailUrl: string;
 }) {
 	const { refresh } = useRouter();
 	const { execute: runDeleteEventCategory, status } = useAction(
@@ -50,7 +52,10 @@ export default function DeleteCategoryDialogue({
 					disabled={isLoading}
 					onClick={() => {
 						toast.loading("Deleting event category");
-						runDeleteEventCategory(categoryID);
+						runDeleteEventCategory({
+							categoryID,
+							thumbnailUrl,
+						});
 					}}
 				>{`Delete ${name}`}</AlertDialogAction>
 			</AlertDialogFooter>
