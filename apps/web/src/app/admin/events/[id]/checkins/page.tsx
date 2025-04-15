@@ -21,7 +21,7 @@ export default async function EventCheckinsPage({
 		{
 			id: event.id,
 			name: event.name,
-			start: event.start
+			start: event.start,
 		},
 	];
 

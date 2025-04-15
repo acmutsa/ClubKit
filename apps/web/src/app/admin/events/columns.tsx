@@ -253,7 +253,7 @@ function EventColumnActions({
 	showDelete,
 	id,
 	name,
-	start
+	start,
 }: {
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	showDelete: boolean;
