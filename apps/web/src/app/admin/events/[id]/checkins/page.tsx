@@ -1,6 +1,5 @@
 import type { IDParamProp } from "@/lib/types/shared";
 import { getCheckinLog } from "@/lib/queries/checkins";
-import { getEventList } from "@/lib/queries/events";
 import { Suspense } from "react";
 import { UserRoundPlus } from "lucide-react";
 import AddCheckinDialogue from "@/components/dash/shared/AddCheckinDialogue";
@@ -22,6 +21,7 @@ export default async function EventCheckinsPage({
 		{
 			id: event.id,
 			name: event.name,
+			start: event.start
 		},
 	];
 

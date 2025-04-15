@@ -267,6 +267,7 @@ function EventColumnActions({
 				{
 					id,
 					name,
+					start,
 				},
 			]}
 			setOpen={setOpen}
