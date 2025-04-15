@@ -89,7 +89,7 @@ const c = {
 	},
 	thumbnails: {
 		default: "/img/thumbnails/default.png",
-		maxSizeInBytes: 500000,
+		maxSizeInBytes: 524288,
 		acceptedFiles: [
 			"image/jpeg",
 			"image/png",

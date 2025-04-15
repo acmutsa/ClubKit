@@ -179,6 +179,12 @@ export const eventCategorySchema = createSelectSchema(eventCategories).extend({
 	id: z.string().length(c.events.categoryIDLength),
 	name: basicStringSchema,
 	color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+	thumbnailUrl: z.string().optional(),
+});
+
+export const editEventCategorySchema = eventCategorySchema.extend({
+	oldThumbnailUrl: z.string().optional(),
+	thumbnailUrl: z.string().min(1).max(255),
 });
 
 export const createEventCategorySchema = eventCategorySchema.omit({ id: true });
