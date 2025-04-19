@@ -77,7 +77,10 @@ export const selectUserWithDataSchema = z.object({
 	}),
 });
 
-export const deleteEventSchema = z.string().min(c.events.idLength);
+export const deleteEventSchema = z.object({
+	id:z.string().min(c.events.idLength),
+	thumbnailUrl: z.string()
+});
 
 export const insertEventSchema = createInsertSchema(events);
 export const insertEventSchemaFormified = insertEventSchema
@@ -122,6 +125,7 @@ export const updateEventSchema = insertEventSchema.merge(
 		categories: z.string().min(1).array(),
 		oldCategories: z.string().min(1).array(),
 		eventID: z.string().min(1),
+		oldThumbnailUrl: z.string().optional(),
 	}),
 );
 

@@ -89,8 +89,10 @@ export type RatingFormAttributes = {
 	ref: RefCallBack;
 };
 
+type CategoryOptionsEventForm = { [key: string]: { id: string; thumbnailUrl: string } };
+
 export type NewEventFormProps = {
 	defaultDate: Date;
-	categoryOptions: { [key: string]: string };
+	categoryOptions: CategoryOptionsEventForm;
 	semesterOptions: Semester[];
 };
