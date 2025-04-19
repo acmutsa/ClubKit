@@ -11,15 +11,13 @@ import { useAction } from "next-safe-action/hooks";
 import { deleteEventAction } from "@/actions/events/delete";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { DeleteEventDialogProps } from "@/lib/types/events";
 export default function DeleteEventDialog({
 	id,
 	name,
+	thumbnailUrl,
 	setOpen,
-}: {
-	id: string;
-	name: string;
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+}: DeleteEventDialogProps) {
 	const { refresh } = useRouter();
 	const { status: deleteEventStatus, execute: runDeleteEvent } = useAction(
 		deleteEventAction,
@@ -56,7 +54,10 @@ export default function DeleteEventDialog({
 					onClick={() => {
 						toast.dismiss();
 						toast.loading(`Deleting "${name}"...`);
-						runDeleteEvent(id);
+						runDeleteEvent({
+							id,
+							thumbnailUrl,
+						});
 					}}
 					disabled={isLoading}
 				>

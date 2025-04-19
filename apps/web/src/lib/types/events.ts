@@ -98,3 +98,10 @@ export type NewEventFormProps = {
 	categoryOptions: CategoryOptionsEventForm;
 	semesterOptions: Semester[];
 };
+
+export interface DeleteEventDialogProps {
+	id: string;
+	name: string;
+	thumbnailUrl: string;
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
