@@ -4,7 +4,8 @@ import { and, db, eq, inArray, sql } from "db";
 import { updateEventSchema } from "db/zod";
 import { adminAction } from "@/lib/safe-action";
 import { events, eventsToCategories } from "db/schema";
-
+import  c  from "config";
+import { del } from "@/lib/server/file-upload";
 export const updateEvent = adminAction
 	.schema(updateEventSchema)
 	.action(async ({ parsedInput }) => {
@@ -12,7 +13,7 @@ export const updateEvent = adminAction
 			success: true,
 			code: "success",
 		};
-		const { eventID, oldCategories, categories, ...e } = parsedInput;
+		const { eventID, oldCategories, oldThumbnailUrl, categories, ...e } = parsedInput;
 		await db.transaction(async (tx) => {
 			const ids = await tx
 				.update(events)
@@ -59,8 +60,16 @@ export const updateEvent = adminAction
 					),
 				);
 		});
-		// VACUUM is handled by Libsql according to: https://discord.com/channels/933071162680958986/1200296371484368956
-		// await db.run(sql`PRAGMA VACUUM`);
+
+		if (oldThumbnailUrl != null && oldThumbnailUrl !== e.thumbnailUrl && oldThumbnailUrl !== c.thumbnails.default) {
+			const deleteResult = await del(oldThumbnailUrl);
+			if (!deleteResult) {
+				console.log(
+					"Failed to delete old thumbnail",
+					oldThumbnailUrl,
+				);
+			}
+		}
 
 		return res;
 	});
