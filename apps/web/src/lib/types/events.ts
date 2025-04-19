@@ -89,7 +89,7 @@ export type RatingFormAttributes = {
 	ref: RefCallBack;
 };
 
-type CategoryOptionsEventForm = {
+export type CategoryOptionsEventForm = {
 	[key: string]: { id: string; thumbnailUrl: string };
 };
 

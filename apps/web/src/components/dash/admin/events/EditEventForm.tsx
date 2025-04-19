@@ -47,7 +47,7 @@ import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
 import { put } from "@/lib/client/file-upload";
 import { updateEvent } from "@/actions/events/update";
-import { iEvent, uEvent } from "@/lib/types/events";
+import { uEvent, CategoryOptionsEventForm } from "@/lib/types/events";
 import { bucketEventThumbnailBaseUrl } from "config";
 import {
 	Select,
@@ -58,14 +58,15 @@ import {
 } from "@/components/ui/select";
 import { Semester } from "db/types";
 import { staticUploads } from "config";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Image from "next/image";
 
 type EditEventFormProps = {
 	eventID: string;
 	oldValues: uEvent;
-	categoryOptions: { [key: string]: string };
+	categoryOptions: CategoryOptionsEventForm;
 	semesterOptions: Semester[];
 };
-// marked to add seemster
 export default function EditEventForm({
 	eventID,
 	oldValues,
@@ -84,10 +85,15 @@ export default function EditEventForm({
 		},
 	});
 	const [thumbnail, setThumbnail] = useState<File | null>(null);
+	const [selectedTab, setSelectedTab] = useState<"upload" | "select">(
+		"upload",
+	);
 	const [hasDifferentCheckinTime, setHasDifferentCheckinTime] = useState(
 		oldValues.start != oldValues.checkinStart ||
 			oldValues.end != oldValues.checkinEnd,
 	);
+
+	const [existingCategoryName, setExistingCategoryName] = useState("Default");
 
 	function validateAndSetThumbnail(
 		event: React.ChangeEvent<HTMLInputElement>,
@@ -104,23 +110,16 @@ export default function EditEventForm({
 			setThumbnail(null);
 			return false;
 		}
-		if (
-			![
-				"image/jpeg",
-				"image/png",
-				"image/gif",
-				"image/webp",
-				"image/svg+xml",
-				"image/bmp",
-			].includes(file.type)
-		) {
+		if (!c.thumbnails.acceptedFiles.includes(file.type as any)) {
 			form.setError("thumbnailUrl", {
-				message:
-					"Invalid image format. Only jpeg, png, gif, webp, svg+xml, bmp.",
+				message: `Invalid image format. Only ${c.thumbnails.acceptedFiles.join(
+					",",
+				)}.`,
 			});
 			setThumbnail(null);
 			return false;
 		}
+		form.clearErrors("thumbnailUrl");
 		setThumbnail(file);
 		return true;
 	}
@@ -214,39 +213,30 @@ export default function EditEventForm({
 			: values.end;
 
 		const categories = values.categories.map(
-			(name) => categoryOptions[name],
+			(name) => categoryOptions[name].id,
 		);
 		const oldCategories = oldValues.categories.map(
-			(name) => categoryOptions[name],
+			(name) => categoryOptions[name].id,
 		);
 
-		if (thumbnail) {
-			const thumbnailUrl = await put(
+		if (thumbnail && selectedTab === "upload") {
+			const thumbnailBlob = await put(
 				staticUploads.bucketEventThumbnailBaseUrl,
 				thumbnail,
 				{
 					presignHandlerUrl: "/api/upload/thumbnail",
 				},
 			);
-			runUpdateEvent({
-				...values,
-				eventID,
-				categories,
-				oldCategories,
-				thumbnailUrl,
-				checkinStart,
-				checkinEnd,
-			});
-		} else {
-			runUpdateEvent({
-				...values,
-				eventID,
-				categories,
-				oldCategories,
-				checkinStart,
-				checkinEnd,
-			});
+			form.setValue("thumbnailUrl", thumbnailBlob);
 		}
+		runUpdateEvent({
+			...values,
+			eventID,
+			categories,
+			oldCategories,
+			checkinStart,
+			checkinEnd,
+		});
 	};
 
 	return (
@@ -305,31 +295,211 @@ export default function EditEventForm({
 								render={({
 									field: { value, onChange, ...fieldProps },
 								}) => (
-									<FormItem>
+									<FormItem className="space-y-3">
 										<FormLabel>Thumbnail</FormLabel>
-										<FormDescription>
-											<strong>Current:</strong>{" "}
-											{oldValues.thumbnailUrl}
-										</FormDescription>
-										<FormControl>
-											<Input
-												{...fieldProps}
-												type="file"
-												accept={`${c.thumbnails.acceptedFiles.join(
-													",",
-												)}`}
-												onChange={(event) => {
-													const success =
-														validateAndSetThumbnail(
-															event,
+										<Tabs
+											defaultValue="upload"
+											className="rounded-lg border-2 border-muted p-3"
+											value={selectedTab}
+											onValueChange={(value) =>
+												setSelectedTab(
+													value as
+														| "upload"
+														| "select",
+												)
+											}
+										>
+											<TabsList className="grid w-full grid-cols-2">
+												<TabsTrigger
+													value="upload"
+													onClick={() => {
+														setSelectedTab(
+															"upload",
 														);
-													if (!success) {
-														event.target.value = "";
-													}
-												}}
-											/>
-										</FormControl>
+													}}
+												>
+													New Thumbnail
+												</TabsTrigger>
+												<TabsTrigger
+													value="select"
+													onClick={() => {
+														setSelectedTab(
+															"select",
+														);
+														form.clearErrors(
+															"thumbnailUrl",
+														);
+													}}
+												>
+													Use Existing
+												</TabsTrigger>
+											</TabsList>
+											<TabsContent
+												value="upload"
+												forceMount
+												className={`${selectedTab !== "upload" && "hidden"}`}
+											>
+												<FormControl className="mt-2">
+													<Input
+														{...fieldProps}
+														type="file"
+														accept={`${c.thumbnails.acceptedFiles.join(
+															",",
+														)}`}
+														onChange={(event) => {
+															const success =
+																validateAndSetThumbnail(
+																	event,
+																);
+															console.log(
+																event.target
+																	.value,
+															);
+															if (!success) {
+																event.target.value =
+																	"";
+															}
+														}}
+													/>
+												</FormControl>
+											</TabsContent>
+											<TabsContent
+												value="select"
+												forceMount
+												className={`${selectedTab !== "select" && "hidden"}`}
+											>
+												<Select
+													onValueChange={(value) => {
+														console.log(value);
+														form.setValue(
+															"thumbnailUrl",
+															categoryOptions[
+																value
+															]?.thumbnailUrl ??
+																c.thumbnails
+																	.default,
+														);
+														setExistingCategoryName(
+															value,
+														);
+													}}
+												>
+													<SelectTrigger>
+														<SelectValue placeholder="Choose From Existing">
+															<div className="flex w-full flex-row items-center justify-center gap-x-4">
+																<p>
+																	{
+																		existingCategoryName
+																	}
+																</p>
+																<Image
+																	src={
+																		form.getValues(
+																			"thumbnailUrl",
+																		) ??
+																		c
+																			.thumbnails
+																			.default
+																	}
+																	width={32}
+																	height={20}
+																	alt={`Catgory Image for ${existingCategoryName}`}
+																/>
+															</div>
+														</SelectValue>
+													</SelectTrigger>
+													<SelectContent>
+														<SelectItem value="Current">
+															<div className="flex w-[--radix-select-trigger-width] flex-col items-center justify-center ">
+																<Image
+																	src={
+																		oldValues.thumbnailUrl ??
+																		c
+																			.thumbnails
+																			.default
+																	}
+																	width={32}
+																	height={20}
+																	alt={`Catgory Image for ${c.thumbnails.default}`}
+																/>
+																<p className="">
+																	Current
+																</p>
+															</div>
+														</SelectItem>
+														{Object.entries(
+															categoryOptions,
+														).map(
+															([
+																name,
+																{
+																	id,
+																	thumbnailUrl,
+																},
+															]) => (
+																<SelectItem
+																	key={id}
+																	value={name}
+																>
+																	<div className="flex w-[--radix-select-trigger-width] flex-col items-center justify-center">
+																		<Image
+																			src={
+																				thumbnailUrl
+																			}
+																			width={
+																				32
+																			}
+																			height={
+																				20
+																			}
+																			alt={`Catgory Image for ${name}`}
+																		/>
+																		<p className="">
+																			{
+																				name
+																			}
+																		</p>
+																	</div>
+																</SelectItem>
+															),
+														)}
+														<SelectItem value="Default">
+															<div className="flex w-[--radix-select-trigger-width] flex-col items-center justify-center ">
+																<Image
+																	src={
+																		c
+																			.thumbnails
+																			.default
+																	}
+																	width={32}
+																	height={20}
+																	alt={`Catgory Image for ${oldValues.name}`}
+																/>
+																<p className="">
+																	Default
+																</p>
+															</div>
+														</SelectItem>
+													</SelectContent>
+												</Select>
+											</TabsContent>
+										</Tabs>
 										<FormMessage />
+										<FormDescription className="flex flex-row items-center gap-x-2">
+											If no thumbnail is selected, the
+											thumbnail currently assigned
+											<Image
+												src={
+													oldValues.thumbnailUrl ??
+													c.thumbnails.default
+												}
+												className="hidden sm:inline"
+												width={30}
+												height={20}
+												alt="Default image"
+											/>{" "}
+											will be used.
+										</FormDescription>
 									</FormItem>
 								)}
 							/>
@@ -579,7 +749,7 @@ export default function EditEventForm({
 												<MultiSelectorList>
 													{Object.entries(
 														categoryOptions,
-													).map(([name, id]) => (
+													).map(([name, { id }]) => (
 														<MultiSelectorItem
 															key={id} // category id
 															value={name}
