@@ -13,7 +13,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTableColumnHeader } from "@/components/ui/data-table";
-import type { EventType } from "@/lib/types/events";
+import type { EventType, DeleteEventDialogProps } from "@/lib/types/events";
 import { formatDate } from "date-fns";
 import AddCheckinDialogue from "@/components/dash/shared/AddCheckinDialogue";
 import { useEffect, useState } from "react";
@@ -21,7 +21,6 @@ import { Dialog } from "@radix-ui/react-dialog";
 import { DialogTrigger } from "@/components/ui/dialog";
 import DeleteEventDialog from "@/components/dash/admin/events/DeleteEventDialogue";
 import { toast } from "sonner";
-import { usePathname } from "next/navigation";
 import ViewQRCode from "@/components/dash/admin/events/ViewQRCode";
 import { useBasePath } from "@/lib/hooks/useBasePath";
 
@@ -240,6 +239,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 						showDelete={showDelete}
 						id={row.original.id!}
 						name={row.original.name!}
+						thumbnailUrl={row.original.thumbnailUrl!}
 					/>
 				</Dialog>
 			);
@@ -252,14 +252,19 @@ function EventColumnActions({
 	showDelete,
 	id,
 	name,
-}: {
-	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	thumbnailUrl,
+}: DeleteEventDialogProps & {
 	showDelete: boolean;
-	id: string;
-	name: string;
 }) {
 	if (showDelete) {
-		return <DeleteEventDialog id={id} name={name} setOpen={setOpen} />;
+		return (
+			<DeleteEventDialog
+				id={id}
+				name={name}
+				setOpen={setOpen}
+				thumbnailUrl={thumbnailUrl}
+			/>
+		);
 	}
 	return (
 		<AddCheckinDialogue
