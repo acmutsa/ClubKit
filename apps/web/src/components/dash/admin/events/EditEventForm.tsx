@@ -48,7 +48,6 @@ import { useAction } from "next-safe-action/hooks";
 import { put } from "@/lib/client/file-upload";
 import { updateEvent } from "@/actions/events/update";
 import { uEvent, CategoryOptionsEventForm } from "@/lib/types/events";
-import { bucketEventThumbnailBaseUrl } from "config";
 import {
 	Select,
 	SelectContent,
@@ -297,6 +296,18 @@ export default function EditEventForm({
 								}) => (
 									<FormItem className="space-y-3">
 										<FormLabel>Thumbnail</FormLabel>
+										<div className="flex flex-row items-center gap-x-3">
+											<p className="text-sm">Current: </p>
+											<Image
+												src={
+													oldValues.thumbnailUrl ??
+													c.thumbnails.default
+												}
+												width={50}
+												height={40}
+												alt="Default image"
+											/>
+										</div>
 										<Tabs
 											defaultValue="upload"
 											className="rounded-lg border-2 border-muted p-3"
@@ -485,20 +496,10 @@ export default function EditEventForm({
 											</TabsContent>
 										</Tabs>
 										<FormMessage />
-										<FormDescription className="flex flex-row items-center gap-x-2">
+										<FormDescription className="flex flex-row items-center">
 											If no thumbnail is selected, the
-											thumbnail currently assigned
-											<Image
-												src={
-													oldValues.thumbnailUrl ??
-													c.thumbnails.default
-												}
-												className="hidden sm:inline"
-												width={30}
-												height={20}
-												alt="Default image"
-											/>{" "}
-											will be used.
+											thumbnail currently assigned will be
+											used.
 										</FormDescription>
 									</FormItem>
 								)}
