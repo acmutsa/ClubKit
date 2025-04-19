@@ -59,7 +59,11 @@ export const updateEventCategory = adminAction
 				.update(eventCategories)
 				.set(inputs)
 				.where(eq(eventCategories.id, categoryID));
-			if (oldThumbnailUrl && inputs.thumbnailUrl !== oldThumbnailUrl && oldThumbnailUrl !== c.thumbnails.default) {
+			if (
+				oldThumbnailUrl &&
+				inputs.thumbnailUrl !== oldThumbnailUrl &&
+				oldThumbnailUrl !== c.thumbnails.default
+			) {
 				const deleteResult = await del(oldThumbnailUrl);
 				if (!deleteResult) {
 					console.log(

@@ -4,7 +4,7 @@ import { and, db, eq, inArray, sql } from "db";
 import { updateEventSchema } from "db/zod";
 import { adminAction } from "@/lib/safe-action";
 import { events, eventsToCategories } from "db/schema";
-import  c  from "config";
+import c from "config";
 import { del } from "@/lib/server/file-upload";
 export const updateEvent = adminAction
 	.schema(updateEventSchema)
@@ -13,7 +13,8 @@ export const updateEvent = adminAction
 			success: true,
 			code: "success",
 		};
-		const { eventID, oldCategories, oldThumbnailUrl, categories, ...e } = parsedInput;
+		const { eventID, oldCategories, oldThumbnailUrl, categories, ...e } =
+			parsedInput;
 		await db.transaction(async (tx) => {
 			const ids = await tx
 				.update(events)
@@ -61,13 +62,14 @@ export const updateEvent = adminAction
 				);
 		});
 
-		if (oldThumbnailUrl != null && oldThumbnailUrl !== e.thumbnailUrl && oldThumbnailUrl !== c.thumbnails.default) {
+		if (
+			oldThumbnailUrl != null &&
+			oldThumbnailUrl !== e.thumbnailUrl &&
+			oldThumbnailUrl !== c.thumbnails.default
+		) {
 			const deleteResult = await del(oldThumbnailUrl);
 			if (!deleteResult) {
-				console.log(
-					"Failed to delete old thumbnail",
-					oldThumbnailUrl,
-				);
+				console.log("Failed to delete old thumbnail", oldThumbnailUrl);
 			}
 		}
 

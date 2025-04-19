@@ -89,7 +89,9 @@ export type RatingFormAttributes = {
 	ref: RefCallBack;
 };
 
-type CategoryOptionsEventForm = { [key: string]: { id: string; thumbnailUrl: string } };
+type CategoryOptionsEventForm = {
+	[key: string]: { id: string; thumbnailUrl: string };
+};
 
 export type NewEventFormProps = {
 	defaultDate: Date;

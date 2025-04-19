@@ -7,7 +7,7 @@ import {
 	FormControl,
 	FormLabel,
 	FormMessage,
-	FormDescription
+	FormDescription,
 } from "@/components/ui/form";
 import {
 	MultiSelector,
@@ -57,8 +57,7 @@ import {
 import { isAfter, isBefore, addHours, set } from "date-fns";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image"
-
+import Image from "next/image";
 
 const formSchema = insertEventSchemaFormified;
 
@@ -76,8 +75,9 @@ export default function NewEventForm({
 		"upload",
 	);
 	const [thumbnail, setThumbnail] = useState<File | null>(null);
-	const [hasDifferentCheckinTime, setHasDifferentCheckinTime] = useState(false);
-	const [existingCategoryName, setExistingCategoryName] = useState("Default")
+	const [hasDifferentCheckinTime, setHasDifferentCheckinTime] =
+		useState(false);
+	const [existingCategoryName, setExistingCategoryName] = useState("Default");
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -96,7 +96,6 @@ export default function NewEventForm({
 			points: 1,
 		},
 	});
-	
 
 	function validateAndSetThumbnail(
 		event: React.ChangeEvent<HTMLInputElement>,
@@ -115,10 +114,9 @@ export default function NewEventForm({
 		}
 		if (!c.thumbnails.acceptedFiles.includes(file.type as any)) {
 			form.setError("thumbnailUrl", {
-				message:
-					`Invalid image format. Only ${c.thumbnails.acceptedFiles.join(
-															",",
-														)}.`,
+				message: `Invalid image format. Only ${c.thumbnails.acceptedFiles.join(
+					",",
+				)}.`,
 			});
 			setThumbnail(null);
 			return false;
@@ -162,7 +160,6 @@ export default function NewEventForm({
 		reset: resetAction,
 	} = useAction(createEvent, {
 		onSuccess: async ({ data }) => {
-			
 			if (!data) {
 				toast.error(
 					`An unknown error occurred. Please try again or contact ${c.contactEmail}.`,
@@ -205,9 +202,9 @@ export default function NewEventForm({
 			);
 			resetAction();
 		},
-		onSettled:() =>{
+		onSettled: () => {
 			toast.dismiss();
-		}
+		},
 	});
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -464,9 +461,7 @@ export default function NewEventForm({
 											</TabsContent>
 										</Tabs>
 										<FormMessage />
-										<FormDescription
-											className="flex flex-row items-center gap-x-2"
-										>
+										<FormDescription className="flex flex-row items-center gap-x-2">
 											If no thumbnail is selected, the
 											default image
 											<Image
