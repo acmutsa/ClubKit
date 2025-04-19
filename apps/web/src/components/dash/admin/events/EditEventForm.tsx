@@ -510,7 +510,7 @@ export default function EditEventForm({
 									control={form.control}
 									name="start"
 									render={({ field }) => (
-										<FormItem>
+										<FormItem className="col-span-2 sm:col-span-1">
 											<FormLabel>Start</FormLabel>
 											<FormControl>
 												<DateTimePicker
@@ -544,7 +544,7 @@ export default function EditEventForm({
 									control={form.control}
 									name="end"
 									render={({ field }) => (
-										<FormItem>
+										<FormItem className="col-span-2 sm:col-span-1">
 											<FormLabel>End</FormLabel>
 											<FormControl>
 												<DateTimePicker
@@ -595,7 +595,7 @@ export default function EditEventForm({
 										control={form.control}
 										name="checkinStart"
 										render={({ field }) => (
-											<FormItem>
+											<FormItem className="col-span-2 sm:col-span-1">
 												<FormLabel>
 													Check-In Start
 												</FormLabel>
@@ -633,7 +633,7 @@ export default function EditEventForm({
 										control={form.control}
 										name="checkinEnd"
 										render={({ field }) => (
-											<FormItem>
+											<FormItem className="col-span-2 sm:col-span-1">
 												<FormLabel>
 													Check-In End
 												</FormLabel>
@@ -802,7 +802,7 @@ export default function EditEventForm({
 								name="isUserCheckinable"
 								control={form.control}
 								render={({ field }) => (
-									<FormItem className="flex w-1/4 items-center justify-between">
+									<FormItem className="flex w-1/2  items-center justify-between sm:w-1/4">
 										<FormLabel>Check-In</FormLabel>
 										<Switch
 											checked={field.value}
@@ -817,7 +817,7 @@ export default function EditEventForm({
 								name="isHidden"
 								control={form.control}
 								render={({ field }) => (
-									<FormItem className="flex w-1/4 items-center justify-between">
+									<FormItem className="flex w-1/2 items-center justify-between sm:w-1/4">
 										<FormLabel>Hidden</FormLabel>
 										<Switch
 											checked={field.value}
