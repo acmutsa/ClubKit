@@ -219,14 +219,14 @@ export default function EditEventForm({
 		);
 
 		if (thumbnail && selectedTab === "upload") {
-			const thumbnailBlob = await put(
+			const uploadedThumbnailUrl = await put(
 				staticUploads.bucketEventThumbnailBaseUrl,
 				thumbnail,
 				{
 					presignHandlerUrl: "/api/upload/thumbnail",
 				},
 			);
-			form.setValue("thumbnailUrl", thumbnailBlob);
+			values.thumbnailUrl = uploadedThumbnailUrl;
 		}
 		runUpdateEvent({
 			...values,

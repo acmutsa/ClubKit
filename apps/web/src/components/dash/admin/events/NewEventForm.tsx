@@ -223,7 +223,7 @@ export default function NewEventForm({
 					presignHandlerUrl: "/api/upload/thumbnail",
 				},
 			);
-			form.setValue("thumbnailUrl", thumbnailBlob);
+			values.thumbnailUrl = thumbnailBlob;
 		}
 		runCreateEvent({
 			...values,
