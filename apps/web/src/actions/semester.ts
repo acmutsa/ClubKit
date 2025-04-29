@@ -7,7 +7,7 @@ import {
 	toggleCurrentSemesterSchema,
 	updateSemesterSchema,
 } from "db/zod";
-import { UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE } from "@/lib/constants";
+import { DatabseError} from "db/types"
 import {
 	SEMESTER_DATE_RANGE_EXISTS,
 	SEMESTER_NAME_EXISTS,
@@ -43,8 +43,7 @@ export const createNewSemester = executiveAction
 				await resetCurrentSemesters(res[0].semesterID);
 			}
 		} catch (e) {
-			/// @ts-expect-error could not find the type of the error and the status code is the next most accurate way of telling an issue
-			if (e.code === UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE) {
+			if (e instanceof DatabseError) {
 				console.log(e);
 				return {
 					success: false,
@@ -83,8 +82,7 @@ export const updateSemester = executiveAction
 				await resetCurrentSemesters(semesterID);
 			}
 		} catch (e) {
-			/// @ts-expect-error could not find the type of the error and the status code is the next most accurate way of telling an issue
-			if (e.code === UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE) {
+			if (e instanceof DatabseError) {
 				return {
 					success: false,
 					code: SEMESTER_NAME_EXISTS,

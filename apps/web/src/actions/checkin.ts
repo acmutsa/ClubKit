@@ -2,7 +2,6 @@
 
 import { userAction, adminAction } from "@/lib/safe-action";
 import { userCheckinSchemaFormified } from "db/zod";
-import { UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE } from "@/lib/constants/";
 import { checkInUserClient, checkInUserList } from "@/lib/queries/checkins";
 import { adminCheckinSchema, universityIDSplitter } from "db/zod";
 import { CheckinResult } from "@/lib/types/events";
@@ -11,6 +10,7 @@ import { getEventById } from "@/lib/queries/events";
 import { returnValidationErrors } from "next-safe-action";
 import z from "zod";
 import { isWithinInterval } from "date-fns";
+import { DatabseError} from "db/types"
 
 const {
 	ALREADY_CHECKED_IN,
@@ -46,8 +46,7 @@ export const checkInUserAction = userAction
 		try {
 			await checkInUserClient(parsedInput);
 		} catch (e) {
-			///@ts-expect-error could not find the type of the error and the status code is the next most accurate way of telling an issue
-			if (e.code === UNIQUE_KEY_CONSTRAINT_VIOLATION_CODE) {
+			if (e instanceof DatabseError) {
 				return {
 					success: false,
 					code: ALREADY_CHECKED_IN,
