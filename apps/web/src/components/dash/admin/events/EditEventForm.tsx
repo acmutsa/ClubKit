@@ -843,7 +843,7 @@ export default function EditEventForm({
 							}
 							type="submit"
 						>
-							Submit
+							Update
 						</Button>
 					</form>
 				</Form>

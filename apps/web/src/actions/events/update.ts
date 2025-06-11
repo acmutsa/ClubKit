@@ -4,8 +4,9 @@ import { and, db, eq, inArray, sql } from "db";
 import { updateEventSchema } from "db/zod";
 import { adminAction } from "@/lib/safe-action";
 import { events, eventsToCategories } from "db/schema";
-import c from "config";
+import c , {staticUploads} from "config";
 import { del } from "@/lib/server/file-upload";
+// we need to make it to where we do not delete the default thumbnails 
 export const updateEvent = adminAction
 	.schema(updateEventSchema)
 	.action(async ({ parsedInput }) => {
@@ -66,6 +67,7 @@ export const updateEvent = adminAction
 			oldThumbnailUrl != null &&
 			oldThumbnailUrl !== e.thumbnailUrl &&
 			oldThumbnailUrl !== c.thumbnails.default
+			&& !oldThumbnailUrl.includes(staticUploads.bucketCategoryThumbnailBaseUrl) // check if the thumbnail is not the default one
 		) {
 			const deleteResult = await del(oldThumbnailUrl);
 			if (!deleteResult) {

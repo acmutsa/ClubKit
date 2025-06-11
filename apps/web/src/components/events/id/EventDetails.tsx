@@ -173,8 +173,7 @@ export default async function EventDetails({
 									<DropdownMenuTrigger asChild>
 										<Button
 											variant="default"
-											className="text-lg font-normal"
-										>
+											className="text-lg font-normal">
 											<div className="flex items-center justify-start gap-1">
 												<MonitorPlay size={16} />
 												<p>Watch Live</p>

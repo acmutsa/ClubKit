@@ -108,7 +108,7 @@ export default function CreateCategoryDialogue() {
 		let thumbnailUrl: string = c.thumbnails.default;
 		if (thumbnail) {
 			thumbnailUrl = await put(
-				staticUploads.bucketEventThumbnailBaseUrl,
+				staticUploads.bucketCategoryThumbnailBaseUrl,
 				thumbnail,
 				{
 					presignHandlerUrl: "/api/upload/thumbnail",

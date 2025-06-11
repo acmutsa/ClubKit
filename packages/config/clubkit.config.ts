@@ -115,6 +115,7 @@ export const defaultTheme = "light";
 
 const bucketBaseUrl = `${c.clubName}-${c.universityName}`;
 const bucketEventThumbnailBaseUrl = `${bucketBaseUrl}/event-thumbnails`;
+const bucketCategoryThumbnailBaseUrl = `${bucketBaseUrl}/category-thumbnails`;
 
 const majors = [
 	"Computer Science",
@@ -235,6 +236,7 @@ const staticUploads = {
 	bucketHost: "/api/upload/view",
 	bucketResumeBaseUploadUrl: `${c.clubName}-${c.universityName}/resume`,
 	bucketEventThumbnailBaseUrl,
+	bucketCategoryThumbnailBaseUrl,
 } as const;
 
 export default c;

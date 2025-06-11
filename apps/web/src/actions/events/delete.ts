@@ -4,18 +4,17 @@ import { db, eq } from "db";
 import { deleteEventSchema } from "db/zod";
 import { events } from "db/schema";
 import { del } from "@/lib/server/file-upload";
-import c from "config";
-
+import c, {staticUploads} from "config";
+// we need to make it to where we do not delete the default thumbnails 
 export const deleteEventAction = adminAction
 	.schema(deleteEventSchema)
 	.action(async ({ parsedInput }) => {
 		const { id, thumbnailUrl } = parsedInput;
-		if (thumbnailUrl !== c.thumbnails.default) {
+		if (thumbnailUrl !== c.thumbnails.default && !thumbnailUrl.includes(staticUploads.bucketCategoryThumbnailBaseUrl)) {
 			const res = await del(thumbnailUrl);
 			if (!res) {
 				console.log("Failed to delete thumbnail");
 			}
 		}
 		await db.delete(events).where(eq(events.id, id));
-		// redirect("/admin/events");
 	});

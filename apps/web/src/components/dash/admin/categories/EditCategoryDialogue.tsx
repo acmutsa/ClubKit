@@ -128,7 +128,7 @@ export default function EditCategoryDialogue(
 
 		if (thumbnail) {
 			const thumbnailUrl = await put(
-				staticUploads.bucketEventThumbnailBaseUrl,
+				staticUploads.bucketCategoryThumbnailBaseUrl,
 				thumbnail,
 				{
 					presignHandlerUrl: "/api/upload/thumbnail",
