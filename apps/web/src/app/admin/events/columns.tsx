@@ -240,6 +240,7 @@ export const columns: ColumnDef<EventWithCheckins>[] = [
 						id={row.original.id!}
 						name={row.original.name!}
 						thumbnailUrl={row.original.thumbnailUrl!}
+						start={row.original.start!}
 					/>
 				</Dialog>
 			);
@@ -252,9 +253,11 @@ function EventColumnActions({
 	showDelete,
 	id,
 	name,
+	start,
 	thumbnailUrl,
 }: DeleteEventDialogProps & {
 	showDelete: boolean;
+	start: Date;
 }) {
 	if (showDelete) {
 		return (
@@ -272,6 +275,7 @@ function EventColumnActions({
 				{
 					id,
 					name,
+					start,
 				},
 			]}
 			setOpen={setOpen}

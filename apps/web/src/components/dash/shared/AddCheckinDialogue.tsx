@@ -37,7 +37,7 @@ import z from "zod";
 import { useRouter } from "next/navigation";
 
 type Props = {
-	eventList: { id: string; name: string }[];
+	eventList: { id: string; name: string; start: Date }[];
 	setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 	default?: {
 		eventID?: string;
@@ -146,8 +146,14 @@ function AddCheckinDialogue({ eventList, ...props }: Props) {
 													<SelectItem
 														value={event.id}
 														key={event.id}
+														className="w-full justify-between"
 													>
-														{event.name}
+														<div className="mx-0 flex w-full gap-x-1">
+															<p>{event.name}</p>
+															<p className="opacity-60">
+																{event.start.toLocaleDateString()}
+															</p>
+														</div>
 													</SelectItem>
 												))}
 											</SelectContent>
