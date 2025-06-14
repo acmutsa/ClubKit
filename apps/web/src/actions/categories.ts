@@ -50,6 +50,7 @@ export const createEventCategory = adminAction
 		};
 	});
 
+// come back and change them all
 export const updateEventCategory = adminAction
 	.schema(editEventCategorySchema)
 	.action(async ({ parsedInput }) => {

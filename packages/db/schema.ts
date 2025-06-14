@@ -67,7 +67,6 @@ export const eventCategories = sqliteTable("event_categories", {
 	id: text("id", { length: 8 }).primaryKey(),
 	name: text({ length: 255 }).notNull().unique(),
 	color: text({ length: 255 }).notNull(),
-	thumbnailUrl: text("thumnail_url").notNull().default(c.thumbnails.default),
 });
 
 export const eventCategoriesRelations = relations(
@@ -183,3 +182,12 @@ export const semesters = sqliteTable("semesters", {
 export const semestersRelations = relations(semesters, ({ many }) => ({
 	events: many(events),
 }));
+
+
+export const thumbnails = sqliteTable("thumbnails", {
+	thumbnailID: integer("thumbnail_id").primaryKey(),
+	url: text("url").notNull().unique(),
+	uploadedAt: integer("uploaded_at", { mode: "timestamp_ms" })
+		.notNull()
+		.default(sql`(current_timestamp)`),
+});
