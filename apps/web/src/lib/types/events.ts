@@ -17,6 +17,7 @@ export type EventToCategoriesType = typeof eventsToCategories.$inferSelect;
 
 export type EventCategoryType = typeof eventCategories.$inferSelect;
 import c from "config";
+import { ThumbnailType } from "./shared";
 
 export type EventsToCategoriesWithCategoryType = EventToCategoriesType & {
 	category: {
@@ -90,11 +91,12 @@ export type RatingFormAttributes = {
 };
 
 export type CategoryOptionsEventForm = {
-	[key: string]: { id: string; thumbnailUrl: string };
+	[key: string]: { id: string };
 };
 
 export type NewEventFormProps = {
 	defaultDate: Date;
+	thumbnailOptions:ThumbnailType[];
 	categoryOptions: CategoryOptionsEventForm;
 	semesterOptions: Semester[];
 };

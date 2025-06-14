@@ -30,16 +30,12 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@radix-ui/react-dialog";
 import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import c, { staticUploads } from "config";
-import { put } from "@/lib/client/file-upload";
-import { getSizeInMB } from "@/lib/utils";
+import c from "config";
 
 type CreateCategoryForm = z.infer<typeof createEventCategorySchema>;
 
 export default function CreateCategoryDialogue() {
 	const [open, setOpen] = useState(false);
-	const [thumbnail, setThumbnail] = useState<File | null>(null);
-	const [isLoading, setIsLoading] = useState(false);
 	const form = useForm<CreateCategoryForm>({
 		resolver: zodResolver(createEventCategorySchema),
 		defaultValues: {
@@ -48,40 +44,8 @@ export default function CreateCategoryDialogue() {
 		},
 	});
 
-	const maxSizeInMB = getSizeInMB(c.thumbnails.maxSizeInBytes);
-
-	function validateAndSetThumbnail(
-		event: React.ChangeEvent<HTMLInputElement>,
-	) {
-		const file = event.target.files?.[0];
-		if (!file) {
-			setThumbnail(null);
-			return false;
-		}
-		console.log(file.size);
-		if (file.size > c.thumbnails.maxSizeInBytes) {
-			form.setError("thumbnailUrl", {
-				message: `Thumbnail size exceeds ${maxSizeInMB} MB`,
-			});
-			setThumbnail(null);
-			return false;
-		} else {
-			form.clearErrors("thumbnailUrl");
-		}
-		if (!c.thumbnails.acceptedFiles.includes(file.type as any)) {
-			form.setError("thumbnailUrl", {
-				message:
-					"Invalid image format. Only jpeg, png, gif, webp, svg+xml, bmp.",
-			});
-			setThumbnail(null);
-			return false;
-		}
-		setThumbnail(file);
-		return true;
-	}
-
 	const { refresh } = useRouter();
-	const { execute: runCreateEventCategory } = useAction(createEventCategory, {
+	const { execute: runCreateEventCategory, status } = useAction(createEventCategory, {
 		onSuccess: ({ data }) => {
 			if (data?.message == "category_exists") {
 				return toast.error(
@@ -98,26 +62,16 @@ export default function CreateCategoryDialogue() {
 			toast.error("Failed to create event category");
 		},
 		onSettled: () => {
-			setIsLoading(false);
 			toast.dismiss();
 		},
 	});
 
-	async function onSubmit(values: CreateCategoryForm) {
-		setIsLoading(true);
-		let thumbnailUrl: string = c.thumbnails.default;
-		if (thumbnail) {
-			thumbnailUrl = await put(
-				staticUploads.bucketCategoryThumbnailBaseUrl,
-				thumbnail,
-				{
-					presignHandlerUrl: "/api/upload/thumbnail",
-				},
-			);
-		}
+	const isLoading = status === "executing";
+
+	function onSubmit(values: CreateCategoryForm) {
+		
 		runCreateEventCategory({
 			...values,
-			thumbnailUrl,
 		});
 	}
 
@@ -154,36 +108,7 @@ export default function CreateCategoryDialogue() {
 								</FormItem>
 							)}
 						/>
-						<FormField
-							control={form.control}
-							name="thumbnailUrl"
-							render={({
-								field: { value, onChange, ...fieldProps },
-							}) => (
-								<FormItem>
-									<FormLabel>Default Thumbnail</FormLabel>
-									<FormControl>
-										<Input
-											{...fieldProps}
-											type="file"
-											accept={`${c.thumbnails.acceptedFiles.join(
-												",",
-											)}`}
-											onChange={(event) => {
-												const success =
-													validateAndSetThumbnail(
-														event,
-													);
-												if (!success) {
-													event.target.value = "";
-												}
-											}}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+						
 						<FormField
 							control={form.control}
 							name="color"

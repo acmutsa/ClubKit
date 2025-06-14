@@ -1,7 +1,4 @@
-import React from "react";
-
 import EditEventForm from "@/components/dash/admin/events/EditEventForm";
-
 import { getAllCategoriesKeyValue } from "@/lib/queries/categories";
 import { iEvent, uEvent } from "@/lib/types/events";
 import { getEventWithCategoriesById } from "@/lib/queries/events";
@@ -9,14 +6,19 @@ import { IDParamProp } from "@/lib/types/shared";
 import FullScreenMessage from "@/components/shared/fullscreen-message";
 import c from "config";
 import { getAllSemestersDesc } from "@/lib/queries/semesters";
+import { getAllThumbnails } from "@/lib/queries/thumbnails";
+
 export default async function Page({ params: { id } }: IDParamProp) {
-	const categoryOptionsAsync = getAllCategoriesKeyValue();
 	const oldValuesAsync = getEventWithCategoriesById(id);
 	const getAllSemestersDescAsync = getAllSemestersDesc();
-	const [categoryOptions, oldValues, semesterOptions] = await Promise.all([
-		categoryOptionsAsync,
+	const getAllThumbnailsAsync = getAllThumbnails();
+	const categoryOptionsAsync = getAllCategoriesKeyValue();
+
+	const [allThumbnails, oldValues, semesterOptions, categoryOptions] = await Promise.all([
+		getAllThumbnailsAsync,
 		oldValuesAsync,
 		getAllSemestersDescAsync,
+		categoryOptionsAsync
 	]);
 	if (oldValues === undefined) {
 		return (
@@ -37,6 +39,7 @@ export default async function Page({ params: { id } }: IDParamProp) {
 				<EditEventForm
 					eventID={id}
 					oldValues={oldValues}
+					thumbnailOptions={allThumbnails}
 					categoryOptions={categoryOptions}
 					semesterOptions={semesterOptions}
 				/>

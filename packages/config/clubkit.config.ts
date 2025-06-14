@@ -79,6 +79,7 @@ const c = {
 			Checkins: "/admin/checkins",
 			Categories: "/admin/categories",
 			Semesters: "/admin/semesters",
+			Thumbnails:"/admin/thumbnails",
 		},
 	},
 	maxCheckinDescriptionLength: 400,

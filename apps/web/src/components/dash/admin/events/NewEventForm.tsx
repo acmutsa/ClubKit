@@ -64,6 +64,7 @@ const formSchema = insertEventSchemaFormified;
 export default function NewEventForm({
 	defaultDate,
 	categoryOptions,
+	thumbnailOptions,
 	semesterOptions,
 }: NewEventFormProps) {
 	const [error, setError] = useState<{
@@ -367,9 +368,11 @@ export default function NewEventForm({
 														console.log(value);
 														form.setValue(
 															"thumbnailUrl",
-															categoryOptions[
-																value
-															]?.thumbnailUrl ??
+															thumbnailOptions.find(
+																(v) =>
+																	v.thumbnailID.toString() ===
+																	value,
+															)?.url ??
 																c.thumbnails
 																	.default,
 														);
@@ -403,42 +406,31 @@ export default function NewEventForm({
 														</SelectValue>
 													</SelectTrigger>
 													<SelectContent>
-														{Object.entries(
-															categoryOptions,
-														).map(
-															([
-																name,
-																{
-																	id,
-																	thumbnailUrl,
-																},
-															]) => (
-																<SelectItem
-																	key={id}
-																	value={name}
-																>
-																	<div className="flex w-[--radix-select-trigger-width] flex-col items-center justify-center">
-																		<Image
-																			src={
-																				thumbnailUrl
-																			}
-																			width={
-																				32
-																			}
-																			height={
-																				20
-																			}
-																			alt={`Catgory Image for ${name}`}
-																		/>
-																		<p className="">
-																			{
-																				name
-																			}
-																		</p>
-																	</div>
-																</SelectItem>
-															),
-														)}
+														{thumbnailOptions.map(
+																													(thumbnailOption) => (
+																														<SelectItem
+																															key={
+																																thumbnailOption.thumbnailID
+																															}
+																															value={thumbnailOption.thumbnailID.toString()}
+																														>
+																															<div className="flex w-[--radix-select-trigger-width] flex-col items-center justify-center ">
+																																<Image
+																																	src={
+																																		c.thumbnails.default
+																																	}
+																																	width={
+																																		32
+																																	}
+																																	height={
+																																		20
+																																	}
+																																	alt={`Catgory Image for ${thumbnailOption.thumbnailID}`}
+																																/>
+																																
+																															</div>
+																														</SelectItem>
+																				))}
 														<SelectItem value="Default">
 															<div className="flex w-[--radix-select-trigger-width] flex-col items-center justify-center ">
 																<Image

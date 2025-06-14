@@ -4,21 +4,16 @@ import { db, eq } from "db";
 import {
 	createEventCategorySchema,
 	eventCategorySchema,
-	editEventCategorySchema,
 } from "db/zod";
 import { DatabseError} from "db/types"
 import { customAlphabet } from "nanoid";
 import { LOWER_ALPHANUM_CUSTOM_ALPHABET } from "@/lib/constants";
 import c from "config";
-import { revalidatePath } from "next/cache";
 import { eventCategories } from "db/schema";
 import z from "zod";
-import { del } from "@/lib/server/file-upload";
-import { getEventWithCategoryThumbnail } from "@/lib/queries/categories";
 
 const deleteEventCategorySchema = z.object({
 	categoryID: z.string().length(c.events.categoryIDLength),
-	thumbnailUrl: z.string().optional(),
 });
 
 const nanoid = customAlphabet(
@@ -50,30 +45,15 @@ export const createEventCategory = adminAction
 		};
 	});
 
-// come back and change them all
 export const updateEventCategory = adminAction
-	.schema(editEventCategorySchema)
+	.schema(eventCategorySchema)
 	.action(async ({ parsedInput }) => {
-		const { id: categoryID, oldThumbnailUrl, ...inputs } = parsedInput;
+		const { id: categoryID, ...inputs } = parsedInput;
 		try {
 			await db
 				.update(eventCategories)
 				.set(inputs)
 				.where(eq(eventCategories.id, categoryID));
-			if (
-				oldThumbnailUrl &&
-				inputs.thumbnailUrl !== oldThumbnailUrl &&
-				oldThumbnailUrl !== c.thumbnails.default
-				&& !(await getEventWithCategoryThumbnail(oldThumbnailUrl))
-			) {
-				const deleteResult = await del(oldThumbnailUrl);
-				if (!deleteResult) {
-					console.log(
-						"Failed to delete old thumbnail",
-						oldThumbnailUrl,
-					);
-				}
-			}
 		} catch (e) {
 			if (e instanceof DatabseError) {
 				return {
@@ -93,13 +73,8 @@ export const updateEventCategory = adminAction
 export const deleteEventCategory = adminAction
 	.schema(deleteEventCategorySchema)
 	.action(async ({ parsedInput }) => {
-		const { categoryID, thumbnailUrl } = parsedInput;
-		if (thumbnailUrl && thumbnailUrl !== c.thumbnails.default && !(await getEventWithCategoryThumbnail(thumbnailUrl))) {
-			const deleteResult = await del(thumbnailUrl);
-			if (!deleteResult) {
-				console.log("Failed to delete thumbnail", thumbnailUrl);
-			}
-		}
+		const { categoryID } = parsedInput;
+		
 		await db
 			.delete(eventCategories)
 			.where(eq(eventCategories.id, categoryID));

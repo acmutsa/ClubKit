@@ -1,4 +1,5 @@
 import c, { majors } from "config";
+import { thumbnails } from "db/schema";
 export type SearchParams = { [key: string]: string | undefined };
 export type IDParamProp = { params: { id: string } };
 export type ExportNames =
@@ -17,3 +18,4 @@ export type EthnicityType = (typeof c.userIdentityOptions.ethnicity)[number];
 export type MemberType = (typeof c.memberRoles)[number];
 export type ShirtSizeType = (typeof c.userIdentityOptions.shirtSize)[number];
 export type ShirtType = (typeof c.userIdentityOptions.shirtType)[number];
+export type ThumbnailType = typeof thumbnails.$inferSelect;

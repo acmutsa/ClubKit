@@ -18,14 +18,12 @@ import {
 } from "@/components/ui/MultiSelect";
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
-	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
@@ -38,7 +36,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { updateEventSchemaFormified as formSchema } from "db/zod";
-import { CalendarWithYears } from "@/components/ui/calendarWithYearSelect";
 import { FormGroupWrapper } from "@/components/shared/form-group-wrapper";
 import { DateTimePicker } from "@/components/ui/date-time-picker/date-time-picker";
 import c from "config";
@@ -48,6 +45,7 @@ import { useAction } from "next-safe-action/hooks";
 import { put } from "@/lib/client/file-upload";
 import { updateEvent } from "@/actions/events/update";
 import { uEvent, CategoryOptionsEventForm } from "@/lib/types/events";
+import { ThumbnailType } from "@/lib/types/shared";
 import {
 	Select,
 	SelectContent,
@@ -63,13 +61,15 @@ import Image from "next/image";
 type EditEventFormProps = {
 	eventID: string;
 	oldValues: uEvent;
-	categoryOptions: CategoryOptionsEventForm;
+	categoryOptions:CategoryOptionsEventForm;
+	thumbnailOptions: ThumbnailType[];
 	semesterOptions: Semester[];
 };
 export default function EditEventForm({
 	eventID,
 	oldValues,
 	categoryOptions,
+	thumbnailOptions,
 	semesterOptions,
 }: EditEventFormProps) {
 	const [error, setError] = useState<{
@@ -384,9 +384,9 @@ export default function EditEventForm({
 														console.log(value);
 														form.setValue(
 															"thumbnailUrl",
-															categoryOptions[
-																value
-															]?.thumbnailUrl ??
+															thumbnailOptions.find((v)=>(
+																v.thumbnailID.toString() === value
+															))?.url ??
 																c.thumbnails
 																	.default,
 														);
@@ -438,24 +438,18 @@ export default function EditEventForm({
 																</p>
 															</div>
 														</SelectItem>
-														{Object.entries(
-															categoryOptions,
-														).map(
-															([
-																name,
-																{
-																	id,
-																	thumbnailUrl,
-																},
-															]) => (
+														{thumbnailOptions.map(
+															(thumbnailOption) => (
 																<SelectItem
-																	key={id}
-																	value={name}
+																	key={
+																		thumbnailOption.thumbnailID
+																	}
+																	value={thumbnailOption.thumbnailID.toString()}
 																>
-																	<div className="flex w-[--radix-select-trigger-width] flex-col items-center justify-center">
+																	<div className="flex w-[--radix-select-trigger-width] flex-col items-center justify-center ">
 																		<Image
 																			src={
-																				thumbnailUrl
+																				c.thumbnails.default
 																			}
 																			width={
 																				32
@@ -463,17 +457,12 @@ export default function EditEventForm({
 																			height={
 																				20
 																			}
-																			alt={`Catgory Image for ${name}`}
+																			alt={`Catgory Image for ${thumbnailOption.thumbnailID}`}
 																		/>
-																		<p className="">
-																			{
-																				name
-																			}
-																		</p>
+																		
 																	</div>
 																</SelectItem>
-															),
-														)}
+						))}
 														<SelectItem value="Default">
 															<div className="flex w-[--radix-select-trigger-width] flex-col items-center justify-center ">
 																<Image

@@ -6,11 +6,10 @@ export const getAllCategoriesKeyValue = async () => {
 		(acc, cat) => {
 			acc[cat.name] = {
 				id: cat.id,
-				thumbnailUrl: cat.thumbnailUrl,
 			};
 			return acc;
 		},
-		{} as { [key: string]: { id: string; thumbnailUrl: string } },
+		{} as { [key: string]: { id: string; } },
 	);
 	return categories;
 };
@@ -18,9 +17,3 @@ export const getAllCategoriesKeyValue = async () => {
 export const getAllCategories = async () => {
 	return db.query.eventCategories.findMany();
 };
-
-export function getEventWithCategoryThumbnail(url:string){
-	return db.query.events.findFirst({
-		where:eq(events.thumbnailUrl, url),
-	})
-}

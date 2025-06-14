@@ -139,7 +139,6 @@ export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 					<DeleteCategoryDialogue
 						categoryID={data.id}
 						name={data.name}
-						thumbnailUrl={data.thumbnailUrl}
 					/>
 				</AlertDialog>
 			);
