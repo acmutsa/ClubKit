@@ -53,20 +53,6 @@ export const eventCategoryColumns: ColumnDef<EventCategoryType>[] = [
 		enableSorting: true,
 	},
 	{
-		accessorKey: "thumbnailUrl",
-		header: "Thumbnail",
-		cell: ({ row }) => {
-			return (
-				<Image
-					src={row.getValue("thumbnailUrl")}
-					alt={`Thumbnail for event ${row.getValue("name")}`}
-					width={50}
-					height={32}
-				/>
-			);
-		},
-	},
-	{
 		id: "actions",
 		enablePinning: true,
 		header: ({}) => {},

@@ -385,7 +385,7 @@ export default function EditEventForm({
 														form.setValue(
 															"thumbnailUrl",
 															thumbnailOptions.find((v)=>(
-																v.thumbnailID.toString() === value
+																v.id.toString() === value
 															))?.url ??
 																c.thumbnails
 																	.default,
@@ -442,9 +442,9 @@ export default function EditEventForm({
 															(thumbnailOption) => (
 																<SelectItem
 																	key={
-																		thumbnailOption.thumbnailID
+																		thumbnailOption.id
 																	}
-																	value={thumbnailOption.thumbnailID.toString()}
+																	value={thumbnailOption.id.toString()}
 																>
 																	<div className="flex w-[--radix-select-trigger-width] flex-col items-center justify-center ">
 																		<Image
@@ -457,7 +457,7 @@ export default function EditEventForm({
 																			height={
 																				20
 																			}
-																			alt={`Catgory Image for ${thumbnailOption.thumbnailID}`}
+																			alt={`Catgory Image for ${thumbnailOption.id}`}
 																		/>
 																		
 																	</div>

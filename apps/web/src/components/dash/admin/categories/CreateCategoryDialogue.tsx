@@ -43,6 +43,7 @@ export default function CreateCategoryDialogue() {
 			name: "",
 		},
 	});
+	
 
 	const { refresh } = useRouter();
 	const { execute: runCreateEventCategory, status } = useAction(createEventCategory, {

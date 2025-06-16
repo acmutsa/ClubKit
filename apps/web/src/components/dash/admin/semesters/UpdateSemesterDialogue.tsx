@@ -85,10 +85,6 @@ export default function UpdateSemesterDialogue(props: UpdateSemesterProps) {
 		},
 	});
 
-	useEffect(() => {
-		console.log("form dirty", form.formState.isDirty);
-	}, [form.formState.isDirty]);
-
 	function onSubmit(data: z.infer<typeof updateSemesterSchema>) {
 		if (!form.formState.isDirty) {
 			return toast.error("No changes made");

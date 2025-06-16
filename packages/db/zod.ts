@@ -6,6 +6,7 @@ import {
 	checkins,
 	eventCategories,
 	semesters,
+	thumbnails
 } from "./schema";
 import { string, z } from "zod";
 import c, { majors } from "config";
@@ -209,4 +210,10 @@ export const updateSemesterSchema = createSelectSchema(semesters).refine(
 export const toggleCurrentSemesterSchema = z.object({
 	semesterID: z.number().int(),
 	isCurrent: z.boolean(),
+});
+
+
+export const createThumbnailSchema = createInsertSchema(thumbnails).extend({
+	name: basicStringSchema,
+	url: z.string(),
 });

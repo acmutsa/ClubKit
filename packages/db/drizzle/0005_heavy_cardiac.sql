@@ -1,0 +1,1 @@
+ALTER TABLE `thumbnails` ADD `name` text(255) NOT NULL;

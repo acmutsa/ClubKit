@@ -81,10 +81,6 @@ export default function EditCategoryDialogue(
 	const isLoading = status === "executing";
 
 
-	useEffect(() => {
-		console.log("form dirty", form.formState.isDirty);
-	}, [form.formState.isDirty]);
-
 	function onSubmit(data: z.infer<typeof eventCategorySchema>) {
 		runUpdateEventCategory(data);
 	}

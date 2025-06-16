@@ -185,7 +185,8 @@ export const semestersRelations = relations(semesters, ({ many }) => ({
 
 
 export const thumbnails = sqliteTable("thumbnails", {
-	thumbnailID: integer("thumbnail_id").primaryKey(),
+	id: integer("thumbnail_id").primaryKey(),
+	name: text({ length: 255 }).notNull(),
 	url: text("url").notNull().unique(),
 	uploadedAt: integer("uploaded_at", { mode: "timestamp_ms" })
 		.notNull()

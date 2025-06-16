@@ -116,7 +116,7 @@ export const defaultTheme = "light";
 
 const bucketBaseUrl = `${c.clubName}-${c.universityName}`;
 const bucketEventThumbnailBaseUrl = `${bucketBaseUrl}/event-thumbnails`;
-const bucketCategoryThumbnailBaseUrl = `${bucketBaseUrl}/category-thumbnails`;
+const bucketCategoryThumbnailBaseUrl = `${bucketBaseUrl}/preset-thumbnails`;
 
 const majors = [
 	"Computer Science",
