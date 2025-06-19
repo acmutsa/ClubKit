@@ -233,7 +233,6 @@ const majors = [
 ] as const;
 
 const staticUploads = {
-	bucketName: "acm-userdata",
 	bucketHost: "/api/upload/view",
 	bucketResumeBaseUploadUrl: `${c.clubName}-${c.universityName}/resume`,
 	bucketEventThumbnailBaseUrl,
