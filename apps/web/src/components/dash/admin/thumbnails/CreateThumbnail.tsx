@@ -73,7 +73,7 @@ export function CreateThumbnailDialog() {
 			setThumbnail(null);
 			return false;
 		}
-		console.log(file.size);
+		
 		if (file.size > c.thumbnails.maxSizeInBytes) {
 			form.setError("url", {
 				message: `Thumbnail size exceeds ${maxSizeInMB} MB`,
@@ -101,6 +101,7 @@ export function CreateThumbnailDialog() {
         message: "Please select a thumbnail to upload"
       })
     }
+		toast.loading("Uploading thumbnail...");
 		setIsLoading(true);
 		let url: string = c.thumbnails.default;
 			url = await put(
@@ -187,11 +188,7 @@ export function CreateThumbnailDialog() {
 									<Button variant="outline">Cancel</Button>
 								</DialogClose>
 								<Button type="submit" disabled={isLoading}>
-									{isLoading ? (
-										<ArrowUpCircle className="animate-pulse" />
-									) : (
-										<ArrowUpCircle />
-									)}
+									Upload
 								</Button>
 							</div>
 						</form>
