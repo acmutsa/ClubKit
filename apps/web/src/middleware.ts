@@ -1,6 +1,8 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { getAdminUser } from "./lib/queries/users";
 import { NextResponse } from "next/server";
+
+
 const isProtectedRoute = createRouteMatcher([
 	"/dash(.*)",
 	"/admin(.*)",
@@ -8,15 +10,12 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 const isAdminAPIRoute = createRouteMatcher(["/api/admin(.*)"]);
 
-// Check and see if we can 
-export default clerkMiddleware(async (auth, req) => {
-	const { userId, } = await auth();
 
-	if (isProtectedRoute(req)) {
-		const signInUrl = req.nextUrl.clone();
-		signInUrl.pathname = "/sign-in";
-		await auth.protect({},{
-			unauthenticatedUrl:signInUrl.toString(),
+export default clerkMiddleware(async (auth, req) => {
+	const { userId, redirectToSignIn } = await auth();
+	if (isProtectedRoute(req) && !userId) {
+		redirectToSignIn({
+			returnBackUrl: req.nextUrl.toString(),
 		});
 	}
 
