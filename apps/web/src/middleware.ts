@@ -8,12 +8,16 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 const isAdminAPIRoute = createRouteMatcher(["/api/admin(.*)"]);
 
-// come back and check if this is valid
+// Check and see if we can 
 export default clerkMiddleware(async (auth, req) => {
-	const { userId } = await auth();
+	const { userId, } = await auth();
 
 	if (isProtectedRoute(req)) {
-		await auth.protect();
+		const signInUrl = req.nextUrl.clone();
+		signInUrl.pathname = "/sign-in";
+		await auth.protect({},{
+			unauthenticatedUrl:signInUrl.toString(),
+		});
 	}
 
 	// protect admin api routes
