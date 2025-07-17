@@ -1,6 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { getAdminUser } from "./lib/queries/users";
 import { NextResponse } from "next/server";
+
 const isProtectedRoute = createRouteMatcher([
 	"/dash(.*)",
 	"/admin(.*)",
@@ -8,12 +9,12 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 const isAdminAPIRoute = createRouteMatcher(["/api/admin(.*)"]);
 
-// come back and check if this is valid
 export default clerkMiddleware(async (auth, req) => {
-	const { userId } = await auth();
-
-	if (isProtectedRoute(req)) {
-		await auth.protect();
+	const { userId, redirectToSignIn } = await auth();
+	if (isProtectedRoute(req) && !userId) {
+		redirectToSignIn({
+			returnBackUrl: req.nextUrl.toString(),
+		});
 	}
 
 	// protect admin api routes

@@ -8,6 +8,7 @@ import Navbar from "@/components/shared/navbar";
 import DashNavItem from "@/components/dash/shared/DashNavItem";
 import ClientToast from "@/components/shared/client-toast";
 import c from "config";
+import { ADMIN_ROLES } from "@/lib/constants";
 
 export default async function AdminLayout({
 	children,
@@ -24,7 +25,11 @@ export default async function AdminLayout({
 		where: eq(users.clerkID, userId),
 	});
 
-	if (!user || (user.role !== "admin" && user.role !== "super_admin")) {
+	if (!user){
+		return redirect("/onboarding");
+	}
+
+	if (!ADMIN_ROLES.includes(user.role)) {
 		console.log("Denying admin access to user", user);
 		return (
 			<FullScreenMessage

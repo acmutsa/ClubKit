@@ -14,7 +14,7 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-
+import { ADMIN_ROLES } from "@/lib/constants";
 import c from "config";
 import { Menu } from "lucide-react";
 
@@ -82,8 +82,7 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 						<Link href={"/events"}>
 							<Button variant={"outline"}>Events</Button>
 						</Link>
-						{(user.role === "admin" ||
-							user.role === "super_admin") && (
+						{ADMIN_ROLES.includes(user.role) && (
 							<Link href={"/admin"}>
 								<Button
 									variant={"outline"}
@@ -154,8 +153,7 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 								<Link href={"/events"}>
 									<Button variant={"ghost"}>Events</Button>
 								</Link>
-								{(user.role === "admin" ||
-									user.role === "super_admin") && (
+								{ADMIN_ROLES.includes(user.role) && (
 									<Link href={"/admin"}>
 										<Button variant={"ghost"}>Admin</Button>
 									</Link>
