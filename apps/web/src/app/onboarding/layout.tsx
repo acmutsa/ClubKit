@@ -10,7 +10,6 @@ export default async function OnboardingLayout({
 }: {
 	children: React.ReactNode;
 }) {
-
 	const { userId } = await auth();
 
 	if (!userId) return redirect("/sign-up");

@@ -25,7 +25,7 @@ export default async function AdminLayout({
 		where: eq(users.clerkID, userId),
 	});
 
-	if (!user){
+	if (!user) {
 		return redirect("/onboarding");
 	}
 

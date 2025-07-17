@@ -4,7 +4,7 @@ import { checkins, data, events, users } from "db/schema";
 import { getCurrentSemester } from "./semesters";
 import { ADMIN_ROLES } from "../constants";
 
-type UserRoles = typeof users.$inferSelect.role[]
+type UserRoles = (typeof users.$inferSelect.role)[];
 
 export const getAdminUser = async (clerkId: string) => {
 	return db.query.users.findFirst({
