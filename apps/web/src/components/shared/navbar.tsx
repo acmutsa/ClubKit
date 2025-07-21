@@ -69,7 +69,9 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 					<>
 						<Link
 							href={
-								hasCompletedRegistration ? "/dash" : "/onboarding"
+								hasCompletedRegistration
+									? "/dash"
+									: "/onboarding"
 							}
 						>
 							<Button
@@ -84,31 +86,24 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 									: "Complete Registration / Connect Account"}
 							</Button>
 						</Link>
-						
-						{
-							hasCompletedRegistration && (
-								ADMIN_ROLES.includes(user.role) && (
-									<Link href={"/admin"}>
-										<Button
-											variant={"outline"}
-											className="text-blue-400"
-										>
-											Admin
-										</Button>
-									</Link>
-							)
-						)}
+
+						{hasCompletedRegistration &&
+							ADMIN_ROLES.includes(user.role) && (
+								<Link href={"/admin"}>
+									<Button
+										variant={"outline"}
+										className="text-blue-400"
+									>
+										Admin
+									</Button>
+								</Link>
+							)}
 
 						<ProfileButton
 							clerkUser={clerkUser}
 							clerkAuth={clerkAuth}
 							user={user}
 						/>
-							
-						
-							
-							
-						
 					</>
 				) : (
 					<>
@@ -156,19 +151,22 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 												? "ghost"
 												: "default"
 										}
-										className="whitespace-normal p-4 h-12"
+										className="h-12 whitespace-normal p-4"
 									>
 										{hasCompletedRegistration
 											? "Dashboard"
 											: "Complete Registration / Connect Account"}
 									</Button>
 								</Link>
-								
-								{ hasCompletedRegistration && ADMIN_ROLES.includes(user.role) && (
-									<Link href={"/admin"}>
-										<Button variant={"ghost"}>Admin</Button>
-									</Link>
-								)}
+
+								{hasCompletedRegistration &&
+									ADMIN_ROLES.includes(user.role) && (
+										<Link href={"/admin"}>
+											<Button variant={"ghost"}>
+												Admin
+											</Button>
+										</Link>
+									)}
 								<div className="px-4">
 									<ProfileButton
 										clerkUser={clerkUser}
