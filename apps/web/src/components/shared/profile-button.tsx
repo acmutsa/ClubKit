@@ -56,7 +56,7 @@ export default async function ProfileButton({
 						<DropdownSwitcher />
 						<Link href={`/onboarding`}>
 							<DropdownMenuItem className="cursor-pointer">
-								Complete Registration
+								Complete Registration / Connect Account
 							</DropdownMenuItem>
 						</Link>
 						<Link

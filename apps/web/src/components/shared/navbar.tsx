@@ -17,6 +17,7 @@ import {
 import { ADMIN_ROLES } from "@/lib/constants";
 import c from "config";
 import { Menu } from "lucide-react";
+import { SignOutButton } from "@clerk/nextjs";
 
 type NavbarProps = {
 	siteRegion?: string;
@@ -33,8 +34,8 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 				with: { data: true },
 			})
 		: null;
-
-	const registrationComplete = user != null;
+	const hasSignedIn = userId != null;
+	const hasCompletedRegistration = user != null;
 	return (
 		<div
 			className={
@@ -64,39 +65,50 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 
 			{/* Large screen navbar */}
 			<div className="my-2 hidden items-center justify-end gap-x-2 md:flex">
-				{user ? (
+				{hasSignedIn ? (
 					<>
 						<Link
-							href={registrationComplete ? "/dash" : "/sign-up"}
+							href={
+								hasCompletedRegistration ? "/dash" : "/onboarding"
+							}
 						>
 							<Button
 								variant={
-									registrationComplete ? "outline" : "default"
+									hasCompletedRegistration
+										? "outline"
+										: "default"
 								}
 							>
-								{registrationComplete
+								{hasCompletedRegistration
 									? "Dashboard"
-									: "Complete Registration"}
+									: "Complete Registration / Connect Account"}
 							</Button>
 						</Link>
-						<Link href={"/events"}>
-							<Button variant={"outline"}>Events</Button>
-						</Link>
-						{ADMIN_ROLES.includes(user.role) && (
-							<Link href={"/admin"}>
-								<Button
-									variant={"outline"}
-									className="text-blue-400"
-								>
-									Admin
-								</Button>
-							</Link>
+						
+						{
+							hasCompletedRegistration && (
+								ADMIN_ROLES.includes(user.role) && (
+									<Link href={"/admin"}>
+										<Button
+											variant={"outline"}
+											className="text-blue-400"
+										>
+											Admin
+										</Button>
+									</Link>
+							)
 						)}
+
 						<ProfileButton
 							clerkUser={clerkUser}
 							clerkAuth={clerkAuth}
 							user={user}
 						/>
+							
+						
+							
+							
+						
 					</>
 				) : (
 					<>
@@ -122,9 +134,9 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 						<Menu />
 					</SheetTrigger>
 					<SheetContent className="flex max-w-[40%] flex-col-reverse items-center justify-center gap-y-1">
-						{user ? (
+						{hasSignedIn ? (
 							<>
-								{registrationComplete && (
+								{hasCompletedRegistration && (
 									<Link href="/settings">
 										<Button variant="ghost">
 											Settings
@@ -133,27 +145,26 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 								)}
 								<Link
 									href={
-										registrationComplete
+										hasCompletedRegistration
 											? "/dash"
 											: "/onboarding"
 									}
 								>
 									<Button
 										variant={
-											registrationComplete
+											hasCompletedRegistration
 												? "ghost"
 												: "default"
 										}
+										className="whitespace-normal p-4 h-12"
 									>
-										{registrationComplete
+										{hasCompletedRegistration
 											? "Dashboard"
-											: "Complete Registration"}
+											: "Complete Registration / Connect Account"}
 									</Button>
 								</Link>
-								<Link href={"/events"}>
-									<Button variant={"ghost"}>Events</Button>
-								</Link>
-								{ADMIN_ROLES.includes(user.role) && (
+								
+								{ hasCompletedRegistration && ADMIN_ROLES.includes(user.role) && (
 									<Link href={"/admin"}>
 										<Button variant={"ghost"}>Admin</Button>
 									</Link>
