@@ -83,7 +83,7 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 							>
 								{hasCompletedRegistration
 									? "Dashboard"
-									: "Complete Registration / Connect Account"}
+									: "Complete Registration"}
 							</Button>
 						</Link>
 
@@ -155,7 +155,7 @@ export default async function Navbar({ siteRegion, showBorder }: NavbarProps) {
 									>
 										{hasCompletedRegistration
 											? "Dashboard"
-											: "Complete Registration / Connect Account"}
+											: "Complete Registration"}
 									</Button>
 								</Link>
 
