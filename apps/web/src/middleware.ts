@@ -10,7 +10,6 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 const isAdminAPIRoute = createRouteMatcher(["/api/admin(.*)"]);
 
-
 export default clerkMiddleware(async (auth, req) => {
 	const { userId, redirectToSignIn } = await auth();
 	if (isProtectedRoute(req) && !userId) {

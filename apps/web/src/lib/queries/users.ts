@@ -2,13 +2,16 @@ import c from "config";
 import { count, db, eq, sum } from "db";
 import { checkins, data, events, users } from "db/schema";
 import { getCurrentSemester } from "./semesters";
+import { ADMIN_ROLES } from "../constants";
+
+type UserRoles = (typeof users.$inferSelect.role)[];
 
 export const getAdminUser = async (clerkId: string) => {
 	return db.query.users.findFirst({
 		where: (users, { eq, and, inArray }) =>
 			and(
 				eq(users.clerkID, clerkId),
-				inArray(users.role, ["admin", "super_admin"]),
+				inArray(users.role, ADMIN_ROLES as UserRoles),
 			),
 	});
 };

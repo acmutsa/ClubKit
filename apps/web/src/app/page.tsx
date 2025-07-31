@@ -1,4 +1,5 @@
 import Navbar from "@/components/shared/navbar";
+import Link from "next/link";
 export default function Home() {
 	return (
 		// bg-[var(--my-var,var(--my-background,pink))]
@@ -6,8 +7,11 @@ export default function Home() {
 			<header>
 				<Navbar showBorder />
 			</header>
-			<main className="flex w-full flex-1 items-center justify-center">
+			<main className="flex w-full flex-1 flex-col items-center justify-center space-y-5">
 				<h1 className="text-4xl font-black">ClubKit</h1>
+				<Link href="/events" className="h-min p-2 underline">
+					<p>Find Events →</p>
+				</Link>
 			</main>
 		</div>
 	);

@@ -5,7 +5,6 @@ import {
 	DropdownMenuItem,
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
-	DropdownMenuShortcut,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -104,7 +103,6 @@ export default async function ProfileButton({
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownSwitcher />
-
 					<Link href={`https://tally.so/r/wbKXN1`} target="_blank">
 						<DropdownMenuItem className="cursor-pointer">
 							Report a Bug
