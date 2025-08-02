@@ -41,6 +41,7 @@ export function CreateThumbnailDialog() {
 
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
   const maxSizeInMB = getSizeInMB(c.thumbnails.maxSizeInBytes);
 
@@ -56,6 +57,7 @@ export function CreateThumbnailDialog() {
     onSuccess: () => {
       toast.success("Thumbnail created successfully");
       setIsLoading(false);
+			setIsOpen(false);
       form.reset();
     },
     onError: (error) => {
@@ -118,15 +120,24 @@ export function CreateThumbnailDialog() {
 	}
 
 	return (
+		// open={isOpen}
 		<Dialog>
 			<form>
+				{/* onClick={()=>{
+					setIsOpen(true);
+				}} */}
 				<DialogTrigger asChild>
 					<Button className="flex flex-nowrap gap-x-2">
 						<ImageUp />
 						Add Thumbnail
 					</Button>
 				</DialogTrigger>
-				<DialogContent className="sm:max-w-[425px]">
+				<DialogContent
+					className="sm:max-w-[425px]"
+					onClick={() => {
+						console.log("Dialog content clicked");
+					}}
+				>
 					<DialogHeader>
 						<DialogTitle>Add Thumbnail</DialogTitle>
 						<DialogDescription>
@@ -157,7 +168,7 @@ export function CreateThumbnailDialog() {
 								name="url"
 								render={({ field }) => (
 									<FormItem>
-                    <FormLabel>Resume</FormLabel>
+										<FormLabel>Resume</FormLabel>
 										<FormControl>
 											<Input
 												{...field}
@@ -185,7 +196,16 @@ export function CreateThumbnailDialog() {
 							/>
 							<div className="flex w-full flex-row items-center justify-end gap-x-3">
 								<DialogClose asChild>
-									<Button variant="outline">Cancel</Button>
+									<Button
+										variant="outline"
+										onClick={() => {
+											setIsOpen(false);
+											form.reset();
+											setThumbnail(null);
+										}}
+									>
+										Cancel
+									</Button>
 								</DialogClose>
 								<Button type="submit" disabled={isLoading}>
 									Upload

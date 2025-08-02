@@ -62,19 +62,24 @@ export default function ThumbnailViewClient({allThumbnails}:{allThumbnails:Thumb
 				/>
 				<CreateThumbnailDialog />
 			</div>
-			<div className="flex-1 overflow-x-hidden no-scrollbar mt-5 ">
+			{/* p-3 border border-muted rounded-md */}
+			<div className="mt-5 flex-1 overflow-x-hidden no-scrollbar ">
 				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 ">
 					{thumbnails.map((thumbnail) => (
-						<ThumbnailItem key={thumbnail.id} thumbnail={thumbnail} runDel={runDel} />
+						<ThumbnailItem
+							key={thumbnail.id}
+							thumbnail={thumbnail}
+							runDel={runDel}
+						/>
 					))}
-					{Array.from({ length: 40 }).map((_, index) => (
+					{/* {Array.from({ length: 40 }).map((_, index) => (
 						<div
 							key={index}
 							className="relative w-full overflow-hidden rounded-md border border-muted"
 						>
 							<div className="h-[150px] w-full animate-pulse bg-muted" />
 						</div>
-					))}
+					))} */}
 				</div>
 			</div>
 		</div>
