@@ -1,5 +1,8 @@
 import Navbar from "@/components/shared/navbar";
 import Link from "next/link";
+import Image from "next/image";
+import { Instagram, Facebook, Twitter, Github } from "lucide-react";
+import Footer from "./footer";
 export default function Home() {
 	return (
 		// bg-[var(--my-var,var(--my-background,pink))]
@@ -13,6 +16,8 @@ export default function Home() {
 					<p>Find Events →</p>
 				</Link>
 			</main>
+			<Footer />
 		</div>
+
 	);
 }
