@@ -16,6 +16,12 @@ export const getAdminUser = async (clerkId: string) => {
 	});
 };
 
+export const getUserByClerkId = async (clerkId: string) => {
+	return db.query.users.findFirst({
+		where: eq(users.clerkID, clerkId),
+	});
+};
+
 export const getUser = async (userID: string) => {
 	return db.query.users.findFirst({
 		where: eq(users.userID, Number(userID)),
