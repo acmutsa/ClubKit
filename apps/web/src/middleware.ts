@@ -1,5 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { getAdminUser } from "./lib/queries/users";
+import { getAdminUser, getUserByClerkId } from "./lib/queries/users";
 import { NextResponse } from "next/server";
 
 const isProtectedRoute = createRouteMatcher([
@@ -8,16 +8,40 @@ const isProtectedRoute = createRouteMatcher([
 	"/settings(.*)",
 ]);
 const isAdminAPIRoute = createRouteMatcher(["/api/admin(.*)"]);
+const isAuthRoute = createRouteMatcher(["/sign-in(.*)", "/sign-up(.*)"]);
+const isOnboardingRoute = createRouteMatcher(["/onboarding(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
 	const { userId, redirectToSignIn } = await auth();
+	
+	// Protect routes - redirect to sign-in if not authenticated
 	if (isProtectedRoute(req) && !userId) {
-		redirectToSignIn({
+		return redirectToSignIn({
 			returnBackUrl: req.nextUrl.toString(),
 		});
 	}
 
-	// protect admin api routes
+	// Handle authenticated user routing
+	if (userId) {
+		const user = await getUserByClerkId(userId);
+		
+		// Redirect authenticated users away from auth pages
+		if (isAuthRoute(req)) {
+			return NextResponse.redirect(new URL(user ? "/dash" : "/onboarding", req.url));
+		}
+		
+		// Redirect registered users away from onboarding
+		if (isOnboardingRoute(req) && user) {
+			return NextResponse.redirect(new URL("/dash", req.url));
+		}
+		
+		// Redirect unregistered users to onboarding from protected routes
+		if (isProtectedRoute(req) && !user) {
+			return NextResponse.redirect(new URL("/onboarding", req.url));
+		}
+	}
+
+	// Protect admin API routes
 	if (isAdminAPIRoute(req)) {
 		if (!userId || !(await getAdminUser(userId))) {
 			return NextResponse.json({ error: "Unauthorized", status: 401 });
